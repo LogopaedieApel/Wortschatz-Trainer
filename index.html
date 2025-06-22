@@ -2,60 +2,60 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Wortschatz-Trainer</title>
     
-    <!-- Google Font "Comfortaa" importieren -->
+    <!-- Google Font: Comfortaa -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
-    
+
     <!-- =================================================================
-         CSS STYLES (VERSION 3 - MIT HAMBURGER-MENÜ & NEUEM STARTBILDSCHIRM)
+         CSS STYLES (VERSION 3 - Komplettes Redesign)
          ================================================================= -->
     <style>
         /* === Globale Styles & Variablen === */
         :root {
-            --primary-color: #007BFF;
-            --primary-hover: #0056b3;
-            --secondary-color: #6c757d;
-            --success-color: #28a745;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
+            --primary-green: #2ecc71; /* h1-Farbe */
+            --light-green: #adebad;   /* h2-Farbe */
+            --primary-blue: #3498db;
+            --primary-blue-hover: #2980b9;
+            --secondary-color: #95a5a6;
+            --dark-grey: #34495e;
+            --light-grey: #ecf0f1;
             --background-color: #ffffff;
-            --font-family: 'Comfortaa', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --border-radius: 8px;
-            --box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            
-            /* Neue Farben für den Startbildschirm */
-            --accent-green-dark: #2a9d8f;
-            --accent-green-light: #84c7be;
-            --accent-gray: #495057;
+            --font-family: 'Comfortaa', sans-serif;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent; /* Verhindert Klick-Highlight auf Mobilgeräten */
         }
 
         html, body {
             height: 100%;
             width: 100%;
             font-family: var(--font-family);
-            background-color: var(--light-color);
-            color: var(--dark-color);
-            overflow-x: hidden;
+            background-color: var(--background-color);
+            color: var(--dark-grey);
+            overflow: hidden; /* Verhindert jegliches Scrollen auf der Wurzelebene */
         }
         
         /* === App-Container und Bildschirm-Logik === */
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
         main {
-            min-height: 100%;
-            width: 100%;
+            flex-grow: 1; /* Nimmt den verfügbaren Platz ein */
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 1rem;
+            position: relative; /* Wichtig für die Positionierung der Screens */
         }
 
         .screen {
@@ -64,23 +64,94 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            max-width: 800px;
-            min-height: 100%;
-            padding: 1.5rem;
+            height: 100%;
+            padding: 1rem;
             background-color: var(--background-color);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
             text-align: center;
+            position: absolute; /* Alle Screens übereinander legen */
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            visibility: visible;
         }
 
-        .hidden {
-            display: none !important;
+        .screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none; /* Klicks auf unsichtbare Screens verhindern */
+        }
+        
+        /* === Fixierte Elemente: Logo & Hamburger Menü === */
+        .fixed-logo {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            width: 60px; /* Anpassen nach Bedarf */
+            z-index: 1002;
+            opacity: 0.7;
+        }
+
+        .hamburger-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+            padding: 5px;
+        }
+        .hamburger-button .bar {
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-green);
+            transition: all 0.3s ease-in-out;
+        }
+        .hamburger-button.active .bar1 {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        .hamburger-button.active .bar2 {
+            opacity: 0;
+        }
+        .hamburger-button.active .bar3 {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        
+        /* === Navigationsmenü (aus dem Hamburger) === */
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            right: -100%; /* Startet außerhalb des Bildschirms */
+            width: 250px;
+            height: 100%;
+            background-color: rgba(52, 73, 94, 0.95); /* var(--dark-grey) mit Transparenz */
+            z-index: 1001;
+            transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .nav-menu.active {
+            right: 0;
+        }
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            padding: 1.5rem 0;
+            font-weight: 700;
+            cursor: pointer;
         }
 
         /* === Generelle UI-Komponenten === */
-        h1 { margin-bottom: 0.5rem; font-size: 2.5rem; }
-        h2 { margin-bottom: 2rem; color: var(--secondary-color); font-weight: 400; }
-        h3 { margin-bottom: 1.5rem; font-weight: 400; }
+        h1 { margin-bottom: 0.2rem; font-size: 2.2rem; color: var(--primary-green); }
+        h2 { margin-bottom: 1.5rem; font-size: 1.2rem; color: var(--light-green); font-weight: 400; }
+        h3 { margin-bottom: 2rem; font-size: 1rem; color: var(--dark-grey); font-weight: 400; }
         
         .button {
             display: inline-block;
@@ -88,46 +159,50 @@
             font-size: 1rem;
             font-weight: bold;
             color: #fff;
-            background-color: var(--primary-color);
+            background-color: var(--primary-blue);
             border: none;
-            border-radius: var(--border-radius);
+            border-radius: 50px; /* Pill-shape buttons */
             cursor: pointer;
             text-decoration: none;
             transition: background-color 0.2s ease, transform 0.2s ease;
             margin: 5px;
-            -webkit-tap-highlight-color: transparent;
         }
-        .button:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
+        .button:hover { background-color: var(--primary-blue-hover); transform: translateY(-2px); }
         .button-secondary { background-color: var(--secondary-color); }
-        .button-secondary:hover { background-color: #5a6268; }
-        .button-success { background-color: var(--success-color); }
-        .button-success:hover { background-color: #218838; }
+        .button-secondary:hover { background-color: #7f8c8d; }
         
-        /* === Bildschirm 1: Neuer Startbildschirm === */
-        #screen-start {
+        /* === Bildschirm 1: Modus-Auswahl (Startseite) === */
+        #screen-mode-selection { justify-content: center; }
+        #screen-mode-selection .title-container { margin-bottom: 2vh; }
+        #screen-mode-selection .mode-tiles {
+            display: flex;
             justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
         }
-        #welcome-h1 {
-            color: var(--accent-green-dark);
-            font-size: 3rem;
-            font-weight: 700;
+
+        .tile {
+            flex: 1;
+            max-width: 180px;
+            padding: 1.5rem 1rem;
+            background-color: var(--light-grey);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
         }
-        #welcome-h2 {
-            color: var(--accent-green-light);
-            font-size: 1.8rem;
-            margin-top: 0;
-        }
-        #welcome-h3 {
-            color: var(--accent-gray);
-            font-size: 1.5rem;
-            margin-top: 3rem;
-        }
-        
+        .tile:hover { transform: translateY(-5px); background-color: #e0e6e8; }
+        .tile-emoji { font-size: 3rem; line-height: 1; margin-bottom: 1rem; }
+        .tile-title { font-size: 1.1rem; font-weight: bold; }
+        .tile-subtitle { display: none; } /* Untertitel sind im neuen Design redundant */
+
         /* === Bildschirm 2: Einstellungen === */
         #screen-settings .settings-container { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 1.5rem; }
-        .setting-group { padding: 1rem; border: 1px solid #ddd; border-radius: var(--border-radius); text-align: left; }
+        #settings-title { color: var(--dark-grey); margin-bottom: 2rem; }
+        .setting-group { padding: 1rem; background-color: var(--light-grey); border-radius: 12px; text-align: left; }
         .setting-group label { display: block; font-weight: bold; margin-bottom: 0.5rem; }
-        select, .radio-group { width: 100%; padding: 0.5rem; font-size: 1rem; border-radius: 4px; border: 1px solid #ccc; font-family: inherit; }
+        select, .radio-group { width: 100%; padding: 0.5rem; font-size: 1rem; border-radius: 4px; border: none; font-family: var(--font-family); }
         .radio-group label { font-weight: normal; margin-right: 1rem; }
         .slider-container { display: flex; align-items: center; gap: 1rem; }
         input[type="range"] { flex-grow: 1; }
@@ -137,156 +212,117 @@
         #screen-exercise { justify-content: space-between; }
         .exercise-header, .exercise-footer { width: 100%; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
         .exercise-main { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; overflow: hidden; padding: 1rem 0; }
-        .display-area { width: 100%; height: 100%; max-height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px dashed #ccc; border-radius: var(--border-radius); padding: 1rem; margin-bottom: 1rem; }
+        .display-area { width: 100%; height: 100%; max-height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; margin-bottom: 1rem; }
         .display-area img { max-width: 100%; max-height: 80%; object-fit: contain; margin-bottom: 1rem; }
-        .display-area .word-text { font-size: 2.5rem; font-weight: 700; }
+        .display-area .word-text { font-size: 2.5rem; font-weight: bold; }
         .diktat-instructions { padding: 2rem; font-size: 1.2rem; color: var(--secondary-color); line-height: 1.6; }
-        .speaker-button { font-size: 3rem; background: none; border: none; cursor: pointer; color: var(--primary-color); transition: transform 0.2s; padding: 0.5rem; }
+        .speaker-button { font-size: 3rem; background: none; border: none; cursor: pointer; color: var(--primary-blue); transition: transform 0.2s; padding: 0.5rem; }
         .speaker-button:hover { transform: scale(1.1); }
 
         /* === Modal für Anleitung === */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; opacity: 0; transform: scale(0.9); transition: opacity 0.3s ease, transform 0.3s ease; z-index: 1000; padding: 1rem; }
-        .modal-content { background: #fff; padding: 2rem; border-radius: var(--border-radius); max-width: 100%; width: 700px; max-height: 90vh; overflow-y: auto; position: relative; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1003; transition: opacity 0.3s; }
+        .modal-content { background: #fff; padding: 2rem; border-radius: 12px; max-width: 90%; width: 700px; max-height: 80vh; overflow-y: auto; position: relative; }
         .modal-close-button { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; background: none; border: none; cursor: pointer; color: var(--secondary-color); }
-
-        /* === HAMBURGER MENÜ & NAVIGATION === */
-        .hamburger-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1002;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            background: var(--dark-color);
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            padding: 8px;
-        }
-        .hamburger-button .line {
-            width: 100%;
-            height: 3px;
-            background-color: white;
-            border-radius: 3px;
-            transition: all 0.3s ease-in-out;
-        }
-        .hamburger-button.active .line1 { transform: rotate(45deg) translate(5px, 5px); }
-        .hamburger-button.active .line2 { opacity: 0; }
-        .hamburger-button.active .line3 { transform: rotate(-45deg) translate(7px, -7px); }
-
-        .nav-menu {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 280px;
-            height: 100%;
-            background-color: var(--dark-color);
-            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-            z-index: 1001;
-            display: flex;
-            flex-direction: column;
-            padding-top: 80px;
-        }
-        .nav-menu.open { transform: translateX(0); }
-        .nav-link {
-            color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
-            padding: 15px 25px;
-            display: block;
-            transition: background-color 0.2s;
-            border: none;
-            background: none;
-            text-align: left;
-            cursor: pointer;
-            font-family: inherit;
-        }
-        .nav-link:hover { background-color: var(--primary-color); }
-        .nav-link.nav-divider { border-top: 1px solid var(--secondary-color); margin-top: 10px; padding-top: 15px; }
-
+        
         /* ================================================================
-           RESPONSIVE DESIGN ANPASSUNGEN
+           RESPONSIVE ANPASSUNGEN
            ================================================================ */
+        
+        /* --- Kleine Bildschirme / Portrait --- */
         @media (max-width: 768px) {
-            body { overflow-y: auto; -webkit-text-size-adjust: 100%; }
-            main { padding: 0; align-items: flex-start; }
-            .screen { border-radius: 0; padding: 1rem; min-height: 100vh; }
             h1 { font-size: 1.8rem; }
-            h2 { font-size: 1.1rem; margin-bottom: 1.5rem; }
-
-            #welcome-h1 { font-size: 2.2rem; }
-            #welcome-h2 { font-size: 1.3rem; }
-            #welcome-h3 { font-size: 1.1rem; margin-top: 2rem; }
-
+            h2 { font-size: 1rem; }
+            h3 { font-size: 0.9rem; }
+            
+            #screen-mode-selection .mode-tiles {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .tile { max-width: 300px; width: 80%; padding: 1rem; }
+            .tile-emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+            
             .display-area .word-text { font-size: 1.8rem; }
             .diktat-instructions { font-size: 1rem; padding: 1rem; }
             .button { padding: 10px 18px; }
             .exercise-footer .button { font-size: 0.8rem; }
-            .hamburger-button { top: 15px; right: 15px; }
         }
         
+        /* --- Sehr niedrige Bildschirme / Landscape --- */
         @media (max-height: 500px) and (orientation: landscape) {
-            main { padding: 0.5rem; }
-            .screen { padding: 0.5rem 1rem; justify-content: center; }
-            h1 { font-size: 1.5rem; margin-bottom: 0.2rem; }
-            h2 { font-size: 0.9rem; margin-bottom: 0.5rem; }
-            
-            #welcome-h1, #welcome-h2, #welcome-h3 { margin-top: 0.5rem; }
+            h1 { font-size: 1.5rem; }
+            h2 { font-size: 0.9rem; margin-bottom: 1rem; }
+            h3 { font-size: 0.8rem; margin-bottom: 1rem; }
+            #screen-mode-selection .title-container { margin-bottom: 2vh; }
+
+            #screen-mode-selection .mode-tiles {
+                flex-direction: row;
+                gap: 1rem;
+            }
+            .tile {
+                padding: 1rem 0.5rem;
+                min-width: 120px;
+            }
+            .tile-emoji { font-size: 1.8rem; margin-bottom: 0.5rem; }
+            .tile-title { font-size: 0.9rem; }
 
             .exercise-main { flex-direction: row; align-items: center; gap: 1rem; padding: 0.5rem 0; }
-            .display-area { max-height: 50vh; margin-bottom: 0; flex-grow: 1; }
+            .display-area { max-height: 60vh; margin-bottom: 0; flex-grow: 1; }
             .speaker-button { font-size: 2.5rem; }
             .exercise-header, .exercise-footer { padding: 0.2rem 0; }
+            .fixed-logo { width: 45px; }
         }
+
     </style>
 </head>
 <body>
 
-    <!-- Hamburger Menü Button (permanent sichtbar) -->
-    <button id="hamburger-btn" class="hamburger-button">
-        <span class="line line1"></span>
-        <span class="line line2"></span>
-        <span class="line line3"></span>
+    <button class="hamburger-button" id="hamburger-btn">
+        <span class="bar bar1"></span>
+        <span class="bar bar2"></span>
+        <span class="bar bar3"></span>
     </button>
-
-    <!-- Seitliches Navigationsmenü (initial versteckt) -->
-    <nav id="nav-menu" class="nav-menu">
-        <button id="nav-link-learn" class="nav-link">📚 Lernmodus</button>
-        <button id="nav-link-test" class="nav-link">✅ Testmodus</button>
-        <button id="nav-link-dictation" class="nav-link">✍️ Diktat-Modus</button>
-        <button id="nav-link-instructions" class="nav-link nav-divider">ℹ️ Anleitung</button>
+    
+    <nav class="nav-menu" id="nav-menu">
+        <a id="nav-learn">Lernmodus</a>
+        <a id="nav-test">Testmodus</a>
+        <a id="nav-dictation">Diktat</a>
+        <a id="nav-instructions">Anleitung</a>
     </nav>
 
+    <img src="path/to/your/logo.svg" alt="Logo" class="fixed-logo"> <!-- HIER DEINEN LOGO-PFAD EINTRAGEN -->
 
     <main>
-        <!-- =================================================================
-             BILDSCHIRM 1: STARTBILDSCHIRM
-             ================================================================= -->
-        <div id="screen-start" class="screen">
-            <h1 id="welcome-h1">Wortschatz-Trainer</h1>
-            <h2 id="welcome-h2">in Bild, Wort und Ton.</h2>
-            <h3 id="welcome-h3">Zischlaute</h3>
+        <!-- BILDSCHIRM 1: MODUS-AUSWAHL -->
+        <div id="screen-mode-selection" class="screen">
+            <div class="title-container">
+                <h1>Wortschatz-Trainer</h1>
+                <h2>in Bild, Wort und Ton.</h2>
+                <h3>Zischlaute</h3>
+            </div>
+            <div class="mode-tiles">
+                <div id="select-mode-learn" class="tile">
+                    <div class="tile-emoji">📚</div>
+                    <div class="tile-title">Lernen</div>
+                </div>
+                <div id="select-mode-test" class="tile">
+                    <div class="tile-emoji">✅</div>
+                    <div class="tile-title">Testen</div>
+                </div>
+                <div id="select-mode-dictation" class="tile">
+                    <div class="tile-emoji">✍️</div>
+                    <div class="tile-title">Diktat</div>
+                </div>
+            </div>
         </div>
 
-        <!-- =================================================================
-             BILDSCHIRM 2: EINSTELLUNGEN
-             ================================================================= -->
+        <!-- BILDSCHIRM 2: EINSTELLUNGEN -->
         <div id="screen-settings" class="screen hidden">
             <h1 id="settings-title">Einstellungen</h1>
-            
             <div class="settings-container">
                 <div class="setting-group">
                     <label for="item-set-select">1. Lern-Set auswählen:</label>
-                    <select id="item-set-select">
-                        <!-- Optionen werden von JS dynamisch gefüllt -->
-                    </select>
+                    <select id="item-set-select"></select>
                 </div>
-
                 <div id="setting-display-type" class="setting-group">
                     <label>2. Anzeige-Typ:</label>
                     <div class="radio-group">
@@ -295,7 +331,6 @@
                         <label><input type="radio" name="displayType" value="image_word"> Bild mit Wort</label>
                     </div>
                 </div>
-
                 <div id="setting-sound-delay" class="setting-group">
                     <label for="sound-delay-slider">3. Sound-Verzögerung:</label>
                     <div class="slider-container">
@@ -303,30 +338,23 @@
                         <span id="sound-delay-value">1 s</span>
                     </div>
                 </div>
-                
                 <div class="navigation-buttons">
-                    <button id="back-to-start-btn" class="button button-secondary">Zurück zum Start</button>
-                    <button id="start-btn" class="button button-success">Starten</button>
+                    <button id="back-to-mode-selection-btn" class="button button-secondary">Zurück</button>
+                    <button id="start-btn" class="button">Starten</button>
                 </div>
             </div>
         </div>
 
-        <!-- =================================================================
-             BILDSCHIRM 3: ÜBUNGSBILDSCHIRM
-             ================================================================= -->
+        <!-- BILDSCHIRM 3: ÜBUNGSBILDSCHIRM -->
         <div id="screen-exercise" class="screen hidden">
             <div class="exercise-header">
                 <span id="item-counter">Item 1 / 10</span>
                 <button id="exit-exercise-btn" class="button button-secondary">Beenden</button>
             </div>
-            
             <div class="exercise-main">
-                <div id="display-area" class="display-area">
-                    <!-- Inhalt wird von JS dynamisch gefüllt -->
-                </div>
+                <div id="display-area" class="display-area"></div>
                 <button id="speaker-btn" class="speaker-button">🔊</button>
             </div>
-
             <div class="exercise-footer">
                 <button id="prev-item-btn" class="button">Vorheriges</button>
                 <button id="show-word-btn" class="button hidden">Wort anzeigen</button>
@@ -335,41 +363,31 @@
         </div>
     </main>
 
-    <!-- =================================================================
-         MODAL FÜR ANLEITUNG
-         ================================================================= -->
+    <!-- MODAL FÜR ANLEITUNG -->
     <div id="instructions-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <button id="close-instructions-btn" class="modal-close-button">×</button>
             <h2>Anleitung</h2>
             <p>Diese Anwendung hilft dir, Wörter und ihre Rechtschreibung zu lernen.</p>
-            
             <h3>Modi</h3>
             <p><strong>📚 Lernmodus:</strong> Erkunde die Lern-Items in deinem eigenen Tempo. Navigiere mit den "Nächstes"/"Vorheriges"-Buttons. Klicke auf den Lautsprecher, um das Wort zu hören.</p>
-            <p><strong>✅ Testmodus:</strong> Lass dir die Items automatisch nacheinander anzeigen. Der Ton wird nach einer von dir gewählten Verzögerung abgespielt. Ideal, um dein Wissen zu überprüfen.</p>
+            <p><strong>✅ Testmodus:</strong> Lass dir die Items automatisch nacheinander anzeigen. Der Ton wird nach einer von dir gewählten Verzögerung abgespielt.</p>
             <p><strong>✍️ Diktat-Modus:</strong> Höre dir ein Wort an und schreibe es auf. Klicke danach auf "Wort anzeigen", um deine Schreibweise zu kontrollieren.</p>
-            
-            <h3>Einstellungen</h3>
-            <p>Vor jedem Start kannst du das Lern-Set und weitere Optionen wählen:</p>
-            <ul>
-                <li><strong>Lern-Set:</strong> Wähle die Wortliste (JSON-Datei), mit der du üben möchtest.</li>
-                <li><strong>Anzeige-Typ:</strong> (Nur für Lern- & Testmodus) Bestimme, was du sehen willst: nur das Bild, nur das Wort, oder beides zusammen.</li>
-                <li><strong>Sound-Verzögerung:</strong> (Nur für Testmodus) Stelle ein, wie viele Sekunden nach Anzeige des Items der Ton abgespielt werden soll.</li>
-            </ul>
+            <h3>Navigation</h3>
+            <p>Nutze das Menü oben rechts, um jederzeit zwischen den Modi zu wechseln oder diese Anleitung aufzurufen.</p>
         </div>
     </div>
 
 
     <!-- =================================================================
-         JAVASCRIPT LOGIK (Version 3)
+         JAVASCRIPT LOGIK
          ================================================================= -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-        // --- STATE MANAGEMENT ---
         const appState = {
-            currentScreen: 'screen-start',
-            mode: null, // 'learn', 'test', 'dictation'
+            currentScreen: 'modeSelection',
+            mode: null,
             settings: { itemSet: null, displayType: 'image', soundDelay: 1 },
             items: [],
             currentItemIndex: 0,
@@ -377,22 +395,26 @@
             testModeTimer: null,
         };
 
-        // --- DATEN-KONFIGURATION ---
         const ITEM_SETS = [
             { name: "Grundwortschatz Tiere", file: "sets/tiere.json" },
             { name: "Schwierige Wörter Klasse 4", file: "sets/klasse4.json" },
-            { name: "Zischlaute", file: "sets/zischlaute.json" },
         ];
-        
+
         // --- DOM ELEMENT REFERENZEN ---
         const screens = {
-            start: document.getElementById('screen-start'),
+            modeSelection: document.getElementById('screen-mode-selection'),
             settings: document.getElementById('screen-settings'),
             exercise: document.getElementById('screen-exercise'),
         };
-
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const navMenu = document.getElementById('nav-menu');
+        const modal = document.getElementById('instructions-modal');
+        // ... (weitere Referenzen bleiben gleich)
         const buttons = {
-            backToStart: document.getElementById('back-to-start-btn'),
+            selectLearn: document.getElementById('select-mode-learn'),
+            selectTest: document.getElementById('select-mode-test'),
+            selectDictation: document.getElementById('select-mode-dictation'),
+            backToMode: document.getElementById('back-to-mode-selection-btn'),
             start: document.getElementById('start-btn'),
             exitExercise: document.getElementById('exit-exercise-btn'),
             prevItem: document.getElementById('prev-item-btn'),
@@ -400,15 +422,12 @@
             showWord: document.getElementById('show-word-btn'),
             speaker: document.getElementById('speaker-btn'),
             closeInstructions: document.getElementById('close-instructions-btn'),
-            hamburger: document.getElementById('hamburger-btn'),
-        };
-
-        const nav = {
-            menu: document.getElementById('nav-menu'),
-            learn: document.getElementById('nav-link-learn'),
-            test: document.getElementById('nav-link-test'),
-            dictation: document.getElementById('nav-link-dictation'),
-            instructions: document.getElementById('nav-link-instructions'),
+            nav: { // NEU: Navigationslinks
+                learn: document.getElementById('nav-learn'),
+                test: document.getElementById('nav-test'),
+                dictation: document.getElementById('nav-dictation'),
+                instructions: document.getElementById('nav-instructions'),
+            }
         };
 
         const settingsElements = {
@@ -424,90 +443,88 @@
             displayArea: document.getElementById('display-area'),
             itemCounter: document.getElementById('item-counter'),
         };
-        
-        const modal = document.getElementById('instructions-modal');
 
         // --- FUNKTIONEN ---
 
         function switchScreen(screenId) {
-            Object.values(screens).forEach(screen => screen.classList.add('hidden'));
-            if (screens[screenId]) {
-                 screens[screenId].classList.remove('hidden');
-            }
+            Object.keys(screens).forEach(key => {
+                const isTarget = key === screenId;
+                screens[key].classList.toggle('hidden', !isTarget);
+            });
             appState.currentScreen = screenId;
+        }
+        
+        // NEU: Menü-Funktionen
+        function toggleNavMenu() {
+            hamburgerBtn.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        function closeNavMenu() {
+            hamburgerBtn.classList.remove('active');
+            navMenu.classList.remove('active');
         }
 
         function initialize() {
             populateItemSetSelector();
             addEventListeners();
-            switchScreen('start');
+            switchScreen('modeSelection');
         }
         
         function populateItemSetSelector() {
             ITEM_SETS.forEach(set => {
                 const option = new Option(set.name, set.file);
-                settingsElements.itemSetSelect.add(option);
+                settingsElements.itemSetSelect.appendChild(option);
             });
         }
         
         function addEventListeners() {
-            // Hamburger & Navigation
-            buttons.hamburger.addEventListener('click', toggleNavMenu);
-            nav.learn.addEventListener('click', () => selectMode('learn'));
-            nav.test.addEventListener('click', () => selectMode('test'));
-            nav.dictation.addEventListener('click', () => selectMode('dictation'));
-            nav.instructions.addEventListener('click', () => {
-                showInstructions();
-                closeNavMenu();
-            });
+            hamburgerBtn.addEventListener('click', toggleNavMenu);
+            
+            // Klick auf eine Kachel
+            buttons.selectLearn.addEventListener('click', () => selectMode('learn'));
+            buttons.selectTest.addEventListener('click', () => selectMode('test'));
+            buttons.selectDictation.addEventListener('click', () => selectMode('dictation'));
+            
+            // Klicks auf Navigationslinks
+            buttons.nav.learn.addEventListener('click', () => { selectMode('learn'); closeNavMenu(); });
+            buttons.nav.test.addEventListener('click', () => { selectMode('test'); closeNavMenu(); });
+            buttons.nav.dictation.addEventListener('click', () => { selectMode('dictation'); closeNavMenu(); });
+            buttons.nav.instructions.addEventListener('click', () => { showInstructions(); closeNavMenu(); });
 
-            // Einstellungs-Bildschirm
-            buttons.backToStart.addEventListener('click', () => switchScreen('start'));
+            buttons.backToMode.addEventListener('click', () => switchScreen('modeSelection'));
             buttons.start.addEventListener('click', startGame);
-            settingsElements.soundDelaySlider.addEventListener('input', (e) => {
+            settingsElements.soundDelaySlider.addEventListener('input', e => {
                 settingsElements.soundDelayValue.textContent = `${e.target.value} s`;
             });
 
-            // Übungs-Bildschirm
             buttons.exitExercise.addEventListener('click', exitExercise);
             buttons.nextItem.addEventListener('click', showNextItem);
             buttons.prevItem.addEventListener('click', showPrevItem);
             buttons.speaker.addEventListener('click', playCurrentSound);
             buttons.showWord.addEventListener('click', showDictationAnswer);
             
-            // Anleitung
             buttons.closeInstructions.addEventListener('click', hideInstructions);
-            modal.addEventListener('click', (e) => {
+            modal.addEventListener('click', e => {
                 if (e.target === modal) hideInstructions();
             });
-        }
-
-        function toggleNavMenu() {
-            buttons.hamburger.classList.toggle('active');
-            nav.menu.classList.toggle('open');
-        }
-
-        function closeNavMenu() {
-            buttons.hamburger.classList.remove('active');
-            nav.menu.classList.remove('open');
         }
         
         function selectMode(mode) {
             appState.mode = mode;
             setupSettingsScreen();
             switchScreen('settings');
-            closeNavMenu();
         }
         
         function setupSettingsScreen() {
             const modeTitles = {
-                learn: 'Lernmodus-Einstellungen',
-                test: 'Testmodus-Einstellungen',
-                dictation: 'Diktat-Einstellungen'
+                learn: 'Lernmodus',
+                test: 'Testmodus',
+                dictation: 'Diktat'
             };
             settingsElements.title.textContent = modeTitles[appState.mode];
             
-            const showDisplayType = appState.mode === 'learn' || appState.mode === 'test';
+            const showDisplayType = appState.mode !== 'dictation';
             const showSoundDelay = appState.mode === 'test';
             
             settingsElements.displayTypeGroup.style.display = showDisplayType ? 'block' : 'none';
@@ -526,10 +543,10 @@
             
             try {
                 const response = await fetch(appState.settings.itemSet);
-                if (!response.ok) throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 appState.items = await response.json();
             } catch (error) {
-                alert(`Fehler beim Laden des Lern-Sets: ${error.message}\n\nStelle sicher, dass die Datei '${appState.settings.itemSet}' existiert und korrekt formatiert ist.`);
+                alert(`Fehler beim Laden des Lern-Sets: ${error.message}\nBitte überprüfe den Dateipfad und die Internetverbindung.`);
                 return;
             }
 
@@ -555,14 +572,17 @@
         function runExercise() {
             if (appState.testModeTimer) clearTimeout(appState.testModeTimer);
             updateItemCounter();
-            if (appState.mode === 'test') runTestModeStep();
-            else renderCurrentItem();
+            if (appState.mode === 'test') {
+                runTestModeStep();
+            } else {
+                renderCurrentItem();
+            }
         }
         
         function runTestModeStep() {
             if (appState.currentItemIndex >= appState.items.length) {
-                alert("Test beendet! Du wirst zum Startbildschirm zurückgeleitet.");
-                switchScreen('start');
+                alert("Test beendet!");
+                exitExercise();
                 return;
             }
             renderCurrentItem();
@@ -575,7 +595,6 @@
         }
 
         function renderCurrentItem() {
-            if (appState.items.length === 0) return;
             const item = appState.items[appState.currentItemIndex];
             appState.isShowingAnswer = false;
             exerciseElements.displayArea.innerHTML = '';
@@ -584,15 +603,15 @@
                 renderDictationInstructions();
                 return;
             }
-
+            
             const displayType = appState.settings.displayType;
-            let hasImage = item.image && item.image.trim() !== '';
+            const hasImage = item.image && item.image.trim() !== '';
             let effectiveDisplayType = displayType;
             if ((displayType === 'image' || displayType === 'image_word') && !hasImage) {
                 effectiveDisplayType = 'word';
             }
             
-            if (effectiveDisplayType === 'image' || effectiveDisplayType === 'image_word') {
+            if (effectiveDisplayType.includes('image')) {
                 const img = document.createElement('img');
                 img.src = item.image;
                 img.alt = item.name;
@@ -606,7 +625,7 @@
                 exerciseElements.displayArea.appendChild(img);
             }
             
-            if (effectiveDisplayType === 'word' || effectiveDisplayType === 'image_word') {
+            if (effectiveDisplayType.includes('word')) {
                 const p = document.createElement('p');
                 p.className = 'word-text';
                 p.textContent = item.name;
@@ -616,7 +635,7 @@
 
         function renderDictationInstructions() {
              buttons.showWord.classList.remove('hidden');
-             exerciseElements.displayArea.innerHTML = `<div class="diktat-instructions"><p>Klicke auf den Lautsprecher, um das Wort zu hören.</p><p>Schreibe das Wort auf.</p><p>Klicke dann auf "Wort anzeigen".</p></div>`;
+             exerciseElements.displayArea.innerHTML = `<div class="diktat-instructions"><p>Wort anhören, aufschreiben & dann auf "Wort anzeigen" klicken.</p></div>`;
         }
         
         function showDictationAnswer() {
@@ -628,12 +647,9 @@
         }
 
         function playCurrentSound() {
-            if (appState.items.length === 0) return;
+            if (!appState.items.length) return;
             const soundFile = appState.items[appState.currentItemIndex].sound;
-            if (soundFile) {
-                const audio = new Audio(soundFile);
-                audio.play().catch(e => console.error("Fehler beim Abspielen des Sounds:", e));
-            }
+            if (soundFile) new Audio(soundFile).play().catch(e => console.error("Sound error:", e));
         }
         
         function showNextItem() {
@@ -656,26 +672,17 @@
         
         function exitExercise() {
             if (appState.testModeTimer) clearTimeout(appState.testModeTimer);
-            switchScreen('settings');
+            switchScreen('modeSelection');
         }
         
         function showInstructions() {
             modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.style.opacity = '1';
-                modal.style.transform = 'scale(1)';
-            }, 10);
         }
 
         function hideInstructions() {
-            modal.style.opacity = '0';
-            modal.style.transform = 'scale(0.9)';
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
+            modal.classList.add('hidden');
         }
 
-        // --- ANWENDUNG STARTEN ---
         initialize();
     });
     </script>
