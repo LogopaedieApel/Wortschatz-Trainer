@@ -6,7 +6,7 @@
     <title>Lern- und Testprogramm</title>
     
     <!-- =================================================================
-         CSS STYLES
+         CSS STYLES (VERSION 2 - VERBESSERTES RESPONSIVE DESIGN)
          Alle Styles sind direkt hier eingebettet.
          ================================================================= -->
     <style>
@@ -37,12 +37,12 @@
             font-family: var(--font-family);
             background-color: var(--light-color);
             color: var(--dark-color);
-            overflow: hidden; /* Verhindert Scrollen zwischen den "Bildschirmen" */
+            overflow-x: hidden; /* Horizontales Scrollen immer verhindern */
         }
         
         /* === App-Container und Bildschirm-Logik === */
         main {
-            height: 100%;
+            min-height: 100%;
             width: 100%;
             display: flex;
             justify-content: center;
@@ -57,7 +57,7 @@
             justify-content: center;
             width: 100%;
             max-width: 800px;
-            height: 100%;
+            min-height: 100%;
             padding: 1.5rem;
             background-color: var(--background-color);
             border-radius: var(--border-radius);
@@ -94,6 +94,7 @@
             text-decoration: none;
             transition: background-color 0.2s ease, transform 0.2s ease;
             margin: 5px;
+            -webkit-tap-highlight-color: transparent; /* Verhindert blauen Blitz bei Klick auf Mobilgeräten */
         }
 
         .button:hover {
@@ -101,28 +102,22 @@
             transform: translateY(-2px);
         }
 
-        .button-secondary {
-            background-color: var(--secondary-color);
-        }
-        .button-secondary:hover {
-            background-color: #5a6268;
-        }
-        
-        .button-success {
-            background-color: var(--success-color);
-        }
-        .button-success:hover {
-            background-color: #218838;
-        }
+        .button-secondary { background-color: var(--secondary-color); }
+        .button-secondary:hover { background-color: #5a6268; }
+        .button-success { background-color: var(--success-color); }
+        .button-success:hover { background-color: #218838; }
         
         /* === Bildschirm 1: Modus-Auswahl === */
+        #screen-mode-selection {
+            justify-content: space-around;
+        }
         #screen-mode-selection .mode-tiles {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 2rem;
             width: 100%;
-            margin-bottom: 3rem;
+            margin: 2rem 0;
         }
 
         .tile {
@@ -144,28 +139,10 @@
             box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
 
-        .tile-emoji {
-            font-size: 4rem;
-            line-height: 1;
-            margin-bottom: 1rem;
-        }
+        .tile-emoji { font-size: 4rem; line-height: 1; margin-bottom: 1rem; }
+        .tile-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 0.25rem; }
+        .tile-subtitle { font-size: 1rem; color: var(--secondary-color); }
         
-        .tile-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 0.25rem;
-        }
-
-        .tile-subtitle {
-            font-size: 1rem;
-            color: var(--secondary-color);
-        }
-        
-        .instructions-button {
-            position: absolute;
-            bottom: 2rem;
-        }
-
         /* === Bildschirm 2: Einstellungen === */
         #screen-settings .settings-container {
             width: 100%;
@@ -174,175 +151,116 @@
             flex-direction: column;
             gap: 1.5rem;
         }
-        
-        .setting-group {
-            padding: 1rem;
-            border: 1px solid #ddd;
-            border-radius: var(--border-radius);
-            text-align: left;
-        }
-        
-        .setting-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        
-        select, .radio-group {
-            width: 100%;
-            padding: 0.5rem;
-            font-size: 1rem;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-        
-        .radio-group label {
-            font-weight: normal;
-            margin-right: 1rem;
-        }
-        
-        .slider-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        input[type="range"] {
-            flex-grow: 1;
-        }
-
-        .navigation-buttons {
-            margin-top: 1rem;
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-        }
+        .setting-group { padding: 1rem; border: 1px solid #ddd; border-radius: var(--border-radius); text-align: left; }
+        .setting-group label { display: block; font-weight: bold; margin-bottom: 0.5rem; }
+        select, .radio-group { width: 100%; padding: 0.5rem; font-size: 1rem; border-radius: 4px; border: 1px solid #ccc; }
+        .radio-group label { font-weight: normal; margin-right: 1rem; }
+        .slider-container { display: flex; align-items: center; gap: 1rem; }
+        input[type="range"] { flex-grow: 1; }
+        .navigation-buttons { margin-top: 1rem; display: flex; justify-content: space-between; width: 100%; }
 
         /* === Bildschirm 3: Übung === */
-        #screen-exercise {
-            justify-content: space-between;
-        }
-
-        .exercise-header, .exercise-footer {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .exercise-main {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .display-area {
-            width: 100%;
-            height: 100%;
-            max-height: 50vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border: 2px dashed #ccc;
-            border-radius: var(--border-radius);
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .display-area img {
-            max-width: 100%;
-            max-height: 80%;
-            object-fit: contain;
-            margin-bottom: 1rem;
-        }
-
-        .display-area .word-text {
-            font-size: 2.5rem;
-            font-weight: bold;
-        }
-        
-        .diktat-instructions {
-            padding: 2rem;
-            font-size: 1.2rem;
-            color: var(--secondary-color);
-            line-height: 1.6;
-        }
-
-        .speaker-button {
-            font-size: 3rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--primary-color);
-            transition: transform 0.2s;
-        }
-        .speaker-button:hover {
-            transform: scale(1.1);
-        }
+        #screen-exercise { justify-content: space-between; }
+        .exercise-header, .exercise-footer { width: 100%; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .exercise-main { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; overflow: hidden; padding: 1rem 0; }
+        .display-area { width: 100%; height: 100%; max-height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px dashed #ccc; border-radius: var(--border-radius); padding: 1rem; margin-bottom: 1rem; }
+        .display-area img { max-width: 100%; max-height: 80%; object-fit: contain; margin-bottom: 1rem; }
+        .display-area .word-text { font-size: 2.5rem; font-weight: bold; }
+        .diktat-instructions { padding: 2rem; font-size: 1.2rem; color: var(--secondary-color); line-height: 1.6; }
+        .speaker-button { font-size: 3rem; background: none; border: none; cursor: pointer; color: var(--primary-color); transition: transform 0.2s; padding: 0.5rem; }
+        .speaker-button:hover { transform: scale(1.1); }
 
         /* === Modal für Anleitung === */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transform: scale(0.9);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .modal-content {
-            background: #fff;
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            max-width: 90%;
-            width: 700px;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        
-        .modal-close-button {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--secondary-color);
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; opacity: 0; transform: scale(0.9); transition: opacity 0.3s ease, transform 0.3s ease; z-index: 1000; padding: 1rem; }
+        .modal-content { background: #fff; padding: 2rem; border-radius: var(--border-radius); max-width: 100%; width: 700px; max-height: 90vh; overflow-y: auto; position: relative; }
+        .modal-close-button { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; background: none; border: none; cursor: pointer; color: var(--secondary-color); }
 
-        /* === Responsive Design === */
+        /* ================================================================
+           RESPONSIVE DESIGN ANPASSUNGEN
+           ================================================================ */
+        
+        /* --- Mobilgeräte (Portrait & generell klein) --- */
         @media (max-width: 768px) {
-            .screen {
-                padding: 1rem;
-                height: 100%;
-                border-radius: 0;
+            body {
+                 overflow-y: auto; /* Scrollen erlauben, falls Inhalt nicht passt */
+                 -webkit-text-size-adjust: 100%; /* Verhindert Auto-Zoom von Schrift auf iPhones */
             }
-            h1 { font-size: 2rem; }
+            main {
+                padding: 0;
+                align-items: flex-start; /* Verhindert Zentrierung, wenn Inhalt scrollbar wird */
+            }
+            .screen {
+                border-radius: 0;
+                padding: 1rem;
+                min-height: 100vh; /* Mindestens die Bildschirmhöhe ausfüllen */
+            }
+            h1 { font-size: 1.8rem; }
             h2 { font-size: 1rem; margin-bottom: 1.5rem; }
 
             #screen-mode-selection .mode-tiles {
                 flex-direction: column;
                 gap: 1rem;
+                margin: 1rem 0;
             }
-            .tile { min-width: unset; width: 100%; }
-            .instructions-button { position: static; margin-top: 1rem; }
-            
+            .tile {
+                min-width: unset;
+                width: 100%;
+                padding: 1.2rem;
+            }
+            .tile-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; }
+            .tile-title { font-size: 1.2rem; }
+
             .display-area .word-text { font-size: 1.8rem; }
-            .diktat-instructions { font-size: 1rem; }
+            .diktat-instructions { font-size: 1rem; padding: 1rem; }
+            .button { padding: 10px 18px; }
+            .exercise-footer .button { font-size: 0.8rem; }
+        }
+        
+        /* --- Mobilgeräte (Landscape / sehr niedrige Höhe) --- */
+        @media (max-height: 500px) and (orientation: landscape) {
+            main {
+                 padding: 0.5rem;
+            }
+            .screen {
+                padding: 0.5rem 1rem;
+                justify-content: center;
+            }
+            h1 { font-size: 1.5rem; margin-bottom: 0.2rem; }
+            h2 { font-size: 0.9rem; margin-bottom: 0.5rem; }
+            
+            /* Modus-Auswahl kompakt und nebeneinander */
+            #screen-mode-selection .mode-tiles {
+                flex-direction: row;
+                gap: 0.5rem;
+                margin: 0.5rem 0;
+            }
+            .tile {
+                flex: 1;
+                padding: 0.5rem;
+                min-width: 120px;
+            }
+            .tile-emoji { font-size: 2rem; margin-bottom: 0.25rem; }
+            .tile-title { font-size: 1rem; }
+            .tile-subtitle { font-size: 0.8rem; }
+            
+            /* Übungsbildschirm für Querformat anpassen */
+            .exercise-main {
+                flex-direction: row;
+                align-items: center;
+                gap: 1rem;
+                padding: 0.5rem 0;
+            }
+            .display-area {
+                max-height: 40vh; /* Höhe für Landscape reduzieren */
+                margin-bottom: 0;
+                flex-grow: 1;
+            }
+            .speaker-button {
+                font-size: 2.5rem;
+            }
+            .exercise-header, .exercise-footer {
+                padding: 0.2rem 0;
+            }
         }
 
     </style>
@@ -375,7 +293,7 @@
                 </div>
             </div>
 
-            <button id="show-instructions-btn" class="button button-secondary instructions-button">Anleitung</button>
+            <button id="show-instructions-btn" class="button button-secondary">Anleitung</button>
         </div>
 
         <!-- =================================================================
