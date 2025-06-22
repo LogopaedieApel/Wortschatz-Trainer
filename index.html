@@ -70,7 +70,7 @@
             text-align: center;
             position: absolute; /* Alle Screens übereinander legen */
             opacity: 1;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
             visibility: visible;
         }
 
@@ -220,7 +220,7 @@
         .speaker-button:hover { transform: scale(1.1); }
 
         /* === Modal für Anleitung === */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1003; transition: opacity 0.3s; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1003; transition: opacity 0.3s, visibility 0.3s; }
         .modal-content { background: #fff; padding: 2rem; border-radius: 12px; max-width: 90%; width: 700px; max-height: 80vh; overflow-y: auto; position: relative; }
         .modal-close-button { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; background: none; border: none; cursor: pointer; color: var(--secondary-color); }
         
@@ -289,7 +289,8 @@
         <a id="nav-instructions">Anleitung</a>
     </nav>
 
-    <img src="path/to/your/logo.svg" alt="Logo" class="fixed-logo"> <!-- HIER DEINEN LOGO-PFAD EINTRAGEN -->
+    <!-- HIER DEINEN LOGO-PFAD EINTRAGEN -->
+    <img src="path/to/your/logo.png" alt="Logo" class="fixed-logo"> 
 
     <main>
         <!-- BILDSCHIRM 1: MODUS-AUSWAHL -->
@@ -409,7 +410,7 @@
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const navMenu = document.getElementById('nav-menu');
         const modal = document.getElementById('instructions-modal');
-        // ... (weitere Referenzen bleiben gleich)
+        
         const buttons = {
             selectLearn: document.getElementById('select-mode-learn'),
             selectTest: document.getElementById('select-mode-test'),
@@ -422,7 +423,7 @@
             showWord: document.getElementById('show-word-btn'),
             speaker: document.getElementById('speaker-btn'),
             closeInstructions: document.getElementById('close-instructions-btn'),
-            nav: { // NEU: Navigationslinks
+            nav: { 
                 learn: document.getElementById('nav-learn'),
                 test: document.getElementById('nav-test'),
                 dictation: document.getElementById('nav-dictation'),
@@ -448,13 +449,11 @@
 
         function switchScreen(screenId) {
             Object.keys(screens).forEach(key => {
-                const isTarget = key === screenId;
-                screens[key].classList.toggle('hidden', !isTarget);
+                screens[key].classList.toggle('hidden', key !== screenId);
             });
             appState.currentScreen = screenId;
         }
         
-        // NEU: Menü-Funktionen
         function toggleNavMenu() {
             hamburgerBtn.classList.toggle('active');
             navMenu.classList.toggle('active');
@@ -486,7 +485,7 @@
             buttons.selectTest.addEventListener('click', () => selectMode('test'));
             buttons.selectDictation.addEventListener('click', () => selectMode('dictation'));
             
-            // Klicks auf Navigationslinks
+            // KORREKTUR: Klicks auf Navigationslinks werden nun korrekt als anonyme Funktion übergeben.
             buttons.nav.learn.addEventListener('click', () => { selectMode('learn'); closeNavMenu(); });
             buttons.nav.test.addEventListener('click', () => { selectMode('test'); closeNavMenu(); });
             buttons.nav.dictation.addEventListener('click', () => { selectMode('dictation'); closeNavMenu(); });
