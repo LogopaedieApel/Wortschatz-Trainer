@@ -2,22 +2,22 @@
     {
         "name": "Schal",
         "sound": "sounds/sch_initial/schal.mp3",
-        "image": "images/sch_initial/schal.jpg"
+        "image": "images/sch_initial/schal.png"
     },
     {
         "name": "Schatten",
         "sound": "sounds/sch_initial/schatten.mp3",
-        "image": "images/sch_initial/schatten.jpg"
+        "image": "images/sch_initial/schatten.png"
     },
     {
         "name": "Schere",
         "sound": "sounds/sch_initial/schere.mp3",
-        "image": "images/sch_initial/schere.jpg"
+        "image": "images/sch_initial/schere.png"
     },
     {
         "name": "Schuh",
         "sound": "sounds/sch_initial/schuh.mp3",
-        "image": "images/sch_initial/schuh.jpg"
+        "image": "images/sch_initial/schuh.png"
     },
     {
         "name": "Schule",
@@ -27,21 +27,21 @@
     {
         "name": "Schiene",
         "sound": "sounds/sch_initial/schiene.mp3",
-        "image": "images/sch_initial/schiene.jpg"
+        "image": "images/sch_initial/schiene.png"
     },
     {
         "name": "Schiff",
         "sound": "sounds/sch_initial/schiff.mp3",
-        "image": "images/sch_initial/schiff.jpg"
+        "image": "images/sch_initial/schiff.png"
     },
     {
         "name": "Schokolade",
         "sound": "sounds/sch_initial/schokolade.mp3",
-        "image": "images/sch_initial/schokolade.jpg"
+        "image": "images/sch_initial/schokolade.png"
     },
     {
         "name": "Schaukel",
         "sound": "sounds/sch_initial/schaukel.mp3",
-        "image": "images/sch_initial/schaukel.jpg"
+        "image": "images/sch_initial/schaukel.png"
     }
 ]
