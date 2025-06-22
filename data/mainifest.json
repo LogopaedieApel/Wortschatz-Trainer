@@ -1,0 +1,13 @@
+[
+  {
+    "name": "Wörter mit Sch am Anfang",
+    "path": "data/sch_initial.json",
+    "description": "Übungen zum Laut Sch am Wortanfang."
+  },
+  {
+    "name": "Reine Rechtschreibung (Test)",
+    "path": "data/rechtschreibung_einfach.json",
+    "description": "Einfache Wörter zum Üben der Rechtschreibung (nur Wort und Ton)."
+  }
+  // Füge hier weitere Sets hinzu, wenn du sie erstellst
+]
