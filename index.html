@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -9,8 +10,8 @@
         /* CSS HIER */
         /* Globale Stile */
         :root {
-            --dark-green: #27633A; /* Beispiel Dunkelgrün */
-            --light-green: #6BAB58; /* Beispiel Hellgrün */
+            --dark-green: #27633A;
+            --light-green: #6BAB58;
             --background-color: #f4f4f4;
             --card-background: #ffffff;
             --text-color: #333333;
@@ -28,10 +29,10 @@
 
         html, body {
             height: 100%;
-            font-family: 'Arial', sans-serif; /* Fallback, Comfortaa wird spezifischer gesetzt */
+            font-family: 'Arial', sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
-            overflow-x: hidden; /* Verhindert horizontales Scrollen */
+            overflow-x: hidden;
         }
 
         h1, h2, h3 {
@@ -44,26 +45,30 @@
         }
 
         .screen {
-            min-height: 100vh; /* Mindesthöhe für den Bildschirm */
+            min-height: 100vh;
             padding: 20px;
-            padding-top: 80px; /* Platz für Hamburger-Menü */
+            padding-top: 80px; /* Platz für festes Hamburger-Menü */
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Zentrierung für die meisten Bildschirme */
+            justify-content: center;
             transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
             transform: scale(1);
             opacity: 1;
+            width: 100%; /* Stelle sicher, dass Screens die volle Breite nehmen */
         }
         
         .screen.zoom-out {
             transform: scale(0.9);
             opacity: 0;
-            pointer-events: none; /* Wichtig, damit man nicht auf unsichtbare Elemente klickt */
+            pointer-events: none;
+            position: absolute; /* Verhindert Layout-Sprünge beim Ausblenden */
+            top: 0; left: 0;
         }
         .screen.zoom-in {
             transform: scale(1);
             opacity: 1;
+            position: relative; /* Oder static, je nach Bedarf */
         }
 
         button, .clickable-card {
@@ -81,6 +86,10 @@
         button:hover, .clickable-card:hover {
             background-color: var(--light-green);
         }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
 
         /* --- Hamburger Menü --- */
         .hamburger-menu {
@@ -97,13 +106,14 @@
             padding: 5px 10px;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
+            user-select: none; /* Verhindert Textauswahl beim Klicken */
         }
 
         .menu-content {
             display: none;
             position: absolute;
             right: 0;
-            top: calc(100% + 10px); /* Unter dem Icon */
+            top: calc(100% + 10px);
             background-color: var(--card-background);
             box-shadow: var(--box-shadow);
             border-radius: var(--border-radius);
@@ -117,8 +127,6 @@
 
         .menu-content ul {
             list-style: none;
-            padding: 0;
-            margin: 0;
         }
 
         .menu-content ul li a {
@@ -136,14 +144,14 @@
         /* --- Modales Fenster (Anleitung, Übungsende) --- */
         .modal {
             position: fixed;
-            z-index: 1001; /* Über dem Hamburger-Menü-Inhalt, aber unter dem Icon, falls das Menü offen ist */
+            z-index: 1001;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
             background-color: rgba(0,0,0,0.5);
-            display: flex; /* Für Zentrierung */
+            display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
@@ -176,6 +184,7 @@
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            line-height: 1;
         }
 
         .modal-close-button:hover,
@@ -190,19 +199,21 @@
             color: var(--dark-green);
             font-size: 2.5rem;
             margin-bottom: 10px;
+            text-align: center;
         }
         #screen-mode-selection h2 {
             color: var(--light-green);
             font-size: 1.5rem;
             margin-bottom: 30px;
+            text-align: center;
         }
         .mode-selection-container {
             display: flex;
             gap: 20px;
             width: 100%;
-            max-width: 900px; /* Maximale Breite für größere Bildschirme */
+            max-width: 900px;
             justify-content: center;
-            align-items: stretch; /* Kacheln gleich hoch */
+            align-items: stretch;
         }
         .mode-card {
             background-color: var(--card-background);
@@ -211,7 +222,7 @@
             box-shadow: var(--box-shadow);
             text-align: center;
             cursor: pointer;
-            flex: 1; /* Nimmt verfügbaren Platz ein */
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -236,6 +247,7 @@
         #screen-settings h2 {
             color: var(--dark-green);
             margin-bottom: 20px;
+            text-align: center;
         }
         .settings-form {
             background-color: var(--card-background);
@@ -258,14 +270,15 @@
             padding: 10px;
             border-radius: var(--border-radius);
             border: 1px solid #ccc;
+            font-size: 1rem;
         }
         .setting-display-type {
             display: flex;
             gap: 10px;
-            justify-content: space-around; /* Gleichmäßiger Abstand */
+            justify-content: space-around;
         }
         .setting-display-type button {
-            flex: 1; /* Nimmt verfügbaren Platz ein */
+            flex: 1;
             padding: 10px;
             font-size: 0.9rem;
         }
@@ -274,10 +287,16 @@
             color: white;
             border: 2px solid var(--dark-green);
         }
+        #sound-delay-value-container {
+            text-align: center;
+            margin-top: 5px;
+        }
+
 
         /* --- Bildschirm 3: Übung --- */
         #screen-exercise {
-            justify-content: flex-start; /* Inhalt oben */
+            justify-content: flex-start;
+            padding-bottom: 80px; /* Platz für Steuerungselemente unten */
         }
         .exercise-area {
             width: 100%;
@@ -286,7 +305,7 @@
             text-align: center;
         }
         .item-display {
-            min-height: 200px; /* Platzhalter für Bild/Wort */
+            min-height: 200px;
             background-color: var(--card-background);
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
@@ -299,20 +318,27 @@
         }
         .item-display img {
             max-width: 100%;
-            max-height: 150px; /* Beispielhöhe */
+            max-height: 250px; /* Etwas mehr Höhe für Bilder */
             object-fit: contain;
             margin-bottom: 10px;
+            border-radius: var(--border-radius);
         }
         .item-display .word-text {
-            font-size: 1.8rem;
+            font-size: 2rem; /* Größer für bessere Lesbarkeit */
             font-weight: bold;
             color: var(--dark-green);
+            margin-top: 10px;
         }
         .item-display .diktat-instructions {
             font-size: 1.1rem;
-            padding: 20px;
+            padding: 10px; /* Weniger Padding, wenn es kleiner ist */
             text-align: left;
+            line-height: 1.6;
         }
+        .item-display .diktat-instructions ol {
+            margin-left: 20px; /* Einzug für die Liste */
+        }
+
         .sound-button {
             font-size: 2.5rem;
             background: none;
@@ -320,6 +346,7 @@
             cursor: pointer;
             color: var(--dark-green);
             margin-bottom: 20px;
+            padding: 10px; /* Größerer Klickbereich */
         }
         .controls {
             display: flex;
@@ -330,7 +357,7 @@
             gap: 10px;
         }
         .controls button {
-            flex-grow: 1; /* Buttons nehmen verfügbaren Platz ein */
+            flex-grow: 1;
         }
         .progress-bar-container {
             width: 100%;
@@ -338,7 +365,7 @@
             background-color: #e0e0e0;
             border-radius: var(--border-radius);
             margin-bottom: 20px;
-            overflow: hidden; /* Für abgerundete Ecken des inneren Balkens */
+            overflow: hidden;
         }
         .progress-bar {
             width: 0%;
@@ -347,26 +374,36 @@
             text-align: center;
             line-height: 20px;
             color: white;
+            font-weight: bold;
             transition: width 0.3s ease;
         }
 
 
         /* Responsive Anpassungen */
-        @media (max-width: 768px) { /* Tablet und kleiner */
+        @media (max-width: 768px) {
             .mode-selection-container {
                 flex-direction: column;
             }
             .mode-card {
                 min-height: 120px;
+                width: 80%; /* Kacheln nicht volle Breite auf Tablets */
+                margin-left: auto;
+                margin-right: auto;
             }
             .mode-card .emoji {
                 font-size: 2.5rem;
             }
             .controls {
-                flex-wrap: wrap; /* Buttons umbrechen lassen, falls zu viele */
+                flex-wrap: wrap;
             }
             .controls button {
-                min-width: calc(50% - 5px); /* Mindestens 2 Buttons pro Zeile */
+                min-width: calc(50% - 5px); /* Zwei Buttons pro Zeile */
+            }
+            .item-display img {
+                max-height: 200px;
+            }
+            .item-display .word-text {
+                font-size: 1.8rem;
             }
         }
 
@@ -379,12 +416,33 @@
             }
             .mode-card {
                 padding: 15px;
+                width: 90%; /* Kacheln etwas breiter */
             }
-            .setting-display-type {
-                flex-direction: column; /* Anzeige-Typ Buttons untereinander */
+             .setting-display-type {
+                flex-direction: column;
+            }
+            .setting-display-type button {
+                width: 100%; /* Volle Breite für Buttons */
+                margin-bottom: 5px; /* Kleiner Abstand zwischen den Buttons */
+            }
+            .setting-display-type button:last-child {
+                margin-bottom: 0;
             }
             .controls button {
                 width: 100%; /* Jeder Button eine Zeile */
+                margin-bottom: 10px;
+            }
+            .controls button:last-child {
+                 margin-bottom: 0;
+            }
+            .item-display img {
+                max-height: 150px;
+            }
+            .item-display .word-text {
+                font-size: 1.6rem;
+            }
+             .modal-content {
+                width: 90%;
             }
         }
     </style>
@@ -410,10 +468,46 @@
         <div class="modal-content">
             <span class="modal-close-button" data-modal-id="anleitung-modal">×</span>
             <h2>Anleitung</h2>
-            <p>Hier steht die detaillierte Beschreibung aller Funktionen...</p>
-            <p><strong>Lernmodus:</strong> Erkunde die Vokabeln in deinem eigenen Tempo. Du kannst Bilder, Wörter oder beides anzeigen lassen und den Ton manuell abspielen.</p>
-            <p><strong>Testmodus:</strong> Überprüfe dein Wissen. Die Items werden automatisch abgespielt. Du kannst einstellen, was angezeigt wird und wie lange die Verzögerung vor dem Ton ist.</p>
-            <p><strong>Diktat-Modus:</strong> Höre das Wort, schreibe es auf und überprüfe dann die richtige Schreibweise.</p>
+            <p>Willkommen beim Wortschatz-Trainer!</p>
+            <p>Diese Anwendung hilft dir, Vokabeln und Rechtschreibung interaktiv zu lernen und zu üben.</p>
+            <h3>Modus-Auswahl (Startbildschirm)</h3>
+            <p>Wähle einen der drei Hauptmodi:</p>
+            <ul>
+                <li><strong>📚 Lernmodus:</strong> Erkunde Items (Wörter, Bilder, Töne) in deinem eigenen Tempo. Du kannst zwischen den Items vor- und zurückblättern und den Ton manuell abspielen.</li>
+                <li><strong>✅ Testmodus:</strong> Überprüfe dein Wissen. Items werden automatisch präsentiert. Der Ton kann sofort oder mit einer einstellbaren Verzögerung abgespielt werden.</li>
+                <li><strong>✍️ Diktat-Modus:</strong> Höre ein Wort, schreibe es (z.B. auf Papier) und überprüfe dann die korrekte Schreibweise.</li>
+            </ul>
+            <h3>Einstellungen (Nach Moduswahl)</h3>
+            <p>Vor jeder Übung kannst du Einstellungen vornehmen:</p>
+            <ul>
+                <li><strong>Lern-Set auswählen:</strong> Wähle aus verschiedenen Wortlisten (JSON-Dateien).</li>
+                <li><strong>Anzeige-Typ (Lern- & Testmodus):</strong>
+                    <ul>
+                        <li>🖼️ Nur Bild: Zeigt nur das Bild des Items.</li>
+                        <li>🆕 Nur Wort: Zeigt nur das geschriebene Wort.</li>
+                        <li>🖼️+🆕 Bild & Wort: Zeigt das Bild mit dem Wort als Untertitel.</li>
+                        <li><em>Hinweis:</em> Wenn ein Bild fehlt, wird stattdessen das Wort angezeigt.</li>
+                    </ul>
+                </li>
+                <li><strong>Sound-Verzögerung (Nur Testmodus):</strong> Stelle ein (0-5 Sekunden), wie lange gewartet wird, bevor der Ton automatisch abgespielt wird.</li>
+            </ul>
+            <h3>Übungsbildschirm</h3>
+            <p>Hier findet die eigentliche Übung statt:</p>
+            <ul>
+                <li><strong>Hauptanzeige:</strong> Zeigt das Item gemäß deinen Einstellungen oder die Diktat-Anweisungen.</li>
+                <li><strong>🔊 Lautsprecher-Button:</strong> Klicke hier, um den Ton des aktuellen Items (erneut) abzuspielen.</li>
+                <li><strong>Navigation:</strong> Nutze "Nächstes Item" und "Vorheriges Item" (wo verfügbar).</li>
+                <li><strong>Diktat-Modus:</strong> Nach dem Hören, klicke auf "Wort anzeigen", um die Lösung zu sehen.</li>
+                <li><strong>Fortschrittsbalken:</strong> Zeigt dir, wie weit du in der aktuellen Übung bist.</li>
+                <li><strong>Übung verlassen:</strong> Kehrt zum Einstellungsbildschirm zurück.</li>
+            </ul>
+            <h3>Am Ende der Übung</h3>
+            <p>Ein Fenster informiert dich über das Ende. Du kannst wählen:</p>
+            <ul>
+                <li><strong>Neu mischen:</strong> Beginne das gleiche Set mit neu gemischter Reihenfolge.</li>
+                <li><strong>Neue Auswahl:</strong> Kehre zum Einstellungsbildschirm zurück, um ein anderes Set oder andere Einstellungen zu wählen.</li>
+            </ul>
+            <p>Viel Spaß beim Lernen!</p>
         </div>
     </div>
     
@@ -423,8 +517,8 @@
             <span class="modal-close-button" data-modal-id="exercise-end-modal">×</span>
             <h2>Übung beendet!</h2>
             <p id="exercise-end-message">Du hast alle Items bearbeitet.</p>
-            <div style="text-align: center; margin-top: 20px;">
-                <button id="btn-reshuffle" style="margin-right: 10px;">Neu mischen</button>
+            <div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;">
+                <button id="btn-reshuffle">Neu mischen</button>
                 <button id="btn-new-selection">Neue Auswahl</button>
             </div>
         </div>
@@ -434,7 +528,7 @@
     <!-- Bildschirm 1: Modus-Auswahl -->
     <div id="screen-mode-selection" class="screen">
         <h1>Wortschatz-Trainer</h1>
-        <h2 id="current-set-name-h2">Set: [Kein Set ausgewählt]</h2>
+        <h2 id="current-set-name-h2">Set: [Wird geladen...]</h2>
         <div class="mode-selection-container">
             <div class="mode-card clickable-card" data-mode="learn">
                 <span class="emoji">📚</span>
@@ -458,9 +552,7 @@
             <div class="form-group">
                 <label for="item-set-select">Lern-Set auswählen:</label>
                 <select id="item-set-select">
-                    <!-- Optionen werden per JS geladen -->
-                    <option value="set1.json">Beispiel Set 1 (mit Bildern)</option>
-                    <option value="set2.json">Beispiel Set 2 (nur Wörter/Töne)</option>
+                    <option value="">Lade Sets...</option>
                 </select>
             </div>
 
@@ -474,9 +566,11 @@
             </div>
 
             <div class="form-group" id="setting-sound-delay-group">
-                <label for="sound-delay-select">Sound-Verzögerung (Testmodus):</label>
+                <label for="sound-delay-slider">Sound-Verzögerung (Testmodus):</label>
                 <input type="range" id="sound-delay-slider" min="0" max="5" value="0" step="1">
-                <span id="sound-delay-value">0 Sekunden</span>
+                <div id="sound-delay-value-container">
+                    <span id="sound-delay-value">0 Sekunden</span>
+                </div>
             </div>
             
             <div style="display: flex; justify-content: space-between; margin-top: 30px;">
@@ -494,16 +588,13 @@
         <div class="exercise-area">
             <div class="item-display" id="item-display">
                 <!-- Inhalt wird per JS generiert -->
-                 <!-- z.B. <img src="" alt="Item Bild" id="item-image"> -->
-                 <!-- z.B. <p class="word-text" id="item-word"></p> -->
-                 <!-- z.B. <div class="diktat-instructions" id="diktat-instructions">...</div> -->
             </div>
             <button class="sound-button" id="btn-play-sound">🔊</button>
         </div>
         <div class="controls">
             <button id="btn-prev-item" class="hidden">Vorheriges Item</button>
             <button id="btn-next-item">Nächstes Item</button>
-            <button id="btn-show-word" class="hidden">Wort anzeigen</button> <!-- Nur für Diktat -->
+            <button id="btn-show-word" class="hidden">Wort anzeigen</button>
         </div>
         <button id="btn-exit-exercise">Übung verlassen</button>
     </div>
@@ -511,17 +602,17 @@
     <audio id="audio-player"></audio>
 
     <script>
-        // JAVASCRIPT HIER
         document.addEventListener('DOMContentLoaded', () => {
             // Globale Zustandsvariablen
-            let currentMode = null; // 'learn', 'test', 'dictate'
+            let currentMode = null; 
+            let availableItemSets = []; 
             let currentItemSetPath = null;
             let currentItemSetData = [];
             let currentShuffledItems = [];
             let currentItemIndex = 0;
             let currentSettings = {
-                displayType: 'image_only', // 'image_only', 'word_only', 'image_word'
-                soundDelay: 0 // 0-5 seconds
+                displayType: 'image_only', 
+                soundDelay: 0 
             };
             let soundTimeoutId = null;
             let autoNextTimeoutId = null;
@@ -533,20 +624,12 @@
                 exercise: document.getElementById('screen-exercise')
             };
             const currentSetNameH2 = document.getElementById('current-set-name-h2');
-
-            // Hamburger
             const hamburgerIcon = document.getElementById('hamburger-icon');
             const menuContent = document.getElementById('menu-content');
-            
-            // Modals
             const anleitungModal = document.getElementById('anleitung-modal');
             const exerciseEndModal = document.getElementById('exercise-end-modal');
             const modalCloseButtons = document.querySelectorAll('.modal-close-button');
-
-            // Modus-Auswahl Bildschirm
             const modeCards = document.querySelectorAll('.mode-card');
-
-            // Einstellungs Bildschirm
             const settingsTitle = document.getElementById('settings-title');
             const itemSetSelect = document.getElementById('item-set-select');
             const settingDisplayTypeGroup = document.getElementById('setting-display-type-group');
@@ -556,8 +639,6 @@
             const soundDelayValue = document.getElementById('sound-delay-value');
             const btnSettingsBack = document.getElementById('btn-settings-back');
             const btnStartExercise = document.getElementById('btn-start-exercise');
-
-            // Übungs Bildschirm
             const progressBar = document.getElementById('progress-bar');
             const itemDisplay = document.getElementById('item-display');
             const btnPlaySound = document.getElementById('btn-play-sound');
@@ -566,38 +647,33 @@
             const btnShowWord = document.getElementById('btn-show-word');
             const btnExitExercise = document.getElementById('btn-exit-exercise');
             const audioPlayer = document.getElementById('audio-player');
-            
-            // Übungsende Modal Buttons
             const btnReshuffle = document.getElementById('btn-reshuffle');
             const btnNewSelection = document.getElementById('btn-new-selection');
-
 
             // --- Hilfsfunktionen ---
             function showScreen(screenIdToShow) {
                 Object.values(screens).forEach(screen => {
-                    if (screen.id === screenIdToShow) {
-                        screen.classList.remove('hidden', 'zoom-out');
-                        screen.classList.add('zoom-in');
-                    } else {
-                        screen.classList.add('zoom-out');
-                        // Verzögere das Hinzufügen von 'hidden', um die Animation zu ermöglichen
-                        setTimeout(() => screen.classList.add('hidden'), 300); // Muss zur CSS-Transition passen
+                    const isTargetScreen = screen.id === screenIdToShow;
+                    screen.classList.toggle('hidden', !isTargetScreen);
+                    screen.classList.toggle('zoom-out', !isTargetScreen);
+                    screen.classList.toggle('zoom-in', isTargetScreen);
+                    if (!isTargetScreen) {
+                        // Verzögerung für 'hidden' ist nicht mehr unbedingt nötig, wenn 'zoom-out' 'position: absolute' hat
+                        // Aber man kann es lassen, falls man die Logik später ändert.
+                        // setTimeout(() => screen.classList.add('hidden'), 300); 
                     }
                 });
+                window.scrollTo(0,0); // Nach Bildschirmwechsel nach oben scrollen
             }
             
             function showModal(modalId) {
                 const modal = document.getElementById(modalId);
-                if (modal) {
-                    modal.classList.add('show');
-                }
+                if (modal) modal.classList.add('show');
             }
 
             function closeModal(modalId) {
                 const modal = document.getElementById(modalId);
-                if (modal) {
-                    modal.classList.remove('show');
-                }
+                if (modal) modal.classList.remove('show');
             }
 
             function shuffleArray(array) {
@@ -608,122 +684,184 @@
                 return array;
             }
 
+            async function loadManifestAndPopulateSelect() {
+                try {
+                    const response = await fetch('manifest.json?t=' + new Date().getTime()); // Cache-Busting
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status} beim Laden von manifest.json`);
+                    }
+                    availableItemSets = await response.json();
+                    
+                    itemSetSelect.innerHTML = ''; 
+
+                    if (availableItemSets.length === 0) {
+                        itemSetSelect.innerHTML = '<option value="">Keine Sets gefunden</option>';
+                        currentSetNameH2.textContent = "Set: [Keine Sets verfügbar]";
+                        btnStartExercise.disabled = true;
+                        return false;
+                    }
+
+                    availableItemSets.forEach(set => {
+                        const option = document.createElement('option');
+                        option.value = set.path; 
+                        option.textContent = set.name; 
+                        itemSetSelect.appendChild(option);
+                    });
+                    btnStartExercise.disabled = false;
+
+                    if (itemSetSelect.options.length > 0) {
+                        itemSetSelect.selectedIndex = 0;
+                        currentItemSetPath = itemSetSelect.value; 
+                        await loadItemSet(currentItemSetPath); 
+                    }
+                    return true;
+
+                } catch (error) {
+                    console.error("Fehler beim Laden der manifest.json:", error);
+                    itemSetSelect.innerHTML = '<option value="">Fehler beim Laden der Sets</option>';
+                    currentSetNameH2.textContent = "Set: [Fehler]";
+                    btnStartExercise.disabled = true;
+                    // alert("Konnte die Liste der Lern-Sets (manifest.json) nicht laden. Details siehe Konsole.");
+                    return false;
+                }
+            }
+
             async function loadItemSet(jsonPath) {
                 if (!jsonPath) {
-                    alert("Kein Set ausgewählt!");
                     currentItemSetData = [];
-                    currentSetNameH2.textContent = "Set: [Kein Set ausgewählt]";
+                    const selectedOption = itemSetSelect.options[itemSetSelect.selectedIndex];
+                    currentSetNameH2.textContent = selectedOption ? `Set: ${selectedOption.text} (Pfad ungültig)` : "Set: [Kein Pfad]";
                     return false;
                 }
                 try {
-                    // Simuliere Ladezeit / Für echte Github-Nutzung Pfad anpassen
-                    // z.B. const response = await fetch(`./data/${jsonPath}`); 
-                    // Für Testzwecke hier Dummy-Daten oder lokale Pfade verwenden
-                    // Wir erstellen hier Dummy-Daten, da fetch() mit file:// Protokoll nicht immer geht.
-                    // Auf GitHub Pages sollte fetch() mit relativen Pfaden funktionieren.
-                    console.log(`Versuche Set zu laden: ${jsonPath}`);
-                    if (jsonPath === "set1.json") {
-                         currentItemSetData = [
-                            { name: "Apfel", sound: "sounds/apfel.mp3", image: "images/apfel.jpg" },
-                            { name: "Banane", sound: "sounds/banane.mp3", image: "images/banane.jpg" },
-                            { name: "Kirsche", sound: "sounds/kirsche.mp3", image: "images/kirsche.jpg" }
-                        ];
-                    } else if (jsonPath === "set2.json") {
-                         currentItemSetData = [
-                            { name: "Haus", sound: "sounds/haus.mp3" },
-                            { name: "Maus", sound: "sounds/maus.mp3" },
-                            { name: "Laus", sound: "sounds/laus.mp3" }
-                        ];
-                    } else { // Fallback, wenn Pfad nicht bekannt
-                        // Hier tatsächliches fetch für GitHub:
-                        const response = await fetch(jsonPath); // Pfad muss relativ zum HTML sein, oder absolut
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status} für ${jsonPath}`);
-                        }
-                        currentItemSetData = await response.json();
+                    console.log(`Versuche Set zu laden von: ${jsonPath}`);
+                    const response = await fetch(jsonPath  + '?t=' + new Date().getTime()); // Cache-Busting
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status} beim Laden von ${jsonPath}`);
+                    }
+                    
+                    currentItemSetData = await response.json();
+
+                    const selectedOption = itemSetSelect.querySelector(`option[value="${jsonPath}"]`);
+                    if (selectedOption) {
+                        currentSetNameH2.textContent = `Set: ${selectedOption.text}`;
+                    } else {
+                        currentSetNameH2.textContent = `Set: ${jsonPath.split('/').pop().replace('.json','')}`;
+                    }
+                    
+                    console.log("Set geladen:", currentItemSetData);
+                    if (!Array.isArray(currentItemSetData)) {
+                         console.error(`Das geladene Set ${jsonPath} ist kein Array.`);
+                         alert(`Das Set ${jsonPath} hat ein ungültiges Format. Es muss ein Array von Objekten sein.`);
+                         currentItemSetData = []; // Zurücksetzen, um Folgefehler zu vermeiden
+                         return false;
                     }
 
-                    const selectedSetText = itemSetSelect.options[itemSetSelect.selectedIndex].text;
-                    currentSetNameH2.textContent = `Set: ${selectedSetText}`;
-                    console.log("Set geladen:", currentItemSetData);
+                    if (currentItemSetData.length === 0) {
+                        console.warn(`Das geladene Set ${jsonPath} ist leer.`);
+                        // Optional: alert(`Das Set ${jsonPath} ist leer.`);
+                        return true; // Set ist gültig geladen, aber leer
+                    }
                     return true;
                 } catch (error) {
-                    console.error("Fehler beim Laden des Item-Sets:", error);
+                    console.error(`Fehler beim Laden des Item-Sets (${jsonPath}):`, error);
                     alert(`Fehler beim Laden des Sets: ${jsonPath}. Details siehe Konsole.`);
-                    currentItemSetData = [];
-                    currentSetNameH2.textContent = "Set: [Fehler beim Laden]";
+                    currentItemSetData = []; 
+                    const selectedOption = itemSetSelect.querySelector(`option[value="${jsonPath}"]`);
+                    currentSetNameH2.textContent = selectedOption ? `Set: ${selectedOption.text} (Ladefehler!)` : "Set: [Ladefehler]";
                     return false;
                 }
             }
             
             function updateProgressBar() {
-                const progress = currentItemSetData.length > 0 ? ((currentItemIndex + 1) / currentShuffledItems.length) * 100 : 0;
+                const totalItems = currentShuffledItems && currentShuffledItems.length > 0 ? currentShuffledItems.length : 0;
+                const currentProgressIndex = (currentItemIndex >= totalItems && totalItems > 0) ? totalItems : currentItemIndex +1;
+                const progress = totalItems > 0 ? (currentProgressIndex / totalItems) * 100 : 0;
+                
                 progressBar.style.width = `${progress}%`;
                 progressBar.textContent = `${Math.round(progress)}%`;
             }
 
             function playCurrentItemSound(delay = 0) {
-                clearTimeout(soundTimeoutId); // Vorherigen Timeout löschen, falls vorhanden
+                clearTimeout(soundTimeoutId);
                 
                 if (currentShuffledItems.length === 0 || !currentShuffledItems[currentItemIndex]) return;
                 const currentItem = currentShuffledItems[currentItemIndex];
-                if (!currentItem.sound) {
-                    console.warn("Keine Sounddatei für Item:", currentItem.name);
-                    if (currentMode === 'test') { // Im Testmodus trotzdem zum nächsten Item, falls Auto-Next konfiguriert
+                if (!currentItem || !currentItem.sound) {
+                    console.warn("Keine Sounddatei für Item:", currentItem ? currentItem.name : "Unbekanntes Item");
+                    if (currentMode === 'test') {
                         scheduleAutoNext();
                     }
                     return;
                 }
 
                 soundTimeoutId = setTimeout(() => {
-                    // WICHTIG: Pfade für GitHub Pages müssen relativ zur HTML-Datei sein
-                    // oder von einem Basis-URL ausgehen.
-                    // Beispiel: audioPlayer.src = `data/sounds/${currentItem.sound}`;
-                    audioPlayer.src = currentItem.sound; // Annahme: Pfad im JSON ist bereits korrekt relativ
-                    audioPlayer.play().catch(e => console.error("Sound Abspielfehler:", e));
+                    audioPlayer.src = currentItem.sound  + '?t=' + new Date().getTime(); // Cache-Busting
+                    audioPlayer.play().catch(e => {
+                        console.error("Sound Abspielfehler:", e, "für", currentItem.sound);
+                        alert(`Problem beim Abspielen von ${currentItem.sound}. Ist der Pfad korrekt und die Datei vorhanden?`);
+                         if (currentMode === 'test') { // Trotz Fehler zum nächsten im Testmodus
+                            scheduleAutoNext();
+                        }
+                    });
                     
                     if (currentMode === 'test') {
                         audioPlayer.onended = () => {
                             scheduleAutoNext();
+                            audioPlayer.onended = null; // Handler entfernen, um Mehrfachausführung zu vermeiden
                         };
                     }
                 }, delay * 1000);
             }
 
             function scheduleAutoNext() {
-                // Nur im Testmodus und wenn Anzeigedauer > 0 (hier fest auf 3s nach Soundende)
-                // Diese Logik muss evtl. feiner justiert werden (z.B. einstellbare Anzeigedauer)
-                // Für dieses Beispiel: 3 Sekunden nach Soundende automatisch weiter
                 clearTimeout(autoNextTimeoutId);
+                const displayDurationAfterSound = 3000; 
                 autoNextTimeoutId = setTimeout(() => {
                     if (currentMode === 'test') navigateItem(1);
-                }, 3000); // 3 Sekunden Anzeigedauer nach Soundende
+                }, displayDurationAfterSound);
             }
 
-            // --- Logik für Bildschirm 3: Übung ---
             function displayCurrentItem() {
-                if (currentShuffledItems.length === 0 || !currentShuffledItems[currentItemIndex]) {
-                    itemDisplay.innerHTML = "<p>Kein Item zu laden oder Übung beendet.</p>";
-                    // Evtl. hier direkt das Übungsende-Modal zeigen, wenn Index out of bounds
-                    if (currentItemIndex >= currentShuffledItems.length && currentShuffledItems.length > 0) {
-                         showModal('exercise-end-modal');
-                    }
+                itemDisplay.innerHTML = ''; // Vorherigen Inhalt immer löschen
+                btnPlaySound.classList.add('hidden'); // Standardmäßig verstecken, dann ggf. zeigen
+
+                if (!currentShuffledItems || currentShuffledItems.length === 0) {
+                    itemDisplay.innerHTML = "<p>Keine Items im aktuellen Set oder Set konnte nicht geladen werden.</p>";
+                    btnNextItem.classList.add('hidden');
+                    btnPrevItem.classList.add('hidden');
+                    btnShowWord.classList.add('hidden');
+                    updateProgressBar();
+                    return;
+                }
+                
+                if (currentItemIndex < 0 || currentItemIndex >= currentShuffledItems.length) {
+                    // Sollte durch navigateItem abgefangen werden, aber als Sicherheitsnetz
+                    console.warn("displayCurrentItem: Index out of bounds, zeige Ende Modal.");
+                    showModal('exercise-end-modal');
+                    updateProgressBar(); // Ensure progress bar shows 100%
                     return;
                 }
 
                 const item = currentShuffledItems[currentItemIndex];
-                itemDisplay.innerHTML = ''; // Vorherigen Inhalt löschen
+                if (!item || typeof item.name === 'undefined') { // Überprüfen ob Item und item.name existiert
+                    itemDisplay.innerHTML = "<p>Fehler: Ungültiges Item-Format im Set.</p>";
+                    console.error("Ungültiges Item:", item, "bei Index:", currentItemIndex);
+                     btnNextItem.classList.remove('hidden'); // Erlaube weiter zu klicken
+                    return;
+                }
+                 if (item.sound) { // Zeige Sound-Button nur, wenn Sound vorhanden
+                    btnPlaySound.classList.remove('hidden');
+                }
 
-                // Sichtbarkeit der Navigationsbuttons
+
                 btnPrevItem.classList.toggle('hidden', currentItemIndex === 0);
-                // "Nächstes Item" wird zu "Ergebnisse" am Ende, oder behandle Ende separat
-                // btnNextItem.textContent = (currentItemIndex === currentShuffledItems.length - 1) ? "Ergebnisse" : "Nächstes Item";
+                btnNextItem.classList.remove('hidden'); 
 
 
                 if (currentMode === 'dictate') {
                     btnShowWord.classList.remove('hidden');
-                    btnNextItem.classList.remove('hidden'); // Immer anzeigen
-                    // Standardmäßig Anweisungen anzeigen
                     const instructions = document.createElement('div');
                     instructions.className = 'diktat-instructions';
                     instructions.innerHTML = `
@@ -734,12 +872,12 @@
                             <li>Klicke auf 'Wort anzeigen', um deine Schreibweise zu überprüfen.</li>
                         </ol>`;
                     itemDisplay.appendChild(instructions);
-                } else { // Lern- oder Testmodus
+                } else {
                     btnShowWord.classList.add('hidden');
-                    btnNextItem.classList.remove('hidden'); 
                     
                     let displayImage = false;
                     let displayWord = false;
+                    let imagePath = item.image ? item.image.trim() : "";
 
                     if (currentSettings.displayType === 'image_only') displayImage = true;
                     if (currentSettings.displayType === 'word_only') displayWord = true;
@@ -748,36 +886,48 @@
                         displayWord = true;
                     }
                     
-                    // Fallback-Logik
-                    if (displayImage && !item.image) { // Wenn Bild angezeigt werden soll, aber keins da ist
-                        if (currentSettings.displayType === 'image_only') { // Und NUR Bild ausgewählt war
-                            displayImage = false; // Dann Bild nicht anzeigen
-                            displayWord = true;   // Stattdessen Wort anzeigen
-                        } else { // image_word war ausgewählt, Bild fehlt
-                            displayImage = false; // Bild nicht anzeigen, Wort wird ohnehin angezeigt
+                    if (displayImage && !imagePath) {
+                        if (currentSettings.displayType === 'image_only') {
+                            displayImage = false;
+                            displayWord = true;
+                        } else { // image_word, aber kein Bild
+                            displayImage = false; // Wort wird ohnehin angezeigt
                         }
                     }
 
-                    if (displayImage && item.image) {
+                    if (displayImage && imagePath) {
                         const img = document.createElement('img');
-                        // Pfad für GitHub Pages beachten:
-                        // img.src = `data/images/${item.image}`;
-                        img.src = item.image; // Annahme: Pfad im JSON ist bereits korrekt relativ
-                        img.alt = item.name;
+                        img.src = imagePath + '?t=' + new Date().getTime(); // Cache-Busting
+                        img.alt = item.name || "Item Bild";
+                        img.onerror = function() {
+                            this.style.display = 'none';
+                            const errorMsg = document.createElement('p');
+                            errorMsg.textContent = `Bild "${imagePath}" konnte nicht geladen werden.`;
+                            errorMsg.style.color = 'red';
+                            itemDisplay.insertBefore(errorMsg, itemDisplay.firstChild);
+                            console.warn(`Bild ${imagePath} nicht gefunden für ${item.name}.`);
+                            if (currentSettings.displayType === 'image_only' && !displayWord) { // Fallback zu Wort, wenn *nur* Bild & kein Wort
+                                const wordPError = document.createElement('p');
+                                wordPError.className = 'word-text';
+                                wordPError.textContent = item.name || "Wort nicht verfügbar";
+                                itemDisplay.appendChild(wordPError);
+                            }
+                        };
                         itemDisplay.appendChild(img);
                     }
                     if (displayWord) {
                         const wordP = document.createElement('p');
                         wordP.className = 'word-text';
-                        wordP.textContent = item.name;
+                        wordP.textContent = item.name || "Wort nicht verfügbar";
                         itemDisplay.appendChild(wordP);
                     }
-                    if (!displayImage && !displayWord) { // Sollte nicht passieren, aber als Fallback
+                     if (!displayImage && !displayWord) { // Fallback, falls weder Bild noch Wort angezeigt werden soll (sollte nicht passieren)
                         const wordP = document.createElement('p');
                         wordP.className = 'word-text';
-                        wordP.textContent = item.name;
+                        wordP.textContent = item.name || "Wort nicht verfügbar"; // Zeige zumindest das Wort
                         itemDisplay.appendChild(wordP);
                     }
+
 
                     if (currentMode === 'test') {
                         playCurrentItemSound(currentSettings.soundDelay);
@@ -787,84 +937,86 @@
             }
 
             function showDiktatWord() {
-                if (currentMode !== 'dictate' || currentShuffledItems.length === 0) return;
+                if (currentMode !== 'dictate' || currentShuffledItems.length === 0 || !currentShuffledItems[currentItemIndex]) return;
                 const item = currentShuffledItems[currentItemIndex];
-                itemDisplay.innerHTML = ''; // Lösche Anweisungen
+                 if (!item || typeof item.name === 'undefined') {
+                    console.error("Diktat: Ungültiges Item beim Anzeigen des Wortes.");
+                    return;
+                }
+                itemDisplay.innerHTML = '';
                 const wordP = document.createElement('p');
                 wordP.className = 'word-text';
-                wordP.textContent = item.name;
+                wordP.textContent = item.name || "Wort nicht verfügbar";
                 itemDisplay.appendChild(wordP);
-                btnShowWord.classList.add('hidden'); // Verstecke Button nachdem Wort gezeigt wurde
+                btnShowWord.classList.add('hidden');
             }
             
-            function navigateItem(direction) { // direction 1 für next, -1 für prev
+            function navigateItem(direction) {
                 clearTimeout(soundTimeoutId);
                 clearTimeout(autoNextTimeoutId);
                 audioPlayer.pause();
                 audioPlayer.currentTime = 0;
+                audioPlayer.onended = null; // Wichtig, um alte onended Handler zu entfernen
 
                 currentItemIndex += direction;
 
                 if (currentItemIndex < 0) {
-                    currentItemIndex = 0;
+                    currentItemIndex = 0; 
                 } else if (currentItemIndex >= currentShuffledItems.length) {
-                    // Ende der Übung erreicht
-                    currentItemIndex = currentShuffledItems.length; // Setze Index "nach" das letzte Element
-                    updateProgressBar(); // Letzten Stand der Progressbar anzeigen
+                    if (currentShuffledItems.length === 0) { 
+                        currentItemIndex = 0; 
+                        displayCurrentItem(); 
+                        return;
+                    }
+                    // Ende erreicht. Setze Index "nach" das letzte Element für die Progressbar auf 100%.
+                    // Der eigentliche Index für das Array ist currentShuffledItems.length - 1
+                    // Die Progressbar soll aber 100% zeigen, wenn alle Items (Länge N) durch sind.
+                    // currentItemIndex wird auf length gesetzt, um dies in updateProgressBar zu reflektieren.
+                    // updateProgressBar() wird dies korrekt als 100% interpretieren.
+                    // Wichtig: displayCurrentItem darf nicht mit index = length aufgerufen werden.
+                    updateProgressBar(); // Zeige 100%
                     showModal('exercise-end-modal');
-                    return;
+                    return; 
                 }
                 displayCurrentItem();
             }
 
-
             // --- Event Listener ---
-            // Hamburger
-            hamburgerIcon.addEventListener('click', () => {
+            hamburgerIcon.addEventListener('click', (e) => {
+                e.stopPropagation(); // Verhindert, dass der Document-Klick das Menü sofort wieder schließt
                 menuContent.classList.toggle('show');
             });
-            document.addEventListener('click', (event) => { // Schließe Menü bei Klick außerhalb
-                if (!hamburgerIcon.contains(event.target) && !menuContent.contains(event.target)) {
+            document.addEventListener('click', (event) => {
+                if (!hamburgerIcon.contains(event.target) && !menuContent.contains(event.target) && menuContent.classList.contains('show')) {
                     menuContent.classList.remove('show');
                 }
             });
             
-            // Hamburger Menü Links
-            document.getElementById('menu-anleitung').addEventListener('click', (e) => {
-                e.preventDefault();
-                showModal('anleitung-modal');
-                menuContent.classList.remove('show');
-            });
+            document.getElementById('menu-anleitung').addEventListener('click', (e) => { e.preventDefault(); showModal('anleitung-modal'); menuContent.classList.remove('show'); });
             document.getElementById('menu-modus-auswahl').addEventListener('click', (e) => {
                 e.preventDefault();
-                currentMode = null; // Modus zurücksetzen
+                currentMode = null;
                 showScreen('screen-mode-selection');
                 menuContent.classList.remove('show');
             });
-             ['lernmodus', 'testmodus', 'diktatmodus'].forEach(mode => {
-                document.getElementById(`menu-${mode}`).addEventListener('click', (e) => {
+            ['lernmodus', 'testmodus', 'diktatmodus'].forEach(modeKey => {
+                const modeName = modeKey.replace('modus','').trim(); // 'learn', 'test', 'dictate' (falls benötigt)
+                document.getElementById(`menu-${modeKey}`).addEventListener('click', (e) => {
                     e.preventDefault();
-                    currentMode = mode === 'lernmodus' ? 'learn' : (mode === 'testmodus' ? 'test' : 'dictate');
+                    // Setze den currentMode basierend auf dem, was in den mode-cards als data-mode steht
+                    if (modeKey === 'lernmodus') currentMode = 'learn';
+                    else if (modeKey === 'testmodus') currentMode = 'test';
+                    else if (modeKey === 'diktatmodus') currentMode = 'dictate';
+                    
                     configureSettingsScreen();
                     showScreen('screen-settings');
                     menuContent.classList.remove('show');
                 });
             });
 
+            modalCloseButtons.forEach(button => button.addEventListener('click', () => closeModal(button.dataset.modalId)));
+            window.addEventListener('click', (event) => { if (event.target.classList.contains('modal')) closeModal(event.target.id); });
 
-            // Modal Schließen Buttons
-            modalCloseButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    closeModal(button.dataset.modalId);
-                });
-            });
-            window.addEventListener('click', (event) => { // Schließen bei Klick außerhalb des Modal-Inhalts
-                if (event.target.classList.contains('modal')) {
-                    closeModal(event.target.id);
-                }
-            });
-
-            // Bildschirm 1: Modus-Auswahl
             modeCards.forEach(card => {
                 card.addEventListener('click', () => {
                     currentMode = card.dataset.mode;
@@ -873,24 +1025,44 @@
                 });
             });
 
-            // Bildschirm 2: Einstellungen
             function configureSettingsScreen() {
-                settingsTitle.textContent = `Einstellungen für ${currentMode === 'learn' ? 'Lernmodus' : (currentMode === 'test' ? 'Testmodus' : 'Diktat-Modus')}`;
+                let modeText = "[Unbekannter Modus]";
+                if (currentMode === 'learn') modeText = 'Lernmodus';
+                else if (currentMode === 'test') modeText = 'Testmodus';
+                else if (currentMode === 'dictate') modeText = 'Diktat-Modus';
+                settingsTitle.textContent = `Einstellungen für ${modeText}`;
                 
-                // Modusspezifische Einstellungen ein/ausblenden
                 settingDisplayTypeGroup.style.display = (currentMode === 'dictate') ? 'none' : 'block';
                 settingSoundDelayGroup.style.display = (currentMode === 'test') ? 'block' : 'none';
+                
+                if (currentItemSetPath) {
+                    itemSetSelect.value = currentItemSetPath;
+                } else if (itemSetSelect.options.length > 0 && itemSetSelect.value) {
+                     // Wenn kein Pfad gesetzt, aber Optionen da sind, nimm den aktuell ausgewählten Wert
+                    currentItemSetPath = itemSetSelect.value;
+                } else if (itemSetSelect.options.length > 0) {
+                     // Fallback: Wenn kein Wert ausgewählt ist, nimm den ersten
+                    itemSetSelect.selectedIndex = 0;
+                    currentItemSetPath = itemSetSelect.value;
+                }
 
-                // Standardwerte für Anzeige-Typ wiederherstellen/setzen
+
                 displayTypeButtons.forEach(btn => btn.classList.remove('selected'));
-                document.querySelector(`.setting-display-type button[data-display-type="${currentSettings.displayType}"]`).classList.add('selected');
+                const currentDisplayTypeBtn = document.querySelector(`.setting-display-type button[data-display-type="${currentSettings.displayType}"]`);
+                if (currentDisplayTypeBtn) currentDisplayTypeBtn.classList.add('selected');
+                else if (displayTypeButtons.length > 0) { // Fallback, falls gespeicherter Wert ungültig
+                     displayTypeButtons[0].classList.add('selected');
+                     currentSettings.displayType = displayTypeButtons[0].dataset.displayType;
+                }
+
+
                 soundDelaySlider.value = currentSettings.soundDelay;
                 soundDelayValue.textContent = `${currentSettings.soundDelay} Sekunden`;
             }
 
             itemSetSelect.addEventListener('change', async (e) => {
                 currentItemSetPath = e.target.value;
-                await loadItemSet(currentItemSetPath); // Lade das Set direkt bei Auswahl
+                await loadItemSet(currentItemSetPath); 
             });
             
             displayTypeButtons.forEach(button => {
@@ -911,69 +1083,67 @@
             });
 
             btnStartExercise.addEventListener('click', async () => {
-                if (!currentItemSetPath) { // Wenn noch kein Set explizit ausgewählt wurde, nimm das erste
+                if (!currentItemSetPath && itemSetSelect.options.length > 0 && itemSetSelect.value) {
                     currentItemSetPath = itemSetSelect.value;
                 }
-                const loaded = await loadItemSet(currentItemSetPath);
-                if (!loaded || currentItemSetData.length === 0) {
-                    alert("Bitte wähle ein gültiges Lern-Set aus oder prüfe die JSON-Datei.");
+                
+                // Erneutes Laden ist gut, um sicherzustellen, dass die Daten aktuell sind,
+                // falls loadItemSet beim 'change'-Event des Selects fehlschlug.
+                const loaded = await loadItemSet(currentItemSetPath); 
+                
+                if (!loaded || !currentItemSetData || currentItemSetData.length === 0) {
+                    alert("Bitte wähle ein gültiges Lern-Set aus, das Items enthält, oder prüfe die Konsolenausgabe auf Fehler beim Laden des Sets.");
                     return;
                 }
                 
                 currentShuffledItems = shuffleArray([...currentItemSetData]);
                 currentItemIndex = 0;
                 
-                // Buttons im Übungsmodus konfigurieren
-                btnPrevItem.classList.add('hidden'); // Am Anfang ist "Vorheriges" nicht sichtbar
+                btnPrevItem.classList.add('hidden');
                 btnNextItem.textContent = "Nächstes Item";
                 
-                displayCurrentItem(); // Zeige erstes Item
+                displayCurrentItem();
                 showScreen('screen-exercise');
             });
 
-
-            // Bildschirm 3: Übung
-            btnPlaySound.addEventListener('click', () => {
-                 playCurrentItemSound(0); // Sofort abspielen ohne Verzögerung
-            });
-
+            btnPlaySound.addEventListener('click', () => playCurrentItemSound(0));
             btnPrevItem.addEventListener('click', () => navigateItem(-1));
             btnNextItem.addEventListener('click', () => navigateItem(1));
-            
-            btnShowWord.addEventListener('click', () => {
-                showDiktatWord();
-            });
-
+            btnShowWord.addEventListener('click', () => showDiktatWord());
             btnExitExercise.addEventListener('click', () => {
                 clearTimeout(soundTimeoutId);
                 clearTimeout(autoNextTimeoutId);
                 audioPlayer.pause();
-                // Zurück zu den Einstellungen des aktuellen Modus
+                audioPlayer.onended = null;
                 configureSettingsScreen(); 
                 showScreen('screen-settings');
             });
             
-            // Übungsende Modal Buttons
             btnReshuffle.addEventListener('click', () => {
                 closeModal('exercise-end-modal');
+                if (!currentItemSetData || currentItemSetData.length === 0) {
+                    alert("Kein Set zum neu mischen vorhanden. Bitte wähle ein Set aus.");
+                    configureSettingsScreen();
+                    showScreen('screen-settings');
+                    return;
+                }
                 currentShuffledItems = shuffleArray([...currentItemSetData]);
                 currentItemIndex = 0;
-                displayCurrentItem(); // Zeige erstes Item des neu gemischten Sets
-                updateProgressBar();
+                displayCurrentItem();
             });
             btnNewSelection.addEventListener('click', () => {
                 closeModal('exercise-end-modal');
-                // Zurück zu den Einstellungen des aktuellen Modus
                 configureSettingsScreen(); 
                 showScreen('screen-settings');
             });
 
             // --- Initiale Einrichtung ---
             async function initializeApp() {
-                // Lade das standardmäßig ausgewählte Set (das erste in der Liste)
-                currentItemSetPath = itemSetSelect.value; 
-                await loadItemSet(currentItemSetPath);
+                const manifestLoaded = await loadManifestAndPopulateSelect();
                 
+                if (!manifestLoaded) {
+                    console.error("Initialisierung fehlgeschlagen: Manifest konnte nicht geladen werden.");
+                }
                 showScreen('screen-mode-selection');
             }
 
