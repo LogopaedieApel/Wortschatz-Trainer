@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lern- und Testprogramm</title>
+    
+    <!-- =================================================================
+         CSS STYLES
+         Alle Styles sind direkt hier eingebettet.
+         ================================================================= -->
+    <style>
+        /* === Globale Styles & Variablen === */
+        :root {
+            --primary-color: #007BFF;
+            --primary-hover: #0056b3;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --background-color: #ffffff;
+            --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            font-family: var(--font-family);
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            overflow: hidden; /* Verhindert Scrollen zwischen den "Bildschirmen" */
+        }
+        
+        /* === App-Container und Bildschirm-Logik === */
+        main {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 800px;
+            height: 100%;
+            padding: 1.5rem;
+            background-color: var(--background-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* === Generelle UI-Komponenten === */
+        h1 {
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+        
+        h2 {
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+            font-weight: 400;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            margin: 5px;
+        }
+
+        .button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .button-secondary {
+            background-color: var(--secondary-color);
+        }
+        .button-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .button-success {
+            background-color: var(--success-color);
+        }
+        .button-success:hover {
+            background-color: #218838;
+        }
+        
+        /* === Bildschirm 1: Modus-Auswahl === */
+        #screen-mode-selection .mode-tiles {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            width: 100%;
+            margin-bottom: 3rem;
+        }
+
+        .tile {
+            flex: 1;
+            min-width: 180px;
+            max-width: 220px;
+            padding: 2rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            background-color: #fff;
+        }
+
+        .tile:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .tile-emoji {
+            font-size: 4rem;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        
+        .tile-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .tile-subtitle {
+            font-size: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        .instructions-button {
+            position: absolute;
+            bottom: 2rem;
+        }
+
+        /* === Bildschirm 2: Einstellungen === */
+        #screen-settings .settings-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .setting-group {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            text-align: left;
+        }
+        
+        .setting-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        select, .radio-group {
+            width: 100%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        
+        .radio-group label {
+            font-weight: normal;
+            margin-right: 1rem;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        input[type="range"] {
+            flex-grow: 1;
+        }
+
+        .navigation-buttons {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        /* === Bildschirm 3: Übung === */
+        #screen-exercise {
+            justify-content: space-between;
+        }
+
+        .exercise-header, .exercise-footer {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .exercise-main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .display-area {
+            width: 100%;
+            height: 100%;
+            max-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #ccc;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .display-area img {
+            max-width: 100%;
+            max-height: 80%;
+            object-fit: contain;
+            margin-bottom: 1rem;
+        }
+
+        .display-area .word-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        .diktat-instructions {
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            line-height: 1.6;
+        }
+
+        .speaker-button {
+            font-size: 3rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-color);
+            transition: transform 0.2s;
+        }
+        .speaker-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* === Modal für Anleitung === */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: #fff;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            max-width: 90%;
+            width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--secondary-color);
+        }
+
+        /* === Responsive Design === */
+        @media (max-width: 768px) {
+            .screen {
+                padding: 1rem;
+                height: 100%;
+                border-radius: 0;
+            }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1rem; margin-bottom: 1.5rem; }
+
+            #screen-mode-selection .mode-tiles {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .tile { min-width: unset; width: 100%; }
+            .instructions-button { position: static; margin-top: 1rem; }
+            
+            .display-area .word-text { font-size: 1.8rem; }
+            .diktat-instructions { font-size: 1rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <main>
+        <!-- =================================================================
+             BILDSCHIRM 1: MODUS-AUSWAHL
+             ================================================================= -->
+        <div id="screen-mode-selection" class="screen">
+            <h1>Willkommen!</h1>
+            <h2>Wähle einen Modus, um zu starten.</h2>
+
+            <div class="mode-tiles">
+                <div id="select-mode-learn" class="tile">
+                    <div class="tile-emoji">📚</div>
+                    <div class="tile-title">Lernmodus</div>
+                    <div class="tile-subtitle">Lernen</div>
+                </div>
+                <div id="select-mode-test" class="tile">
+                    <div class="tile-emoji">✅</div>
+                    <div class="tile-title">Testmodus</div>
+                    <div class="tile-subtitle">Testen</div>
+                </div>
+                <div id="select-mode-dictation" class="tile">
+                    <div class="tile-emoji">✍️</div>
+                    <div class="tile-title">Diktat-Modus</div>
+                    <div class="tile-subtitle">Diktat</div>
+                </div>
+            </div>
+
+            <button id="show-instructions-btn" class="button button-secondary instructions-button">Anleitung</button>
+        </div>
+
+        <!-- =================================================================
+             BILDSCHIRM 2: EINSTELLUNGEN
+             ================================================================= -->
+        <div id="screen-settings" class="screen hidden">
+            <h1 id="settings-title">Einstellungen</h1>
+            
+            <div class="settings-container">
+                <div class="setting-group">
+                    <label for="item-set-select">1. Lern-Set auswählen:</label>
+                    <select id="item-set-select">
+                        <!-- Optionen werden von JS dynamisch gefüllt -->
+                    </select>
+                </div>
+
+                <div id="setting-display-type" class="setting-group">
+                    <label>2. Anzeige-Typ:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="displayType" value="image" checked> Nur Bild</label>
+                        <label><input type="radio" name="displayType" value="word"> Nur Wort</label>
+                        <label><input type="radio" name="displayType" value="image_word"> Bild mit Wort</label>
+                    </div>
+                </div>
+
+                <div id="setting-sound-delay" class="setting-group">
+                    <label for="sound-delay-slider">3. Sound-Verzögerung:</label>
+                    <div class="slider-container">
+                        <input type="range" id="sound-delay-slider" min="0" max="5" value="1" step="1">
+                        <span id="sound-delay-value">1 s</span>
+                    </div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button id="back-to-mode-selection-btn" class="button button-secondary">Zurück</button>
+                    <button id="start-btn" class="button button-success">Starten</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================================================================
+             BILDSCHIRM 3: ÜBUNGSBILDSCHIRM
+             ================================================================= -->
+        <div id="screen-exercise" class="screen hidden">
+            <div class="exercise-header">
+                <span id="item-counter">Item 1 / 10</span>
+                <button id="exit-exercise-btn" class="button button-secondary">Beenden</button>
+            </div>
+            
+            <div class="exercise-main">
+                <div id="display-area" class="display-area">
+                    <!-- Inhalt wird von JS dynamisch gefüllt -->
+                </div>
+                <button id="speaker-btn" class="speaker-button">🔊</button>
+            </div>
+
+            <div class="exercise-footer">
+                <button id="prev-item-btn" class="button">Vorheriges</button>
+                <button id="show-word-btn" class="button hidden">Wort anzeigen</button>
+                <button id="next-item-btn" class="button">Nächstes</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- =================================================================
+         MODAL FÜR ANLEITUNG
+         ================================================================= -->
+    <div id="instructions-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-instructions-btn" class="modal-close-button">×</button>
+            <h2>Anleitung</h2>
+            <p>Diese Anwendung hilft dir, Wörter und ihre Rechtschreibung zu lernen.</p>
+            
+            <h3>Modi</h3>
+            <p><strong>📚 Lernmodus:</strong> Erkunde die Lern-Items in deinem eigenen Tempo. Navigiere mit den "Nächstes"/"Vorheriges"-Buttons. Klicke auf den Lautsprecher, um das Wort zu hören.</p>
+            <p><strong>✅ Testmodus:</strong> Lass dir die Items automatisch nacheinander anzeigen. Der Ton wird nach einer von dir gewählten Verzögerung abgespielt. Ideal, um dein Wissen zu überprüfen.</p>
+            <p><strong>✍️ Diktat-Modus:</strong> Höre dir ein Wort an und schreibe es auf. Klicke danach auf "Wort anzeigen", um deine Schreibweise zu kontrollieren.</p>
+            
+            <h3>Einstellungen</h3>
+            <p>Vor jedem Start kannst du das Lern-Set und weitere Optionen wählen:</p>
+            <ul>
+                <li><strong>Lern-Set:</strong> Wähle die Wortliste (JSON-Datei), mit der du üben möchtest.</li>
+                <li><strong>Anzeige-Typ:</strong> (Nur für Lern- & Testmodus) Bestimme, was du sehen willst: nur das Bild, nur das Wort, oder beides zusammen.</li>
+                <li><strong>Sound-Verzögerung:</strong> (Nur für Testmodus) Stelle ein, wie viele Sekunden nach Anzeige des Items der Ton abgespielt werden soll.</li>
+            </ul>
+        </div>
+    </div>
+
+
+    <!-- =================================================================
+         JAVASCRIPT LOGIK
+         ================================================================= -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- STATE MANAGEMENT ---
+        // Ein zentrales Objekt, das den aktuellen Zustand der App speichert.
+        const appState = {
+            currentScreen: 'screen-mode-selection',
+            mode: null, // 'learn', 'test', 'dictation'
+            settings: {
+                itemSet: null,
+                displayType: 'image',
+                soundDelay: 1, // in Sekunden
+            },
+            items: [], // Array für die geladenen Lern-Items
+            currentItemIndex: 0,
+            isShowingAnswer: false, // Speziell für Diktat-Modus
+            testModeTimer: null, // Für den Timer im Test-Modus
+        };
+
+        // --- DATEN-KONFIGURATION ---
+        // Hier definierst du deine Lern-Sets (JSON-Dateien).
+        // Lege einen Ordner "sets" in deinem Projekt an und platziere die JSON-Dateien dort.
+        const ITEM_SETS = [
+            { name: "Grundwortschatz Tiere", file: "sets/tiere.json" },
+            { name: "Schwierige Wörter Klasse 4", file: "sets/klasse4.json" },
+            { name: "Englisch Vokabeln Unit 1", file: "sets/englisch1.json" },
+        ];
+        /*
+        Beispiel für eine JSON-Datei (z.B. tiere.json):
+        [
+            {
+                "name": "Hund",
+                "sound": "sounds/hund.mp3",
+                "image": "images/hund.jpg"
+            },
+            {
+                "name": "Katze",
+                "sound": "sounds/katze.mp3",
+                "image": "images/katze.jpg"
+            },
+            {
+                "name": "Rechtschreibung", // Item ohne Bild
+                "sound": "sounds/rechtschreibung.mp3"
+            }
+        ]
+        */
+
+
+        // --- DOM ELEMENT REFERENZEN ---
+        const screens = {
+            modeSelection: document.getElementById('screen-mode-selection'),
+            settings: document.getElementById('screen-settings'),
+            exercise: document.getElementById('screen-exercise'),
+        };
+
+        const buttons = {
+            selectLearn: document.getElementById('select-mode-learn'),
+            selectTest: document.getElementById('select-mode-test'),
+            selectDictation: document.getElementById('select-mode-dictation'),
+            backToMode: document.getElementById('back-to-mode-selection-btn'),
+            start: document.getElementById('start-btn'),
+            exitExercise: document.getElementById('exit-exercise-btn'),
+            prevItem: document.getElementById('prev-item-btn'),
+            nextItem: document.getElementById('next-item-btn'),
+            showWord: document.getElementById('show-word-btn'),
+            speaker: document.getElementById('speaker-btn'),
+            showInstructions: document.getElementById('show-instructions-btn'),
+            closeInstructions: document.getElementById('close-instructions-btn'),
+        };
+
+        const settingsElements = {
+            title: document.getElementById('settings-title'),
+            itemSetSelect: document.getElementById('item-set-select'),
+            displayTypeGroup: document.getElementById('setting-display-type'),
+            soundDelayGroup: document.getElementById('setting-sound-delay'),
+            soundDelaySlider: document.getElementById('sound-delay-slider'),
+            soundDelayValue: document.getElementById('sound-delay-value'),
+        };
+
+        const exerciseElements = {
+            displayArea: document.getElementById('display-area'),
+            itemCounter: document.getElementById('item-counter'),
+        };
+        
+        const modal = document.getElementById('instructions-modal');
+
+        // --- FUNKTIONEN ---
+
+        /**
+         * Wechselt den sichtbaren Bildschirm.
+         * @param {string} screenId ID des anzuzeigenden Bildschirms.
+         */
+        function switchScreen(screenId) {
+            Object.values(screens).forEach(screen => screen.classList.add('hidden'));
+            if (screens[screenId]) {
+                 screens[screenId].classList.remove('hidden');
+            } else {
+                 document.getElementById(screenId).classList.remove('hidden');
+            }
+            appState.currentScreen = screenId;
+        }
+
+        /**
+         * Initialisiert die Anwendung beim Laden der Seite.
+         */
+        function initialize() {
+            populateItemSetSelector();
+            addEventListeners();
+            switchScreen('modeSelection');
+        }
+        
+        /**
+         * Füllt das Dropdown-Menü für die Lern-Sets.
+         */
+        function populateItemSetSelector() {
+            ITEM_SETS.forEach(set => {
+                const option = document.createElement('option');
+                option.value = set.file;
+                option.textContent = set.name;
+                settingsElements.itemSetSelect.appendChild(option);
+            });
+        }
+        
+        /**
+         * Fügt alle notwendigen Event-Listener zu den DOM-Elementen hinzu.
+         */
+        function addEventListeners() {
+            // Modus-Auswahl
+            buttons.selectLearn.addEventListener('click', () => selectMode('learn'));
+            buttons.selectTest.addEventListener('click', () => selectMode('test'));
+            buttons.selectDictation.addEventListener('click', () => selectMode('dictation'));
+
+            // Einstellungs-Bildschirm
+            buttons.backToMode.addEventListener('click', () => switchScreen('modeSelection'));
+            buttons.start.addEventListener('click', startGame);
+            settingsElements.soundDelaySlider.addEventListener('input', (e) => {
+                settingsElements.soundDelayValue.textContent = `${e.target.value} s`;
+            });
+
+            // Übungs-Bildschirm
+            buttons.exitExercise.addEventListener('click', exitExercise);
+            buttons.nextItem.addEventListener('click', showNextItem);
+            buttons.prevItem.addEventListener('click', showPrevItem);
+            buttons.speaker.addEventListener('click', playCurrentSound);
+            buttons.showWord.addEventListener('click', showDictationAnswer);
+            
+            // Anleitung
+            buttons.showInstructions.addEventListener('click', showInstructions);
+            buttons.closeInstructions.addEventListener('click', hideInstructions);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) hideInstructions(); // Schließen bei Klick auf Overlay
+            });
+        }
+        
+        /**
+         * Behandelt die Auswahl eines Modus.
+         * @param {string} mode Der gewählte Modus ('learn', 'test', 'dictation').
+         */
+        function selectMode(mode) {
+            appState.mode = mode;
+            setupSettingsScreen();
+            switchScreen('settings');
+        }
+        
+        /**
+         * Passt den Einstellungs-Bildschirm an den gewählten Modus an.
+         */
+        function setupSettingsScreen() {
+            const modeTitles = {
+                learn: 'Lernmodus-Einstellungen',
+                test: 'Testmodus-Einstellungen',
+                dictation: 'Diktat-Einstellungen'
+            };
+            settingsElements.title.textContent = modeTitles[appState.mode];
+            
+            // Zeige oder verstecke modusspezifische Einstellungen
+            const showDisplayType = appState.mode === 'learn' || appState.mode === 'test';
+            const showSoundDelay = appState.mode === 'test';
+            
+            settingsElements.displayTypeGroup.style.display = showDisplayType ? 'block' : 'none';
+            settingsElements.soundDelayGroup.style.display = showSoundDelay ? 'block' : 'none';
+        }
+
+        /**
+         * Startet die Übung nach dem Klick auf "Starten".
+         */
+        async function startGame() {
+            // Einstellungen auslesen und im State speichern
+            const selectedSetFile = settingsElements.itemSetSelect.value;
+            if (!selectedSetFile) {
+                alert("Bitte wähle zuerst ein Lern-Set aus.");
+                return;
+            }
+            appState.settings.itemSet = selectedSetFile;
+            appState.settings.displayType = document.querySelector('input[name="displayType"]:checked').value;
+            appState.settings.soundDelay = parseInt(settingsElements.soundDelaySlider.value, 10);
+            
+            // Lade die JSON-Daten
+            try {
+                const response = await fetch(appState.settings.itemSet);
+                if (!response.ok) throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+                appState.items = await response.json();
+            } catch (error) {
+                alert(`Fehler beim Laden des Lern-Sets: ${error.message}\n\nStelle sicher, dass die Datei '${appState.settings.itemSet}' existiert und korrekt formatiert ist. Das Laden von lokalen Dateien funktioniert oft nicht direkt im Browser, lade das Projekt auf einen Webserver oder GitHub Pages hoch.`);
+                return;
+            }
+
+            if (appState.items.length === 0) {
+                alert("Das ausgewählte Lern-Set ist leer.");
+                return;
+            }
+            
+            // Übung initialisieren und starten
+            appState.currentItemIndex = 0;
+            setupExerciseScreen();
+            switchScreen('exercise');
+            runExercise();
+        }
+        
+        /**
+         * Passt den Übungs-Bildschirm an den gewählten Modus an.
+         */
+        function setupExerciseScreen() {
+            const isDictation = appState.mode === 'dictation';
+            const isTest = appState.mode === 'test';
+
+            buttons.showWord.classList.toggle('hidden', !isDictation);
+            buttons.prevItem.classList.toggle('hidden', isTest);
+            buttons.nextItem.classList.toggle('hidden', isTest);
+        }
+
+        /**
+         * Führt die Hauptlogik der Übung aus, je nach Modus.
+         */
+        function runExercise() {
+             // Stoppe laufende Timer vom vorherigen Test
+            if (appState.testModeTimer) clearTimeout(appState.testModeTimer);
+
+            updateItemCounter();
+            
+            if (appState.mode === 'test') {
+                runTestModeStep();
+            } else {
+                renderCurrentItem();
+            }
+        }
+        
+        /**
+         * Führt einen Schritt im Testmodus aus (Item anzeigen, Sound abspielen, zum nächsten wechseln).
+         */
+        function runTestModeStep() {
+            if (appState.currentItemIndex >= appState.items.length) {
+                // Ende des Tests
+                alert("Test beendet! Du wirst zum Startbildschirm zurückgeleitet.");
+                exitExercise();
+                return;
+            }
+            renderCurrentItem();
+            
+            // Sound mit Verzögerung abspielen
+            setTimeout(playCurrentSound, appState.settings.soundDelay * 1000);
+            
+            // Zum nächsten Item nach einer festen Zeit wechseln (z.B. Verzögerung + 3 Sekunden)
+            const nextItemDelay = (appState.settings.soundDelay + 3) * 1000;
+            appState.testModeTimer = setTimeout(() => {
+                appState.currentItemIndex++;
+                runTestModeStep();
+            }, nextItemDelay);
+        }
+
+
+        /**
+         * Stellt das aktuelle Item auf dem Bildschirm dar.
+         */
+        function renderCurrentItem() {
+            if (appState.items.length === 0) return;
+            const item = appState.items[appState.currentItemIndex];
+            
+            // Zurücksetzen für Diktat-Modus
+            appState.isShowingAnswer = false;
+            
+            // Display-Area leeren
+            exerciseElements.displayArea.innerHTML = '';
+            
+            if (appState.mode === 'dictation') {
+                renderDictationInstructions();
+                return;
+            }
+
+            const displayType = appState.settings.displayType;
+            const hasImage = item.image && item.image.trim() !== '';
+
+            // Fallback-Logik: Wenn Bild gefordert, aber nicht vorhanden -> zeige Wort
+            let effectiveDisplayType = displayType;
+            if ((displayType === 'image' || displayType === 'image_word') && !hasImage) {
+                effectiveDisplayType = 'word';
+            }
+            
+            // HTML für das Item erstellen
+            if (effectiveDisplayType === 'image' || effectiveDisplayType === 'image_word') {
+                const img = document.createElement('img');
+                img.src = item.image;
+                img.alt = item.name;
+                img.onerror = () => { // Fehlerbehandlung für nicht ladbare Bilder
+                    img.remove();
+                    const p = document.createElement('p');
+                    p.className = 'word-text';
+                    p.textContent = item.name;
+                    exerciseElements.displayArea.appendChild(p);
+                };
+                exerciseElements.displayArea.appendChild(img);
+            }
+            
+            if (effectiveDisplayType === 'word' || effectiveDisplayType === 'image_word') {
+                const p = document.createElement('p');
+                p.className = 'word-text';
+                p.textContent = item.name;
+                exerciseElements.displayArea.appendChild(p);
+            }
+        }
+
+        function renderDictationInstructions() {
+             buttons.showWord.classList.remove('hidden');
+             exerciseElements.displayArea.innerHTML = `
+                <div class="diktat-instructions">
+                    <p>Klicke auf den Lautsprecher, um das Wort zu hören.</p>
+                    <p>Schreibe das Wort auf.</p>
+                    <p>Klicke dann auf "Wort anzeigen".</p>
+                </div>`;
+        }
+        
+        function showDictationAnswer() {
+            if (appState.isShowingAnswer) return;
+
+            const item = appState.items[appState.currentItemIndex];
+            exerciseElements.displayArea.innerHTML = `<p class="word-text">${item.name}</p>`;
+            buttons.showWord.classList.add('hidden');
+            appState.isShowingAnswer = true;
+        }
+
+        /**
+         * Spielt den Sound des aktuellen Items ab.
+         */
+        function playCurrentSound() {
+            if (appState.items.length === 0) return;
+            const soundFile = appState.items[appState.currentItemIndex].sound;
+            if (soundFile) {
+                const audio = new Audio(soundFile);
+                audio.play().catch(e => console.error("Fehler beim Abspielen des Sounds:", e));
+            }
+        }
+        
+        function showNextItem() {
+            if (appState.currentItemIndex < appState.items.length - 1) {
+                appState.currentItemIndex++;
+                runExercise();
+            }
+        }
+        
+        function showPrevItem() {
+            if (appState.currentItemIndex > 0) {
+                appState.currentItemIndex--;
+                runExercise();
+            }
+        }
+
+        function updateItemCounter() {
+            exerciseElements.itemCounter.textContent = `Item ${appState.currentItemIndex + 1} / ${appState.items.length}`;
+        }
+        
+        function exitExercise() {
+            if (appState.testModeTimer) clearTimeout(appState.testModeTimer); // Wichtig: Timer stoppen!
+            switchScreen('settings');
+        }
+        
+        function showInstructions() {
+            modal.classList.remove('hidden');
+            // Timeout, um den CSS-Übergang zu ermöglichen
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modal.style.transform = 'scale(1)';
+            }, 10);
+        }
+
+        function hideInstructions() {
+            modal.style.opacity = '0';
+            modal.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300); // Muss der CSS-Transition-Dauer entsprechen
+        }
+
+        // --- ANWENDUNG STARTEN ---
+        initialize();
+    });
+    </script>
+</body>
+</html>
