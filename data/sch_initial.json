@@ -1,1 +1,47 @@
-v
+[
+    {
+        "name": "Schal",
+        "sound": "sounds/schal.mp3",
+        "image": "images/schal.jpg"
+    },
+    {
+        "name": "Schatten",
+        "sound": "sounds/schatten.mp3",
+        "image": "images/schatten.jpg"
+    },
+    {
+        "name": "Schere",
+        "sound": "sounds/schere.mp3",
+        "image": "images/schere.jpg"
+    },
+    {
+        "name": "Schuh",
+        "sound": "sounds/schuh.mp3",
+        "image": "images/schuh.jpg"
+    },
+    {
+        "name": "Schule",
+        "sound": "sounds/schule.mp3",
+        "image": "images/schule.jpg"
+    },
+    {
+        "name": "Schiene",
+        "sound": "sounds/schiene.mp3",
+        "image": "images/schiene.jpg"
+    },
+    {
+        "name": "Schiff",
+        "sound": "sounds/schiff.mp3",
+        "image": "images/schiff.jpg"
+    },
+    {
+        "name": "Schokolade",
+        "sound": "sounds/schokolade.mp3",
+        "image": "images/schokolade.jpg"
+    },
+    {
+        "name": "Schaukel",
+        "sound": "sounds/schaukel.mp3",
+        "image": "images/schaukel.jpg"
+    }
+]
