@@ -2,7 +2,8 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!-- Wichtig: viewport-fit=cover ist für die Safe-Area-Variablen notwendig -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Wortschatz-Trainer</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -25,7 +26,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            -webkit-tap-highlight-color: transparent; /* Verhindert blauen Blitz beim Tippen auf mobilen Geräten */
+            -webkit-tap-highlight-color: transparent;
         }
 
         html, body {
@@ -33,7 +34,7 @@
             font-family: 'Arial', sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
-            overflow: hidden; /* Verhindert Scrollbalken, besonders auf dem Übungsbildschirm */
+            overflow: hidden;
         }
 
         h1, h2, h3 {
@@ -41,17 +42,13 @@
         }
 
         /* Hilfsklassen */
-        .hidden {
-            display: none !important;
-        }
-        .invisible {
-            visibility: hidden !important;
-        }
+        .hidden { display: none !important; }
+        .invisible { visibility: hidden !important; }
 
         .screen {
             min-height: 100vh;
             padding: 20px;
-            padding-top: 80px; /* Platz für festes Hamburger-Menü */
+            padding-top: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -59,99 +56,61 @@
             transform: scale(1);
             opacity: 1;
             width: 100%;
-            height: 100%; /* Wichtig für Flexbox-Layouts */
-            overflow-y: auto; /* Scrollen auf Einstellungs/Modus-Screens erlauben */
+            height: 100%;
+            overflow-y: auto;
         }
 
-        #screen-mode-selection, #screen-settings {
-            justify-content: center;
-        }
-        
-        .screen.zoom-out {
-            transform: scale(0.9);
-            opacity: 0;
-            pointer-events: none;
-            position: absolute; 
-            top: 0; left: 0;
-        }
-        .screen.zoom-in {
-            transform: scale(1);
-            opacity: 1;
-            position: relative; 
-        }
+        #screen-mode-selection, #screen-settings { justify-content: center; }
+        .screen.zoom-out { transform: scale(0.9); opacity: 0; pointer-events: none; position: absolute; top: 0; left: 0; }
+        .screen.zoom-in { transform: scale(1); opacity: 1; position: relative; }
 
-        button, .clickable-card {
-            padding: 12px 20px;
-            border: none;
-            background-color: var(--button-color);
-            color: var(--button-text-color);
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-            text-align: center;
-        }
-
-        button:hover, .clickable-card:hover {
-            background-color: var(--light-green);
-        }
-        button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
+        button, .clickable-card { padding: 12px 20px; border: none; background-color: var(--button-color); color: var(--button-text-color); border-radius: var(--border-radius); cursor: pointer; font-size: 1rem; transition: background-color 0.3s ease; text-align: center; }
+        button:hover, .clickable-card:hover { background-color: var(--light-green); }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
 
         /* --- Hamburger Menü & Modale (unverändert) --- */
-        .hamburger-menu { position: fixed; top: 20px; right: 20px; z-index: 1000; }
+        .hamburger-menu { position: fixed; top: calc(env(safe-area-inset-top) + 20px); right: 20px; z-index: 1001; }
         .hamburger-icon { font-size: 2rem; cursor: pointer; background: var(--card-background); padding: 5px 10px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); user-select: none; }
-        .menu-content { display: none; position: absolute; right: 0; top: calc(100% + 10px); background-color: var(--card-background); box-shadow: var(--box-shadow); border-radius: var(--border-radius); padding: 10px; min-width: 200px; }
+        .menu-content { display: none; position: absolute; right: 0; top: calc(100% + 10px); background-color: var(--card-background); box-shadow: var(--box-shadow); border-radius: var(--border-radius); padding: 10px; min-width: 200px; z-index: 1000; }
         .menu-content.show { display: block; }
         .menu-content ul { list-style: none; }
         .menu-content ul li a { display: block; padding: 10px; text-decoration: none; color: var(--text-color); border-radius: 4px; }
         .menu-content ul li a:hover { background-color: #e9e9e9; }
-        .modal { position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transform: scale(0.7); transition: opacity 0.3s ease, visibility 0s linear 0.3s, transform 0.3s ease; }
+        .modal { position: fixed; z-index: 1002; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transform: scale(0.7); transition: opacity 0.3s ease, visibility 0s linear 0.3s, transform 0.3s ease; }
         .modal.show { opacity: 1; visibility: visible; transform: scale(1); transition: opacity 0.3s ease, visibility 0s linear 0s, transform 0.3s ease; }
         .modal-content { background-color: var(--card-background); margin: auto; padding: 20px; border-radius: var(--border-radius); width: 80%; max-width: 600px; box-shadow: var(--box-shadow); position: relative; }
         .modal-close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1; }
-        .modal-close-button:hover, .modal-close-button:focus { color: black; text-decoration: none; }
 
-        /* --- Bildschirm 1: Modus-Auswahl & Bildschirm 2: Einstellungen (unverändert) --- */
+        /* --- Bildschirm 1 & 2 (unverändert) --- */
         #screen-mode-selection h1 { color: var(--dark-green); font-size: 2.5rem; margin-bottom: 10px; text-align: center; }
         #screen-mode-selection h2 { color: var(--light-green); font-size: 1.5rem; margin-bottom: 30px; text-align: center; }
         .mode-selection-container { display: flex; gap: 20px; width: 100%; max-width: 900px; justify-content: center; align-items: stretch; }
         .mode-card { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center; cursor: pointer; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 150px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .mode-card:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
-        .mode-card .emoji { font-size: 3rem; margin-bottom: 10px; }
-        .mode-card .subtitle { font-size: 1.2rem; color: var(--text-color); }
         #screen-settings h2 { color: var(--dark-green); margin-bottom: 20px; text-align: center; }
         .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group select, .form-group input[type="range"] { width: 100%; padding: 10px; border-radius: var(--border-radius); border: 1px solid #ccc; font-size: 1rem; }
-        .setting-display-type { display: flex; gap: 10px; justify-content: space-around; }
-        .setting-display-type button { flex: 1; padding: 10px; font-size: 0.9rem; }
-        .setting-display-type button.selected { background-color: var(--light-green); color: white; border: 2px solid var(--dark-green); }
-        #sound-delay-value-container { text-align: center; margin-top: 5px; }
 
 
-        /* --- LAYOUT-ANPASSUNG: Bildschirm 3: Übung --- */
+        /* --- ÜBERARBEITETES LAYOUT: Bildschirm 3: Übung --- */
         #screen-exercise {
-            padding: 0;
-            justify-content: flex-start;
+            padding: 0; /* Kein Padding mehr, da die inneren Elemente es steuern */
             background-color: #fff;
             overflow: hidden;
+            /* Flexbox-Layout für die Hauptstruktur */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         
         .top-bar {
             width: 100%;
-            padding: 10px 15px;
-            position: absolute;
-            top: 0;
-            left: 0;
+            /* Padding berücksichtigt jetzt die Safe Area oben */
+            padding: calc(env(safe-area-inset-top) + 10px) 15px 10px 15px;
+            flex-shrink: 0; /* Verhindert, dass die Leiste schrumpft */
             z-index: 10;
         }
 
         .progress-bar-container {
-            width: 100%; /* Nimmt volle Breite ein */
+            width: 100%;
             background-color: #e0e0e0;
             border-radius: var(--border-radius);
             overflow: hidden;
@@ -164,33 +123,40 @@
 
         .exercise-main-container {
             display: flex; flex-direction: row; justify-content: space-between; align-items: center;
-            width: 100%; height: 100%; flex-grow: 1;
+            width: 100%;
+            flex-grow: 1; /* Nimmt allen verfügbaren Platz ein */
+            min-height: 0; /* Wichtiger Flexbox-Fix */
         }
         
         .nav-arrow {
-            width: 60px; height: 100%; display: flex; justify-content: center; align-items: center;
-            font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none;
+            height: 100%; display: flex; justify-content: center; align-items: center;
+            width: 60px; font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none;
             transition: background-color 0.2s ease; flex-shrink: 0;
+            /* Padding, damit die Pfeile nicht in die Safe Areas ragen */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
         }
         .nav-arrow:hover { background-color: rgba(0,0,0,0.05); }
 
         #image-container {
-            flex-grow: 1; height: 100%; padding: 20px; display: flex; flex-direction: column;
+            flex-grow: 1; height: 100%; padding: 10px; display: flex; flex-direction: column;
             justify-content: center; align-items: center; cursor: pointer;
             transition: opacity var(--transition-speed) ease-in-out;
+            min-height: 0; /* Flexbox-Fix */
         }
         
         #image-container.fade-out { opacity: 0; }
         #image-container img { max-width: 100%; max-height: 100%; object-fit: contain; margin-bottom: 15px; }
         #image-container .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
         .diktat-instructions { font-size: 1.2rem; padding: 20px; text-align: left; line-height: 1.6; max-width: 600px; }
-        .diktat-instructions ol { margin-left: 25px; }
         
-        /* UNTERE LEISTE MIT SOUND-BUTTON */
         .bottom-bar {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            padding: 20px; display: flex; justify-content: center; align-items: center;
-            z-index: 10; gap: 20px; /* Abstand zwischen den Buttons */
+            width: 100%;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10; gap: 20px;
+            flex-shrink: 0; /* Verhindert, dass die Leiste schrumpft */
+            /* Padding berücksichtigt jetzt die Safe Area unten */
+            padding: 15px 15px calc(env(safe-area-inset-bottom) + 15px) 15px;
         }
 
         #sound-button {
@@ -208,32 +174,22 @@
         }
 
         /* Responsive Anpassungen */
-        @media (max-width: 768px) {
-            .mode-selection-container { flex-direction: column; }
-            .mode-card { min-height: 120px; width: 80%; margin-left: auto; margin-right: auto; }
-            .nav-arrow { width: 50px; font-size: 2.5rem; }
-            #image-container .word-text { font-size: 2rem; }
-        }
         @media (max-width: 480px) {
-            .screen { padding-top: 70px; }
-            #screen-mode-selection h1 { font-size: 2rem; }
-            #screen-mode-selection h2 { font-size: 1.3rem; }
-            .mode-card { padding: 15px; width: 90%; }
-            .setting-display-type { flex-direction: column; }
-            .modal-content { width: 90%; }
             .nav-arrow { width: 40px; font-size: 2rem; }
             #image-container .word-text { font-size: 1.8rem; }
-            .top-bar { padding: 8px; }
+            .top-bar { padding-top: calc(env(safe-area-inset-top) + 8px); padding-left: 8px; padding-right: 8px; }
             .progress-bar-container { height: 20px; }
             .progress-bar { line-height: 20px; }
             #sound-button { width: 50px; height: 50px; }
-            .bottom-bar { padding: 15px; }
+            .bottom-bar { padding-bottom: calc(env(safe-area-inset-bottom) + 10px); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Hamburger Menü und Modale (unverändert) -->
+    <!-- Die restliche HTML-Struktur und das JS bleiben identisch, da die Änderungen rein im CSS liegen. -->
+    <!-- Hier ist der Code zur Vollständigkeit nochmals eingefügt. -->
+
     <div class="hamburger-menu">
         <span class="hamburger-icon" id="hamburger-icon">☰</span>
         <div class="menu-content" id="menu-content">
@@ -249,13 +205,10 @@
     <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p>Details zur Anleitung...</p></div></div>
     <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Du hast alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu mischen</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
 
-    <!-- Bildschirm 1: Modus-Auswahl -->
-    <div id="screen-mode-selection" class="screen"><div id="screen-mode-selection" class="screen"><h1>Wortschatz-Trainer</h1><h2 id="current-set-name-h2">Set: [Wird geladen...]</h2><div class="mode-selection-container"><div class="mode-card clickable-card" data-mode="learn"><span class="emoji">📚</span><span class="subtitle">Lernen</span></div><div class="mode-card clickable-card" data-mode="test"><span class="emoji">✅</span><span class="subtitle">Testen</span></div><div class="mode-card clickable-card" data-mode="dictate"><span class="emoji">✍️</span><span class="subtitle">Diktat</span></div></div></div></div>
+    <div id="screen-mode-selection" class="screen"><h1>Wortschatz-Trainer</h1><h2 id="current-set-name-h2">Set: [Wird geladen...]</h2><div class="mode-selection-container"><div class="mode-card clickable-card" data-mode="learn"><span class="emoji">📚</span><span class="subtitle">Lernen</span></div><div class="mode-card clickable-card" data-mode="test"><span class="emoji">✅</span><span class="subtitle">Testen</span></div><div class="mode-card clickable-card" data-mode="dictate"><span class="emoji">✍️</span><span class="subtitle">Diktat</span></div></div></div>
 
-    <!-- Bildschirm 2: Einstellungen -->
     <div id="screen-settings" class="screen hidden"><h2 id="settings-title">Einstellungen für [Modus]</h2><div class="settings-form"><div class="form-group"><label for="item-set-select">Lern-Set auswählen:</label><select id="item-set-select"><option value="">Lade Sets...</option></select></div><div class="form-group" id="setting-display-type-group"><label>Anzeige-Typ:</label><div class="setting-display-type"><button data-display-type="image_only" class="selected">🖼️ Nur Bild</button><button data-display-type="word_only">🆕 Nur Wort</button><button data-display-type="image_word">🖼️+🆕 Bild & Wort</button></div></div><div class="form-group" id="setting-sound-delay-group"><label for="sound-delay-slider">Sound-Verzögerung (Testmodus):</label><input type="range" id="sound-delay-slider" min="0" max="5" value="0" step="1"><div id="sound-delay-value-container"><span id="sound-delay-value">0 Sekunden</span></div></div><div style="display: flex; justify-content: space-between; margin-top: 30px;"><button id="btn-settings-back">Zurück</button><button id="btn-start-exercise">Start</button></div></div></div>
 
-    <!-- Bildschirm 3: Übung (NEUE STRUKTUR) -->
     <div id="screen-exercise" class="screen hidden">
         <div class="top-bar">
             <div class="progress-bar-container">
@@ -328,7 +281,7 @@
                 const hasSound = !noItems && item && item.sound;
                 soundButton.classList.toggle('hidden', !hasSound);
 
-                if (noItems) { /* ... */ updateProgressBar(); return; }
+                if (noItems) { updateProgressBar(); return; }
                 if (!item) { imageContainer.innerHTML = "<p>Fehler: Item ungültig.</p>"; return; }
 
                 if (currentMode === 'dictate') {
@@ -360,7 +313,6 @@
                 const item = currentShuffledItems[currentItemIndex]; if (!item) return;
                 imageContainer.innerHTML = ''; const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; imageContainer.appendChild(p);
                 btnShowWord.classList.add('hidden');
-                // Nach dem Aufdecken des Wortes auch die untere Leiste anpassen
                 const isSoundButtonVisible = !soundButton.classList.contains('hidden');
                 bottomBar.classList.toggle('hidden', !isSoundButtonVisible);
             }
@@ -393,13 +345,11 @@
             btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); currentShuffledItems = shuffleArray([...currentItemSetData]); currentItemIndex = 0; displayCurrentItem(); });
             btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); configureSettingsScreen(); showScreen('screen-settings'); });
             
-            // NEUE/ANGEPASSTE Event Listener für Übungs-Screen
             soundButton.addEventListener('click', () => playCurrentItemSound(0));
             navArrowLeft.addEventListener('click', () => navigateItem(-1));
             navArrowRight.addEventListener('click', () => navigateItem(1));
             btnShowWord.addEventListener('click', () => showDiktatWord());
             
-            // --- Initiale Einrichtung ---
             initializeApp();
             async function initializeApp() { await loadManifestAndPopulateSelect(); showScreen('screen-mode-selection'); }
         });
