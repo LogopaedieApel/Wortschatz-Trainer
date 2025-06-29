@@ -20,7 +20,9 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         html, body { height: 100%; font-family: 'Arial', sans-serif; background-color: var(--background-color); color: var(--text-color); overflow: hidden; }
+        h1, h2, h3 { font-family: 'Comfortaa', cursive; }
         .hidden { display: none !important; }
+        .invisible { visibility: hidden !important; }
         .screen { min-height: 100vh; padding: 20px; padding-top: 80px; display: flex; flex-direction: column; align-items: center; transition: transform var(--transition-speed) ease-in-out, opacity var(--transition-speed) ease-in-out; transform: scale(1); opacity: 1; width: 100%; height: 100%; overflow-y: auto; }
         #screen-mode-selection, #screen-settings { justify-content: center; }
         .screen.zoom-out { transform: scale(0.9); opacity: 0; pointer-events: none; position: absolute; top: 0; left: 0; }
@@ -33,26 +35,34 @@
         .menu-content.show { display: block; }
         .modal { position: fixed; z-index: 1002; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
         .modal.show { opacity: 1; visibility: visible; }
-        .modal-content { background-color: var(--card-background); margin: auto; padding: 20px; border-radius: var(--border-radius); width: 80%; max-width: 600px; box-shadow: var(--box-shadow); position: relative; }
+        .modal-content { background-color: var(--card-background); margin: auto; padding: 20px; border-radius: var(--border-radius); width: 80%; max-width: 600px; }
         .modal-close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1; }
-        #screen-settings h2 { color: var(--dark-green); margin-bottom: 20px; text-align: center; }
-        .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
+        #screen-mode-selection h1 { color: var(--dark-green); font-size: 2.5rem; margin-bottom: 10px; text-align: center; }
+        #screen-mode-selection h2 { color: var(--light-green); font-size: 1.5rem; margin-bottom: 30px; text-align: center; }
+        .mode-selection-container { display: flex; gap: 20px; width: 100%; max-width: 900px; justify-content: center; align-items: stretch; }
+        .mode-card { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center; cursor: pointer; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 150px; }
+        #screen-settings h2 { margin-bottom: 20px; text-align: center; }
+        .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); width: 100%; max-width: 500px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group select, .form-group input[type="range"] { width: 100%; padding: 10px; border-radius: var(--border-radius); border: 1px solid #ccc; font-size: 1rem; }
-        .setting-display-type { display: flex; gap: 10px; justify-content: space-around; }
+        .form-group select, .form-group input[type="range"] { width: 100%; padding: 10px; border-radius: var(--border-radius); border: 1px solid #ccc; }
+        .setting-display-type { display: flex; gap: 10px; }
+        .setting-display-type button { flex: 1; }
         .setting-display-type button.selected { background-color: var(--light-green); color: white; border: 2px solid var(--dark-green); }
         #screen-exercise { padding: 70px 0 95px 0; background-color: #fff; overflow: hidden; }
         .top-bar { position: fixed; top: 0; left: 0; width: 100%; background: #fff; z-index: 100; padding: calc(env(safe-area-inset-top) + 10px) 80px 10px 15px; }
         .progress-bar-container { width: 100%; background-color: #e0e0e0; border-radius: var(--border-radius); overflow: hidden; height: 25px; }
         .progress-bar { width: 0%; height: 100%; background-color: var(--light-green); text-align: center; line-height: 25px; color: white; font-weight: bold; transition: width 0.3s ease; }
         .exercise-main-container { display: flex; justify-content: space-between; align-items: center; width: 100%; height: 100%; }
-        .nav-arrow { height: 100%; display: flex; justify-content: center; align-items: center; width: 60px; font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none; transition: background-color 0.2s ease; flex-shrink: 0; }
+        .nav-arrow { height: 100%; display: flex; justify-content: center; align-items: center; width: 60px; font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none; }
         #image-container { flex-grow: 1; height: 100%; padding: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: opacity var(--transition-speed) ease-in-out; }
         #image-container.fade-out { opacity: 0; }
         #image-container img { max-width: 100%; max-height: 100%; object-fit: contain; transform: scale(1.2); }
+        #image-container .word-text { font-size: 2.5rem; font-weight: bold; }
+        .diktat-instructions ol { margin-left: 20px; }
         .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; z-index: 100; display: flex; justify-content: center; align-items: center; gap: 20px; padding: 15px 15px calc(env(safe-area-inset-bottom) + 15px) 15px; }
         #sound-button { width: 60px; height: 60px; border-radius: 50%; background-color: var(--card-background); border: 1px solid #ddd; box-shadow: var(--box-shadow); cursor: pointer; flex-shrink: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2327633A'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; background-size: 60%; }
+        #btn-show-word { min-width: 200px; padding: 15px 25px; font-size: 1.1rem; }
     </style>
 </head>
 <body>
@@ -115,10 +125,10 @@
             
             function showScreen(screenIdToShow) {
                 Object.values(screens).forEach(screen => {
-                    const isTargetScreen = screen.id === screenIdToShow;
-                    screen.classList.toggle('hidden', !isTargetScreen);
-                    screen.classList.toggle('zoom-out', !isTargetScreen);
-                    screen.classList.toggle('zoom-in', isTargetScreen);
+                    const isTarget = screen.id === screenIdToShow;
+                    screen.classList.toggle('hidden', !isTarget);
+                    screen.classList.toggle('zoom-out', !isTarget);
+                    screen.classList.toggle('zoom-in', isTarget);
                 });
                 document.body.style.overflow = (screenIdToShow === 'screen-exercise') ? 'hidden' : 'auto';
                 window.scrollTo(0,0);
@@ -126,7 +136,6 @@
 
             function showModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.add('show'); }
             function closeModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.remove('show'); }
-            
             function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } return array; }
 
             async function loadManifestAndPopulateSelect() { try { const r = await fetch('manifest.json?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); availableItemSets = await r.json(); itemSetSelect.innerHTML = ''; if (availableItemSets.length === 0) { itemSetSelect.innerHTML = '<option value="">Keine Sets</option>'; btnStartExercise.disabled = true; return false; } availableItemSets.forEach(set => { const o=document.createElement('option'); o.value=set.path; o.textContent=set.name; itemSetSelect.appendChild(o); }); btnStartExercise.disabled=false; if(itemSetSelect.options.length>0){itemSetSelect.selectedIndex=0;currentItemSetPath=itemSetSelect.value; await loadItemSet(currentItemSetPath);} return true; } catch (e) { console.error("Fehler manifest.json:", e); itemSetSelect.innerHTML = '<option>Fehler</option>'; btnStartExercise.disabled = true; return false; } }
@@ -141,10 +150,9 @@
             }
             
             function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
-
-            function updateProgressBar() { const total = currentShuffledItems.length > 0 ? currentShuffledItems.length : 1; const current = currentItemIndex + 1; const progress = (current / total) * 100; progressBar.style.width = `${progress}%`; progressBar.textContent = `${Math.round(progress)}%`; }
-            function playCurrentItemSound(delay = 0) { clearTimeout(soundTimeoutId); const item = currentShuffledItems[currentItemIndex]; if (!item || !item.sound) { if (currentMode === 'test') scheduleAutoNext(); return; } soundTimeoutId = setTimeout(() => { audioPlayer.src = item.sound + '?t=' + new Date().getTime(); audioPlayer.play().catch(e => console.error("Sound Fehler:", e)); if (currentMode === 'test') { audioPlayer.onended = () => { scheduleAutoNext(); audioPlayer.onended = null; }; } }, delay * 1000); }
-            function scheduleAutoNext() { clearTimeout(autoNextTimeoutId); autoNextTimeoutId = setTimeout(() => { if (currentMode === 'test') navigateItem(1); }, 3000); }
+            function updateProgressBar() { const total = currentShuffledItems.length; const progress = total > 0 ? ((currentItemIndex + 1) / total) * 100 : 0; progressBar.style.width = `${progress}%`; progressBar.textContent = `${Math.round(progress)}%`; }
+            function playCurrentItemSound(delay = 0) { clearTimeout(soundTimeoutId); const item = currentShuffledItems[currentItemIndex]; if (!item || !item.sound) { if (currentMode === 'test') scheduleAutoNext(); return; } soundTimeoutId = setTimeout(() => { audioPlayer.src = item.sound + '?t=' + new Date().getTime(); audioPlayer.play().catch(e => console.error(e)); if (currentMode === 'test') audioPlayer.onended = () => scheduleAutoNext(); }, delay * 1000); }
+            function scheduleAutoNext() { clearTimeout(autoNextTimeoutId); autoNextTimeoutId = setTimeout(() => navigateItem(1), 3000); }
 
             function displayCurrentItem() {
                 imageContainer.innerHTML = ''; isNavigating = false;
@@ -155,10 +163,7 @@
                 if (!item) { updateProgressBar(); return; }
                 if (currentMode === 'dictate') {
                     btnShowWord.classList.remove('hidden'); imageContainer.style.cursor = 'default';
-                    const instructions = document.createElement('div');
-                    instructions.innerHTML = `<p><strong>Diktat:</strong></p><ol><li>Höre das Wort (Button unten).</li><li>Schreibe es auf.</li><li>Überprüfe mit 'Wort anzeigen'.</li></ol>`;
-                    instructions.className = 'diktat-instructions';
-                    imageContainer.appendChild(instructions);
+                    imageContainer.innerHTML = `<div class="diktat-instructions"><p><strong>Diktat:</strong></p><ol><li>Höre das Wort (Button unten).</li><li>Schreibe es auf.</li><li>Überprüfe mit 'Wort anzeigen'.</li></ol></div>`;
                 } else {
                     btnShowWord.classList.add('hidden'); imageContainer.style.cursor = 'pointer';
                     let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : "";
@@ -188,13 +193,13 @@
                 setTimeout(() => { currentItemIndex = newIndex; displayCurrentItem(); imageContainer.classList.remove('fade-out'); }, 300);
             }
             
-            // Event Listeners
+            // --- Event Listeners ---
             hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); });
             document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
             modalCloseButtons.forEach(b => b.addEventListener('click', () => closeModal(b.dataset.modalId)));
             modeCards.forEach(c => c.addEventListener('click', () => { currentMode = c.dataset.mode; configureSettingsScreen(); showScreen('screen-settings'); }));
             btnSettingsBack.addEventListener('click', () => showScreen('screen-mode-selection'));
-            btnStartExercise.addEventListener('click', async () => { const loaded = await loadItemSet(currentItemSetPath || itemSetSelect.value); if (!loaded || !currentItemSetData || currentItemSetData.length === 0) { alert("Bitte gültiges Set auswählen."); return; } currentShuffledItems = shuffleArray([...currentItemSetData]); currentItemIndex = 0; displayCurrentItem(); showScreen('screen-exercise'); });
+            btnStartExercise.addEventListener('click', async () => { const loaded = await loadItemSet(currentItemSetPath || itemSetSelect.value); if (!loaded || currentItemSetData.length === 0) { alert("Set konnte nicht geladen werden oder ist leer."); return; } currentShuffledItems = shuffleArray([...currentItemSetData]); currentItemIndex = 0; displayCurrentItem(); showScreen('screen-exercise'); });
             
             document.getElementById('menu-modus-auswahl').addEventListener('click', (e) => { e.preventDefault(); exitCurrentExercise(); showScreen('screen-mode-selection'); menuContent.classList.remove('show'); });
             ['lernmodus', 'testmodus', 'diktatmodus'].forEach(modeKey => { document.getElementById(`menu-${modeKey}`).addEventListener('click', (e) => { e.preventDefault(); exitCurrentExercise(); if (modeKey === 'lernmodus') currentMode = 'learn'; else if (modeKey === 'testmodus') currentMode = 'test'; else if (modeKey === 'diktatmodus') currentMode = 'dictate'; configureSettingsScreen(); showScreen('screen-settings'); menuContent.classList.remove('show'); }); });
@@ -204,7 +209,7 @@
             navArrowRight.addEventListener('click', () => navigateItem(1));
             btnShowWord.addEventListener('click', () => showDiktatWord());
             
-            // Initialisierung
+            // --- Initialisierung ---
             async function initializeApp() {
                 await loadManifestAndPopulateSelect();
                 showScreen('screen-mode-selection');
