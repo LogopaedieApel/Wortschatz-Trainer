@@ -66,14 +66,14 @@
         .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
 
 
-        /* --- NEUES LAYOUT FÜR ÜBUNGS-SCREEN --- */
+        /* --- ANGEPASSTES LAYOUT FÜR ÜBUNGS-SCREEN --- */
         #screen-exercise {
             padding: 0;
             background-color: #fff;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Ändert sich von space-between */
+            justify-content: flex-start;
         }
         
         .top-bar {
@@ -85,7 +85,6 @@
         .progress-bar-container { width: 100%; background-color: #e0e0e0; border-radius: var(--border-radius); overflow: hidden; height: 25px; }
         .progress-bar { width: 0%; height: 100%; background-color: var(--light-green); text-align: center; line-height: 25px; color: white; font-weight: bold; transition: width 0.3s ease; }
 
-        /* NEUER WRAPPER FÜR INHALT & BUTTONS */
         .main-content-area {
             flex-grow: 1;
             width: 100%;
@@ -97,9 +96,9 @@
         }
 
         .exercise-main-container {
-            display: flex; flex-direction: row; justify-content: space-between; align-items: center;
+            display: flex; flex-direction: row; justify-content: space-between; align-items: stretch; /* stretch statt center */
             width: 100%;
-            flex-grow: 1; /* Nimmt den Platz innerhalb des main-content-area ein */
+            flex-grow: 1; 
             min-height: 0;
         }
         
@@ -110,8 +109,20 @@
         }
         .nav-arrow:hover { background-color: rgba(0,0,0,0.05); }
 
+        /* NEU: Wrapper für Inhalt und Buttons */
+        .content-and-controls-wrapper {
+            flex-grow: 1;
+            min-width: 0; /* Flexbox-Fix */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         #image-container {
-            flex-grow: 1; height: 100%; padding: 10px; display: flex; flex-direction: column;
+            flex-grow: 1; /* Nimmt den Platz ein und drückt die Buttons nach unten */
+            width: 100%;
+            padding: 10px; 
+            display: flex; flex-direction: column;
             justify-content: center; align-items: center; cursor: pointer;
             transition: opacity var(--transition-speed) ease-in-out;
             min-height: 0;
@@ -122,14 +133,14 @@
         #image-container .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
         .diktat-instructions { font-size: 1.2rem; padding: 20px; text-align: left; line-height: 1.6; max-width: 600px; }
         
-        /* BOTTOM BAR ist jetzt Teil des normalen Layouts */
-        .bottom-bar {
-            width: 100%;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 10; gap: 20px;
-            flex-shrink: 0;
-            padding: 0 15px 15px 15px; /* Kein oberes Padding, da margin-top genutzt wird */
-            margin-top: 20px; /* <-- HIER WIRD DER ABSTAND GESETZT */
+        /* NEU: Container für die Aktions-Buttons */
+        #action-buttons-container {
+            flex-shrink: 0; /* Verhindert, dass der Container schrumpft */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 15px 0; /* Abstand oben/unten */
         }
 
         #sound-button {
@@ -139,7 +150,6 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2327633A'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E");
             background-repeat: no-repeat; background-position: center; background-size: 60%;
             transition: transform 0.1s ease;
-            /* transform: translateY(-50px); <-- DIESE ZEILE WIRD ENTFERNT */
         }
         #sound-button:active { transform: scale(0.95); }
         #btn-show-word { min-width: 200px; padding: 15px 25px; font-size: 1.1rem; }
@@ -175,15 +185,21 @@
         <div class="main-content-area">
             <div class="exercise-main-container">
                 <div class="nav-arrow" id="nav-arrow-left">‹</div>
-                <div id="image-container">
-                    <!-- Inhalt wird per JS generiert -->
+                
+                <!-- NEU: Wrapper für den Inhalt (Bild/Wort) und die zugehörigen Buttons -->
+                <div class="content-and-controls-wrapper">
+                    <div id="image-container">
+                        <!-- Inhalt wird per JS generiert -->
+                    </div>
+            
+                    <!-- NEU: Container für die Buttons, die nun hier sind -->
+                    <div id="action-buttons-container">
+                         <button id="sound-button"></button>
+                         <button id="btn-show-word" class="hidden">Wort anzeigen</button>
+                    </div>
                 </div>
+
                 <div class="nav-arrow" id="nav-arrow-right">›</div>
-            </div>
-    
-            <div class="bottom-bar">
-                 <button id="sound-button"></button>
-                 <button id="btn-show-word" class="hidden">Wort anzeigen</button>
             </div>
         </div>
     </div>
@@ -191,8 +207,7 @@
     <audio id="audio-player"></audio>
 
     <script>
-        // DAS GESAMTE JAVASCRIPT BLEIBT IDENTISCH, DA SICH DIE IDs DER ELEMENTE NICHT GEÄNDERT HABEN.
-        // HIER IST ES ZUR VOLLSTÄNDIGKEIT EINGEFÜGT.
+        // LEICHT ANGEPASSTES JAVASCRIPT
         document.addEventListener('DOMContentLoaded', () => {
             let currentMode = null, availableItemSets = [], currentItemSetPath = null;
             let currentItemSetData = [], currentShuffledItems = [], currentItemIndex = 0;
@@ -208,7 +223,11 @@
             const btnReshuffle = document.getElementById('btn-reshuffle'), btnNewSelection = document.getElementById('btn-new-selection');
             const progressBar = document.getElementById('progress-bar'), imageContainer = document.getElementById('image-container');
             const navArrowLeft = document.getElementById('nav-arrow-left'), navArrowRight = document.getElementById('nav-arrow-right');
-            const bottomBar = document.querySelector('.bottom-bar'), soundButton = document.getElementById('sound-button'), btnShowWord = document.getElementById('btn-show-word');
+            
+            // GEÄNDERT: .bottom-bar existiert nicht mehr, wir referenzieren den neuen Button-Container.
+            const actionButtonsContainer = document.getElementById('action-buttons-container'); 
+            const soundButton = document.getElementById('sound-button'), btnShowWord = document.getElementById('btn-show-word');
+            
             function showScreen(screenIdToShow) { Object.values(screens).forEach(screen => { const isTarget = screen.id === screenIdToShow; screen.classList.toggle('hidden', !isTarget); screen.classList.toggle('zoom-out', !isTarget); screen.classList.toggle('zoom-in', isTarget); }); document.body.style.overflow = (screenIdToShow === 'screen-exercise') ? 'hidden' : 'auto'; window.scrollTo(0,0); }
             function showModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.add('show'); }
             function closeModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.remove('show'); }
@@ -248,7 +267,9 @@
                 }
                 const isSoundButtonVisible = !soundButton.classList.contains('hidden');
                 const isShowWordButtonVisible = !btnShowWord.classList.contains('hidden');
-                bottomBar.classList.toggle('hidden', !isSoundButtonVisible && !isShowWordButtonVisible);
+                
+                // GEÄNDERT: Wir schalten nun die Sichtbarkeit des neuen Button-Containers.
+                actionButtonsContainer.classList.toggle('hidden', !isSoundButtonVisible && !isShowWordButtonVisible);
                 updateProgressBar();
             }
             function showDiktatWord() {
@@ -256,7 +277,8 @@
                 imageContainer.innerHTML = ''; const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; imageContainer.appendChild(p);
                 btnShowWord.classList.add('hidden');
                 const isSoundButtonVisible = !soundButton.classList.contains('hidden');
-                bottomBar.classList.toggle('hidden', !isSoundButtonVisible);
+                // GEÄNDERT: Auch hier wird nun der neue Container verwaltet.
+                actionButtonsContainer.classList.toggle('hidden', !isSoundButtonVisible);
             }
             function navigateItem(direction) {
                 if (isNavigating) return; isNavigating = true;
