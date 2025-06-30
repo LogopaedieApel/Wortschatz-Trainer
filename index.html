@@ -66,7 +66,7 @@
         .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
 
 
-        /* --- ANGEPASSTES LAYOUT FÜR ÜBUNGS-SCREEN --- */
+        /* --- NEUES, KORRIGIERTES LAYOUT FÜR ÜBUNGS-SCREEN --- */
         #screen-exercise {
             padding: 0;
             background-color: #fff;
@@ -75,7 +75,7 @@
             flex-direction: column;
             justify-content: flex-start;
         }
-        
+
         .top-bar {
             width: 100%;
             padding: calc(env(safe-area-inset-top) + 10px) 15px 10px 15px;
@@ -88,7 +88,7 @@
         .main-content-area {
             flex-grow: 1;
             width: 100%;
-            min-height: 0; /* Wichtiger Flexbox-Fix */
+            min-height: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -96,12 +96,12 @@
         }
 
         .exercise-main-container {
-            display: flex; flex-direction: row; justify-content: space-between; align-items: stretch; /* stretch statt center */
+            display: flex; flex-direction: row; justify-content: space-between; align-items: stretch;
             width: 100%;
             flex-grow: 1; 
             min-height: 0;
         }
-        
+
         .nav-arrow {
             height: 100%; display: flex; justify-content: center; align-items: center;
             width: 60px; font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none;
@@ -109,38 +109,42 @@
         }
         .nav-arrow:hover { background-color: rgba(0,0,0,0.05); }
 
-        /* NEU: Wrapper für Inhalt und Buttons */
+        /* Wrapper für Inhalt und Buttons */
         .content-and-controls-wrapper {
             flex-grow: 1;
-            min-width: 0; /* Flexbox-Fix */
+            min-width: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center; /* HINZUGEFÜGT: Zentriert den Block aus Bild und Button vertikal */
         }
 
         #image-container {
-            flex-grow: 1; /* Nimmt den Platz ein und drückt die Buttons nach unten */
+            /* flex-grow: 1; */    /* ENTFERNT: Der Container soll nicht mehr den ganzen Platz füllen. */
             width: 100%;
             padding: 10px; 
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center; cursor: pointer;
+            display: flex; 
+            flex-direction: column;
+            /* justify-content: center; */ /* ENTFERNT: Die Zentrierung übernimmt der Parent. */
+            align-items: center; 
+            cursor: pointer;
             transition: opacity var(--transition-speed) ease-in-out;
             min-height: 0;
         }
-        
+
         #image-container.fade-out { opacity: 0; }
-        #image-container img { max-width: 100%; max-height: 100%; object-fit: contain; margin-bottom: 15px; }
+        #image-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
         #image-container .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
         .diktat-instructions { font-size: 1.2rem; padding: 20px; text-align: left; line-height: 1.6; max-width: 600px; }
-        
-        /* NEU: Container für die Aktions-Buttons */
+
+        /* Container für die Aktions-Buttons */
         #action-buttons-container {
-            flex-shrink: 0; /* Verhindert, dass der Container schrumpft */
+            flex-shrink: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 20px;
-            padding: 15px 0; /* Abstand oben/unten */
+            padding: 15px 0;
         }
 
         #sound-button {
@@ -174,7 +178,7 @@
     <div id="screen-mode-selection" class="screen"><h1>Wortschatz-Trainer</h1><h2 id="current-set-name-h2">Set: [Lädt...]</h2><div class="mode-selection-container"><div class="mode-card clickable-card" data-mode="learn"><span class="emoji">📚</span><span class="subtitle">Lernen</span></div><div class="mode-card clickable-card" data-mode="test"><span class="emoji">✅</span><span class="subtitle">Testen</span></div><div class="mode-card clickable-card" data-mode="dictate"><span class="emoji">✍️</span><span class="subtitle">Diktat</span></div></div></div>
     <div id="screen-settings" class="screen hidden"><h2 id="settings-title">Einstellungen</h2><div class="settings-form"><div class="form-group"><label for="item-set-select">Lern-Set:</label><select id="item-set-select"><option>Lade Sets...</option></select></div><div class="form-group" id="setting-display-type-group"><label>Anzeige:</label><div class="setting-display-type"><button data-display-type="image_only" class="selected">🖼️ Nur Bild</button><button data-display-type="word_only">🆕 Nur Wort</button><button data-display-type="image_word">🖼️+🆕 Bild & Wort</button></div></div><div class="form-group" id="setting-sound-delay-group"><label for="sound-delay-slider">Sound-Verzögerung:</label><input type="range" id="sound-delay-slider" min="0" max="5" value="0" step="1"><div id="sound-delay-value-container"><span id="sound-delay-value">0 Sekunden</span></div></div><div style="display: flex; justify-content: space-between; margin-top: 30px;"><button id="btn-settings-back">Zurück</button><button id="btn-start-exercise">Start</button></div></div></div>
 
-    <!-- GEÄNDERTE HTML-STRUKTUR HIER -->
+    <!-- HTML-Struktur (unverändert) -->
     <div id="screen-exercise" class="screen hidden">
         <div class="top-bar">
             <div class="progress-bar-container">
@@ -186,13 +190,11 @@
             <div class="exercise-main-container">
                 <div class="nav-arrow" id="nav-arrow-left">‹</div>
                 
-                <!-- NEU: Wrapper für den Inhalt (Bild/Wort) und die zugehörigen Buttons -->
                 <div class="content-and-controls-wrapper">
                     <div id="image-container">
                         <!-- Inhalt wird per JS generiert -->
                     </div>
             
-                    <!-- NEU: Container für die Buttons, die nun hier sind -->
                     <div id="action-buttons-container">
                          <button id="sound-button"></button>
                          <button id="btn-show-word" class="hidden">Wort anzeigen</button>
@@ -207,7 +209,7 @@
     <audio id="audio-player"></audio>
 
     <script>
-        // LEICHT ANGEPASSTES JAVASCRIPT
+        // JavaScript (unverändert)
         document.addEventListener('DOMContentLoaded', () => {
             let currentMode = null, availableItemSets = [], currentItemSetPath = null;
             let currentItemSetData = [], currentShuffledItems = [], currentItemIndex = 0;
@@ -223,8 +225,6 @@
             const btnReshuffle = document.getElementById('btn-reshuffle'), btnNewSelection = document.getElementById('btn-new-selection');
             const progressBar = document.getElementById('progress-bar'), imageContainer = document.getElementById('image-container');
             const navArrowLeft = document.getElementById('nav-arrow-left'), navArrowRight = document.getElementById('nav-arrow-right');
-            
-            // GEÄNDERT: .bottom-bar existiert nicht mehr, wir referenzieren den neuen Button-Container.
             const actionButtonsContainer = document.getElementById('action-buttons-container'); 
             const soundButton = document.getElementById('sound-button'), btnShowWord = document.getElementById('btn-show-word');
             
@@ -267,8 +267,6 @@
                 }
                 const isSoundButtonVisible = !soundButton.classList.contains('hidden');
                 const isShowWordButtonVisible = !btnShowWord.classList.contains('hidden');
-                
-                // GEÄNDERT: Wir schalten nun die Sichtbarkeit des neuen Button-Containers.
                 actionButtonsContainer.classList.toggle('hidden', !isSoundButtonVisible && !isShowWordButtonVisible);
                 updateProgressBar();
             }
@@ -277,7 +275,6 @@
                 imageContainer.innerHTML = ''; const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; imageContainer.appendChild(p);
                 btnShowWord.classList.add('hidden');
                 const isSoundButtonVisible = !soundButton.classList.contains('hidden');
-                // GEÄNDERT: Auch hier wird nun der neue Container verwaltet.
                 actionButtonsContainer.classList.toggle('hidden', !isSoundButtonVisible);
             }
             function navigateItem(direction) {
