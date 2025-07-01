@@ -19,13 +19,7 @@
             --transition-speed: 0.3s;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        html, body {
-            height: 100%;
-            font-family: 'Arial', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            overflow: hidden;
-        }
+        html, body { height: 100%; font-family: 'Arial', sans-serif; background-color: var(--background-color); color: var(--text-color); overflow: hidden; }
         h1, h2, h3 { font-family: 'Comfortaa', cursive; }
         .hidden { display: none !important; }
         .invisible { visibility: hidden !important; }
@@ -54,9 +48,9 @@
         #screen-settings h2 { color: var(--dark-green); margin-bottom: 20px; text-align: center; }
         .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
 
-        /* --- Layout für Übungs-Screen (Basierend auf deiner funktionierenden Version) --- */
+        /* --- Layout für Übungs-Screen (Stabile Basis + Slide-Effekt) --- */
         #screen-exercise {
-            padding: 0 !important; /* Überschreibt .screen padding */
+            padding: 0 !important;
             background-color: #fff;
             overflow: hidden;
             display: flex;
@@ -66,7 +60,7 @@
         }
 
         .top-bar {
-            padding: calc(env(safe-area-inset-top) + 10px) 15px 10px 15px; /* Reduzierter Abstand */
+            padding: calc(env(safe-area-inset-top) + 10px) 15px 10px 15px;
             flex-shrink: 0;
             z-index: 10;
         }
@@ -100,27 +94,28 @@
             min-width: 0;
             display: flex;
             flex-direction: column;
-            /* justify-content: center; <-- Dieser "zufällige" Fix wird entfernt */
         }
 
-        #image-container {
+        /* === SLIDER CSS WIEDERHERGESTELLT === */
+        .slides-wrapper {
             width: 100%;
-            padding: 10px; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            justify-content: center; /* Zentriert das Bild/den Text innerhalb des Containers */
-            cursor: pointer;
-            transition: opacity var(--transition-speed) ease-in-out;
-            
-            /* === HIER IST DIE ROBUSTE LÖSUNG === */
-            flex-grow: 1; /* Zwingt den Container, allen verfügbaren Platz einzunehmen */
-            min-height: 0;  /* Verhindert Flexbox-Überlaufprobleme */
+            flex-grow: 1; /* WICHTIG: Dies schiebt den Button nach unten */
+            min-height: 0;
+            position: relative;
+            overflow: hidden;
         }
 
-        #image-container.fade-out { opacity: 0; }
-        #image-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        #image-container .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
+        .slide {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 10px;
+            transition: transform var(--transition-speed) ease-out;
+            transform: translateX(200%); /* Startet außerhalb des Bildschirms */
+        }
+        .slide.is-grabbing { transition: none !important; }
+
+        .slide img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer; }
+        .slide .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
         .diktat-instructions { font-size: 1.2rem; padding: 20px; text-align: left; line-height: 1.6; max-width: 600px; }
 
         #action-buttons-container {
@@ -144,7 +139,7 @@
         
         @media (max-width: 480px) {
             .nav-arrow { width: 40px; font-size: 2rem; }
-            #image-container .word-text { font-size: 1.8rem; }
+            .slide .word-text { font-size: 1.8rem; }
             .top-bar { padding: calc(env(safe-area-inset-top) + 10px) 8px 10px 8px; }
             .progress-bar-container { height: 20px; }
             .progress-bar { line-height: 20px; }
@@ -158,6 +153,7 @@
     <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu mischen</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
     <div id="screen-mode-selection" class="screen"><h1>Wortschatz-Trainer</h1><h2 id="current-set-name-h2">Set: [Lädt...]</h2><div class="mode-selection-container"><div class="mode-card clickable-card" data-mode="learn"><span class="emoji">📚</span><span class="subtitle">Lernen</span></div><div class="mode-card clickable-card" data-mode="test"><span class="emoji">✅</span><span class="subtitle">Testen</span></div><div class="mode-card clickable-card" data-mode="dictate"><span class="emoji">✍️</span><span class="subtitle">Diktat</span></div></div></div>
     <div id="screen-settings" class="screen hidden"><h2 id="settings-title">Einstellungen</h2><div class="settings-form"><div class="form-group"><label for="item-set-select">Lern-Set:</label><select id="item-set-select"><option>Lade Sets...</option></select></div><div class="form-group" id="setting-display-type-group"><label>Anzeige:</label><div class="setting-display-type"><button data-display-type="image_only" class="selected">🖼️ Nur Bild</button><button data-display-type="word_only">🆕 Nur Wort</button><button data-display-type="image_word">🖼️+🆕 Bild & Wort</button></div></div><div class="form-group" id="setting-sound-delay-group"><label for="sound-delay-slider">Sound-Verzögerung:</label><input type="range" id="sound-delay-slider" min="0" max="5" value="0" step="1"><div id="sound-delay-value-container"><span id="sound-delay-value">0 Sekunden</span></div></div><div style="display: flex; justify-content: space-between; margin-top: 30px;"><button id="btn-settings-back">Zurück</button><button id="btn-start-exercise">Start</button></div></div></div>
+    
     <div id="screen-exercise" class="screen hidden">
         <div class="top-bar">
             <div class="progress-bar-container">
@@ -168,7 +164,12 @@
             <div class="exercise-main-container">
                 <div class="nav-arrow" id="nav-arrow-left">‹</div>
                 <div class="content-and-controls-wrapper">
-                    <div id="image-container"></div>
+                    <!-- === SLIDER HTML WIEDERHERGESTELLT === -->
+                    <div class="slides-wrapper">
+                        <div id="slide-1" class="slide"></div>
+                        <div id="slide-2" class="slide"></div>
+                        <div id="slide-3" class="slide"></div>
+                    </div>
                     <div id="action-buttons-container">
                          <button id="sound-button"></button>
                          <button id="btn-show-word" class="hidden">Wort anzeigen</button>
@@ -178,15 +179,23 @@
             </div>
         </div>
     </div>
+    
     <audio id="audio-player"></audio>
+
     <script>
-        // Dein funktionierendes JS, unverändert.
+        // === SLIDER JAVASCRIPT LOGIK WIEDERHERGESTELLT ===
         document.addEventListener('DOMContentLoaded', () => {
             let currentMode = null, availableItemSets = [], currentItemSetPath = null;
             let currentItemSetData = [], currentShuffledItems = [], currentItemIndex = 0;
             let currentSettings = { displayType: 'image_only', soundDelay: 0 };
             let soundTimeoutId = null, autoNextTimeoutId = null, isNavigating = false;
+            
+            let touchStartX = 0, touchStartY = 0, currentTranslate = 0;
+            const slides = [document.getElementById('slide-1'), document.getElementById('slide-2'), document.getElementById('slide-3')];
+            let prevSlide = slides[0], currentSlide = slides[1], nextSlide = slides[2];
+
             const screens = { modeSelection: document.getElementById('screen-mode-selection'), settings: document.getElementById('screen-settings'), exercise: document.getElementById('screen-exercise') };
+            const slidesWrapper = document.querySelector('.slides-wrapper');
             const currentSetNameH2 = document.getElementById('current-set-name-h2'), hamburgerIcon = document.getElementById('hamburger-icon'), menuContent = document.getElementById('menu-content');
             const anleitungModal = document.getElementById('anleitung-modal'), exerciseEndModal = document.getElementById('exercise-end-modal'), modalCloseButtons = document.querySelectorAll('.modal-close-button');
             const modeCards = document.querySelectorAll('.mode-card'), settingsTitle = document.getElementById('settings-title'), itemSetSelect = document.getElementById('item-set-select');
@@ -194,7 +203,7 @@
             const soundDelaySlider = document.getElementById('sound-delay-slider'), soundDelayValue = document.getElementById('sound-delay-value');
             const btnSettingsBack = document.getElementById('btn-settings-back'), btnStartExercise = document.getElementById('btn-start-exercise'), audioPlayer = document.getElementById('audio-player');
             const btnReshuffle = document.getElementById('btn-reshuffle'), btnNewSelection = document.getElementById('btn-new-selection');
-            const progressBar = document.getElementById('progress-bar'), imageContainer = document.getElementById('image-container');
+            const progressBar = document.getElementById('progress-bar');
             const navArrowLeft = document.getElementById('nav-arrow-left'), navArrowRight = document.getElementById('nav-arrow-right');
             const actionButtonsContainer = document.getElementById('action-buttons-container'); 
             const soundButton = document.getElementById('sound-button'), btnShowWord = document.getElementById('btn-show-word');
@@ -207,56 +216,128 @@
             async function loadItemSet(path) { if (!path) return false; try { const r = await fetch(path + '?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); currentItemSetData = await r.json(); const o = itemSetSelect.querySelector(`option[value="${path}"]`); currentSetNameH2.textContent = o ? `Set: ${o.text}` : `Set: ${path.split('/').pop().replace('.json','')}`; if (!Array.isArray(currentItemSetData)) { console.error("Set ist kein Array."); currentItemSetData = []; return false; } return true; } catch (e) { console.error(`Fehler bei ${path}:`, e); currentItemSetData = []; return false; } }
             function updateProgressBar() { const total = currentShuffledItems.length > 0 ? currentShuffledItems.length : 1; const current = currentItemIndex + 1; const progress = (current / total) * 100; progressBar.style.width = `${progress}%`; progressBar.textContent = `${Math.round(progress)}%`; }
             function playCurrentItemSound(delay = 0) { clearTimeout(soundTimeoutId); const item = currentShuffledItems[currentItemIndex]; if (!item || !item.sound) { if (currentMode === 'test') scheduleAutoNext(); return; } soundTimeoutId = setTimeout(() => { audioPlayer.src = item.sound + '?t=' + new Date().getTime(); audioPlayer.play().catch(e => console.error("Sound Fehler:", e)); if (currentMode === 'test') { audioPlayer.onended = () => { scheduleAutoNext(); audioPlayer.onended = null; }; } }, delay * 1000); }
-            function scheduleAutoNext() { clearTimeout(autoNextTimeoutId); autoNextTimeoutId = setTimeout(() => { if (currentMode === 'test') navigateItem(1); }, 3000); }
-            function displayCurrentItem() {
-                imageContainer.innerHTML = ''; 
-                isNavigating = false;
-                const noItems = !currentShuffledItems || currentShuffledItems.length === 0;
-                const item = noItems ? null : currentShuffledItems[currentItemIndex];
-                navArrowLeft.classList.toggle('invisible', noItems || currentItemIndex === 0);
-                navArrowRight.classList.toggle('invisible', noItems || currentItemIndex >= currentShuffledItems.length - 1);
-                const hasSound = !noItems && item && item.sound;
-                soundButton.classList.toggle('hidden', !hasSound);
-                if (noItems) { updateProgressBar(); return; }
-                if (!item) { imageContainer.innerHTML = "<p>Fehler: Item ungültig.</p>"; return; }
-                if (currentMode === 'dictate') {
-                    btnShowWord.classList.remove('hidden');
-                    imageContainer.style.cursor = 'default';
+            function scheduleAutoNext() { clearTimeout(autoNextTimeoutId); autoNextTimeoutId = setTimeout(() => { moveSlider(-1); }, 3000); }
+            function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
+
+            function populateSlide(slideElement, itemIndex) {
+                const item = currentShuffledItems[itemIndex];
+                slideElement.innerHTML = '';
+                if (!item) return;
+                if (currentMode === 'dictate' && itemIndex === currentItemIndex) {
                     const instructions = document.createElement('div');
                     instructions.className = 'diktat-instructions';
-                    instructions.innerHTML = `<p><strong>Diktat:</strong></p><ol><li>Höre das Wort (Button unten).</li><li>Schreibe es auf.</li><li>Überprüfe mit 'Wort anzeigen'.</li></ol>`;
-                    imageContainer.appendChild(instructions);
+                    instructions.innerHTML = `<p><strong>Diktat:</strong></p><ol><li>Höre das Wort.</li><li>Schreibe es auf.</li><li>Überprüfe mit 'Wort anzeigen'.</li></ol>`;
+                    slideElement.appendChild(instructions);
                 } else {
-                    btnShowWord.classList.add('hidden');
-                    imageContainer.style.cursor = 'pointer';
                     let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : "";
                     if (currentSettings.displayType === 'image_only') displayImage = true; if (currentSettings.displayType === 'word_only') displayWord = true; if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; }
                     if (displayImage && !imagePath) { displayImage = false; displayWord = true; }
-                    if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; img.addEventListener('click', () => navigateItem(1)); imageContainer.appendChild(img); }
-                    if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; imageContainer.appendChild(p); }
-                    if (currentMode === 'test') playCurrentItemSound(currentSettings.soundDelay);
+                    if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; img.addEventListener('click', () => moveSlider(-1)); slideElement.appendChild(img); }
+                    if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); }
                 }
-                const isSoundButtonVisible = !soundButton.classList.contains('hidden');
-                const isShowWordButtonVisible = !btnShowWord.classList.contains('hidden');
-                actionButtonsContainer.classList.toggle('hidden', !isSoundButtonVisible && !isShowWordButtonVisible);
-                updateProgressBar();
             }
+
+            function setSlidePositions(animated = true) {
+                if (!animated) slides.forEach(s => s.classList.add('is-grabbing'));
+                populateSlide(prevSlide, currentItemIndex - 1);
+                populateSlide(currentSlide, currentItemIndex);
+                populateSlide(nextSlide, currentItemIndex + 1);
+                prevSlide.style.transform = `translateX(-100%)`;
+                currentSlide.style.transform = `translateX(0)`;
+                nextSlide.style.transform = `translateX(100%)`;
+                if (!animated) setTimeout(() => slides.forEach(s => s.classList.remove('is-grabbing')), 0);
+            }
+
+            function displayCurrentItem() {
+                isNavigating = false;
+                setSlidePositions(false);
+                updateUiForCurrentItem();
+            }
+
+            function updateUiForCurrentItem() {
+                updateProgressBar();
+                const item = currentShuffledItems[currentItemIndex];
+                navArrowLeft.classList.toggle('invisible', currentItemIndex === 0);
+                navArrowRight.classList.toggle('invisible', currentItemIndex >= currentShuffledItems.length - 1);
+                const hasSound = item && item.sound;
+                soundButton.classList.toggle('hidden', !hasSound);
+                btnShowWord.classList.toggle('hidden', currentMode !== 'dictate');
+                actionButtonsContainer.classList.toggle('hidden', !hasSound && currentMode !== 'dictate');
+                if (currentMode === 'test') playCurrentItemSound(currentSettings.soundDelay);
+            }
+
+            function touchStart(event) {
+                if (isNavigating) return;
+                touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+                touchStartY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY;
+                slides.forEach(s => s.classList.add('is-grabbing'));
+                slidesWrapper.addEventListener('touchmove', touchMove);
+                slidesWrapper.addEventListener('touchend', touchEnd);
+            }
+
+            function touchMove(event) {
+                const currentX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+                const currentY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY;
+                const deltaX = currentX - touchStartX;
+                const deltaY = Math.abs(currentY - touchStartY);
+                if (Math.abs(deltaX) < deltaY && !currentTranslate) return;
+                currentTranslate = deltaX;
+                prevSlide.style.transform = `translateX(calc(-100% + ${deltaX}px))`;
+                currentSlide.style.transform = `translateX(${deltaX}px)`;
+                nextSlide.style.transform = `translateX(calc(100% + ${deltaX}px))`;
+            }
+
+            function touchEnd() {
+                slidesWrapper.removeEventListener('touchmove', touchMove);
+                slidesWrapper.removeEventListener('touchend', touchEnd);
+                slides.forEach(s => s.classList.remove('is-grabbing'));
+                const threshold = slidesWrapper.clientWidth / 4;
+                let direction = 0;
+                if (Math.abs(currentTranslate) > threshold) { direction = currentTranslate < 0 ? -1 : 1; }
+                moveSlider(direction);
+                currentTranslate = 0;
+            }
+            
+            function moveSlider(direction) {
+                if (isNavigating) return;
+                if ((direction === 1 && currentItemIndex === 0) || (direction === -1 && currentItemIndex === currentShuffledItems.length - 1)) {
+                    setSlidePositions(); return;
+                }
+                if (direction !== 0) {
+                    isNavigating = true;
+                    clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause();
+                    const newIndex = currentItemIndex - direction;
+                    if (newIndex < 0 || newIndex >= currentShuffledItems.length) {
+                         if (newIndex >= currentShuffledItems.length) showModal('exercise-end-modal');
+                         setSlidePositions(); isNavigating = false; return;
+                    }
+                    currentItemIndex = newIndex;
+                    currentSlide.style.transform = `translateX(${direction * 100}%)`;
+                    let tempSlide;
+                    if (direction === -1) { // Swipe Left (next item)
+                        nextSlide.style.transform = `translateX(0)`;
+                        tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide;
+                    } else { // Swipe Right (prev item)
+                        prevSlide.style.transform = `translateX(0)`;
+                        tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide;
+                    }
+                    currentSlide.addEventListener('transitionend', () => {
+                        displayCurrentItem(); // Ersetzt die alte Logik für mehr Stabilität
+                    }, { once: true });
+                    updateUiForCurrentItem();
+                } else {
+                    setSlidePositions();
+                }
+            }
+            
             function showDiktatWord() {
                 const item = currentShuffledItems[currentItemIndex]; if (!item) return;
-                imageContainer.innerHTML = ''; const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; imageContainer.appendChild(p);
+                currentSlide.innerHTML = '';
+                const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || "";
+                currentSlide.appendChild(p);
                 btnShowWord.classList.add('hidden');
-                const isSoundButtonVisible = !soundButton.classList.contains('hidden');
-                actionButtonsContainer.classList.toggle('hidden', !isSoundButtonVisible);
             }
-            function navigateItem(direction) {
-                if (isNavigating) return; isNavigating = true;
-                clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); audioPlayer.onended = null; 
-                const newIndex = currentItemIndex + direction;
-                if (newIndex < 0 || newIndex >= currentShuffledItems.length) { isNavigating = false; if (newIndex >= currentShuffledItems.length) showModal('exercise-end-modal'); return; }
-                imageContainer.classList.add('fade-out');
-                setTimeout(() => { currentItemIndex = newIndex; displayCurrentItem(); imageContainer.classList.remove('fade-out'); }, 300);
-            }
-            function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
+
             hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); });
             document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
             document.getElementById('menu-anleitung').addEventListener('click', (e) => { e.preventDefault(); showModal('anleitung-modal'); menuContent.classList.remove('show'); });
@@ -274,9 +355,10 @@
             btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); currentShuffledItems = shuffleArray([...currentItemSetData]); currentItemIndex = 0; displayCurrentItem(); });
             btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); configureSettingsScreen(); showScreen('screen-settings'); });
             soundButton.addEventListener('click', () => playCurrentItemSound(0));
-            navArrowLeft.addEventListener('click', () => navigateItem(-1));
-            navArrowRight.addEventListener('click', () => navigateItem(1));
+            navArrowLeft.addEventListener('click', () => moveSlider(1));
+            navArrowRight.addEventListener('click', () => moveSlider(-1));
             btnShowWord.addEventListener('click', () => showDiktatWord());
+            slidesWrapper.addEventListener('touchstart', touchStart, { passive: true }); // passive für bessere Performance
             initializeApp();
             async function initializeApp() { await loadManifestAndPopulateSelect(); showScreen('screen-mode-selection'); }
         });
