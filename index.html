@@ -49,10 +49,29 @@
         #screen-settings h2 { color: var(--dark-green); margin-bottom: 20px; text-align: center; }
         .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
 
-        #screen-exercise { padding: 0; background-color: #fff; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start; }
-        .top-bar { width: 100%; padding: calc(env(safe-area-inset-top) + 100px) 15px 10px 15px; flex-shrink: 0; z-index: 10; }
+        /* --- DIE FINALE, ROBUSTE LÖSUNG --- */
+        #screen-exercise {
+            background-color: #fff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            /* HINZUGEFÜGT: Erzeugt eine "sichere Zone" oben für alle schwebenden Elemente */
+            padding-top: 120px; 
+        }
+        
+        .top-bar {
+            /* HINZUGEFÜGT: Lässt die Leiste schweben */
+            position: fixed;
+            top: 60px; /* Abstand, um Platz für das Menü zu lassen */
+            left: 0;
+            width: 100%;
+            padding: 10px 15px; /* Nur noch innerer Abstand */
+            z-index: 10;
+            background-color: #fff; /* Hintergrund, damit nichts durchscheint */
+        }
         .progress-bar-container { width: 100%; background-color: #e0e0e0; border-radius: var(--border-radius); overflow: hidden; height: 25px; }
         .progress-bar { width: 0%; height: 100%; background-color: var(--light-green); text-align: center; line-height: 25px; color: white; font-weight: bold; transition: width 0.3s ease; }
+        
         .main-content-area { flex-grow: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; align-items: center; padding-bottom: env(safe-area-inset-bottom); }
         .exercise-main-container { display: flex; flex-direction: row; justify-content: space-between; align-items: stretch; width: 100%; flex-grow: 1; min-height: 0; }
         .nav-arrow { height: 100%; display: flex; justify-content: center; align-items: center; width: 60px; font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none; transition: background-color 0.2s ease; flex-shrink: 0; z-index: 5; }
@@ -63,9 +82,7 @@
             flex-grow: 1;
             position: relative;
             overflow: hidden;
-            /* DIES IST DIE ENTSCHEIDENDE KORREKTUR */
-            min-height: 0; /* HINZUGEFÜGT: Erlaubt dem Container, korrekt zu schrumpfen. */
-            /* max-height: 70%; <-- ENTFERNT: War die Ursache des Problems. */
+            min-height: 0; /* Dieser Fix ist weiterhin entscheidend */
         }
 
         .slide {
@@ -87,7 +104,9 @@
         @media (max-width: 480px) {
             .nav-arrow { width: 40px; font-size: 2rem; }
             .slide .word-text { font-size: 1.8rem; }
-            .top-bar { padding: calc(env(safe-area-inset-top) + 100px) 8px 10px 8px; }
+            /* HINZUGEFÜGT: Anpassung für die schwebende Leiste auf kleinen Geräten */
+            .top-bar { top: 50px; }
+            #screen-exercise { padding-top: 100px; }
             .progress-bar-container { height: 20px; }
             .progress-bar { line-height: 20px; }
             #sound-button { width: 50px; height: 50px; }
