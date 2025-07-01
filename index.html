@@ -6,7 +6,7 @@
     <title>Wortschatz-Trainer</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS (stark angepasst für den neuen Effekt) */
+        /* CSS (mit korrigiertem Layout für den Button) */
         :root {
             --dark-green: #27633A;
             --light-green: #6BAB58;
@@ -57,17 +57,34 @@
         .main-content-area { flex-grow: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; align-items: center; padding-bottom: env(safe-area-inset-bottom); }
         .exercise-main-container { display: flex; flex-direction: row; justify-content: space-between; align-items: stretch; width: 100%; flex-grow: 1; min-height: 0; }
         .nav-arrow { height: 100%; display: flex; justify-content: center; align-items: center; width: 60px; font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none; transition: background-color 0.2s ease; flex-shrink: 0; z-index: 5; }
-        .content-and-controls-wrapper { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         
-        .slides-wrapper { width: 100%; height: 100%; position: relative; overflow: hidden; }
+        /* KORRIGIERT: Wrapper zentriert nicht mehr, sondern füllt den Raum */
+        .content-and-controls-wrapper {
+            flex-grow: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* justify-content: center; <-- ENTFERNT */
+        }
+        
+        /* KORRIGIERT: slides-wrapper wächst jetzt, um den Button nach unten zu schieben */
+        .slides-wrapper {
+            width: 100%;
+            flex-grow: 1; /* <-- HINZUGEFÜGT */
+            min-height: 0; /* Wichtiger Flexbox-Fix */
+            position: relative;
+            overflow: hidden;
+        }
+
         .slide {
             width: 100%; height: 100%; position: absolute; top: 0; left: 0;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 10px;
-            transition: transform var(--transition-speed) ease-out; /* Wichtig für Snap-Animation */
-            transform: translateX(200%); /* Standardmäßig weit weg parken */
+            transition: transform var(--transition-speed) ease-out;
+            transform: translateX(200%);
         }
-        .slide.is-grabbing { transition: none !important; } /* Deaktiviert Animation während des Ziehens */
+        .slide.is-grabbing { transition: none !important; }
 
         .slide img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer; }
         .slide .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
@@ -80,14 +97,12 @@
     </style>
 </head>
 <body>
-    <!-- Menüs und Modale (unverändert) -->
+    <!-- HTML und JavaScript bleiben exakt gleich wie in der letzten Version -->
     <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-lernmodus">Lernmodus</a></li><li><a href="#" id="menu-testmodus">Testmodus</a></li><li><a href="#" id="menu-diktatmodus">Diktat-Modus</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
     <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p>Details...</p></div></div>
     <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu mischen</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
     <div id="screen-mode-selection" class="screen"><h1>Wortschatz-Trainer</h1><h2 id="current-set-name-h2">Set: [Lädt...]</h2><div class="mode-selection-container"><div class="mode-card clickable-card" data-mode="learn"><span class="emoji">📚</span><span class="subtitle">Lernen</span></div><div class="mode-card clickable-card" data-mode="test"><span class="emoji">✅</span><span class="subtitle">Testen</span></div><div class="mode-card clickable-card" data-mode="dictate"><span class="emoji">✍️</span><span class="subtitle">Diktat</span></div></div></div>
     <div id="screen-settings" class="screen hidden"><h2 id="settings-title">Einstellungen</h2><div class="settings-form"><div class="form-group"><label for="item-set-select">Lern-Set:</label><select id="item-set-select"><option>Lade Sets...</option></select></div><div class="form-group" id="setting-display-type-group"><label>Anzeige:</label><div class="setting-display-type"><button data-display-type="image_only" class="selected">🖼️ Nur Bild</button><button data-display-type="word_only">🆕 Nur Wort</button><button data-display-type="image_word">🖼️+🆕 Bild & Wort</button></div></div><div class="form-group" id="setting-sound-delay-group"><label for="sound-delay-slider">Sound-Verzögerung:</label><input type="range" id="sound-delay-slider" min="0" max="5" value="0" step="1"><div id="sound-delay-value-container"><span id="sound-delay-value">0 Sekunden</span></div></div><div style="display: flex; justify-content: space-between; margin-top: 30px;"><button id="btn-settings-back">Zurück</button><button id="btn-start-exercise">Start</button></div></div></div>
-    
-    <!-- GEÄNDERTE HTML-Struktur mit 3 Slides -->
     <div id="screen-exercise" class="screen hidden">
         <div class="top-bar">
             <div class="progress-bar-container">
@@ -115,15 +130,14 @@
     <audio id="audio-player"></audio>
 
     <script>
-        // JAVASCRIPT mit komplett neuer INTERAKTIVER SLIDER-LOGIK
+        // JavaScript (unverändert)
         document.addEventListener('DOMContentLoaded', () => {
             let currentMode = null, availableItemSets = [], currentItemSetPath = null;
             let currentItemSetData = [], currentShuffledItems = [], currentItemIndex = 0;
             let currentSettings = { displayType: 'image_only', soundDelay: 0 };
             let soundTimeoutId = null, autoNextTimeoutId = null, isNavigating = false;
             
-            // --- Neue Variablen für den interaktiven Slider ---
-            let touchStartX = 0, touchStartY = 0, currentTranslate = 0, startTranslate = 0;
+            let touchStartX = 0, touchStartY = 0, currentTranslate = 0;
             const slides = [document.getElementById('slide-1'), document.getElementById('slide-2'), document.getElementById('slide-3')];
             let prevSlide = slides[0], currentSlide = slides[1], nextSlide = slides[2];
 
@@ -141,7 +155,6 @@
             const actionButtonsContainer = document.getElementById('action-buttons-container'); 
             const soundButton = document.getElementById('sound-button'), btnShowWord = document.getElementById('btn-show-word');
             
-            // Unveränderte Funktionen
             function showScreen(screenIdToShow) { Object.values(screens).forEach(screen => { const isTarget = screen.id === screenIdToShow; screen.classList.toggle('hidden', !isTarget); screen.classList.toggle('zoom-out', !isTarget); screen.classList.toggle('zoom-in', isTarget); }); document.body.style.overflow = (screenIdToShow === 'screen-exercise') ? 'hidden' : 'auto'; window.scrollTo(0,0); }
             function showModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.add('show'); }
             function closeModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.remove('show'); }
@@ -153,12 +166,10 @@
             function scheduleAutoNext() { clearTimeout(autoNextTimeoutId); autoNextTimeoutId = setTimeout(() => { moveSlider(-1); }, 3000); }
             function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
 
-            // Hilfsfunktion, um eine Slide zu füllen
             function populateSlide(slideElement, itemIndex) {
                 const item = currentShuffledItems[itemIndex];
                 slideElement.innerHTML = '';
                 if (!item) return;
-
                 if (currentMode === 'dictate' && itemIndex === currentItemIndex) {
                     const instructions = document.createElement('div');
                     instructions.className = 'diktat-instructions';
@@ -173,29 +184,23 @@
                 }
             }
 
-            // NEU: Setzt die Positionen der 3 Slides auf einmal
             function setSlidePositions(animated = true) {
                 if (!animated) slides.forEach(s => s.classList.add('is-grabbing'));
-                
                 populateSlide(prevSlide, currentItemIndex - 1);
                 populateSlide(currentSlide, currentItemIndex);
                 populateSlide(nextSlide, currentItemIndex + 1);
-
                 prevSlide.style.transform = `translateX(-100%)`;
                 currentSlide.style.transform = `translateX(0)`;
                 nextSlide.style.transform = `translateX(100%)`;
-
                 if (!animated) setTimeout(() => slides.forEach(s => s.classList.remove('is-grabbing')), 0);
             }
 
-            // NEU: Logik für den Start und Reset
             function displayCurrentItem() {
                 isNavigating = false;
                 setSlidePositions(false);
                 updateUiForCurrentItem();
             }
 
-            // NEU: UI-Updates ausgelagert
             function updateUiForCurrentItem() {
                 updateProgressBar();
                 const item = currentShuffledItems[currentItemIndex];
@@ -208,7 +213,6 @@
                 if (currentMode === 'test') playCurrentItemSound(currentSettings.soundDelay);
             }
 
-            // NEU: Komplett überarbeitete Logik für Touch-Events
             function touchStart(event) {
                 if (isNavigating) return;
                 touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
@@ -223,9 +227,7 @@
                 const currentY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY;
                 const deltaX = currentX - touchStartX;
                 const deltaY = Math.abs(currentY - touchStartY);
-
-                if (Math.abs(deltaX) < deltaY && !currentTranslate) return; // Prioritize vertical scroll
-                
+                if (Math.abs(deltaX) < deltaY && !currentTranslate) return;
                 currentTranslate = deltaX;
                 prevSlide.style.transform = `translateX(calc(-100% + ${deltaX}px))`;
                 currentSlide.style.transform = `translateX(${deltaX}px)`;
@@ -236,62 +238,42 @@
                 slidesWrapper.removeEventListener('touchmove', touchMove);
                 slidesWrapper.removeEventListener('touchend', touchEnd);
                 slides.forEach(s => s.classList.remove('is-grabbing'));
-
                 const threshold = slidesWrapper.clientWidth / 4;
                 let direction = 0;
-                if (Math.abs(currentTranslate) > threshold) {
-                    direction = currentTranslate < 0 ? -1 : 1;
-                }
+                if (Math.abs(currentTranslate) > threshold) { direction = currentTranslate < 0 ? -1 : 1; }
                 moveSlider(direction);
                 currentTranslate = 0;
             }
             
-            // NEU: Logik, die den Slider animiert und neu anordnet
             function moveSlider(direction) {
                 if (isNavigating) return;
                 if ((direction === 1 && currentItemIndex === 0) || (direction === -1 && currentItemIndex === currentShuffledItems.length - 1)) {
-                    setSlidePositions(); // Snap back
-                    return;
+                    setSlidePositions(); return;
                 }
-                
                 if (direction !== 0) {
                     isNavigating = true;
                     clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause();
-                    
                     const newIndex = currentItemIndex - direction;
                     if (newIndex < 0 || newIndex >= currentShuffledItems.length) {
                          if (newIndex >= currentShuffledItems.length) showModal('exercise-end-modal');
-                         setSlidePositions();
-                         isNavigating = false;
-                         return;
+                         setSlidePositions(); isNavigating = false; return;
                     }
-
                     currentItemIndex = newIndex;
                     currentSlide.style.transform = `translateX(${direction * 100}%)`;
-
                     let tempSlide;
                     if (direction === -1) { // Swipe Left (next item)
                         nextSlide.style.transform = `translateX(0)`;
-                        tempSlide = prevSlide;
-                        prevSlide = currentSlide;
-                        currentSlide = nextSlide;
-                        nextSlide = tempSlide;
+                        tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide;
                     } else { // Swipe Right (prev item)
                         prevSlide.style.transform = `translateX(0)`;
-                        tempSlide = nextSlide;
-                        nextSlide = currentSlide;
-                        currentSlide = prevSlide;
-                        prevSlide = tempSlide;
+                        tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide;
                     }
-
                     currentSlide.addEventListener('transitionend', () => {
-                        setSlidePositions(false);
-                        isNavigating = false;
+                        setSlidePositions(false); isNavigating = false;
                     }, { once: true });
-                    
                     updateUiForCurrentItem();
                 } else {
-                    setSlidePositions(); // Snap back if direction is 0
+                    setSlidePositions();
                 }
             }
             
@@ -303,7 +285,6 @@
                 btnShowWord.classList.add('hidden');
             }
 
-            // Event Listeners (unverändert, außer die für die Navigation)
             hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); });
             document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
             document.getElementById('menu-anleitung').addEventListener('click', (e) => { e.preventDefault(); showModal('anleitung-modal'); menuContent.classList.remove('show'); });
@@ -321,12 +302,10 @@
             btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); currentShuffledItems = shuffleArray([...currentItemSetData]); currentItemIndex = 0; displayCurrentItem(); });
             btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); configureSettingsScreen(); showScreen('screen-settings'); });
             soundButton.addEventListener('click', () => playCurrentItemSound(0));
-            navArrowLeft.addEventListener('click', () => moveSlider(1)); // Geändert
-            navArrowRight.addEventListener('click', () => moveSlider(-1)); // Geändert
+            navArrowLeft.addEventListener('click', () => moveSlider(1));
+            navArrowRight.addEventListener('click', () => moveSlider(-1));
             btnShowWord.addEventListener('click', () => showDiktatWord());
-            
             slidesWrapper.addEventListener('touchstart', touchStart);
-
             initializeApp();
             async function initializeApp() { await loadManifestAndPopulateSelect(); showScreen('screen-mode-selection'); }
         });
