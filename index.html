@@ -48,22 +48,28 @@
         #screen-settings h2 { color: var(--dark-green); margin-bottom: 20px; text-align: center; }
         .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
 
-        /* --- Layout für Übungs-Screen mit INTERAKTIVEM SLIDE-EFFEKT --- */
+        /* === FINALES, GRUNDLEGEND KORRIGIERTES LAYOUT === */
+
         #screen-exercise {
-            padding: 0 !important; /* Wichtig, um das Padding von .screen zu überschreiben */
+            padding: 0 !important;
             background-color: #fff;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
             height: 100vh;
             height: 100dvh;
         }
-        .top-bar { width: 100%; padding: calc(env(safe-area-inset-top) + 10px) 15px 10px 15px; flex-shrink: 0; z-index: 10; }
+
+        .top-bar {
+            flex-shrink: 0;
+            width: 100%;
+            padding: calc(env(safe-area-inset-top) + 10px) 15px 10px 15px;
+            z-index: 10;
+        }
+
         .progress-bar-container { width: 100%; background-color: #e0e0e0; border-radius: var(--border-radius); overflow: hidden; height: 25px; }
         .progress-bar { width: 0%; height: 100%; background-color: var(--light-green); text-align: center; line-height: 25px; color: white; font-weight: bold; transition: width 0.3s ease; }
         
-        /* === KORRIGIERTES, VEREINFACHTES LAYOUT === */
         .main-content-area {
             flex-grow: 1;
             min-height: 0;
@@ -71,23 +77,41 @@
             padding-bottom: env(safe-area-inset-bottom);
             display: flex;
             flex-direction: row;
-            align-items: stretch;
+            align-items: stretch; /* Kinder auf volle Höhe strecken */
+            justify-content: space-between; /* Verteilt die Elemente */
         }
-        /* Die Regel für .exercise-main-container wurde entfernt. */
 
-        .nav-arrow { height: 100%; display: flex; justify-content: center; align-items: center; width: 60px; font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none; transition: background-color 0.2s ease; flex-shrink: 0; z-index: 5; }
+        .nav-arrow-wrapper {
+            flex-grow: 1; /* WICHTIG: Die Pfeil-Container füllen den freien Platz */
+            flex-basis: 0;  /* Sorgt für eine faire Aufteilung */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nav-arrow-button {
+            font-size: 3rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #aaa;
+            padding: 20px;
+            font-weight: 100;
+            user-select: none;
+        }
         
         .content-and-controls-wrapper {
-            flex-grow: 1;
-            min-width: 0;
+            flex-shrink: 0; /* WICHTIG: Der zentrale Container wächst NICHT, er schrumpft nur nicht */
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            max-width: 80%; /* Verhindert, dass das Bild auf sehr breiten Bildschirmen riesig wird */
         }
         
         .slides-wrapper {
             width: 100%;
-            flex-grow: 1;
+            flex-grow: 1; /* Nimmt den vertikalen Platz im stabilen Eltern-Container ein */
             min-height: 0;
             position: relative;
             overflow: hidden;
@@ -98,18 +122,19 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 10px;
             transition: transform var(--transition-speed) ease-out;
-            transform: translateX(200%);
         }
-        .slide.is-grabbing { transition: none !important; }
 
         .slide img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer; }
         .slide .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
+        #action-buttons-container { flex-shrink: 0; padding: 15px 0; }
+        #sound-button { width: 60px; height: 60px; border-radius: 50%; border: 1px solid #ddd; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2327633A'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; background-size: 60%; }
+        
+        /* Unveränderte restliche Stile */
+        .slide.is-grabbing { transition: none !important; }
         .diktat-instructions { font-size: 1.2rem; padding: 20px; text-align: left; line-height: 1.6; max-width: 600px; }
-        #action-buttons-container { flex-shrink: 0; display: flex; justify-content: center; align-items: center; gap: 20px; padding: 15px 0; }
-        #sound-button { width: 60px; height: 60px; border-radius: 50%; background-color: var(--card-background); border: 1px solid #ddd; box-shadow: var(--box-shadow); cursor: pointer; flex-shrink: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2327633A'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; background-size: 60%; transition: transform 0.1s ease; }
         #sound-button:active { transform: scale(0.95); }
         #btn-show-word { min-width: 200px; padding: 15px 25px; font-size: 1.1rem; }
-        @media (max-width: 480px) { .nav-arrow { width: 40px; font-size: 2rem; } .slide .word-text { font-size: 1.8rem; } .top-bar { padding: calc(env(safe-area-inset-top) + 10px) 8px 10px 8px; } .progress-bar-container { height: 20px; } .progress-bar { line-height: 20px; } #sound-button { width: 50px; height: 50px; } }
+        @media (max-width: 480px) { .nav-arrow-button { font-size: 2rem; padding: 10px; } .slide .word-text { font-size: 1.8rem; } .top-bar { padding: calc(env(safe-area-inset-top) + 10px) 8px 10px 8px; } .progress-bar-container { height: 20px; } .progress-bar { line-height: 20px; } #sound-button { width: 50px; height: 50px; } }
     </style>
 </head>
 <body>
@@ -126,27 +151,35 @@
                 <div class="progress-bar" id="progress-bar">0%</div>
             </div>
         </div>
-        <!-- === KORRIGIERTES, VEREINFACHTES LAYOUT === -->
         <div class="main-content-area">
-            <div class="nav-arrow" id="nav-arrow-left">‹</div>
+            <!-- Die Pfeile sind jetzt in eigenen Wrapper-Divs, die den Platz auffüllen -->
+            <div class="nav-arrow-wrapper">
+                <button class="nav-arrow-button" id="nav-arrow-left">‹</button>
+            </div>
+
+            <!-- Der zentrale Container wächst nicht mehr, er hat eine stabile Größe -->
             <div class="content-and-controls-wrapper">
                 <div class="slides-wrapper">
-                    <div id="slide-1" class="slide"></div>
-                    <div id="slide-2" class="slide"></div>
-                    <div id="slide-3" class="slide"></div>
+                    <!-- Die Transform-Eigenschaft wird vom JS gesteuert -->
+                    <div id="slide-1" class="slide" style="transform: translateX(-100%);"></div>
+                    <div id="slide-2" class="slide" style="transform: translateX(0%);"></div>
+                    <div id="slide-3" class="slide" style="transform: translateX(100%);"></div>
                 </div>
                 <div id="action-buttons-container">
                      <button id="sound-button"></button>
                      <button id="btn-show-word" class="hidden">Wort anzeigen</button>
                 </div>
             </div>
-            <div class="nav-arrow" id="nav-arrow-right">›</div>
+
+            <div class="nav-arrow-wrapper">
+                <button class="nav-arrow-button" id="nav-arrow-right">›</button>
+            </div>
         </div>
     </div>
     <audio id="audio-player"></audio>
 
     <script>
-        // JavaScript (unverändert)
+        // JavaScript (angepasst an neue Button-IDs)
         document.addEventListener('DOMContentLoaded', () => {
             let currentMode = null, availableItemSets = [], currentItemSetPath = null;
             let currentItemSetData = [], currentShuffledItems = [], currentItemIndex = 0;
@@ -167,6 +200,7 @@
             const btnSettingsBack = document.getElementById('btn-settings-back'), btnStartExercise = document.getElementById('btn-start-exercise'), audioPlayer = document.getElementById('audio-player');
             const btnReshuffle = document.getElementById('btn-reshuffle'), btnNewSelection = document.getElementById('btn-new-selection');
             const progressBar = document.getElementById('progress-bar');
+            // Die Navigations-Elemente sind jetzt die Buttons
             const navArrowLeft = document.getElementById('nav-arrow-left'), navArrowRight = document.getElementById('nav-arrow-right');
             const actionButtonsContainer = document.getElementById('action-buttons-container'); 
             const soundButton = document.getElementById('sound-button'), btnShowWord = document.getElementById('btn-show-word');
@@ -220,8 +254,8 @@
             function updateUiForCurrentItem() {
                 updateProgressBar();
                 const item = currentShuffledItems[currentItemIndex];
-                navArrowLeft.classList.toggle('invisible', currentItemIndex === 0);
-                navArrowRight.classList.toggle('invisible', currentItemIndex >= currentShuffledItems.length - 1);
+                navArrowLeft.parentElement.classList.toggle('invisible', currentItemIndex === 0);
+                navArrowRight.parentElement.classList.toggle('invisible', currentItemIndex >= currentShuffledItems.length - 1);
                 const hasSound = item && item.sound;
                 soundButton.classList.toggle('hidden', !hasSound);
                 btnShowWord.classList.toggle('hidden', currentMode !== 'dictate');
