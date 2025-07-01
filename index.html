@@ -50,29 +50,37 @@
         .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
 
         /* --- Layout für Übungs-Screen mit INTERAKTIVEM SLIDE-EFFEKT --- */
-        #screen-exercise { padding: 0; background-color: #fff; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start; }
-        .top-bar { width: 100%; padding: calc(env(safe-area-inset-top) + 100px) 15px 10px 15px; flex-shrink: 0; z-index: 10; }
+        #screen-exercise {
+            padding: 0;
+            background-color: #fff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            /* === KORREKTUR FÜR MOBILE BROWSER (iPHONE) === */
+            /* Überschreibt die min-height von .screen und fixt das Viewport-Problem */
+            height: 100vh;   /* Fallback für ältere Browser, die dvh nicht kennen */
+            height: 100dvh;  /* Die korrekte Einheit, die dynamische Browser-Leisten berücksichtigt */
+        }
+        .top-bar { width: 100%; padding: calc(env(safe-area-inset-top) + 10px) 15px 10px 15px; flex-shrink: 0; z-index: 10; }
         .progress-bar-container { width: 100%; background-color: #e0e0e0; border-radius: var(--border-radius); overflow: hidden; height: 25px; }
         .progress-bar { width: 0%; height: 100%; background-color: var(--light-green); text-align: center; line-height: 25px; color: white; font-weight: bold; transition: width 0.3s ease; }
         .main-content-area { flex-grow: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; align-items: center; padding-bottom: env(safe-area-inset-bottom); }
         .exercise-main-container { display: flex; flex-direction: row; justify-content: space-between; align-items: stretch; width: 100%; flex-grow: 1; min-height: 0; }
         .nav-arrow { height: 100%; display: flex; justify-content: center; align-items: center; width: 60px; font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none; transition: background-color 0.2s ease; flex-shrink: 0; z-index: 5; }
         
-        /* KORRIGIERT: Wrapper zentriert nicht mehr, sondern füllt den Raum */
         .content-and-controls-wrapper {
             flex-grow: 1;
             min-width: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* justify-content: center; <-- ENTFERNT */
         }
         
-        /* KORRIGIERT: slides-wrapper wächst jetzt, um den Button nach unten zu schieben */
         .slides-wrapper {
             width: 100%;
-            flex-grow: 1; /* <-- HINZUGEFÜGT */
-            min-height: 0; /* Wichtiger Flexbox-Fix */
+            flex-grow: 1;
+            min-height: 0;
             position: relative;
             overflow: hidden;
         }
@@ -93,11 +101,11 @@
         #sound-button { width: 60px; height: 60px; border-radius: 50%; background-color: var(--card-background); border: 1px solid #ddd; box-shadow: var(--box-shadow); cursor: pointer; flex-shrink: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2327633A'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; background-size: 60%; transition: transform 0.1s ease; }
         #sound-button:active { transform: scale(0.95); }
         #btn-show-word { min-width: 200px; padding: 15px 25px; font-size: 1.1rem; }
-        @media (max-width: 480px) { .nav-arrow { width: 40px; font-size: 2rem; } .slide .word-text { font-size: 1.8rem; } .top-bar { padding: calc(env(safe-area-inset-top) + 100px) 8px 10px 8px; } .progress-bar-container { height: 20px; } .progress-bar { line-height: 20px; } #sound-button { width: 50px; height: 50px; } }
+        @media (max-width: 480px) { .nav-arrow { width: 40px; font-size: 2rem; } .slide .word-text { font-size: 1.8rem; } .top-bar { padding: calc(env(safe-area-inset-top) + 10px) 8px 10px 8px; } .progress-bar-container { height: 20px; } .progress-bar { line-height: 20px; } #sound-button { width: 50px; height: 50px; } }
     </style>
 </head>
 <body>
-    <!-- HTML und JavaScript bleiben exakt gleich wie in der letzten Version -->
+    <!-- HTML und JavaScript bleiben exakt gleich -->
     <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-lernmodus">Lernmodus</a></li><li><a href="#" id="menu-testmodus">Testmodus</a></li><li><a href="#" id="menu-diktatmodus">Diktat-Modus</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
     <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p>Details...</p></div></div>
     <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu mischen</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
