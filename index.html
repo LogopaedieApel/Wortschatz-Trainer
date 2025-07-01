@@ -6,8 +6,7 @@
     <title>Wortschatz-Trainer</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS HIER */
-        /* Globale Stile */
+        /* CSS HIER (unverändert) */
         :root {
             --dark-green: #27633A;
             --light-green: #6BAB58;
@@ -36,7 +35,6 @@
             overflow: hidden;
         }
 
-        /* Hilfsklassen und Basis-Layouts (unverändert) */
         h1, h2, h3 { font-family: 'Comfortaa', cursive; }
         .hidden { display: none !important; }
         .invisible { visibility: hidden !important; }
@@ -64,156 +62,74 @@
         .mode-card { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center; cursor: pointer; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 150px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
         #screen-settings h2 { color: var(--dark-green); margin-bottom: 20px; text-align: center; }
         .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
-
-
-        /* --- Layout für Übungs-Screen --- */
-        #screen-exercise {
-            padding: 0;
-            background-color: #fff;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-
-        .top-bar {
-            width: 100%;
-            padding: calc(env(safe-area-inset-top) + 100px) 15px 10px 15px;
-            flex-shrink: 0;
-            z-index: 10;
-        }
+        #screen-exercise { padding: 0; background-color: #fff; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start; }
+        .top-bar { width: 100%; padding: calc(env(safe-area-inset-top) + 100px) 15px 10px 15px; flex-shrink: 0; z-index: 10; }
         .progress-bar-container { width: 100%; background-color: #e0e0e0; border-radius: var(--border-radius); overflow: hidden; height: 25px; }
         .progress-bar { width: 0%; height: 100%; background-color: var(--light-green); text-align: center; line-height: 25px; color: white; font-weight: bold; transition: width 0.3s ease; }
-
-        .main-content-area {
-            flex-grow: 1;
-            width: 100%;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-
-        .exercise-main-container {
-            display: flex; flex-direction: row; justify-content: space-between; align-items: stretch;
-            width: 100%;
-            flex-grow: 1; 
-            min-height: 0;
-        }
-
-        .nav-arrow {
-            height: 100%; display: flex; justify-content: center; align-items: center;
-            width: 60px; font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none;
-            transition: background-color 0.2s ease; flex-shrink: 0;
-        }
-        
-        .content-and-controls-wrapper {
-            flex-grow: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #image-container {
-            width: 100%;
-            padding: 10px; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            cursor: pointer;
-            transition: opacity var(--transition-speed) ease-in-out;
-            min-height: 0;
-        }
-
+        .main-content-area { flex-grow: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; align-items: center; padding-bottom: env(safe-area-inset-bottom); }
+        .exercise-main-container { display: flex; flex-direction: row; justify-content: space-between; align-items: stretch; width: 100%; flex-grow: 1; min-height: 0; }
+        .nav-arrow { height: 100%; display: flex; justify-content: center; align-items: center; width: 60px; font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none; transition: background-color 0.2s ease; flex-shrink: 0; }
+        .content-and-controls-wrapper { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #image-container { width: 100%; padding: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: opacity var(--transition-speed) ease-in-out; min-height: 0; }
         #image-container.fade-out { opacity: 0; }
         #image-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
         #image-container .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
         .diktat-instructions { font-size: 1.2rem; padding: 20px; text-align: left; line-height: 1.6; max-width: 600px; }
-
-        #action-buttons-container {
-            flex-shrink: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            padding: 15px 0;
-        }
-
-        #sound-button {
-            width: 60px; height: 60px; border-radius: 50%;
-            background-color: var(--card-background); border: 1px solid #ddd;
-            box-shadow: var(--box-shadow); cursor: pointer; flex-shrink: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2327633A'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: center; background-size: 60%;
-            transition: transform 0.1s ease;
-        }
+        #action-buttons-container { flex-shrink: 0; display: flex; justify-content: center; align-items: center; gap: 20px; padding: 15px 0; }
+        #sound-button { width: 60px; height: 60px; border-radius: 50%; background-color: var(--card-background); border: 1px solid #ddd; box-shadow: var(--box-shadow); cursor: pointer; flex-shrink: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2327633A'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; background-size: 60%; transition: transform 0.1s ease; }
         #sound-button:active { transform: scale(0.95); }
         #btn-show-word { min-width: 200px; padding: 15px 25px; font-size: 1.1rem; }
-
-        /* Responsive Anpassungen */
-        @media (max-width: 480px) {
-            .nav-arrow { width: 40px; font-size: 2rem; }
-            #image-container .word-text { font-size: 1.8rem; }
-            /* HIER WURDE DIE REGEL ANGEPASST, DAMIT SIE ZUR ALLGEMEINEN REGEL PASST */
-            .top-bar { 
-                padding: calc(env(safe-area-inset-top) + 100px) 8px 10px 8px; 
-            }
-            .progress-bar-container { height: 20px; }
-            .progress-bar { line-height: 20px; }
-            #sound-button { width: 50px; height: 50px; }
-        }
+        @media (max-width: 480px) { .nav-arrow { width: 40px; font-size: 2rem; } #image-container .word-text { font-size: 1.8rem; } .top-bar { padding: calc(env(safe-area-inset-top) + 100px) 8px 10px 8px; } .progress-bar-container { height: 20px; } .progress-bar { line-height: 20px; } #sound-button { width: 50px; height: 50px; } }
     </style>
 </head>
 <body>
 
-    <!-- Hamburger Menü und Modale (unverändert) -->
+    <!-- HTML-Struktur (unverändert) -->
     <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-lernmodus">Lernmodus</a></li><li><a href="#" id="menu-testmodus">Testmodus</a></li><li><a href="#" id="menu-diktatmodus">Diktat-Modus</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
     <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p>Details...</p></div></div>
     <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu mischen</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
     <div id="screen-mode-selection" class="screen"><h1>Wortschatz-Trainer</h1><h2 id="current-set-name-h2">Set: [Lädt...]</h2><div class="mode-selection-container"><div class="mode-card clickable-card" data-mode="learn"><span class="emoji">📚</span><span class="subtitle">Lernen</span></div><div class="mode-card clickable-card" data-mode="test"><span class="emoji">✅</span><span class="subtitle">Testen</span></div><div class="mode-card clickable-card" data-mode="dictate"><span class="emoji">✍️</span><span class="subtitle">Diktat</span></div></div></div>
     <div id="screen-settings" class="screen hidden"><h2 id="settings-title">Einstellungen</h2><div class="settings-form"><div class="form-group"><label for="item-set-select">Lern-Set:</label><select id="item-set-select"><option>Lade Sets...</option></select></div><div class="form-group" id="setting-display-type-group"><label>Anzeige:</label><div class="setting-display-type"><button data-display-type="image_only" class="selected">🖼️ Nur Bild</button><button data-display-type="word_only">🆕 Nur Wort</button><button data-display-type="image_word">🖼️+🆕 Bild & Wort</button></div></div><div class="form-group" id="setting-sound-delay-group"><label for="sound-delay-slider">Sound-Verzögerung:</label><input type="range" id="sound-delay-slider" min="0" max="5" value="0" step="1"><div id="sound-delay-value-container"><span id="sound-delay-value">0 Sekunden</span></div></div><div style="display: flex; justify-content: space-between; margin-top: 30px;"><button id="btn-settings-back">Zurück</button><button id="btn-start-exercise">Start</button></div></div></div>
-
-    <!-- HTML-Struktur (unverändert) -->
     <div id="screen-exercise" class="screen hidden">
         <div class="top-bar">
             <div class="progress-bar-container">
                 <div class="progress-bar" id="progress-bar">0%</div>
             </div>
         </div>
-        
         <div class="main-content-area">
             <div class="exercise-main-container">
                 <div class="nav-arrow" id="nav-arrow-left">‹</div>
-                
                 <div class="content-and-controls-wrapper">
                     <div id="image-container">
                         <!-- Inhalt wird per JS generiert -->
                     </div>
-            
                     <div id="action-buttons-container">
                          <button id="sound-button"></button>
                          <button id="btn-show-word" class="hidden">Wort anzeigen</button>
                     </div>
                 </div>
-
                 <div class="nav-arrow" id="nav-arrow-right">›</div>
             </div>
         </div>
     </div>
-
     <audio id="audio-player"></audio>
 
     <script>
-        // JavaScript (unverändert)
+        // JAVASCRIPT MIT INTEGRIERTER WISCH-FUNKTION
         document.addEventListener('DOMContentLoaded', () => {
             let currentMode = null, availableItemSets = [], currentItemSetPath = null;
             let currentItemSetData = [], currentShuffledItems = [], currentItemIndex = 0;
             let currentSettings = { displayType: 'image_only', soundDelay: 0 };
             let soundTimeoutId = null, autoNextTimeoutId = null, isNavigating = false;
+            
+            // NEU: Variablen für Wischgesten
+            let touchStartX = 0;
+            let touchEndX = 0;
+            const swipeThreshold = 50; // Mindest-Distanz in Pixel für eine Wischgeste
+
             const screens = { modeSelection: document.getElementById('screen-mode-selection'), settings: document.getElementById('screen-settings'), exercise: document.getElementById('screen-exercise') };
+            // NEU: Den Container für die Wischgeste auswählen
+            const exerciseMainContainer = document.querySelector('.exercise-main-container');
             const currentSetNameH2 = document.getElementById('current-set-name-h2'), hamburgerIcon = document.getElementById('hamburger-icon'), menuContent = document.getElementById('menu-content');
             const anleitungModal = document.getElementById('anleitung-modal'), exerciseEndModal = document.getElementById('exercise-end-modal'), modalCloseButtons = document.querySelectorAll('.modal-close-button');
             const modeCards = document.querySelectorAll('.mode-card'), settingsTitle = document.getElementById('settings-title'), itemSetSelect = document.getElementById('item-set-select');
@@ -284,6 +200,22 @@
                 setTimeout(() => { currentItemIndex = newIndex; displayCurrentItem(); imageContainer.classList.remove('fade-out'); }, 300);
             }
             function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
+
+            // NEU: Funktion zum Auswerten der Wischgeste
+            function handleSwipe() {
+                const deltaX = touchEndX - touchStartX;
+                // Prüfen, ob die Wischdistanz groß genug ist
+                if (Math.abs(deltaX) > swipeThreshold) {
+                    if (deltaX < 0) {
+                        // Wischen nach links -> Nächstes Item
+                        navigateItem(1);
+                    } else {
+                        // Wischen nach rechts -> Vorheriges Item
+                        navigateItem(-1);
+                    }
+                }
+            }
+
             hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); });
             document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
             document.getElementById('menu-anleitung').addEventListener('click', (e) => { e.preventDefault(); showModal('anleitung-modal'); menuContent.classList.remove('show'); });
@@ -304,6 +236,18 @@
             navArrowLeft.addEventListener('click', () => navigateItem(-1));
             navArrowRight.addEventListener('click', () => navigateItem(1));
             btnShowWord.addEventListener('click', () => showDiktatWord());
+
+            // NEU: Event Listener für Wischgesten hinzufügen
+            exerciseMainContainer.addEventListener('touchstart', e => {
+                // Nur die erste Berührung zählt
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true }); // passive:true für bessere Scroll-Performance
+
+            exerciseMainContainer.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
             initializeApp();
             async function initializeApp() { await loadManifestAndPopulateSelect(); showScreen('screen-mode-selection'); }
         });
