@@ -6,7 +6,7 @@
     <title>Wortschatz-Trainer</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS (mit der entscheidenden Korrektur) */
+        /* CSS (mit der finalen Layout-Korrektur) */
         :root {
             --dark-green: #27633A;
             --light-green: #6BAB58;
@@ -61,11 +61,11 @@
         .slides-wrapper {
             width: 100%;
             flex-grow: 1;
-            min-height: 0;
             position: relative;
             overflow: hidden;
             /* DIES IST DIE ENTSCHEIDENDE KORREKTUR */
-            max-height: 70%; /* Verhindert, dass der Container zu hoch wird */
+            min-height: 0; /* HINZUGEFÜGT: Erlaubt dem Container, korrekt zu schrumpfen. */
+            /* max-height: 70%; <-- ENTFERNT: War die Ursache des Problems. */
         }
 
         .slide {
@@ -79,7 +79,7 @@
         .slide img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer; }
         .slide .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
         .diktat-instructions { font-size: 1.2rem; padding: 20px; text-align: left; line-height: 1.6; max-width: 600px; }
-        #action-buttons-container { flex-shrink: 0; display: flex; justify-content: center; align-items: center; gap: 20px; padding: 20px 0; /* Etwas mehr Abstand für besseres Aussehen */ }
+        #action-buttons-container { flex-shrink: 0; display: flex; justify-content: center; align-items: center; gap: 20px; padding: 20px 0; }
         #sound-button { width: 60px; height: 60px; border-radius: 50%; background-color: var(--card-background); border: 1px solid #ddd; box-shadow: var(--box-shadow); cursor: pointer; flex-shrink: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2327633A'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; background-size: 60%; transition: transform 0.1s ease; }
         #sound-button:active { transform: scale(0.95); }
         #btn-show-word { min-width: 200px; padding: 15px 25px; font-size: 1.1rem; }
