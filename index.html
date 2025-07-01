@@ -6,7 +6,8 @@
     <title>Wortschatz-Trainer</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS (unverändert) */
+        /* CSS HIER */
+        /* Globale Stile (unverändert) */
         :root {
             --dark-green: #27633A;
             --light-green: #6BAB58;
@@ -48,6 +49,9 @@
         .mode-card { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center; cursor: pointer; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 150px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
         #screen-settings h2 { color: var(--dark-green); margin-bottom: 20px; text-align: center; }
         .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
+
+
+        /* --- ANGEPASSTES Layout für Übungs-Screen mit SLIDE-EFFEKT --- */
         #screen-exercise { padding: 0; background-color: #fff; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start; }
         .top-bar { width: 100%; padding: calc(env(safe-area-inset-top) + 100px) 15px 10px 15px; flex-shrink: 0; z-index: 10; }
         .progress-bar-container { width: 100%; background-color: #e0e0e0; border-radius: var(--border-radius); overflow: hidden; height: 25px; }
@@ -56,26 +60,55 @@
         .exercise-main-container { display: flex; flex-direction: row; justify-content: space-between; align-items: stretch; width: 100%; flex-grow: 1; min-height: 0; }
         .nav-arrow { height: 100%; display: flex; justify-content: center; align-items: center; width: 60px; font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none; transition: background-color 0.2s ease; flex-shrink: 0; }
         .content-and-controls-wrapper { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        #image-container { width: 100%; padding: 10px; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: opacity var(--transition-speed) ease-in-out; min-height: 0; }
-        #image-container.fade-out { opacity: 0; }
-        #image-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        #image-container .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
+        
+        /* NEU: Wrapper für die Slides, der als "Fenster" dient */
+        .slides-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden; /* Versteckt die Slides, die außerhalb sind */
+        }
+
+        /* NEU: Styling für eine einzelne Folie */
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            transition: transform var(--transition-speed) ease-in-out;
+        }
+
+        /* NEU: Klassen zur Positionssteuerung der Slides */
+        .slide.is-active { transform: translateX(0); }
+        .slide.is-prev { transform: translateX(-100%); }
+        .slide.is-next { transform: translateX(100%); }
+
+        .slide img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer; }
+        .slide .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
         .diktat-instructions { font-size: 1.2rem; padding: 20px; text-align: left; line-height: 1.6; max-width: 600px; }
         #action-buttons-container { flex-shrink: 0; display: flex; justify-content: center; align-items: center; gap: 20px; padding: 15px 0; }
         #sound-button { width: 60px; height: 60px; border-radius: 50%; background-color: var(--card-background); border: 1px solid #ddd; box-shadow: var(--box-shadow); cursor: pointer; flex-shrink: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2327633A'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; background-size: 60%; transition: transform 0.1s ease; }
         #sound-button:active { transform: scale(0.95); }
         #btn-show-word { min-width: 200px; padding: 15px 25px; font-size: 1.1rem; }
-        @media (max-width: 480px) { .nav-arrow { width: 40px; font-size: 2rem; } #image-container .word-text { font-size: 1.8rem; } .top-bar { padding: calc(env(safe-area-inset-top) + 100px) 8px 10px 8px; } .progress-bar-container { height: 20px; } .progress-bar { line-height: 20px; } #sound-button { width: 50px; height: 50px; } }
+        @media (max-width: 480px) { .nav-arrow { width: 40px; font-size: 2rem; } .slide .word-text { font-size: 1.8rem; } .top-bar { padding: calc(env(safe-area-inset-top) + 100px) 8px 10px 8px; } .progress-bar-container { height: 20px; } .progress-bar { line-height: 20px; } #sound-button { width: 50px; height: 50px; } }
     </style>
 </head>
 <body>
 
-    <!-- HTML-Struktur (unverändert) -->
+    <!-- Hamburger Menü und Modale (unverändert) -->
     <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-lernmodus">Lernmodus</a></li><li><a href="#" id="menu-testmodus">Testmodus</a></li><li><a href="#" id="menu-diktatmodus">Diktat-Modus</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
     <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p>Details...</p></div></div>
     <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu mischen</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
     <div id="screen-mode-selection" class="screen"><h1>Wortschatz-Trainer</h1><h2 id="current-set-name-h2">Set: [Lädt...]</h2><div class="mode-selection-container"><div class="mode-card clickable-card" data-mode="learn"><span class="emoji">📚</span><span class="subtitle">Lernen</span></div><div class="mode-card clickable-card" data-mode="test"><span class="emoji">✅</span><span class="subtitle">Testen</span></div><div class="mode-card clickable-card" data-mode="dictate"><span class="emoji">✍️</span><span class="subtitle">Diktat</span></div></div></div>
     <div id="screen-settings" class="screen hidden"><h2 id="settings-title">Einstellungen</h2><div class="settings-form"><div class="form-group"><label for="item-set-select">Lern-Set:</label><select id="item-set-select"><option>Lade Sets...</option></select></div><div class="form-group" id="setting-display-type-group"><label>Anzeige:</label><div class="setting-display-type"><button data-display-type="image_only" class="selected">🖼️ Nur Bild</button><button data-display-type="word_only">🆕 Nur Wort</button><button data-display-type="image_word">🖼️+🆕 Bild & Wort</button></div></div><div class="form-group" id="setting-sound-delay-group"><label for="sound-delay-slider">Sound-Verzögerung:</label><input type="range" id="sound-delay-slider" min="0" max="5" value="0" step="1"><div id="sound-delay-value-container"><span id="sound-delay-value">0 Sekunden</span></div></div><div style="display: flex; justify-content: space-between; margin-top: 30px;"><button id="btn-settings-back">Zurück</button><button id="btn-start-exercise">Start</button></div></div></div>
+
+    <!-- GEÄNDERTE HTML-Struktur -->
     <div id="screen-exercise" class="screen hidden">
         <div class="top-bar">
             <div class="progress-bar-container">
@@ -86,8 +119,10 @@
             <div class="exercise-main-container">
                 <div class="nav-arrow" id="nav-arrow-left">‹</div>
                 <div class="content-and-controls-wrapper">
-                    <div id="image-container">
-                        <!-- Inhalt wird per JS generiert -->
+                    <!-- HIER IST DIE ÄNDERUNG: Wrapper mit zwei Slides -->
+                    <div class="slides-wrapper">
+                        <div id="slide-a" class="slide"></div>
+                        <div id="slide-b" class="slide"></div>
                     </div>
                     <div id="action-buttons-container">
                          <button id="sound-button"></button>
@@ -101,17 +136,16 @@
     <audio id="audio-player"></audio>
 
     <script>
-        // JAVASCRIPT MIT ROBUSTER WISCH-FUNKTION FÜR ALLE GERÄTE
+        // JAVASCRIPT MIT NEUER SLIDER-LOGIK
         document.addEventListener('DOMContentLoaded', () => {
             let currentMode = null, availableItemSets = [], currentItemSetPath = null;
             let currentItemSetData = [], currentShuffledItems = [], currentItemIndex = 0;
             let currentSettings = { displayType: 'image_only', soundDelay: 0 };
             let soundTimeoutId = null, autoNextTimeoutId = null, isNavigating = false;
             
-            // Variablendefinitionen für die Wischgeste
             let touchStartX = 0, touchStartY = 0;
             let touchEndX = 0, touchEndY = 0;
-            const swipeThreshold = 50; // Mindest-Distanz in Pixel für eine Wischgeste
+            const swipeThreshold = 50;
 
             const screens = { modeSelection: document.getElementById('screen-mode-selection'), settings: document.getElementById('screen-settings'), exercise: document.getElementById('screen-exercise') };
             const exerciseMainContainer = document.querySelector('.exercise-main-container');
@@ -122,11 +156,18 @@
             const soundDelaySlider = document.getElementById('sound-delay-slider'), soundDelayValue = document.getElementById('sound-delay-value');
             const btnSettingsBack = document.getElementById('btn-settings-back'), btnStartExercise = document.getElementById('btn-start-exercise'), audioPlayer = document.getElementById('audio-player');
             const btnReshuffle = document.getElementById('btn-reshuffle'), btnNewSelection = document.getElementById('btn-new-selection');
-            const progressBar = document.getElementById('progress-bar'), imageContainer = document.getElementById('image-container');
+            const progressBar = document.getElementById('progress-bar');
+            
+            // NEU: Referenzen zu den Slides und Tracking der aktiven Slide
+            const slideA = document.getElementById('slide-a');
+            const slideB = document.getElementById('slide-b');
+            let activeSlide = slideA; // Beginnen mit Slide A
+
             const navArrowLeft = document.getElementById('nav-arrow-left'), navArrowRight = document.getElementById('nav-arrow-right');
             const actionButtonsContainer = document.getElementById('action-buttons-container'); 
             const soundButton = document.getElementById('sound-button'), btnShowWord = document.getElementById('btn-show-word');
             
+            // Unveränderte Funktionen
             function showScreen(screenIdToShow) { Object.values(screens).forEach(screen => { const isTarget = screen.id === screenIdToShow; screen.classList.toggle('hidden', !isTarget); screen.classList.toggle('zoom-out', !isTarget); screen.classList.toggle('zoom-in', isTarget); }); document.body.style.overflow = (screenIdToShow === 'screen-exercise') ? 'hidden' : 'auto'; window.scrollTo(0,0); }
             function showModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.add('show'); }
             function closeModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.remove('show'); }
@@ -136,64 +177,112 @@
             function updateProgressBar() { const total = currentShuffledItems.length > 0 ? currentShuffledItems.length : 1; const current = currentItemIndex + 1; const progress = (current / total) * 100; progressBar.style.width = `${progress}%`; progressBar.textContent = `${Math.round(progress)}%`; }
             function playCurrentItemSound(delay = 0) { clearTimeout(soundTimeoutId); const item = currentShuffledItems[currentItemIndex]; if (!item || !item.sound) { if (currentMode === 'test') scheduleAutoNext(); return; } soundTimeoutId = setTimeout(() => { audioPlayer.src = item.sound + '?t=' + new Date().getTime(); audioPlayer.play().catch(e => console.error("Sound Fehler:", e)); if (currentMode === 'test') { audioPlayer.onended = () => { scheduleAutoNext(); audioPlayer.onended = null; }; } }, delay * 1000); }
             function scheduleAutoNext() { clearTimeout(autoNextTimeoutId); autoNextTimeoutId = setTimeout(() => { if (currentMode === 'test') navigateItem(1); }, 3000); }
-            function displayCurrentItem() {
-                imageContainer.innerHTML = ''; 
-                isNavigating = false;
-                const noItems = !currentShuffledItems || currentShuffledItems.length === 0;
-                const item = noItems ? null : currentShuffledItems[currentItemIndex];
-                navArrowLeft.classList.toggle('invisible', noItems || currentItemIndex === 0);
-                navArrowRight.classList.toggle('invisible', noItems || currentItemIndex >= currentShuffledItems.length - 1);
-                const hasSound = !noItems && item && item.sound;
-                soundButton.classList.toggle('hidden', !hasSound);
-                if (noItems) { updateProgressBar(); return; }
-                if (!item) { imageContainer.innerHTML = "<p>Fehler: Item ungültig.</p>"; return; }
+            function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
+
+            // NEU: Hilfsfunktion, um eine Slide mit Inhalt zu füllen
+            function populateSlide(slideElement, item) {
+                slideElement.innerHTML = '';
+                if (!item) { slideElement.innerHTML = "<p>Fehler: Item ungültig.</p>"; return; }
+
                 if (currentMode === 'dictate') {
-                    btnShowWord.classList.remove('hidden');
-                    imageContainer.style.cursor = 'default';
                     const instructions = document.createElement('div');
                     instructions.className = 'diktat-instructions';
-                    instructions.innerHTML = `<p><strong>Diktat:</strong></p><ol><li>Höre das Wort (Button unten).</li><li>Schreibe es auf.</li><li>Überprüfe mit 'Wort anzeigen'.</li></ol>`;
-                    imageContainer.appendChild(instructions);
+                    instructions.innerHTML = `<p><strong>Diktat:</strong></p><ol><li>Höre das Wort.</li><li>Schreibe es auf.</li><li>Überprüfe mit 'Wort anzeigen'.</li></ol>`;
+                    slideElement.appendChild(instructions);
                 } else {
-                    btnShowWord.classList.add('hidden');
-                    imageContainer.style.cursor = 'pointer';
                     let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : "";
                     if (currentSettings.displayType === 'image_only') displayImage = true; if (currentSettings.displayType === 'word_only') displayWord = true; if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; }
                     if (displayImage && !imagePath) { displayImage = false; displayWord = true; }
-                    if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; img.addEventListener('click', () => navigateItem(1)); imageContainer.appendChild(img); }
-                    if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; imageContainer.appendChild(p); }
-                    if (currentMode === 'test') playCurrentItemSound(currentSettings.soundDelay);
+                    if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; img.addEventListener('click', () => navigateItem(1)); slideElement.appendChild(img); }
+                    if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); }
                 }
-                const isSoundButtonVisible = !soundButton.classList.contains('hidden');
-                const isShowWordButtonVisible = !btnShowWord.classList.contains('hidden');
-                actionButtonsContainer.classList.toggle('hidden', !isSoundButtonVisible && !isShowWordButtonVisible);
+            }
+
+            // ANGEPASST: displayCurrentItem füllt nur die erste Slide beim Start
+            function displayCurrentItem() {
+                isNavigating = false;
+                slideA.className = 'slide is-active';
+                slideB.className = 'slide';
+                activeSlide = slideA;
+
+                const item = currentShuffledItems[currentItemIndex];
+                populateSlide(activeSlide, item);
+
+                navArrowLeft.classList.toggle('invisible', currentItemIndex === 0);
+                navArrowRight.classList.toggle('invisible', currentItemIndex >= currentShuffledItems.length - 1);
+                
+                const hasSound = item && item.sound;
+                soundButton.classList.toggle('hidden', !hasSound);
+                btnShowWord.classList.toggle('hidden', currentMode !== 'dictate');
+                actionButtonsContainer.classList.toggle('hidden', !hasSound && currentMode !== 'dictate');
                 updateProgressBar();
+                if (currentMode === 'test') playCurrentItemSound(currentSettings.soundDelay);
             }
-            function showDiktatWord() {
-                const item = currentShuffledItems[currentItemIndex]; if (!item) return;
-                imageContainer.innerHTML = ''; const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; imageContainer.appendChild(p);
-                btnShowWord.classList.add('hidden');
-                const isSoundButtonVisible = !soundButton.classList.contains('hidden');
-                actionButtonsContainer.classList.toggle('hidden', !isSoundButtonVisible);
-            }
+
+            // NEU GESCHRIEBEN: Die Kernlogik für die Slide-Animation
             function navigateItem(direction) {
-                if (isNavigating) return; isNavigating = true;
-                clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); audioPlayer.onended = null; 
+                if (isNavigating) return;
+                
                 const newIndex = currentItemIndex + direction;
-                if (newIndex < 0 || newIndex >= currentShuffledItems.length) { isNavigating = false; if (newIndex >= currentShuffledItems.length) showModal('exercise-end-modal'); return; }
-                imageContainer.classList.add('fade-out');
-                setTimeout(() => { currentItemIndex = newIndex; displayCurrentItem(); imageContainer.classList.remove('fade-out'); }, 300);
-            }
-            function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
-
-            function handleSwipe() {
-                const deltaX = touchEndX - touchStartX;
-                if (Math.abs(deltaX) > swipeThreshold) {
-                    if (deltaX < 0) { navigateItem(1); } 
-                    else { navigateItem(-1); }
+                if (newIndex < 0 || newIndex >= currentShuffledItems.length) {
+                    if (newIndex >= currentShuffledItems.length) showModal('exercise-end-modal');
+                    return;
                 }
+                
+                isNavigating = true;
+                clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause();
+                
+                currentItemIndex = newIndex;
+                const newItem = currentShuffledItems[currentItemIndex];
+
+                const currentSlide = activeSlide;
+                const nextSlide = (activeSlide === slideA) ? slideB : slideA;
+
+                populateSlide(nextSlide, newItem);
+
+                // Klassen für die Positionierung setzen
+                currentSlide.classList.remove('is-active');
+                nextSlide.className = 'slide'; // Klassen zurücksetzen
+                if (direction === 1) {
+                    currentSlide.classList.add('is-prev'); // Aktuelle Slide schiebt nach links raus
+                    nextSlide.classList.add('is-next');   // Nächste Slide kommt von rechts
+                } else {
+                    currentSlide.classList.add('is-next');   // Aktuelle Slide schiebt nach rechts raus
+                    nextSlide.classList.add('is-prev');     // Nächste Slide kommt von links
+                }
+
+                // Wichtig: Kurze Verzögerung, damit der Browser die Startposition anwenden kann, bevor die Animation beginnt
+                requestAnimationFrame(() => {
+                    nextSlide.classList.add('is-active');
+                });
+                
+                // Nach der Animation aufräumen
+                nextSlide.addEventListener('transitionend', () => {
+                    currentSlide.className = 'slide'; // Alte Slide verstecken und zurücksetzen
+                    activeSlide = nextSlide;
+                    isNavigating = false;
+                }, { once: true }); // Listener wird nur einmal ausgeführt
+
+                // UI-Elemente aktualisieren
+                updateProgressBar();
+                navArrowLeft.classList.toggle('invisible', currentItemIndex === 0);
+                navArrowRight.classList.toggle('invisible', currentItemIndex >= currentShuffledItems.length - 1);
+                const hasSound = newItem && newItem.sound;
+                soundButton.classList.toggle('hidden', !hasSound);
+                btnShowWord.classList.toggle('hidden', currentMode !== 'dictate');
+                actionButtonsContainer.classList.toggle('hidden', !hasSound && currentMode !== 'dictate');
+                if (currentMode === 'test') playCurrentItemSound(currentSettings.soundDelay);
+            }
+            
+            function showDiktatWord() { /* Diese Funktion kann bleiben, falls Diktat-Logik komplexer wird */
+                const item = currentShuffledItems[currentItemIndex]; if (!item) return;
+                activeSlide.innerHTML = '';
+                const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || "";
+                activeSlide.appendChild(p);
+                btnShowWord.classList.add('hidden');
             }
 
+            // Event Listener etc. (mit Wisch-Geste)
             hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); });
             document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
             document.getElementById('menu-anleitung').addEventListener('click', (e) => { e.preventDefault(); showModal('anleitung-modal'); menuContent.classList.remove('show'); });
@@ -215,34 +304,11 @@
             navArrowRight.addEventListener('click', () => navigateItem(1));
             btnShowWord.addEventListener('click', () => showDiktatWord());
             
-            // --- NEUE, ROBUSTE EVENT LISTENER FÜR WISCHGESTEN ---
-            exerciseMainContainer.addEventListener('touchstart', e => {
-                touchStartX = e.changedTouches[0].screenX;
-                touchStartY = e.changedTouches[0].screenY;
-            });
-
-            exerciseMainContainer.addEventListener('touchmove', e => {
-                if (!touchStartX || !touchStartY) {
-                    return;
-                }
-                let currentX = e.changedTouches[0].screenX;
-                let currentY = e.changedTouches[0].screenY;
-                let deltaX = Math.abs(touchStartX - currentX);
-                let deltaY = Math.abs(touchStartY - currentY);
-
-                // Wenn die Bewegung hauptsächlich horizontal ist, unterbinden wir das Scrollen.
-                if (deltaX > deltaY) {
-                    e.preventDefault();
-                }
-            });
-
-            exerciseMainContainer.addEventListener('touchend', e => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-                // Start-Koordinaten zurücksetzen
-                touchStartX = 0;
-                touchStartY = 0;
-            });
+            // Wisch-Gesten Listener
+            function handleSwipe() { const deltaX = touchEndX - touchStartX; if (Math.abs(deltaX) > swipeThreshold) { if (deltaX < 0) { navigateItem(1); } else { navigateItem(-1); } } }
+            exerciseMainContainer.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; touchStartY = e.changedTouches[0].screenY; });
+            exerciseMainContainer.addEventListener('touchmove', e => { if (!touchStartX || !touchStartY) { return; } let currentX = e.changedTouches[0].screenX; let currentY = e.changedTouches[0].screenY; if (Math.abs(touchStartX - currentX) > Math.abs(touchStartY - currentY)) { e.preventDefault(); } });
+            exerciseMainContainer.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; handleSwipe(); touchStartX = 0; touchStartY = 0; });
 
             initializeApp();
             async function initializeApp() { await loadManifestAndPopulateSelect(); showScreen('screen-mode-selection'); }
