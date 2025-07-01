@@ -6,7 +6,7 @@
     <title>Wortschatz-Trainer</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS HIER (unverändert) */
+        /* CSS (unverändert) */
         :root {
             --dark-green: #27633A;
             --light-green: #6BAB58;
@@ -19,22 +19,8 @@
             --box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             --transition-speed: 0.3s;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html, body {
-            height: 100%;
-            font-family: 'Arial', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            overflow: hidden;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; font-family: 'Arial', sans-serif; background-color: var(--background-color); color: var(--text-color); overflow: hidden; }
         h1, h2, h3 { font-family: 'Comfortaa', cursive; }
         .hidden { display: none !important; }
         .invisible { visibility: hidden !important; }
@@ -115,20 +101,19 @@
     <audio id="audio-player"></audio>
 
     <script>
-        // JAVASCRIPT MIT INTEGRIERTER WISCH-FUNKTION
+        // JAVASCRIPT MIT ROBUSTER WISCH-FUNKTION FÜR ALLE GERÄTE
         document.addEventListener('DOMContentLoaded', () => {
             let currentMode = null, availableItemSets = [], currentItemSetPath = null;
             let currentItemSetData = [], currentShuffledItems = [], currentItemIndex = 0;
             let currentSettings = { displayType: 'image_only', soundDelay: 0 };
             let soundTimeoutId = null, autoNextTimeoutId = null, isNavigating = false;
             
-            // NEU: Variablen für Wischgesten
-            let touchStartX = 0;
-            let touchEndX = 0;
+            // Variablendefinitionen für die Wischgeste
+            let touchStartX = 0, touchStartY = 0;
+            let touchEndX = 0, touchEndY = 0;
             const swipeThreshold = 50; // Mindest-Distanz in Pixel für eine Wischgeste
 
             const screens = { modeSelection: document.getElementById('screen-mode-selection'), settings: document.getElementById('screen-settings'), exercise: document.getElementById('screen-exercise') };
-            // NEU: Den Container für die Wischgeste auswählen
             const exerciseMainContainer = document.querySelector('.exercise-main-container');
             const currentSetNameH2 = document.getElementById('current-set-name-h2'), hamburgerIcon = document.getElementById('hamburger-icon'), menuContent = document.getElementById('menu-content');
             const anleitungModal = document.getElementById('anleitung-modal'), exerciseEndModal = document.getElementById('exercise-end-modal'), modalCloseButtons = document.querySelectorAll('.modal-close-button');
@@ -201,18 +186,11 @@
             }
             function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
 
-            // NEU: Funktion zum Auswerten der Wischgeste
             function handleSwipe() {
                 const deltaX = touchEndX - touchStartX;
-                // Prüfen, ob die Wischdistanz groß genug ist
                 if (Math.abs(deltaX) > swipeThreshold) {
-                    if (deltaX < 0) {
-                        // Wischen nach links -> Nächstes Item
-                        navigateItem(1);
-                    } else {
-                        // Wischen nach rechts -> Vorheriges Item
-                        navigateItem(-1);
-                    }
+                    if (deltaX < 0) { navigateItem(1); } 
+                    else { navigateItem(-1); }
                 }
             }
 
@@ -236,16 +214,34 @@
             navArrowLeft.addEventListener('click', () => navigateItem(-1));
             navArrowRight.addEventListener('click', () => navigateItem(1));
             btnShowWord.addEventListener('click', () => showDiktatWord());
-
-            // NEU: Event Listener für Wischgesten hinzufügen
+            
+            // --- NEUE, ROBUSTE EVENT LISTENER FÜR WISCHGESTEN ---
             exerciseMainContainer.addEventListener('touchstart', e => {
-                // Nur die erste Berührung zählt
                 touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true }); // passive:true für bessere Scroll-Performance
+                touchStartY = e.changedTouches[0].screenY;
+            });
+
+            exerciseMainContainer.addEventListener('touchmove', e => {
+                if (!touchStartX || !touchStartY) {
+                    return;
+                }
+                let currentX = e.changedTouches[0].screenX;
+                let currentY = e.changedTouches[0].screenY;
+                let deltaX = Math.abs(touchStartX - currentX);
+                let deltaY = Math.abs(touchStartY - currentY);
+
+                // Wenn die Bewegung hauptsächlich horizontal ist, unterbinden wir das Scrollen.
+                if (deltaX > deltaY) {
+                    e.preventDefault();
+                }
+            });
 
             exerciseMainContainer.addEventListener('touchend', e => {
                 touchEndX = e.changedTouches[0].screenX;
                 handleSwipe();
+                // Start-Koordinaten zurücksetzen
+                touchStartX = 0;
+                touchStartY = 0;
             });
 
             initializeApp();
