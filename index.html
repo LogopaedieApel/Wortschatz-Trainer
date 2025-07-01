@@ -6,7 +6,6 @@
     <title>Wortschatz-Trainer</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS (mit korrigiertem Layout für den Button) */
         :root {
             --dark-green: #27633A;
             --light-green: #6BAB58;
@@ -51,16 +50,16 @@
 
         /* --- Layout für Übungs-Screen mit INTERAKTIVEM SLIDE-EFFEKT --- */
         #screen-exercise {
-            padding: 0;
+            /* === ZWEITE KORREKTUR: Geerbten Abstand von .screen zurücksetzen === */
+            padding: 0 !important; /* Wichtig, um das Padding von .screen zu überschreiben */
+            
             background-color: #fff;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            /* === KORREKTUR FÜR MOBILE BROWSER (iPHONE) === */
-            /* Überschreibt die min-height von .screen und fixt das Viewport-Problem */
-            height: 100vh;   /* Fallback für ältere Browser, die dvh nicht kennen */
-            height: 100dvh;  /* Die korrekte Einheit, die dynamische Browser-Leisten berücksichtigt */
+            height: 100vh;
+            height: 100dvh;
         }
         .top-bar { width: 100%; padding: calc(env(safe-area-inset-top) + 10px) 15px 10px 15px; flex-shrink: 0; z-index: 10; }
         .progress-bar-container { width: 100%; background-color: #e0e0e0; border-radius: var(--border-radius); overflow: hidden; height: 25px; }
@@ -105,7 +104,7 @@
     </style>
 </head>
 <body>
-    <!-- HTML und JavaScript bleiben exakt gleich -->
+    <!-- HTML und JavaScript sind unverändert -->
     <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-lernmodus">Lernmodus</a></li><li><a href="#" id="menu-testmodus">Testmodus</a></li><li><a href="#" id="menu-diktatmodus">Diktat-Modus</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
     <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p>Details...</p></div></div>
     <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu mischen</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
