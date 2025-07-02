@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <!-- NEU: PWA und Theming -->
+    <!-- PWA und Theming -->
     <meta name="theme-color" content="#27633A">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192x192.png">
@@ -138,7 +138,7 @@
             width: 100%;
             text-align: center;
         }
-        .sound-button { /* Gemeinsame Klasse für Sound-Buttons */
+        .sound-button {
             width: 60px; height: 60px; border-radius: 50%;
             background-color: var(--card-background); border: 1px solid #ddd;
             box-shadow: var(--box-shadow); cursor: pointer; flex-shrink: 0;
@@ -147,7 +147,7 @@
             transition: transform 0.1s ease;
         }
         .sound-button:active { transform: scale(0.95); }
-        .btn-show-word { /* Gemeinsame Klasse für Wort-anzeigen-Buttons */
+        .btn-show-word {
             width: 60px; height: 60px; border-radius: 50%; padding: 5px;
             font-size: 0.7rem; line-height: 1.2; word-break: break-word;
             display: flex; align-items: center; justify-content: center;
@@ -164,7 +164,7 @@
     </style>
 </head>
 <body>
-    <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-lernmodus">Lernmodus</a></li><li><a href="#" id="menu-testmodus">Testmodus</a></li><li><a href="#" id="menu-diktatmodus">Diktat-Modus</a></li><li><a href="#" id="menu-fullscreen">Vollbild-Modus</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
+    <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-lernmodus">Lernmodus</a></li><li><a href="#" id="menu-testmodus">Testmodus</a></li><li><a href="#" id="menu-diktatmodus">Diktat-Modus</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
     <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p>Details...</p></div></div>
     <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu mischen</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
     <div id="screen-mode-selection" class="screen"><h1>Wortschatz-Trainer</h1><h2 id="current-set-name-h2">Set: [Lädt...]</h2><div class="mode-selection-container"><div class="mode-card clickable-card" data-mode="learn"><span class="emoji">📚</span><span class="subtitle">Lernen</span></div><div class="mode-card clickable-card" data-mode="test"><span class="emoji">✅</span><span class="subtitle">Testen</span></div><div class="mode-card clickable-card" data-mode="dictate"><span class="emoji">✍️</span><span class="subtitle">Diktat</span></div></div></div>
@@ -254,21 +254,7 @@
             function showModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.add('show'); }
             function closeModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.remove('show'); }
             function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } return array; }
-            
-            // NEU: Funktion für Vollbildmodus
-            function toggleFullScreen() {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(err => {
-                        alert(`Vollbildmodus konnte nicht aktiviert werden: ${err.message}`);
-                    });
-                } else {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    }
-                }
-            }
-
-            async function loadManifestAndPopulateSelect() { try { const r = await fetch('sets.json?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); availableItemSets = await r.json(); itemSetSelect.innerHTML = ''; if (availableItemSets.length === 0) { itemSetSelect.innerHTML = '<option value="">Keine Sets</option>'; btnStartExercise.disabled = true; return false; } availableItemSets.forEach(set => { const o=document.createElement('option'); o.value=set.path; o.textContent=set.name; itemSetSelect.appendChild(o); }); btnStartExercise.disabled=false; if(itemSetSelect.options.length>0){itemSetSelect.selectedIndex=0;currentItemSetPath=itemSetSelect.value; await loadItemSet(currentItemSetPath);} return true; } catch (e) { console.error("Fehler manifest.json:", e); itemSetSelect.innerHTML = '<option>Fehler</option>'; btnStartExercise.disabled = true; return false; } }
+            async function loadSetsManifest() { try { const r = await fetch('sets.json?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); availableItemSets = await r.json(); itemSetSelect.innerHTML = ''; if (availableItemSets.length === 0) { itemSetSelect.innerHTML = '<option value="">Keine Sets</option>'; btnStartExercise.disabled = true; return false; } availableItemSets.forEach(set => { const o=document.createElement('option'); o.value=set.path; o.textContent=set.name; itemSetSelect.appendChild(o); }); btnStartExercise.disabled=false; if(itemSetSelect.options.length>0){itemSetSelect.selectedIndex=0;currentItemSetPath=itemSetSelect.value; await loadItemSet(currentItemSetPath);} return true; } catch (e) { console.error("Fehler beim Laden von sets.json:", e); itemSetSelect.innerHTML = '<option>Fehler</option>'; btnStartExercise.disabled = true; return false; } }
             async function loadItemSet(path) { if (!path) return false; try { const r = await fetch(path + '?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); currentItemSetData = await r.json(); const o = itemSetSelect.querySelector(`option[value="${path}"]`); currentSetNameH2.textContent = o ? `Set: ${o.text}` : `Set: ${path.split('/').pop().replace('.json','')}`; if (!Array.isArray(currentItemSetData)) { console.error("Set ist kein Array."); currentItemSetData = []; return false; } return true; } catch (e) { console.error(`Fehler bei ${path}:`, e); currentItemSetData = []; return false; } }
             function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
             function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('completed', index <= currentItemIndex); }); }
@@ -289,7 +275,6 @@
             document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
             document.getElementById('menu-anleitung').addEventListener('click', (e) => { e.preventDefault(); showModal('anleitung-modal'); menuContent.classList.remove('show'); });
             document.getElementById('menu-modus-auswahl').addEventListener('click', (e) => { e.preventDefault(); exitCurrentExercise(); showScreen('screen-mode-selection'); menuContent.classList.remove('show'); });
-            document.getElementById('menu-fullscreen').addEventListener('click', (e) => { e.preventDefault(); toggleFullScreen(); menuContent.classList.remove('show'); }); // NEU: Event Listener für Vollbild
             ['lernmodus', 'testmodus', 'diktatmodus'].forEach(modeKey => { document.getElementById(`menu-${modeKey}`).addEventListener('click', (e) => { e.preventDefault(); exitCurrentExercise(); if (modeKey === 'lernmodus') currentMode = 'learn'; else if (modeKey === 'testmodus') currentMode = 'test'; else if (modeKey === 'diktatmodus') currentMode = 'dictate'; configureSettingsScreen(); showScreen('screen-settings'); menuContent.classList.remove('show'); }); });
             modalCloseButtons.forEach(b => b.addEventListener('click', () => closeModal(b.dataset.modalId)));
             window.addEventListener('click', (e) => { if (e.target.classList.contains('modal')) closeModal(e.target.id); });
@@ -308,8 +293,11 @@
             btnsShowWord.forEach(btn => btn.addEventListener('click', () => showDiktatWord()));
             slidesWrapper.addEventListener('touchstart', touchStart, { passive: true });
             
+            async function initializeApp() {
+                await loadSetsManifest();
+                showScreen('screen-mode-selection');
+            }
             initializeApp();
-            async function initializeApp() { await loadManifestAndPopulateSelect(); showScreen('screen-mode-selection'); }
         });
     </script>
 </body>
