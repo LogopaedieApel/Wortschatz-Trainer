@@ -263,12 +263,35 @@
             function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
             function populateSlide(slideElement, itemIndex) { const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item) return; if (currentMode === 'dictate' && itemIndex === currentItemIndex) { const instructions = document.createElement('div'); instructions.className = 'diktat-instructions'; instructions.innerHTML = `<p><strong>Diktat:</strong></p><ol><li>Höre das Wort.</li><li>Schreibe es auf.</li><li>Überprüfe mit 'Wort anzeigen'.</li></ol>`; slideElement.appendChild(instructions); } else { let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : ""; if (currentSettings.displayType === 'image_only') displayImage = true; if (currentSettings.displayType === 'word_only') displayWord = true; if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; } if (displayImage && !imagePath) { displayImage = false; displayWord = true; } if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; img.addEventListener('click', () => moveSlider(-1)); slideElement.appendChild(img); } if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); } } }
             function setSlidePositions(animated = true) { if (!animated) slides.forEach(s => s.classList.add('is-grabbing')); populateSlide(prevSlide, currentItemIndex - 1); populateSlide(currentSlide, currentItemIndex); populateSlide(nextSlide, currentItemIndex + 1); prevSlide.style.transform = `translateX(-100%)`; currentSlide.style.transform = `translateX(0)`; nextSlide.style.transform = `translateX(100%)`; if (!animated) setTimeout(() => slides.forEach(s => s.classList.remove('is-grabbing')), 0); }
-            function displayCurrentItem() { isNavigating = false; setSlidePositions(false); updateUiForCurrentItem(); }
+            
+            // NEU: Aufgeteilte Funktionen zur Vermeidung des Aufblitzens
+            function setupInitialState() {
+                isNavigating = false;
+                setSlidePositions(false);
+                updateUiForCurrentItem();
+            }
+            function handleTransitionEnd(direction) {
+                if (direction === -1) { // Nach Links gewischt (nächstes Item)
+                    populateSlide(nextSlide, currentItemIndex + 1);
+                } else { // Nach Rechts gewischt (vorheriges Item)
+                    populateSlide(prevSlide, currentItemIndex - 1);
+                }
+                isNavigating = false;
+            }
+
             function updateUiForCurrentItem() { updateProgressDots(); const item = currentShuffledItems[currentItemIndex]; navArrowsLeft.forEach(arrow => arrow.classList.toggle('invisible', currentItemIndex === 0)); navArrowsRight.forEach(arrow => arrow.classList.toggle('invisible', currentItemIndex >= currentShuffledItems.length - 1)); const hasSound = item && item.sound; soundButtons.forEach(btn => btn.classList.toggle('hidden', !hasSound)); btnsShowWord.forEach(btn => btn.classList.toggle('hidden', currentMode !== 'dictate')); if (currentMode === 'test') playCurrentItemSound(currentSettings.soundDelay); }
             function touchStart(event) { if (isNavigating) return; touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; touchStartY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; slides.forEach(s => s.classList.add('is-grabbing')); slidesWrapper.addEventListener('touchmove', touchMove); slidesWrapper.addEventListener('touchend', touchEnd); }
             function touchMove(event) { const currentX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; const currentY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; const deltaX = currentX - touchStartX; const deltaY = Math.abs(currentY - touchStartY); if (Math.abs(deltaX) < deltaY && !currentTranslate) return; currentTranslate = deltaX; prevSlide.style.transform = `translateX(calc(-100% + ${deltaX}px))`; currentSlide.style.transform = `translateX(${deltaX}px)`; nextSlide.style.transform = `translateX(calc(100% + ${deltaX}px))`; }
             function touchEnd() { slidesWrapper.removeEventListener('touchmove', touchMove); slidesWrapper.removeEventListener('touchend', touchEnd); slides.forEach(s => s.classList.remove('is-grabbing')); const threshold = slidesWrapper.clientWidth / 4; let direction = 0; if (Math.abs(currentTranslate) > threshold) { direction = currentTranslate < 0 ? -1 : 1; } moveSlider(direction); currentTranslate = 0; }
-            function moveSlider(direction) { if (isNavigating) return; if ((direction === 1 && currentItemIndex === 0) || (direction === -1 && currentItemIndex === currentShuffledItems.length - 1)) { setSlidePositions(); return; } if (direction !== 0) { isNavigating = true; clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); const newIndex = currentItemIndex - direction; if (newIndex < 0 || newIndex >= currentShuffledItems.length) { if (newIndex >= currentShuffledItems.length) showModal('exercise-end-modal'); setSlidePositions(); isNavigating = false; return; } currentItemIndex = newIndex; currentSlide.style.transform = `translateX(${direction * 100}%)`; let tempSlide; if (direction === -1) { nextSlide.style.transform = `translateX(0)`; tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide; } else { prevSlide.style.transform = `translateX(0)`; tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide; } currentSlide.addEventListener('transitionend', () => { displayCurrentItem(); }, { once: true }); updateUiForCurrentItem(); } else { setSlidePositions(); } }
+            function moveSlider(direction) { if (isNavigating) return; if ((direction === 1 && currentItemIndex === 0) || (direction === -1 && currentItemIndex === currentShuffledItems.length - 1)) { setSlidePositions(); return; } if (direction !== 0) { isNavigating = true; clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); const newIndex = currentItemIndex - direction; if (newIndex < 0 || newIndex >= currentShuffledItems.length) { if (newIndex >= currentShuffledItems.length) showModal('exercise-end-modal'); setSlidePositions(); isNavigating = false; return; } currentItemIndex = newIndex; currentSlide.style.transform = `translateX(${direction * 100}%)`; let tempSlide; if (direction === -1) { nextSlide.style.transform = `translateX(0)`; tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide; } else { prevSlide.style.transform = `translateX(0)`; tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide; }
+                
+                // NEU: Angepasster Event-Listener
+                currentSlide.addEventListener('transitionend', () => {
+                    handleTransitionEnd(direction);
+                }, { once: true });
+                
+                updateUiForCurrentItem();
+                } else { setSlidePositions(); } }
             function showDiktatWord() { const item = currentShuffledItems[currentItemIndex]; if (!item) return; currentSlide.innerHTML = ''; const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; currentSlide.appendChild(p); btnsShowWord.forEach(btn => btn.classList.add('hidden')); }
 
             hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); });
@@ -284,8 +307,18 @@
             displayTypeButtons.forEach(b => b.addEventListener('click', () => { displayTypeButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.displayType = b.dataset.displayType; }));
             soundDelaySlider.addEventListener('input', (e) => { currentSettings.soundDelay = parseInt(e.target.value); soundDelayValue.textContent = `${currentSettings.soundDelay} Sekunden`; });
             btnSettingsBack.addEventListener('click', () => showScreen('screen-mode-selection'));
-            btnStartExercise.addEventListener('click', async () => { const loaded = await loadItemSet(currentItemSetPath || itemSetSelect.value); if (!loaded || !currentItemSetData || currentItemSetData.length === 0) { alert("Bitte gültiges Set auswählen."); return; } currentShuffledItems = shuffleArray([...currentItemSetData]); currentItemIndex = 0; generateProgressDots(); displayCurrentItem(); showScreen('screen-exercise'); });
-            btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); currentShuffledItems = shuffleArray([...currentItemSetData]); currentItemIndex = 0; generateProgressDots(); displayCurrentItem(); });
+            btnStartExercise.addEventListener('click', async () => { const loaded = await loadItemSet(currentItemSetPath || itemSetSelect.value); if (!loaded || !currentItemSetData || currentItemSetData.length === 0) { alert("Bitte gültiges Set auswählen."); return; } currentShuffledItems = shuffleArray([...currentItemSetData]); currentItemIndex = 0; generateProgressDots();
+                
+                // NEU: Angepasster Aufruf
+                setupInitialState();
+                
+                showScreen('screen-exercise'); });
+            btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); currentShuffledItems = shuffleArray([...currentItemSetData]); currentItemIndex = 0; generateProgressDots();
+                
+                // NEU: Angepasster Aufruf
+                setupInitialState();
+                
+            });
             btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); configureSettingsScreen(); showScreen('screen-settings'); });
             soundButtons.forEach(btn => btn.addEventListener('click', () => playCurrentItemSound(0)));
             navArrowsLeft.forEach(arrow => arrow.addEventListener('click', () => moveSlider(1)));
