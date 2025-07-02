@@ -6,7 +6,7 @@
     <title>Wortschatz-Trainer</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS (mit der finalen, korrekten Flexbox-Logik) */
+        /* CSS (mit der finalen, konsistenten Layout-Korrektur) */
         :root {
             --dark-green: #27633A;
             --light-green: #6BAB58;
@@ -50,7 +50,7 @@
         .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
         
         #screen-exercise {
-            padding: 0; /* Wichtig, da wir das Padding jetzt anders steuern */
+            padding: 0;
             background-color: #fff;
             overflow: hidden;
             display: flex;
@@ -60,7 +60,6 @@
         .progress-bar-container { width: 100%; background-color: #e0e0e0; border-radius: var(--border-radius); overflow: hidden; height: 25px; }
         .progress-bar { width: 0%; height: 100%; background-color: var(--light-green); text-align: center; line-height: 25px; color: white; font-weight: bold; transition: width 0.3s ease; }
         
-        /* Der main-content-area füllt den restlichen Platz NACH dem .top-bar */
         .main-content-area {
             flex-grow: 1;
             width: 100%;
@@ -72,7 +71,6 @@
         .exercise-main-container { display: flex; flex-direction: row; justify-content: space-between; align-items: stretch; width: 100%; flex-grow: 1; min-height: 0; }
         .nav-arrow { height: 100%; display: flex; justify-content: center; align-items: center; width: 60px; font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none; transition: background-color 0.2s ease; flex-shrink: 0; z-index: 5; }
         
-        /* 1. DER FLEX-CONTAINER */
         .content-and-controls-wrapper {
             flex-grow: 1;
             min-width: 0;
@@ -81,13 +79,12 @@
             align-items: center;
         }
         
-        /* 2. DAS WACHSENDE ELEMENT */
         .slides-wrapper {
             width: 100%;
-            flex-grow: 1; /* Es soll den verfügbaren Platz füllen */
+            flex-grow: 1;
             position: relative;
             overflow: hidden;
-            min-height: 0; /* Der entscheidende Fix, damit es schrumpfen kann */
+            min-height: 0;
         }
 
         .slide {
@@ -102,9 +99,8 @@
         .slide .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
         .diktat-instructions { font-size: 1.2rem; padding: 20px; text-align: left; line-height: 1.6; max-width: 600px; }
         
-        /* 3. DAS NICHT-SCHRUMPFENDE ELEMENT */
         #action-buttons-container {
-            flex-shrink: 0; /* Verhindert, dass der Button-Container kleiner wird */
+            flex-shrink: 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -119,7 +115,10 @@
         @media (max-width: 480px) {
             .nav-arrow { width: 40px; font-size: 2rem; }
             .slide .word-text { font-size: 1.8rem; }
-            .top-bar { padding: calc(env(safe-area-inset-top) + 100px) 8px 10px 8px; }
+            
+            /* DIESE PROBLEMATISCHE REGEL WURDE ENTFERNT. */
+            /* Die Hauptregel für .top-bar gilt jetzt für alle. */
+            
             .progress-bar-container { height: 20px; }
             .progress-bar { line-height: 20px; }
             #sound-button { width: 50px; height: 50px; }
