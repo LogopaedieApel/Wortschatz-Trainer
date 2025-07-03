@@ -64,7 +64,6 @@
         .modal-content { background-color: var(--card-background); margin: auto; padding: 20px; border-radius: var(--border-radius); width: 80%; max-width: 600px; box-shadow: var(--box-shadow); position: relative; }
         .modal-close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1; }
         
-        /* <!-- NEU: Stile für das Lade-Overlay --> */
         #loading-overlay {
             position: fixed;
             top: 0;
@@ -232,7 +231,6 @@
     </style>
 </head>
 <body>
-    <!-- NEU: Lade-Overlay für das Vorladen der Inhalte -->
     <div id="loading-overlay" class="hidden">
         <div class="loading-spinner"></div>
         <p>Lade Inhalte...</p>
@@ -333,38 +331,28 @@
             function closeModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.remove('show'); }
             function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } return array; }
             
-            // <!-- NEU: Funktion zum Vorladen von Bildern und Sounds -->
             function preloadAssets(items) {
                 const promises = [];
-                const loadedAssets = new Set(); // Verhindert doppeltes Laden derselben Datei
-
+                const loadedAssets = new Set();
                 items.forEach(item => {
-                    // Bild vorladen
                     if (item.image && !loadedAssets.has(item.image)) {
                         promises.push(new Promise((resolve) => {
                             const img = new Image();
-                            img.src = item.image + '?t=' + new Date().getTime();
+                            img.src = item.image;
                             img.onload = resolve;
-                            img.onerror = resolve; // Auch bei Fehler fortfahren, damit die App nicht hängen bleibt
+                            img.onerror = resolve;
                         }));
                         loadedAssets.add(item.image);
                     }
-
-                    // Sound vorladen
                     if (item.sound && !loadedAssets.has(item.sound)) {
                         promises.push(
-                            fetch(item.sound + '?t=' + new Date().getTime())
-                                .then(response => {
-                                    if (!response.ok) throw new Error('Network response was not ok.');
-                                })
-                                .catch(err => {
-                                    console.error('Preloading sound failed:', err);
-                                })
+                            fetch(item.sound)
+                                .then(response => { if (!response.ok) throw new Error('Network response was not ok.'); })
+                                .catch(err => { console.error('Preloading sound failed:', err); })
                         );
                         loadedAssets.add(item.sound);
                     }
                 });
-
                 return Promise.all(promises);
             }
 
@@ -373,40 +361,76 @@
             function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
             function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('active', index === currentItemIndex); }); }
             
+            // ### START DER KORRIGIERTEN FUNKTIONEN ###
+
             function playCurrentItemSound(delay = 0) {
                 clearTimeout(soundTimeoutId);
+                audioPlayer.pause(); // Immer zuerst pausieren
+
                 const item = currentShuffledItems[currentItemIndex];
                 if (!item || !item.sound) {
                     if (currentMode === 'test') scheduleAutoNext();
                     return;
                 }
+
                 soundTimeoutId = setTimeout(() => {
-                    audioPlayer.pause();
-                    audioPlayer.currentTime = 0;
-                    soundButtons.forEach(btn => btn.disabled = true);
-                    const enableButtons = () => {
-                        soundButtons.forEach(btn => btn.disabled = false);
-                        audioPlayer.removeEventListener('ended', enableButtons);
-                        audioPlayer.removeEventListener('error', enableButtons);
+                    audioPlayer.currentTime = 0; // Sound von vorne beginnen
+                    soundButtons.forEach(btn => btn.disabled = true); // Button während des Spielens deaktivieren
+
+                    const onPlaybackEnd = () => {
+                        soundButtons.forEach(btn => btn.disabled = false); // Button danach wieder aktivieren
                         if (currentMode === 'test') {
                             scheduleAutoNext();
                         }
+                        // Event Listener aufräumen, um Speicherlecks zu vermeiden
+                        audioPlayer.removeEventListener('ended', onPlaybackEnd);
+                        audioPlayer.removeEventListener('error', onPlaybackEnd);
                     };
-                    audioPlayer.addEventListener('canplay', () => {
-                        audioPlayer.play().catch(e => {
-                            console.error("Sound-Abspielfehler:", e);
-                            enableButtons();
-                        });
-                    }, { once: true });
-                    audioPlayer.addEventListener('ended', enableButtons, { once: true });
-                    audioPlayer.addEventListener('error', enableButtons, { once: true });
-                    audioPlayer.src = item.sound + '?t=' + new Date().getTime();
+                    
+                    audioPlayer.addEventListener('ended', onPlaybackEnd);
+                    audioPlayer.addEventListener('error', onPlaybackEnd);
+
+                    audioPlayer.play().catch(e => {
+                        console.error("Sound-Abspielfehler:", e);
+                        onPlaybackEnd(); // Auch bei einem Fehler die Buttons wieder freigeben etc.
+                    });
+
                 }, delay * 1000);
             }
 
+            function updateUiForCurrentItem() {
+                updateProgressDots();
+                const item = currentShuffledItems[currentItemIndex];
+                const hasSound = item && item.sound;
+
+                soundButtons.forEach(btn => {
+                    btn.classList.toggle('hidden', !hasSound);
+                    btn.disabled = false; // Button bei Folienwechsel immer aktivieren
+                });
+                btnsShowWord.forEach(btn => btn.classList.toggle('hidden', currentMode !== 'dictate'));
+
+                // Audio-Quelle nur setzen, wenn sich die Folie ändert.
+                if (hasSound) {
+                    // Vergleiche absolute URLs, um sicherzustellen, dass die Quelle wirklich neu ist
+                    if (audioPlayer.src !== new URL(item.sound, window.location.href).href) {
+                        audioPlayer.src = item.sound;
+                        audioPlayer.load(); // Dem Browser explizit sagen, dass er die neue Quelle laden soll.
+                    }
+                } else {
+                    audioPlayer.src = ""; // Quelle leeren, wenn kein Sound vorhanden ist.
+                }
+
+                // Automatisches Abspielen im Test-Modus wird von hier ausgelöst.
+                if (currentMode === 'test') {
+                    playCurrentItemSound(currentSettings.soundDelay);
+                }
+            }
+
+            // ### ENDE DER KORRIGIERTEN FUNKTIONEN ###
+
             function scheduleAutoNext() { clearTimeout(autoNextTimeoutId); autoNextTimeoutId = setTimeout(() => { moveSlider(-1); }, 3000); }
             function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
-            function populateSlide(slideElement, itemIndex) { const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item) return; if (currentMode === 'dictate' && itemIndex === currentItemIndex) { const instructions = document.createElement('div'); instructions.className = 'diktat-instructions'; instructions.innerHTML = `<p><strong>Diktat:</strong></p><ol><li>Höre das Wort.</li><li>Schreibe es auf.</li><li>Überprüfe mit 'Wort anzeigen'.</li></ol>`; slideElement.appendChild(instructions); } else { let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : ""; if (currentSettings.displayType === 'image_only') displayImage = true; if (currentSettings.displayType === 'word_only') displayWord = true; if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; } if (displayImage && !imagePath) { displayImage = false; displayWord = true; } if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; img.addEventListener('click', () => moveSlider(-1)); slideElement.appendChild(img); } if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); } } }
+            function populateSlide(slideElement, itemIndex) { const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item) return; if (currentMode === 'dictate' && itemIndex === currentItemIndex) { const instructions = document.createElement('div'); instructions.className = 'diktat-instructions'; instructions.innerHTML = `<p><strong>Diktat:</strong></p><ol><li>Höre das Wort.</li><li>Schreibe es auf.</li><li>Überprüfe mit 'Wort anzeigen'.</li></ol>`; slideElement.appendChild(instructions); } else { let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : ""; if (currentSettings.displayType === 'image_only') displayImage = true; if (currentSettings.displayType === 'word_only') displayWord = true; if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; } if (displayImage && !imagePath) { displayImage = false; displayWord = true; } if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath; img.alt = item.name || ""; img.addEventListener('click', () => moveSlider(-1)); slideElement.appendChild(img); } if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); } } }
             function setSlidePositions(animated = true) { slides.forEach(s => s.classList.toggle('no-transition', !animated)); const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; populateSlide(prevSlide, prevIndex); populateSlide(currentSlide, currentItemIndex); populateSlide(nextSlide, nextIndex); prevSlide.style.transform = `translateX(-100%)`; currentSlide.style.transform = `translateX(0)`; nextSlide.style.transform = `translateX(100%)`; if (!animated) { setTimeout(() => slides.forEach(s => s.classList.remove('no-transition')), 20); } }
             
             function setupInitialState() { isNavigating = false; setSlidePositions(false); updateUiForCurrentItem(); }
@@ -427,8 +451,7 @@
                     isNavigating = false;
                 }, 20);
             }
-
-            function updateUiForCurrentItem() { updateProgressDots(); const item = currentShuffledItems[currentItemIndex]; const hasSound = item && item.sound; soundButtons.forEach(btn => btn.classList.toggle('hidden', !hasSound)); btnsShowWord.forEach(btn => btn.classList.toggle('hidden', currentMode !== 'dictate')); if (currentMode === 'test') playCurrentItemSound(currentSettings.soundDelay); }
+            
             function touchStart(event) { if (isNavigating) return; touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; touchStartY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; slides.forEach(s => s.classList.add('is-grabbing')); slidesWrapper.addEventListener('touchmove', touchMove); slidesWrapper.addEventListener('touchend', touchEnd); }
             function touchMove(event) { if (isNavigating) return; const currentX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; const currentY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; const deltaX = currentX - touchStartX; const deltaY = Math.abs(currentY - touchStartY); if (Math.abs(deltaX) < deltaY && !currentTranslate) return; currentTranslate = deltaX; prevSlide.style.transform = `translateX(calc(-100% + ${deltaX}px))`; currentSlide.style.transform = `translateX(${deltaX}px)`; nextSlide.style.transform = `translateX(calc(100% + ${deltaX}px))`; }
             function touchEnd() { slidesWrapper.removeEventListener('touchmove', touchMove); slidesWrapper.removeEventListener('touchend', touchEnd); slides.forEach(s => s.classList.remove('is-grabbing')); const threshold = slidesWrapper.clientWidth / 4; let direction = 0; if (Math.abs(currentTranslate) > threshold) { direction = currentTranslate < 0 ? -1 : 1; } moveSlider(direction); currentTranslate = 0; }
@@ -477,7 +500,6 @@
             soundDelaySlider.addEventListener('input', (e) => { currentSettings.soundDelay = parseInt(e.target.value); soundDelayValue.textContent = `${currentSettings.soundDelay} Sekunden`; });
             btnSettingsBack.addEventListener('click', () => showScreen('screen-mode-selection'));
             
-            // <!-- GEÄNDERT: Event-Listener für Start-Button mit Preloading-Logik -->
             btnStartExercise.addEventListener('click', async () => {
                 const loaded = await loadItemSet(currentItemSetPath || itemSetSelect.value);
                 if (!loaded || !currentItemSetData || currentItemSetData.length === 0) {
@@ -491,6 +513,7 @@
                 currentItemIndex = 0;
 
                 try {
+                    // Cache-Busting aus dem Preloader entfernen, damit der Browser-Cache genutzt werden kann
                     await preloadAssets(currentShuffledItems);
                 } catch (error) {
                     console.error("Ein Fehler ist beim Vorladen aufgetreten:", error);
