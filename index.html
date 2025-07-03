@@ -67,7 +67,7 @@
         .main-content-area {
             flex-grow: 1;
             width: 100%;
-            min-height: 0; /* Wichtig für Flexbox im scrollbaren Container */
+            min-height: 0;
             display: flex;
             flex-direction: column;
             padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
@@ -77,8 +77,8 @@
             overflow: hidden;
             width: 100%;
             aspect-ratio: 4 / 3;
-            max-width: 800px; /* Verhindert zu breites Layout auf großen Bildschirmen */
-            margin: 0 auto; /* Zentriert den Slider horizontal */
+            max-width: 800px;
+            margin: 0 auto;
             flex-shrink: 0;
         }
         .slide {
@@ -115,30 +115,29 @@
             transform: scale(1.4);
         }
 
-        /* NEU: Container für untere Steuerungselemente */
         #bottom-controls-container {
             display: flex;
-            gap: 10px; /* Abstand zwischen linker und rechter Gruppe */
+            gap: 10px;
             width: 100%;
             max-width: 800px;
-            margin: 0 auto; /* Horizontal zentrieren */
-            flex-grow: 1; /* Nimmt den restlichen vertikalen Platz ein */
-            min-height: 100px; /* Stellt sicher, dass immer Platz da ist */
+            margin: 0 auto;
+            flex-grow: 1;
+            min-height: 100px;
             padding-top: 10px;
         }
         .control-group {
-            flex: 1; /* Jede Gruppe nimmt 50% der Breite ein */
+            flex: 1;
             display: flex;
-            flex-direction: column; /* Ordnet die Buttons vertikal an */
-            gap: 8px; /* Abstand zwischen den Buttons */
+            flex-direction: column;
+            gap: 8px;
         }
         .control-group > * {
-            flex: 1; /* WICHTIG: Teilt die Höhe gleichmäßig auf alle 3 Elemente auf */
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: var(--border-radius);
-            min-height: 44px; /* Mindesthöhe für gute Bedienbarkeit */
+            min-height: 44px;
         }
         .nav-arrow {
             font-size: 3rem;
@@ -150,10 +149,11 @@
         .sound-button {
             border: 1px solid #ddd;
             background-color: var(--card-background);
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2327633A'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E");
+            /* --- GEÄNDERT --- */
+            background-image: url('lautsprecher.jpg');
             background-repeat: no-repeat;
             background-position: center;
-            background-size: 40%;
+            background-size: contain; /* Stellt sicher, dass das Bild hineinpasst */
             transition: transform 0.1s ease;
         }
         .btn-show-word {
@@ -162,7 +162,6 @@
             border: 1px solid #ddd;
         }
         
-        /* NEU: Container für Anweisungen */
         #instructions-container {
             width: 100%;
             max-width: 800px;
@@ -173,7 +172,7 @@
             border: 1px solid #e0e0e0;
             text-align: center;
             color: #777;
-            flex-shrink: 0; /* Verhindert, dass er kleiner wird */
+            flex-shrink: 0;
         }
 
     </style>
