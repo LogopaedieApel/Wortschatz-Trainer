@@ -149,22 +149,18 @@
             font-weight: 100;
             color: var(--text-color);
             background-color: var(--card-background);
-            /*border: 1px solid #ddd;*/
         }
         .sound-button {
-            /*border: 1px solid #ddd;*/
             background-color: var(--card-background);
-            /* --- GEÄNDERT --- */
             background-image: url('lautsprecher.png');
             background-repeat: no-repeat;
             background-position: center;
-            background-size: contain; /* Stellt sicher, dass das Bild hineinpasst */
+            background-size: contain;
             transition: transform 0.1s ease;
         }
         .btn-show-word {
             background-color: var(--card-background);
             color: var(--text-color);
-            /*border: 1px solid #ddd;*/
         }
         
         #instructions-container {
@@ -281,7 +277,50 @@
             async function loadItemSet(path) { if (!path) return false; try { const r = await fetch(path + '?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); currentItemSetData = await r.json(); const o = itemSetSelect.querySelector(`option[value="${path}"]`); currentSetNameH2.textContent = o ? `Set: ${o.text}` : `Set: ${path.split('/').pop().replace('.json','')}`; if (!Array.isArray(currentItemSetData)) { console.error("Set ist kein Array."); currentItemSetData = []; return false; } return true; } catch (e) { console.error(`Fehler bei ${path}:`, e); currentItemSetData = []; return false; } }
             function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
             function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('active', index === currentItemIndex); }); }
-            function playCurrentItemSound(delay = 0) { clearTimeout(soundTimeoutId); const item = currentShuffledItems[currentItemIndex]; if (!item || !item.sound) { if (currentMode === 'test') scheduleAutoNext(); return; } soundTimeoutId = setTimeout(() => { audioPlayer.src = item.sound + '?t=' + new Date().getTime(); audioPlayer.play().catch(e => console.error("Sound Fehler:", e)); if (currentMode === 'test') { audioPlayer.onended = () => { scheduleAutoNext(); audioPlayer.onended = null; }; } }, delay * 1000); }
+            
+            // --- GEÄNDERTE FUNKTION ---
+            function playCurrentItemSound(delay = 0) {
+                // Fokus sofort vom geklickten Button nehmen, um das Leuchten zu verhindern
+                if (document.activeElement) {
+                    document.activeElement.blur();
+                }
+
+                clearTimeout(soundTimeoutId);
+                const item = currentShuffledItems[currentItemIndex];
+                if (!item || !item.sound) {
+                    if (currentMode === 'test') scheduleAutoNext();
+                    return;
+                }
+
+                soundTimeoutId = setTimeout(() => {
+                    // Alle Sound-Buttons deaktivieren
+                    soundButtons.forEach(btn => btn.disabled = true);
+
+                    audioPlayer.src = item.sound + '?t=' + new Date().getTime();
+                    
+                    audioPlayer.play().catch(e => {
+                        console.error("Sound Fehler:", e);
+                        // Im Fehlerfall die Buttons wieder aktivieren
+                        soundButtons.forEach(btn => btn.disabled = false);
+                    });
+
+                    // Funktion, die die Buttons wieder aktiviert
+                    const enableButtons = () => {
+                        soundButtons.forEach(btn => btn.disabled = false);
+                        audioPlayer.onended = null;
+                        audioPlayer.onerror = null;
+                        if (currentMode === 'test') {
+                            scheduleAutoNext();
+                        }
+                    };
+
+                    // Wenn der Sound zu Ende ist oder ein Fehler auftritt, Buttons aktivieren
+                    audioPlayer.onended = enableButtons;
+                    audioPlayer.onerror = enableButtons;
+
+                }, delay * 1000);
+            }
+
             function scheduleAutoNext() { clearTimeout(autoNextTimeoutId); autoNextTimeoutId = setTimeout(() => { moveSlider(-1); }, 3000); }
             function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
             function populateSlide(slideElement, itemIndex) { const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item) return; if (currentMode === 'dictate' && itemIndex === currentItemIndex) { const instructions = document.createElement('div'); instructions.className = 'diktat-instructions'; instructions.innerHTML = `<p><strong>Diktat:</strong></p><ol><li>Höre das Wort.</li><li>Schreibe es auf.</li><li>Überprüfe mit 'Wort anzeigen'.</li></ol>`; slideElement.appendChild(instructions); } else { let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : ""; if (currentSettings.displayType === 'image_only') displayImage = true; if (currentSettings.displayType === 'word_only') displayWord = true; if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; } if (displayImage && !imagePath) { displayImage = false; displayWord = true; } if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; img.addEventListener('click', () => moveSlider(-1)); slideElement.appendChild(img); } if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); } } }
