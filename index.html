@@ -171,8 +171,10 @@
             background-size: contain;
             transition: transform 0.1s ease;
         }
-        .sound-button:hover {  
-            background-color: var(--card-background); /* Stellt sicher, dass der Hintergrund weiß bleibt */
+        .sound-button:hover,
+        .sound-button:focus {
+            background-color: var(--card-background); /* Hintergrund MUSS weiß bleiben */
+            box-shadow: none; /* Zusätzliche Sicherheit gegen Fokus-Schatten */
         }
             .btn-show-word {
             background-color: var(--card-background);
