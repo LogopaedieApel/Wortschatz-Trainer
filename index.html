@@ -171,6 +171,13 @@
             background-size: contain;
             transition: transform 0.1s ease;
         }
+        .sound-button:disabled {
+            background-color: var(--card-background); /* Erzwingt den weißen Hintergrund */
+            opacity: 1; /* Verhindert, dass der Browser das Element ausbleicht */
+            cursor: not-allowed; /* Zeigt dem Nutzer trotzdem an, dass er nicht klickbar ist */
+            /* Optional: Sicherstellen, dass das Bild nicht ebenfalls ausgebleicht wird */
+            filter: none;
+        }
         .sound-button:hover,
         .sound-button:focus {
             background-color: var(--card-background); /* Hintergrund MUSS weiß bleiben */
