@@ -27,7 +27,6 @@
         html, body { height: 100%; font-family: 'Arial', sans-serif; background-color: var(--background-color); color: var(--text-color); overflow: hidden; }
         h1, h2, h3 { font-family: 'Comfortaa', cursive; }
         .hidden { display: none !important; }
-        /* .invisible ist nicht mehr nötig für die Pfeile, kann aber für andere Dinge bleiben */
         .invisible { visibility: hidden !important; } 
         .screen { min-height: 100vh; padding: 20px; padding-top: 80px; display: flex; flex-direction: column; align-items: center; transition: transform var(--transition-speed) ease-in-out, opacity var(--transition-speed) ease-in-out; transform: scale(1); opacity: 1; width: 100%; height: 100%; overflow-y: auto; }
         #screen-mode-selection, #screen-settings { justify-content: center; }
@@ -64,46 +63,34 @@
             flex-direction: column;
             height: 100vh;
             height: 100dvh;
-            padding-top: env(safe-area-inset-top);
         }
         .main-content-area {
             flex-grow: 1;
             width: 100%;
             min-height: 0;
             display: flex;
-            flex-direction: column;
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-        .exercise-main-container {
-            display: flex; 
-            flex-direction: row;
-            align-items: stretch;
-            width: 100%;
-            flex-grow: 1; 
-            min-height: 0;
-        }
-        .navigation-controls {
-            flex-shrink: 0;
-            width: 70px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            padding: 10px 0;
         }
         .content-wrapper {
-            flex-grow: 1;
-            min-width: 0;
+            width: 100%;
             display: flex;
             flex-direction: column;
         }
-        .slides-wrapper {
-            flex-grow: 1;
+        .slider-and-dots-container {
+            width: 100%;
+            max-width: 800px; 
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Zentriert den Block vertikal */
+            flex-grow: 1; /* Nimmt den verfügbaren Platz ein */
             min-height: 0;
+            padding: 20px; /* Gibt dem Bild etwas Luft */
+        }
+        .slides-wrapper {
             position: relative;
             overflow: hidden;
             width: 100%;
+            aspect-ratio: 4 / 3;
         }
         .slide {
             width: 100%; height: 100%; position: absolute; top: 0; left: 0;
@@ -118,7 +105,7 @@
         .diktat-instructions { font-size: 1.2rem; padding: 20px; text-align: left; line-height: 1.6; max-width: 600px; }
         #progress-dots-container {
             flex-shrink: 0;
-            padding: 15px;
+            padding: 20px 0 0 0; /* Nur Abstand nach oben */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -126,8 +113,7 @@
             gap: 8px;
         }
         .progress-dot {
-            width: 10px;
-            height: 10px;
+            width: 10px; height: 10px;
             background-color: #ddd;
             border-radius: 50%;
             transition: background-color 0.3s ease, transform 0.3s ease;
@@ -136,32 +122,47 @@
             background-color: var(--light-green);
             transform: scale(1.4);
         }
+
+        /* NEU: Styling für die untere Action-Bar */
+        #action-bar-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            gap: 15px;
+            /* Shorthand-Padding für alle Safe-Areas gleichzeitig */
+            padding: 15px calc(env(safe-area-inset-right) + 15px) calc(env(safe-area-inset-bottom) + 15px) calc(env(safe-area-inset-left) + 15px);
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
         .nav-arrow {
-            font-size: 3rem; font-weight: 100; color: #aaa; cursor: pointer; user-select: none;
-            width: 100%;
-            text-align: center;
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: #555;
+            cursor: pointer;
+            user-select: none;
+            padding: 5px 20px;
+            border-radius: var(--border-radius);
+            background-color: #efefef;
         }
-        .sound-button {
-            width: 60px; height: 60px; border-radius: 50%;
-            background-color: var(--card-background); border: 1px solid #ddd;
-            box-shadow: var(--box-shadow); cursor: pointer; flex-shrink: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2327633A'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: center; background-size: 60%;
-            transition: transform 0.1s ease;
+        .nav-arrow:active {
+            background-color: #ddd;
         }
-        .sound-button:active { transform: scale(0.95); }
-        .btn-show-word {
-            width: 60px; height: 60px; border-radius: 50%; padding: 5px;
-            font-size: 0.7rem; line-height: 1.2; word-break: break-word;
-            display: flex; align-items: center; justify-content: center;
+        #action-bar-bottom .center-actions {
+            display: flex;
+            gap: 15px;
+        }
+        #action-bar-bottom .sound-button, #action-bar-bottom .btn-show-word {
+             width: 70px; height: 70px;
         }
         
         @media (max-width: 480px) {
             .slide .word-text { font-size: 1.8rem; }
-            .navigation-controls { width: 50px; gap: 10px; }
-            .nav-arrow { font-size: 2.5rem; }
-            .sound-button, .btn-show-word { width: 45px; height: 45px; }
-            #progress-dots-container { gap: 6px; padding: 10px; }
+            #action-bar-bottom .sound-button, #action-bar-bottom .btn-show-word {
+                width: 60px; height: 60px;
+            }
+            .nav-arrow { font-size: 2.5rem; padding: 5px 15px;}
+            #progress-dots-container { gap: 6px; }
             .progress-dot { width: 8px; height: 8px; }
         }
     </style>
@@ -201,14 +202,8 @@
     
     <div id="screen-exercise" class="screen hidden">
         <div class="main-content-area">
-            <div class="exercise-main-container">
-                <div class="navigation-controls">
-                    <div class="nav-arrow nav-arrow-right">›</div>
-                    <button class="sound-button"></button>
-                    <button class="btn-show-word hidden"></button>
-                    <div class="nav-arrow nav-arrow-left">‹</div>
-                </div>
-                <div class="content-wrapper">
+            <div class="content-wrapper">
+                <div class="slider-and-dots-container">
                     <div class="slides-wrapper">
                         <div id="slide-1" class="slide"></div>
                         <div id="slide-2" class="slide"></div>
@@ -216,11 +211,13 @@
                     </div>
                     <div id="progress-dots-container"></div>
                 </div>
-                <div class="navigation-controls">
-                    <div class="nav-arrow nav-arrow-right">›</div>
-                    <button class="sound-button"></button>
-                    <button class="btn-show-word hidden"></button>
+                <div id="action-bar-bottom">
                     <div class="nav-arrow nav-arrow-left">‹</div>
+                    <div class="center-actions">
+                        <button class="sound-button"></button>
+                        <button class="btn-show-word hidden"></button>
+                    </div>
+                    <div class="nav-arrow nav-arrow-right">›</div>
                 </div>
             </div>
         </div>
@@ -271,23 +268,17 @@
             function handleTransitionEnd(direction) {
                 const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length;
                 const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length;
+                
+                const slideToReset = direction === -1 ? nextSlide : prevSlide;
+                const indexToPopulate = direction === -1 ? nextIndex : prevIndex;
+                const positionToSet = direction === -1 ? '100%' : '-100%';
 
-                nextSlide.classList.add('no-transition');
-                prevSlide.classList.add('no-transition');
-
-                if (direction === -1) { // Nach Links gewischt (nächstes Item)
-                    populateSlide(nextSlide, nextIndex);
-                } else { // Nach Rechts gewischt (vorheriges Item)
-                    populateSlide(prevSlide, prevIndex);
-                }
-
-                // Wichtig: Slides an ihre Startposition zurücksetzen
-                prevSlide.style.transform = 'translateX(-100%)';
-                nextSlide.style.transform = 'translateX(100%)';
+                slideToReset.classList.add('no-transition');
+                populateSlide(slideToReset, indexToPopulate);
+                slideToReset.style.transform = `translateX(${positionToSet})`;
                 
                 setTimeout(() => {
-                    nextSlide.classList.remove('no-transition');
-                    prevSlide.classList.remove('no-transition');
+                    slideToReset.classList.remove('no-transition');
                     isNavigating = false;
                 }, 20);
             }
@@ -304,17 +295,11 @@
                 }
                 
                 isNavigating = true;
-                clearTimeout(soundTimeoutId);
-                clearTimeout(autoNextTimeoutId);
-                audioPlayer.pause();
+                clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause();
                 
                 let newIndex = currentItemIndex - direction;
-                // Loop-Logik
-                if (newIndex < 0) {
-                    newIndex = currentShuffledItems.length - 1;
-                } else if (newIndex >= currentShuffledItems.length) {
-                    newIndex = 0;
-                }
+                if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; } 
+                else if (newIndex >= currentShuffledItems.length) { newIndex = 0; }
                 currentItemIndex = newIndex;
                 
                 currentSlide.style.transform = `translateX(${direction * 100}%)`;
@@ -348,7 +333,7 @@
             btnSettingsBack.addEventListener('click', () => showScreen('screen-mode-selection'));
             btnStartExercise.addEventListener('click', async () => { const loaded = await loadItemSet(currentItemSetPath || itemSetSelect.value); if (!loaded || !currentItemSetData || currentItemSetData.length === 0) { alert("Bitte gültiges Set auswählen."); return; } currentShuffledItems = shuffleArray([...currentItemSetData]); currentItemIndex = 0; generateProgressDots(); setupInitialState(); showScreen('screen-exercise'); });
             btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); currentShuffledItems = shuffleArray([...currentItemSetData]); currentItemIndex = 0; generateProgressDots(); setupInitialState(); });
-            btnNewSelection.addEventListener('click', () => { showModal('exercise-end-modal'); configureSettingsScreen(); showScreen('screen-settings'); });
+            btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); configureSettingsScreen(); showScreen('screen-settings'); });
             soundButtons.forEach(btn => btn.addEventListener('click', () => playCurrentItemSound(0)));
             navArrowsLeft.forEach(arrow => arrow.addEventListener('click', () => moveSlider(1)));
             navArrowsRight.forEach(arrow => arrow.addEventListener('click', () => moveSlider(-1)));
