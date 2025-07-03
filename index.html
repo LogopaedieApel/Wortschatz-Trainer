@@ -36,16 +36,15 @@
         button:hover, .clickable-card:hover { background-color: var(--light-green); }
         button:disabled { background-color: #ccc; cursor: not-allowed; }
         
-        /* Verbessertes Anti-Highlight und Anti-Fokus für alle interaktiven Elemente */
         button, .nav-arrow, .clickable-card {
-            -webkit-tap-highlight-color: transparent; /* Für iOS/Android Tap-Feedback */
-            outline: none; /* Entfernt den Standard-Fokus-Rahmen */
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
         }
         button:focus,
         .nav-arrow:focus,
         .clickable-card:focus {
             outline: none;
-            box-shadow: none; /* Entfernt eventuelle Fokus-Schatten */
+            box-shadow: none;
         }
         button:focus:not(:hover),
         .nav-arrow:focus:not(:hover),
@@ -72,7 +71,6 @@
         .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
         .form-group { margin-bottom: 20px; }
 
-        /* --- Layout für Übungs-Screen --- */
         #screen-exercise {
             padding: 0 !important;
             background-color: #fff;
@@ -172,18 +170,17 @@
             transition: transform 0.1s ease;
         }
         .sound-button:disabled {
-            background-color: var(--card-background); /* Erzwingt den weißen Hintergrund */
-            opacity: 1; /* Verhindert, dass der Browser das Element ausbleicht */
-            cursor: not-allowed; /* Zeigt dem Nutzer trotzdem an, dass er nicht klickbar ist */
-            /* Optional: Sicherstellen, dass das Bild nicht ebenfalls ausgebleicht wird */
+            background-color: var(--card-background);
+            opacity: 1;
+            cursor: not-allowed;
             filter: none;
         }
         .sound-button:hover,
         .sound-button:focus {
-            background-color: var(--card-background); /* Hintergrund MUSS weiß bleiben */
-            box-shadow: none; /* Zusätzliche Sicherheit gegen Fokus-Schatten */
+            background-color: var(--card-background);
+            box-shadow: none;
         }
-            .btn-show-word {
+        .btn-show-word {
             background-color: var(--card-background);
             color: var(--text-color);
         }
@@ -303,7 +300,7 @@
             function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
             function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('active', index === currentItemIndex); }); }
             
-            // --- GEÄNDERTE FUNKTION ---
+            // --- HIER IST DIE GEÄNDERTE, ROBUSTERE FUNKTION ---
             function playCurrentItemSound(delay = 0) {
                 clearTimeout(soundTimeoutId);
                 const item = currentShuffledItems[currentItemIndex];
@@ -313,30 +310,41 @@
                 }
 
                 soundTimeoutId = setTimeout(() => {
-                    // Alle Sound-Buttons deaktivieren
+                    // 1. Zuerst einen eventuell laufenden Sound stoppen und zurücksetzen.
+                    //    Das ist entscheidend, um den Player bei schnellen Klicks "sauber" zu halten.
+                    audioPlayer.pause();
+                    audioPlayer.currentTime = 0;
+
+                    // 2. Buttons sofort deaktivieren, um weitere Klicks zu blockieren.
                     soundButtons.forEach(btn => btn.disabled = true);
 
-                    audioPlayer.src = item.sound + '?t=' + new Date().getTime();
-                    
-                    audioPlayer.play().catch(e => {
-                        console.error("Sound Fehler:", e);
-                        // Im Fehlerfall die Buttons wieder aktivieren
-                        soundButtons.forEach(btn => btn.disabled = false);
-                    });
-
-                    // Funktion, die die Buttons wieder aktiviert
+                    // Hilfsfunktion, um die Buttons am Ende wieder zu aktivieren.
                     const enableButtons = () => {
                         soundButtons.forEach(btn => btn.disabled = false);
-                        audioPlayer.onended = null;
-                        audioPlayer.onerror = null;
+                        // Wichtig: Event-Listener wieder entfernen, damit sie sich nicht ansammeln.
+                        audioPlayer.removeEventListener('ended', enableButtons);
+                        audioPlayer.removeEventListener('error', enableButtons);
                         if (currentMode === 'test') {
                             scheduleAutoNext();
                         }
                     };
 
-                    // Wenn der Sound zu Ende ist oder ein Fehler auftritt, Buttons aktivieren
-                    audioPlayer.onended = enableButtons;
-                    audioPlayer.onerror = enableButtons;
+                    // 3. Auf das 'canplay'-Event warten. Erst DANN abspielen.
+                    //    { once: true } sorgt dafür, dass dieser Listener nach dem ersten Mal automatisch entfernt wird.
+                    audioPlayer.addEventListener('canplay', () => {
+                        audioPlayer.play().catch(e => {
+                            console.error("Sound-Abspielfehler:", e);
+                            enableButtons(); // Auch bei einem Fehler die Buttons wieder freigeben.
+                        });
+                    }, { once: true });
+
+                    // 4. Listener für das Ende oder einen Fehler setzen.
+                    audioPlayer.addEventListener('ended', enableButtons, { once: true });
+                    audioPlayer.addEventListener('error', enableButtons, { once: true });
+
+                    // 5. JETZT ERST die neue Sound-Quelle setzen. Dies löst den Ladevorgang
+                    //    und anschließend das 'canplay'-Event aus.
+                    audioPlayer.src = item.sound + '?t=' + new Date().getTime();
 
                 }, delay * 1000);
             }
