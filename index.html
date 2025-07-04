@@ -112,7 +112,7 @@
         .slide.is-grabbing, .slide.no-transition { transition: none !important; }
         .slide img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer; }
         .slide .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
-        .diktat-instructions { font-size: 1.2rem; padding: 20px; text-align: left; line-height: 1.6; max-width: 600px; }
+        
         #progress-dots-container {
             padding: 10px;
             display: flex;
@@ -181,14 +181,14 @@
             background-image: url('lautsprecher.png');
             background-repeat: no-repeat;
             background-position: center;
-            background-size: 100%; /* Sorgt für schönen Innenabstand */
-            transition: transform 0.15s ease, box-shadow 0.15s ease; /* Übergang für Skalierung und Schatten */
+            background-size: 100%; 
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
             width: 100px;
             height: 100px;
-            border-radius: 50%; /* Macht den Button rund */
-            flex-shrink: 0; /* Verhindert, dass der Button schrumpft */
+            border-radius: 50%;
+            flex-shrink: 0;
             border: 1px solid #ddd;
-            cursor: pointer; /* Zeigt an, dass man klicken kann */
+            cursor: pointer;
         }
         .sound-button:disabled {
             background-color: var(--card-background);
@@ -200,13 +200,6 @@
         .sound-button:focus {
             background-color: var(--card-background);
             box-shadow: 0 0 8px rgba(0,0,0,0.1);
-        }
-
-        .btn-show-word {
-            background-color: var(--card-background);
-            color: var(--text-color);
-            border: 1px solid #ddd;
-            height: 50px;
         }
         
         #instructions-container {
@@ -230,10 +223,11 @@
         <p>Lade Inhalte...</p>
     </div>
 
-    <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-lernmodus">Lernmodus</a></li><li><a href="#" id="menu-testmodus">Testmodus</a></li><li><a href="#" id="menu-diktatmodus">Diktat-Modus</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
+    <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-lernmodus">Lernmodus</a></li><li><a href="#" id="menu-testmodus">Testmodus</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
     <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p>Details...</p></div></div>
     <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu mischen</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
-    <div id="screen-mode-selection" class="screen"><h1>Wortschatz-Trainer</h1><h2 id="current-set-name-h2">Set: [Lädt...]</h2><div class="mode-selection-container"><div class="mode-card clickable-card" data-mode="learn"><span class="emoji">📚</span><span class="subtitle">Lernen</span></div><div class="mode-card clickable-card" data-mode="test"><span class="emoji">✅</span><span class="subtitle">Testen</span></div><div class="mode-card clickable-card" data-mode="dictate"><span class="emoji">✍️</span><span class="subtitle">Diktat</span></div></div></div>
+    
+    <div id="screen-mode-selection" class="screen"><h1>Wortschatz-Trainer</h1><h2 id="current-set-name-h2">Set: [Lädt...]</h2><div class="mode-selection-container"><div class="mode-card clickable-card" data-mode="learn"><span class="emoji">📚</span><span class="subtitle">Lernen</span></div><div class="mode-card clickable-card" data-mode="test"><span class="emoji">✅</span><span class="subtitle">Testen</span></div></div></div>
     
     <div id="screen-settings" class="screen hidden">
         <h2 id="settings-title">Einstellungen</h2>
@@ -278,10 +272,9 @@
                     <button class="nav-arrow nav-arrow-left" aria-label="Vorheriges Item">‹</button>
                 </div>
             
-                <!-- Mittlere Steuerung: Sound & Diktat-Wort -->
+                <!-- Mittlere Steuerung -->
                 <div class="center-controls">
                     <button class="sound-button" aria-label="Sound abspielen"></button>
-                    <button class="btn-show-word hidden" aria-label="Wort anzeigen"></button>
                 </div>
             
                 <!-- Rechte Pfeil-Gruppe -->
@@ -322,7 +315,7 @@
             const btnReshuffle = document.getElementById('btn-reshuffle'), btnNewSelection = document.getElementById('btn-new-selection');
             const progressDotsContainer = document.getElementById('progress-dots-container');
             const navArrowsLeft = document.querySelectorAll('.nav-arrow-left'), navArrowsRight = document.querySelectorAll('.nav-arrow-right');
-            const soundButtons = document.querySelectorAll('.sound-button'), btnsShowWord = document.querySelectorAll('.btn-show-word');
+            const soundButtons = document.querySelectorAll('.sound-button');
             
             function showScreen(screenIdToShow) { Object.values(screens).forEach(screen => { const isTarget = screen.id === screenIdToShow; screen.classList.toggle('hidden', !isTarget); screen.classList.toggle('zoom-out', !isTarget); screen.classList.toggle('zoom-in', isTarget); }); document.body.style.overflow = (screenIdToShow === 'screen-exercise') ? 'hidden' : 'auto'; window.scrollTo(0,0); }
             function showModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.add('show'); }
@@ -392,7 +385,33 @@
 
             function scheduleAutoNext() { clearTimeout(autoNextTimeoutId); autoNextTimeoutId = setTimeout(() => { moveSlider(-1); }, 3000); }
             function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
-            function populateSlide(slideElement, itemIndex) { const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item) return; if (currentMode === 'dictate' && itemIndex === currentItemIndex) { const instructions = document.createElement('div'); instructions.className = 'diktat-instructions'; instructions.innerHTML = `<p><strong>Diktat:</strong></p><ol><li>Höre das Wort.</li><li>Schreibe es auf.</li><li>Überprüfe mit 'Wort anzeigen'.</li></ol>`; slideElement.appendChild(instructions); } else { let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : ""; if (currentSettings.displayType === 'image_only') displayImage = true; if (currentSettings.displayType === 'word_only') displayWord = true; if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; } if (displayImage && !imagePath) { displayImage = false; displayWord = true; } if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; img.addEventListener('click', () => moveSlider(-1)); slideElement.appendChild(img); } if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); } } }
+            
+            function populateSlide(slideElement, itemIndex) {
+                const item = currentShuffledItems[itemIndex];
+                slideElement.innerHTML = '';
+                if (!item) return;
+
+                let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : "";
+                if (currentSettings.displayType === 'image_only') displayImage = true;
+                if (currentSettings.displayType === 'word_only') displayWord = true;
+                if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; }
+                if (displayImage && !imagePath) { displayImage = false; displayWord = true; }
+
+                if (displayImage && imagePath) {
+                    const img = document.createElement('img');
+                    img.src = imagePath + '?t=' + new Date().getTime();
+                    img.alt = item.name || "";
+                    img.addEventListener('click', () => moveSlider(-1));
+                    slideElement.appendChild(img);
+                }
+                if (displayWord) {
+                    const p = document.createElement('p');
+                    p.className = 'word-text';
+                    p.textContent = item.name || "";
+                    slideElement.appendChild(p);
+                }
+            }
+
             function setSlidePositions(animated = true) { slides.forEach(s => s.classList.toggle('no-transition', !animated)); const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; populateSlide(prevSlide, prevIndex); populateSlide(currentSlide, currentItemIndex); populateSlide(nextSlide, nextIndex); prevSlide.style.transform = `translateX(-100%)`; currentSlide.style.transform = `translateX(0)`; nextSlide.style.transform = `translateX(100%)`; if (!animated) { setTimeout(() => slides.forEach(s => s.classList.remove('no-transition')), 20); } }
             
             function setupInitialState() { isNavigating = false; setSlidePositions(false); updateUiForCurrentItem(); }
@@ -414,12 +433,19 @@
                 }, 20);
             }
 
-            function updateUiForCurrentItem() { updateProgressDots(); const item = currentShuffledItems[currentItemIndex]; const hasSound = item && item.sound; soundButtons.forEach(btn => btn.classList.toggle('hidden', !hasSound)); btnsShowWord.forEach(btn => btn.classList.toggle('hidden', currentMode !== 'dictate')); if (currentMode === 'test') playCurrentItemSound(currentSettings.soundDelay); }
+            function updateUiForCurrentItem() { 
+                updateProgressDots(); 
+                const item = currentShuffledItems[currentItemIndex]; 
+                const hasSound = item && item.sound; 
+                soundButtons.forEach(btn => btn.classList.toggle('hidden', !hasSound)); 
+                if (currentMode === 'test') {
+                    playCurrentItemSound(currentSettings.soundDelay);
+                } 
+            }
             function touchStart(event) { if (isNavigating) return; touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; touchStartY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; slides.forEach(s => s.classList.add('is-grabbing')); slidesWrapper.addEventListener('touchmove', touchMove); slidesWrapper.addEventListener('touchend', touchEnd); }
             function touchMove(event) { if (isNavigating) return; const currentX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; const currentY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; const deltaX = currentX - touchStartX; const deltaY = Math.abs(currentY - touchStartY); if (Math.abs(deltaX) < deltaY && !currentTranslate) return; currentTranslate = deltaX; prevSlide.style.transform = `translateX(calc(-100% + ${deltaX}px))`; currentSlide.style.transform = `translateX(${deltaX}px)`; nextSlide.style.transform = `translateX(calc(100% + ${deltaX}px))`; }
             function touchEnd() { slidesWrapper.removeEventListener('touchmove', touchMove); slidesWrapper.removeEventListener('touchend', touchEnd); slides.forEach(s => s.classList.remove('is-grabbing')); const threshold = slidesWrapper.clientWidth / 4; let direction = 0; if (Math.abs(currentTranslate) > threshold) { direction = currentTranslate < 0 ? -1 : 1; } moveSlider(direction); currentTranslate = 0; }
             
-            // --- GEÄNDERT: Robuste moveSlider-Funktion ---
             function moveSlider(direction) {
                 if (isNavigating || direction === 0) {
                     if(direction === 0) setSlidePositions();
@@ -428,11 +454,9 @@
                 
                 isNavigating = true;
                 
-                // Bricht alle laufenden Audio-Aktionen ab UND setzt die UI sofort zurück.
                 clearTimeout(soundTimeoutId); 
                 clearTimeout(autoNextTimeoutId);
                 audioPlayer.pause();
-                // Diese Zeile ist der entscheidende Fix: Sie aktiviert den Button wieder.
                 soundButtons.forEach(btn => btn.disabled = false); 
                 
                 let newIndex = currentItemIndex - direction;
@@ -454,17 +478,15 @@
                 updateUiForCurrentItem();
             }
 
-            function showDiktatWord() { const item = currentShuffledItems[currentItemIndex]; if (!item) return; currentSlide.innerHTML = ''; const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; currentSlide.appendChild(p); btnsShowWord.forEach(btn => btn.classList.add('hidden')); }
-
             hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); });
             document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
             document.getElementById('menu-anleitung').addEventListener('click', (e) => { e.preventDefault(); showModal('anleitung-modal'); menuContent.classList.remove('show'); });
             document.getElementById('menu-modus-auswahl').addEventListener('click', (e) => { e.preventDefault(); exitCurrentExercise(); showScreen('screen-mode-selection'); menuContent.classList.remove('show'); });
-            ['lernmodus', 'testmodus', 'diktatmodus'].forEach(modeKey => { document.getElementById(`menu-${modeKey}`).addEventListener('click', (e) => { e.preventDefault(); exitCurrentExercise(); if (modeKey === 'lernmodus') currentMode = 'learn'; else if (modeKey === 'testmodus') currentMode = 'test'; else if (modeKey === 'diktatmodus') currentMode = 'dictate'; configureSettingsScreen(); showScreen('screen-settings'); menuContent.classList.remove('show'); }); });
+            ['lernmodus', 'testmodus'].forEach(modeKey => { document.getElementById(`menu-${modeKey}`).addEventListener('click', (e) => { e.preventDefault(); exitCurrentExercise(); if (modeKey === 'lernmodus') currentMode = 'learn'; else if (modeKey === 'testmodus') currentMode = 'test'; configureSettingsScreen(); showScreen('screen-settings'); menuContent.classList.remove('show'); }); });
             modalCloseButtons.forEach(b => b.addEventListener('click', () => closeModal(b.dataset.modalId)));
             window.addEventListener('click', (e) => { if (e.target.classList.contains('modal')) closeModal(e.target.id); });
             modeCards.forEach(c => c.addEventListener('click', () => { currentMode = c.dataset.mode; configureSettingsScreen(); showScreen('screen-settings'); }));
-            function configureSettingsScreen() { let modeText = ""; if (currentMode === 'learn') modeText = 'Lernmodus'; else if (currentMode === 'test') modeText = 'Testmodus'; else if (currentMode === 'dictate') modeText = 'Diktat-Modus'; settingsTitle.textContent = `Einstellungen für ${modeText}`; settingDisplayTypeGroup.style.display = (currentMode === 'dictate') ? 'none' : 'block'; settingSoundDelayGroup.style.display = (currentMode === 'test') ? 'block' : 'none'; }
+            function configureSettingsScreen() { let modeText = ""; if (currentMode === 'learn') modeText = 'Lernmodus'; else if (currentMode === 'test') modeText = 'Testmodus'; settingsTitle.textContent = `Einstellungen für ${modeText}`; settingDisplayTypeGroup.style.display = 'block'; settingSoundDelayGroup.style.display = (currentMode === 'test') ? 'block' : 'none'; }
             itemSetSelect.addEventListener('change', async (e) => { currentItemSetPath = e.target.value; await loadItemSet(currentItemSetPath); });
             displayTypeButtons.forEach(b => b.addEventListener('click', () => { displayTypeButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.displayType = b.dataset.displayType; }));
             soundDelaySlider.addEventListener('input', (e) => { currentSettings.soundDelay = parseInt(e.target.value); soundDelayValue.textContent = `${currentSettings.soundDelay} Sekunden`; });
@@ -501,7 +523,6 @@
             soundButtons.forEach(btn => btn.addEventListener('click', () => playCurrentItemSound(0)));
             navArrowsLeft.forEach(arrow => arrow.addEventListener('click', () => moveSlider(1)));
             navArrowsRight.forEach(arrow => arrow.addEventListener('click', () => moveSlider(-1)));
-            btnsShowWord.forEach(btn => btn.addEventListener('click', () => showDiktatWord()));
             slidesWrapper.addEventListener('touchstart', touchStart, { passive: true });
             
             async function initializeApp() { await loadSetsManifest(); showScreen('screen-mode-selection'); }
