@@ -65,33 +65,12 @@
         .modal-close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1; }
         
         #loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: var(--dark-green);
-            font-size: 1.2rem;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--dark-green); font-size: 1.2rem;
         }
         .loading-spinner {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid var(--dark-green);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+            border: 5px solid #f3f3f3; border-top: 5px solid var(--dark-green); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         #screen-mode-selection h1 { color: var(--dark-green); font-size: 2.5rem; margin-bottom: 10px; text-align: center; }
         #screen-mode-selection h2 { color: var(--light-green); font-size: 1.5rem; margin-bottom: 30px; text-align: center; }
@@ -102,67 +81,36 @@
         .form-group { margin-bottom: 20px; }
 
         #screen-exercise {
-            padding: 0 !important;
-            background-color: #fff;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            height: 100dvh;
+            padding: 0 !important; background-color: #fff; overflow: hidden; display: flex; flex-direction: column; height: 100vh; height: 100dvh;
         }
         .main-content-area {
-            flex-grow: 1;
-            width: 100%;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            flex-grow: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
         .slides-wrapper {
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            max-width: 800px;
-            margin: 0 auto;
-            flex-shrink: 0;
+            position: relative; overflow: hidden; width: 100%; aspect-ratio: 4 / 3; max-width: 800px; margin: 0 auto; flex-shrink: 0;
         }
         .slide {
-            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 10px;
-            transition: transform var(--transition-speed) ease-out;
-            transform: translateX(200%);
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; transition: transform var(--transition-speed) ease-out; transform: translateX(200%);
         }
         .slide.is-grabbing, .slide.no-transition { transition: none !important; }
         .slide img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer; }
         .slide .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
         .diktat-instructions { font-size: 1.2rem; padding: 20px; text-align: left; line-height: 1.6; max-width: 600px; }
         #progress-dots-container {
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
+            padding: 10px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; width: 100%; max-width: 800px; margin: 0 auto;
         }
         .progress-dot {
-            width: 10px;
-            height: 10px;
-            background-color: #ddd;
-            border-radius: 50%;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            width: 10px; height: 10px; background-color: #ddd; border-radius: 50%; transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .progress-dot.active {
-            background-color: var(--light-green);
-            transform: scale(1.4);
+            background-color: var(--light-green); transform: scale(1.4);
         }
 
+        /* <!-- GEÄNDERT: Neue CSS-Regeln für die optimierte Navigation --> */
         #bottom-controls-container {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
             gap: 10px;
             width: 100%;
             max-width: 800px;
@@ -171,61 +119,62 @@
             min-height: 100px;
             padding-top: 10px;
         }
-        .control-group {
+        .arrow-group {
             flex: 1;
             display: flex;
-            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
             gap: 8px;
         }
-        .control-group > * {
-            flex: 1;
+        .center-control-group {
+            flex-grow: 0;
+            flex-shrink: 0;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-radius: var(--border-radius);
-            min-height: 44px;
+            gap: 8px;
         }
         .nav-arrow {
             font-size: 3rem;
             font-weight: 100;
             color: var(--text-color);
             background-color: var(--card-background);
+            /* Button Resets für konsistentes Aussehen */
+            border: none;
+            padding: 0 15px;
+            line-height: 1;
+            border-radius: var(--border-radius);
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .sound-button {
-            background-color: var(--card-background);
             background-image: url('lautsprecher.png');
             background-repeat: no-repeat;
             background-position: center;
-            background-size: contain;
             transition: transform 0.1s ease;
+            width: 60px;
+            height: 60px;
+            background-size: 60%;
         }
         .sound-button:disabled {
-            background-color: var(--card-background);
-            opacity: 1;
-            cursor: not-allowed;
-            filter: none;
+            opacity: 0.5;
+            filter: grayscale(80%);
         }
-        .sound-button:hover,
-        .sound-button:focus {
-            background-color: var(--card-background);
+        .sound-button:hover, .sound-button:focus {
             box-shadow: none;
         }
         .btn-show-word {
             background-color: var(--card-background);
             color: var(--text-color);
+            width: 100%;
         }
         
         #instructions-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 10px auto 0 auto;
-            padding: 15px;
-            background-color: var(--card-background);
-            border-radius: var(--border-radius);
-            border: 1px solid #e0e0e0;
-            text-align: center;
-            color: #777;
-            flex-shrink: 0;
+            width: 100%; max-width: 800px; margin: 10px auto 0 auto; padding: 15px; background-color: var(--card-background); border-radius: var(--border-radius); border: 1px solid #e0e0e0; text-align: center; color: #777; flex-shrink: 0;
         }
 
     </style>
@@ -244,27 +193,10 @@
     <div id="screen-settings" class="screen hidden">
         <h2 id="settings-title">Einstellungen</h2>
         <div class="settings-form">
-            <div class="form-group">
-                <label for="item-set-select">Lern-Set:</label>
-                <select id="item-set-select"><option>Lade Sets...</option></select>
-            </div>
-            <div class="form-group" id="setting-display-type-group">
-                <label>Anzeige:</label>
-                <div class="setting-display-type">
-                    <button data-display-type="image_only" class="selected">🖼️ Nur Bild</button>
-                    <button data-display-type="word_only">🆕 Nur Wort</button>
-                    <button data-display-type="image_word">🖼️+🆕 Bild & Wort</button>
-                </div>
-            </div>
-            <div class="form-group" id="setting-sound-delay-group">
-                <label for="sound-delay-slider">Sound-Verzögerung:</label>
-                <input type="range" id="sound-delay-slider" min="0" max="5" value="0" step="1">
-                <div id="sound-delay-value-container"><span id="sound-delay-value">0 Sekunden</span></div>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-top: 30px;">
-                <button id="btn-settings-back">Zurück</button>
-                <button id="btn-start-exercise">Start</button>
-            </div>
+            <div class="form-group"><label for="item-set-select">Lern-Set:</label><select id="item-set-select"><option>Lade Sets...</option></select></div>
+            <div class="form-group" id="setting-display-type-group"><label>Anzeige:</label><div class="setting-display-type"><button data-display-type="image_only" class="selected">🖼️ Nur Bild</button><button data-display-type="word_only">🆕 Nur Wort</button><button data-display-type="image_word">🖼️+🆕 Bild & Wort</button></div></div>
+            <div class="form-group" id="setting-sound-delay-group"><label for="sound-delay-slider">Sound-Verzögerung:</label><input type="range" id="sound-delay-slider" min="0" max="5" value="0" step="1"><div id="sound-delay-value-container"><span id="sound-delay-value">0 Sekunden</span></div></div>
+            <div style="display: flex; justify-content: space-between; margin-top: 30px;"><button id="btn-settings-back">Zurück</button><button id="btn-start-exercise">Start</button></div>
         </div>
     </div>
     
@@ -277,19 +209,19 @@
             </div>
             <div id="progress-dots-container"></div>
 
+            <!-- <!-- GEÄNDERT: Optimierte HTML-Struktur für die Navigation --> -->
             <div id="bottom-controls-container">
-                <div class="control-group">
-                    <div class="nav-arrow nav-arrow-right">›</div>
-                    <button class="sound-button"></button>
-                    <div class="nav-arrow nav-arrow-left">‹</div>
+                <div class="arrow-group">
+                    <button class="nav-arrow" data-direction="-1" aria-label="Nächstes Item">›</button>
+                    <button class="nav-arrow" data-direction="1" aria-label="Vorheriges Item">‹</button>
                 </div>
-                <div class="control-group">
-                    <button class="btn-show-word hidden"></button>
-                </div>
-                <div class="control-group">
-                    <div class="nav-arrow nav-arrow-right">›</div>
+                <div class="center-control-group">
                     <button class="sound-button"></button>
-                    <div class="nav-arrow nav-arrow-left">‹</div>
+                    <button class="btn-show-word hidden"></button> 
+                </div>
+                <div class="arrow-group">
+                    <button class="nav-arrow" data-direction="-1" aria-label="Nächstes Item">›</button>
+                    <button class="nav-arrow" data-direction="1" aria-label="Vorheriges Item">‹</button>
                 </div>
             </div>
 
@@ -323,8 +255,11 @@
             const btnSettingsBack = document.getElementById('btn-settings-back'), btnStartExercise = document.getElementById('btn-start-exercise'), audioPlayer = document.getElementById('audio-player');
             const btnReshuffle = document.getElementById('btn-reshuffle'), btnNewSelection = document.getElementById('btn-new-selection');
             const progressDotsContainer = document.getElementById('progress-dots-container');
-            const navArrowsLeft = document.querySelectorAll('.nav-arrow-left'), navArrowsRight = document.querySelectorAll('.nav-arrow-right');
-            const soundButtons = document.querySelectorAll('.sound-button'), btnsShowWord = document.querySelectorAll('.btn-show-word');
+            
+            // GEÄNDERT: Vereinfachte Selektoren für die Steuerungselemente
+            const navArrows = document.querySelectorAll('.nav-arrow');
+            const soundButton = document.querySelector('.sound-button');
+            const btnShowWord = document.querySelector('.btn-show-word');
             
             function showScreen(screenIdToShow) { Object.values(screens).forEach(screen => { const isTarget = screen.id === screenIdToShow; screen.classList.toggle('hidden', !isTarget); screen.classList.toggle('zoom-out', !isTarget); screen.classList.toggle('zoom-in', isTarget); }); document.body.style.overflow = (screenIdToShow === 'screen-exercise') ? 'hidden' : 'auto'; window.scrollTo(0,0); }
             function showModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.add('show'); }
@@ -332,24 +267,14 @@
             function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } return array; }
             
             function preloadAssets(items) {
-                const promises = [];
-                const loadedAssets = new Set();
+                const promises = []; const loadedAssets = new Set();
                 items.forEach(item => {
                     if (item.image && !loadedAssets.has(item.image)) {
-                        promises.push(new Promise((resolve) => {
-                            const img = new Image();
-                            img.src = item.image;
-                            img.onload = resolve;
-                            img.onerror = resolve;
-                        }));
+                        promises.push(new Promise((resolve) => { const img = new Image(); img.src = item.image + '?t=' + new Date().getTime(); img.onload = resolve; img.onerror = resolve; }));
                         loadedAssets.add(item.image);
                     }
                     if (item.sound && !loadedAssets.has(item.sound)) {
-                        promises.push(
-                            fetch(item.sound)
-                                .then(response => { if (!response.ok) throw new Error('Network response was not ok.'); })
-                                .catch(err => { console.error('Preloading sound failed:', err); })
-                        );
+                        promises.push(fetch(item.sound + '?t=' + new Date().getTime()).then(response => { if (!response.ok) throw new Error('Network response was not ok.'); }).catch(err => { console.error('Preloading sound failed:', err); }));
                         loadedAssets.add(item.sound);
                     }
                 });
@@ -361,130 +286,71 @@
             function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
             function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('active', index === currentItemIndex); }); }
             
-            // ### START DER KORRIGIERTEN FUNKTIONEN ###
-
             function playCurrentItemSound(delay = 0) {
                 clearTimeout(soundTimeoutId);
-                audioPlayer.pause(); // Immer zuerst pausieren
-
                 const item = currentShuffledItems[currentItemIndex];
                 if (!item || !item.sound) {
                     if (currentMode === 'test') scheduleAutoNext();
                     return;
                 }
-
                 soundTimeoutId = setTimeout(() => {
-                    audioPlayer.currentTime = 0; // Sound von vorne beginnen
-                    soundButtons.forEach(btn => btn.disabled = true); // Button während des Spielens deaktivieren
-
-                    const onPlaybackEnd = () => {
-                        soundButtons.forEach(btn => btn.disabled = false); // Button danach wieder aktivieren
-                        if (currentMode === 'test') {
-                            scheduleAutoNext();
-                        }
-                        // Event Listener aufräumen, um Speicherlecks zu vermeiden
-                        audioPlayer.removeEventListener('ended', onPlaybackEnd);
-                        audioPlayer.removeEventListener('error', onPlaybackEnd);
+                    audioPlayer.pause();
+                    audioPlayer.currentTime = 0;
+                    soundButton.disabled = true; // GEÄNDERT
+                    const enableButtons = () => {
+                        soundButton.disabled = false; // GEÄNDERT
+                        audioPlayer.removeEventListener('ended', enableButtons);
+                        audioPlayer.removeEventListener('error', enableButtons);
+                        if (currentMode === 'test') { scheduleAutoNext(); }
                     };
-                    
-                    audioPlayer.addEventListener('ended', onPlaybackEnd);
-                    audioPlayer.addEventListener('error', onPlaybackEnd);
-
-                    audioPlayer.play().catch(e => {
-                        console.error("Sound-Abspielfehler:", e);
-                        onPlaybackEnd(); // Auch bei einem Fehler die Buttons wieder freigeben etc.
-                    });
-
+                    audioPlayer.addEventListener('canplay', () => { audioPlayer.play().catch(e => { console.error("Sound-Abspielfehler:", e); enableButtons(); }); }, { once: true });
+                    audioPlayer.addEventListener('ended', enableButtons, { once: true });
+                    audioPlayer.addEventListener('error', enableButtons, { once: true });
+                    audioPlayer.src = item.sound + '?t=' + new Date().getTime();
                 }, delay * 1000);
+            }
+
+            function scheduleAutoNext() { clearTimeout(autoNextTimeoutId); autoNextTimeoutId = setTimeout(() => { moveSlider(-1); }, 3000); }
+            function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
+            function populateSlide(slideElement, itemIndex) { const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item) return; if (currentMode === 'dictate' && itemIndex === currentItemIndex) { const instructions = document.createElement('div'); instructions.className = 'diktat-instructions'; instructions.innerHTML = `<p><strong>Diktat:</strong></p><ol><li>Höre das Wort.</li><li>Schreibe es auf.</li><li>Überprüfe mit 'Wort anzeigen'.</li></ol>`; slideElement.appendChild(instructions); } else { let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : ""; if (currentSettings.displayType === 'image_only') displayImage = true; if (currentSettings.displayType === 'word_only') displayWord = true; if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; } if (displayImage && !imagePath) { displayImage = false; displayWord = true; } if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; img.addEventListener('click', () => moveSlider(-1)); slideElement.appendChild(img); } if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); } } }
+            function setSlidePositions(animated = true) { slides.forEach(s => s.classList.toggle('no-transition', !animated)); const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; populateSlide(prevSlide, prevIndex); populateSlide(currentSlide, currentItemIndex); populateSlide(nextSlide, nextIndex); prevSlide.style.transform = `translateX(-100%)`; currentSlide.style.transform = `translateX(0)`; nextSlide.style.transform = `translateX(100%)`; if (!animated) { setTimeout(() => slides.forEach(s => s.classList.remove('no-transition')), 20); } }
+            
+            function setupInitialState() { isNavigating = false; setSlidePositions(false); updateUiForCurrentItem(); }
+            function handleTransitionEnd(direction) {
+                const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length;
+                const slideToReset = direction === -1 ? nextSlide : prevSlide; const indexToPopulate = direction === -1 ? nextIndex : prevIndex; const positionToSet = direction === -1 ? '100%' : '-100%';
+                slideToReset.classList.add('no-transition'); populateSlide(slideToReset, indexToPopulate); slideToReset.style.transform = `translateX(${positionToSet})`;
+                setTimeout(() => { slideToReset.classList.remove('no-transition'); isNavigating = false; }, 20);
             }
 
             function updateUiForCurrentItem() {
                 updateProgressDots();
                 const item = currentShuffledItems[currentItemIndex];
                 const hasSound = item && item.sound;
-
-                soundButtons.forEach(btn => {
-                    btn.classList.toggle('hidden', !hasSound);
-                    btn.disabled = false; // Button bei Folienwechsel immer aktivieren
-                });
-                btnsShowWord.forEach(btn => btn.classList.toggle('hidden', currentMode !== 'dictate'));
-
-                // Audio-Quelle nur setzen, wenn sich die Folie ändert.
-                if (hasSound) {
-                    // Vergleiche absolute URLs, um sicherzustellen, dass die Quelle wirklich neu ist
-                    if (audioPlayer.src !== new URL(item.sound, window.location.href).href) {
-                        audioPlayer.src = item.sound;
-                        audioPlayer.load(); // Dem Browser explizit sagen, dass er die neue Quelle laden soll.
-                    }
-                } else {
-                    audioPlayer.src = ""; // Quelle leeren, wenn kein Sound vorhanden ist.
-                }
-
-                // Automatisches Abspielen im Test-Modus wird von hier ausgelöst.
-                if (currentMode === 'test') {
-                    playCurrentItemSound(currentSettings.soundDelay);
-                }
+                soundButton.classList.toggle('hidden', !hasSound); // GEÄNDERT
+                btnShowWord.classList.toggle('hidden', currentMode !== 'dictate'); // GEÄNDERT
+                if (currentMode === 'test') playCurrentItemSound(currentSettings.soundDelay);
             }
-
-            // ### ENDE DER KORRIGIERTEN FUNKTIONEN ###
-
-            function scheduleAutoNext() { clearTimeout(autoNextTimeoutId); autoNextTimeoutId = setTimeout(() => { moveSlider(-1); }, 3000); }
-            function exitCurrentExercise() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
-            function populateSlide(slideElement, itemIndex) { const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item) return; if (currentMode === 'dictate' && itemIndex === currentItemIndex) { const instructions = document.createElement('div'); instructions.className = 'diktat-instructions'; instructions.innerHTML = `<p><strong>Diktat:</strong></p><ol><li>Höre das Wort.</li><li>Schreibe es auf.</li><li>Überprüfe mit 'Wort anzeigen'.</li></ol>`; slideElement.appendChild(instructions); } else { let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : ""; if (currentSettings.displayType === 'image_only') displayImage = true; if (currentSettings.displayType === 'word_only') displayWord = true; if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; } if (displayImage && !imagePath) { displayImage = false; displayWord = true; } if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath; img.alt = item.name || ""; img.addEventListener('click', () => moveSlider(-1)); slideElement.appendChild(img); } if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); } } }
-            function setSlidePositions(animated = true) { slides.forEach(s => s.classList.toggle('no-transition', !animated)); const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; populateSlide(prevSlide, prevIndex); populateSlide(currentSlide, currentItemIndex); populateSlide(nextSlide, nextIndex); prevSlide.style.transform = `translateX(-100%)`; currentSlide.style.transform = `translateX(0)`; nextSlide.style.transform = `translateX(100%)`; if (!animated) { setTimeout(() => slides.forEach(s => s.classList.remove('no-transition')), 20); } }
-            
-            function setupInitialState() { isNavigating = false; setSlidePositions(false); updateUiForCurrentItem(); }
-            function handleTransitionEnd(direction) {
-                const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length;
-                const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length;
-                
-                const slideToReset = direction === -1 ? nextSlide : prevSlide;
-                const indexToPopulate = direction === -1 ? nextIndex : prevIndex;
-                const positionToSet = direction === -1 ? '100%' : '-100%';
-
-                slideToReset.classList.add('no-transition');
-                populateSlide(slideToReset, indexToPopulate);
-                slideToReset.style.transform = `translateX(${positionToSet})`;
-                
-                setTimeout(() => {
-                    slideToReset.classList.remove('no-transition');
-                    isNavigating = false;
-                }, 20);
-            }
-            
             function touchStart(event) { if (isNavigating) return; touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; touchStartY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; slides.forEach(s => s.classList.add('is-grabbing')); slidesWrapper.addEventListener('touchmove', touchMove); slidesWrapper.addEventListener('touchend', touchEnd); }
             function touchMove(event) { if (isNavigating) return; const currentX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; const currentY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; const deltaX = currentX - touchStartX; const deltaY = Math.abs(currentY - touchStartY); if (Math.abs(deltaX) < deltaY && !currentTranslate) return; currentTranslate = deltaX; prevSlide.style.transform = `translateX(calc(-100% + ${deltaX}px))`; currentSlide.style.transform = `translateX(${deltaX}px)`; nextSlide.style.transform = `translateX(calc(100% + ${deltaX}px))`; }
             function touchEnd() { slidesWrapper.removeEventListener('touchmove', touchMove); slidesWrapper.removeEventListener('touchend', touchEnd); slides.forEach(s => s.classList.remove('is-grabbing')); const threshold = slidesWrapper.clientWidth / 4; let direction = 0; if (Math.abs(currentTranslate) > threshold) { direction = currentTranslate < 0 ? -1 : 1; } moveSlider(direction); currentTranslate = 0; }
             
             function moveSlider(direction) {
-                if (isNavigating || direction === 0) {
-                    if(direction === 0) setSlidePositions();
-                    return;
-                }
-                
-                isNavigating = true;
-                clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause();
-                
+                if (isNavigating || direction === 0) { if(direction === 0) setSlidePositions(); return; }
+                isNavigating = true; clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause();
                 let newIndex = currentItemIndex - direction;
                 if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; } 
                 else if (newIndex >= currentShuffledItems.length) { newIndex = 0; }
                 currentItemIndex = newIndex;
-                
                 currentSlide.style.transform = `translateX(${direction * 100}%)`;
                 let tempSlide;
-                if (direction === -1) { // Swipe Left (next item)
-                    nextSlide.style.transform = `translateX(0)`;
-                    tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide;
-                } else { // Swipe Right (prev item)
-                    prevSlide.style.transform = `translateX(0)`;
-                    tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide;
-                }
-                
+                if (direction === -1) { nextSlide.style.transform = `translateX(0)`; tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide; }
+                else { prevSlide.style.transform = `translateX(0)`; tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide; }
                 currentSlide.addEventListener('transitionend', () => handleTransitionEnd(direction), { once: true });
                 updateUiForCurrentItem();
             }
 
-            function showDiktatWord() { const item = currentShuffledItems[currentItemIndex]; if (!item) return; currentSlide.innerHTML = ''; const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; currentSlide.appendChild(p); btnsShowWord.forEach(btn => btn.classList.add('hidden')); }
+            function showDiktatWord() { const item = currentShuffledItems[currentItemIndex]; if (!item) return; currentSlide.innerHTML = ''; const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; currentSlide.appendChild(p); btnShowWord.classList.add('hidden'); } // GEÄNDERT
 
             hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); });
             document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
@@ -502,38 +368,27 @@
             
             btnStartExercise.addEventListener('click', async () => {
                 const loaded = await loadItemSet(currentItemSetPath || itemSetSelect.value);
-                if (!loaded || !currentItemSetData || currentItemSetData.length === 0) {
-                    alert("Bitte ein gültiges Set mit Inhalten auswählen.");
-                    return;
-                }
-
+                if (!loaded || !currentItemSetData || currentItemSetData.length === 0) { alert("Bitte ein gültiges Set mit Inhalten auswählen."); return; }
                 document.getElementById('loading-overlay').classList.remove('hidden');
-
-                currentShuffledItems = shuffleArray([...currentItemSetData]);
-                currentItemIndex = 0;
-
-                try {
-                    // Cache-Busting aus dem Preloader entfernen, damit der Browser-Cache genutzt werden kann
-                    await preloadAssets(currentShuffledItems);
-                } catch (error) {
-                    console.error("Ein Fehler ist beim Vorladen aufgetreten:", error);
-                }
-
-                generateProgressDots();
-                setupInitialState();
-                
-                setTimeout(() => {
-                    document.getElementById('loading-overlay').classList.add('hidden');
-                    showScreen('screen-exercise');
-                }, 200);
+                currentShuffledItems = shuffleArray([...currentItemSetData]); currentItemIndex = 0;
+                try { await preloadAssets(currentShuffledItems); } catch (error) { console.error("Ein Fehler ist beim Vorladen aufgetreten:", error); }
+                generateProgressDots(); setupInitialState();
+                setTimeout(() => { document.getElementById('loading-overlay').classList.add('hidden'); showScreen('screen-exercise'); }, 200);
             });
 
             btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); currentShuffledItems = shuffleArray([...currentItemSetData]); currentItemIndex = 0; generateProgressDots(); setupInitialState(); });
             btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); configureSettingsScreen(); showScreen('screen-settings'); });
-            soundButtons.forEach(btn => btn.addEventListener('click', () => playCurrentItemSound(0)));
-            navArrowsLeft.forEach(arrow => arrow.addEventListener('click', () => moveSlider(1)));
-            navArrowsRight.forEach(arrow => arrow.addEventListener('click', () => moveSlider(-1)));
-            btnsShowWord.forEach(btn => btn.addEventListener('click', () => showDiktatWord()));
+            
+            // GEÄNDERT: Neue, vereinfachte Event-Listener
+            soundButton.addEventListener('click', () => playCurrentItemSound(0));
+            btnShowWord.addEventListener('click', () => showDiktatWord());
+            navArrows.forEach(arrow => {
+                arrow.addEventListener('click', () => {
+                    const direction = parseInt(arrow.dataset.direction, 10);
+                    moveSlider(direction);
+                });
+            });
+
             slidesWrapper.addEventListener('touchstart', touchStart, { passive: true });
             
             async function initializeApp() { await loadSetsManifest(); showScreen('screen-mode-selection'); }
