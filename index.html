@@ -71,7 +71,15 @@
         input[type="range"] { width: 100%; }
 
         #screen-exercise { padding: 0 !important; background-color: #fff; overflow: hidden; display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
-        .main-content-area { flex-grow: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+        .main-content-area {
+            flex-grow: 1;
+            width: 100%;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* KORREKTUR: Vertikale Zentrierung hinzugefügt */
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
         .slides-wrapper { position: relative; overflow: hidden; width: 100%; aspect-ratio: 4 / 3; max-width: 800px; margin: 0 auto; flex-shrink: 0; }
         .slide { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; transition: transform var(--transition-speed) ease-out; transform: translateX(200%); }
         .slide.is-grabbing, .slide.no-transition { transition: none !important; }
@@ -82,9 +90,25 @@
         .progress-dot { width: 10px; height: 10px; background-color: #ddd; border-radius: 50%; transition: background-color 0.3s ease, transform 0.3s ease; }
         .progress-dot.active { background-color: var(--light-green); transform: scale(1.4); }
 
-        #bottom-controls-container { display: flex; justify-content: space-between; align-items: center; gap: 10px; width: 100%; max-width: 800px; margin: 10px auto 0 auto; flex-grow: 1; }
+        #bottom-controls-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 800px;
+            margin: 10px auto 0 auto;
+            /* flex-grow: 1; KORREKTUR: Diese Zeile wurde entfernt */
+        }
         .arrow-group { display: flex; flex-direction: column; gap: 8px; width: 60px; }
-        .center-controls { display: flex; justify-content: center; align-items: center; }
+        
+        .center-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1; /* KORREKTUR: Horizontale Zentrierung sichergestellt */
+        }
+        
         .nav-arrow { font-size: 3rem; font-weight: 100; color: var(--text-color); background-color: var(--card-background); border: 1px solid #e0e0e0; min-height: 44px; display: flex; align-items: center; justify-content: center; border-radius: var(--border-radius); padding: 0; width: 100%; cursor: pointer; }
         
         .sound-button { background-color: var(--card-background); background-image: url('lautsprecher.png'); background-repeat: no-repeat; background-position: center; background-size: 100%; transition: transform 0.15s ease, box-shadow 0.15s ease; width: 100px; height: 100px; border-radius: 50%; flex-shrink: 0; border: 1px solid #ddd; cursor: pointer; }
@@ -134,7 +158,6 @@
                     <button data-display-type="image_word">Bild & Wort</button>
                 </div>
             </div>
-            <!-- NEU: Einstellungs-Gruppen für den Automatik-Modus -->
             <div class="form-group hidden" id="setting-order-group">
                 <label>Reihenfolge:</label>
                 <div class="setting-button-group" id="order-buttons">
@@ -177,7 +200,6 @@
             
                 <div class="center-controls">
                     <button class="sound-button" aria-label="Sound abspielen"></button>
-                    <!-- NEU: Stopp-Button für Automatik-Modus -->
                     <button id="btn-stop-auto-mode" class="hidden" aria-label="Automatischen Modus stoppen">Stopp</button>
                 </div>
             
@@ -199,7 +221,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             let currentMode = null, availableItemSets = [], currentItemSetPath = null;
             let currentItemSetData = [], currentShuffledItems = [], currentItemIndex = 0;
-            // NEU: Erweiterte Standardeinstellungen
             let currentSettings = { displayType: 'image_only', soundDelay: 0, displayDuration: 2, order: 'chaotic' };
             let soundTimeoutId = null, autoNextTimeoutId = null, isNavigating = false;
             let progressDotElements = [];
@@ -214,7 +235,6 @@
             const anleitungModal = document.getElementById('anleitung-modal'), exerciseEndModal = document.getElementById('exercise-end-modal'), modalCloseButtons = document.querySelectorAll('.modal-close-button');
             const modeCards = document.querySelectorAll('.mode-card'), settingsTitle = document.getElementById('settings-title'), itemSetSelect = document.getElementById('item-set-select');
             
-            // NEU: Referenzen auf neue UI-Elemente
             const settingDisplayTypeGroup = document.getElementById('setting-display-type-group'), displayTypeButtons = document.querySelectorAll('#display-type-buttons button');
             const settingOrderGroup = document.getElementById('setting-order-group'), orderButtons = document.querySelectorAll('#order-buttons button');
             const settingDisplayDurationGroup = document.getElementById('setting-display-duration-group'), displayDurationSlider = document.getElementById('display-duration-slider'), displayDurationValue = document.getElementById('display-duration-value');
@@ -224,7 +244,7 @@
             const btnReshuffle = document.getElementById('btn-reshuffle'), btnNewSelection = document.getElementById('btn-new-selection');
             const progressDotsContainer = document.getElementById('progress-dots-container');
             const navArrowsLeft = document.querySelectorAll('.nav-arrow-left'), navArrowsRight = document.querySelectorAll('.nav-arrow-right');
-            const soundButton = document.querySelector('.sound-button'); // Nur noch ein Button
+            const soundButton = document.querySelector('.sound-button');
             const btnStopAutoMode = document.getElementById('btn-stop-auto-mode');
             const arrowGroupLeft = document.getElementById('arrow-group-left'), arrowGroupRight = document.getElementById('arrow-group-right');
             
@@ -278,7 +298,6 @@
                 }, delay * 1000);
             }
 
-            // NEU: Stoppt alle automatischen Abläufe
             function stopAllAutomation() {
                 clearTimeout(soundTimeoutId);
                 clearTimeout(autoNextTimeoutId);
@@ -319,7 +338,6 @@
 
             function setSlidePositions(animated = true) { slides.forEach(s => s.classList.toggle('no-transition', !animated)); const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; populateSlide(prevSlide, prevIndex); populateSlide(currentSlide, currentItemIndex); populateSlide(nextSlide, nextIndex); prevSlide.style.transform = `translateX(-100%)`; currentSlide.style.transform = `translateX(0)`; nextSlide.style.transform = `translateX(100%)`; if (!animated) { setTimeout(() => slides.forEach(s => s.classList.remove('no-transition')), 20); } }
             
-            // NEU: Stellt die UI der Übungsseite für den gewählten Modus ein
             function updateExerciseUIForMode() {
                 const isManual = currentMode === 'manual';
                 arrowGroupLeft.classList.toggle('hidden', !isManual);
@@ -331,7 +349,7 @@
             function setupInitialState() {
                 isNavigating = false;
                 setSlidePositions(false);
-                updateExerciseUIForMode(); // UI für Modus einstellen
+                updateExerciseUIForMode();
                 updateUiForCurrentItem();
             }
 
@@ -347,24 +365,21 @@
                 setTimeout(() => { slideToReset.classList.remove('no-transition'); isNavigating = false; }, 20);
             }
 
-            // NEU: Logik für den automatischen Ablauf
             function runAutoModeStep() {
                 const item = currentShuffledItems[currentItemIndex];
                 const itemHasSound = item && item.sound;
                 const soundShouldPlay = currentSettings.displayType === 'image_word' && itemHasSound;
                 
-                // Sound abspielen, falls konfiguriert
                 if (soundShouldPlay) {
                     playCurrentItemSound(currentSettings.soundDelay);
                 }
 
-                // Gesamtdauer berechnen, bevor zum nächsten Item gewechselt wird
                 const soundDelayMs = soundShouldPlay ? currentSettings.soundDelay * 1000 : 0;
                 const displayDurationMs = currentSettings.displayDuration * 1000;
                 const totalDuration = displayDurationMs + soundDelayMs;
 
                 autoNextTimeoutId = setTimeout(() => {
-                    moveSlider(-1); // Zum nächsten Item wechseln
+                    moveSlider(-1);
                 }, totalDuration);
             }
 
@@ -374,7 +389,6 @@
                 const hasSound = item && item.sound; 
                 soundButton.classList.toggle('invisible', !hasSound);
                 
-                // NEU: Automatik-Modus starten/fortsetzen
                 if (currentMode === 'auto') {
                     runAutoModeStep();
                 }
@@ -387,7 +401,7 @@
             function moveSlider(direction) {
                 if (isNavigating || direction === 0) { if(direction === 0) setSlidePositions(); return; }
                 isNavigating = true;
-                stopAllAutomation(); // Stoppt alle Timer, bevor der Slide bewegt wird
+                stopAllAutomation();
                 
                 let newIndex = currentItemIndex - direction;
                 if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; } 
@@ -413,7 +427,6 @@
             window.addEventListener('click', (e) => { if (e.target.classList.contains('modal')) closeModal(e.target.id); });
             modeCards.forEach(c => c.addEventListener('click', () => { currentMode = c.dataset.mode; configureSettingsScreen(); showScreen('screen-settings'); }));
 
-            // NEU: Überarbeitete Funktion zur Konfiguration des Einstellungsbildschirms
             function configureSettingsScreen() {
                 let modeText = "";
                 const isAutoMode = currentMode === 'auto';
@@ -422,11 +435,9 @@
                 else if (currentMode === 'auto') modeText = 'Automatisch';
                 settingsTitle.textContent = `Einstellungen für: ${modeText}`;
 
-                // Zeige/verstecke Modus-spezifische Einstellungen
                 settingOrderGroup.classList.toggle('hidden', !isAutoMode);
                 settingDisplayDurationGroup.classList.toggle('hidden', !isAutoMode);
 
-                // Sound-Verzögerung nur anzeigen, wenn im Automatik-Modus UND "Bild & Wort" gewählt ist
                 const showSoundDelay = isAutoMode && currentSettings.displayType === 'image_word';
                 settingSoundDelayGroup.classList.toggle('hidden', !showSoundDelay);
             }
@@ -446,10 +457,9 @@
 
                 document.getElementById('loading-overlay').classList.remove('hidden');
 
-                // NEU: Reihenfolge basierend auf Einstellung festlegen
                 if (currentSettings.order === 'chaotic') {
                     currentShuffledItems = shuffleArray([...currentItemSetData]);
-                } else { // 'ordered'
+                } else {
                     currentShuffledItems = [...currentItemSetData];
                 }
                 currentItemIndex = 0;
@@ -468,7 +478,6 @@
             navArrowsLeft.forEach(arrow => arrow.addEventListener('click', () => moveSlider(1)));
             navArrowsRight.forEach(arrow => arrow.addEventListener('click', () => moveSlider(-1)));
             
-            // NEU: Event Listener für den Stopp-Button
             btnStopAutoMode.addEventListener('click', () => {
                 exitCurrentExercise();
                 configureSettingsScreen();
