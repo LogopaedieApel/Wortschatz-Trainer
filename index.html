@@ -130,10 +130,10 @@
                     <button data-order="ordered">Geordnet</button>
                 </div>
             </div>
+            <!-- GEÄNDERT: Schieberegler durch ein Dropdown-Menü ersetzt -->
             <div class="form-group hidden" id="setting-display-duration-group">
-                <label for="display-duration-slider">Minimale Anzeigedauer:</label>
-                <input type="range" id="display-duration-slider" min="1" max="10" value="3" step="1">
-                <span id="display-duration-value">3 Sekunden</span>
+                <label for="display-duration-select">Minimale Anzeigedauer:</label>
+                <select id="display-duration-select"></select>
             </div>
             <div class="form-group hidden" id="setting-sound-on-off-group">
                 <label>Ton:</label>
@@ -209,7 +209,9 @@
             
             const settingDisplayTypeGroup = document.getElementById('setting-display-type-group'), displayTypeButtons = document.querySelectorAll('#display-type-buttons button');
             const settingOrderGroup = document.getElementById('setting-order-group'), orderButtons = document.querySelectorAll('#order-buttons button');
-            const settingDisplayDurationGroup = document.getElementById('setting-display-duration-group'), displayDurationSlider = document.getElementById('display-duration-slider'), displayDurationValue = document.getElementById('display-duration-value');
+            
+            // GEÄNDERT: Referenzen für das neue Dropdown, der alte Slider wird nicht mehr gebraucht
+            const settingDisplayDurationGroup = document.getElementById('setting-display-duration-group'), displayDurationSelect = document.getElementById('display-duration-select');
             
             const settingSoundOnOffGroup = document.getElementById('setting-sound-on-off-group'), soundOnOffButtons = document.querySelectorAll('#sound-on-off-buttons button');
             const settingSoundDelayGroup = document.getElementById('setting-sound-delay-group'), soundDelaySelect = document.getElementById('sound-delay-select');
@@ -336,19 +338,15 @@
                 if (isNavigating || direction === 0) { if(direction === 0) setSlidePositions(); return; }
                 isNavigating = true; 
                 if (currentMode === 'manual') stopAllAutomation();
-
                 let newIndex = currentItemIndex - direction;
-
                 if (newIndex >= currentShuffledItems.length || (currentShuffledItems[newIndex] && currentShuffledItems[newIndex].type === 'end')) {
                     exitCurrentExercise();
-                    // NEU: Dynamische Anpassung des Button-Textes basierend auf der Einstellung
                     btnReshuffle.textContent = (currentSettings.order === 'chaotic') ? 'Neu mischen' : 'Neu starten';
                     showModal('exercise-end-modal');
                     isNavigating = false;
                     return;
                 }
                 if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; }
-                
                 currentItemIndex = newIndex;
                 currentSlide.style.transform = `translateX(${direction * 100}%)`;
                 let tempSlide;
@@ -358,6 +356,19 @@
                 updateUiForCurrentItem();
             }
             
+            // NEU: Funktion zum Befüllen des Anzeigedauer-Dropdowns
+            function populateDisplayDurationSelect() {
+                displayDurationSelect.innerHTML = '';
+                for (let i = 1; i <= 10; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i === 1 ? '1 Sekunde' : `${i} Sekunden`;
+                    displayDurationSelect.appendChild(option);
+                }
+                // Standardwert aus den Einstellungen setzen
+                displayDurationSelect.value = currentSettings.displayDuration;
+            }
+
             function populateSoundDelaySelect() {
                 soundDelaySelect.innerHTML = '';
                 for (let i = 0; i <= 5; i += 0.5) {
@@ -371,12 +382,10 @@
             function configureSettingsScreen() {
                 let modeText = (currentMode === 'manual') ? 'Manuell' : 'Automatisch';
                 settingsTitle.textContent = `Einstellungen für: ${modeText}`;
-                
                 const isAutoMode = currentMode === 'auto';
                 settingOrderGroup.classList.toggle('hidden', !isAutoMode);
                 settingDisplayDurationGroup.classList.toggle('hidden', !isAutoMode);
                 settingSoundOnOffGroup.classList.toggle('hidden', !isAutoMode);
-
                 const showSoundDelay = isAutoMode && currentSettings.soundOn;
                 settingSoundDelayGroup.classList.toggle('hidden', !showSoundDelay);
             }
@@ -394,7 +403,11 @@
             itemSetSelect.addEventListener('change', async (e) => { currentItemSetPath = e.target.value; await loadItemSet(currentItemSetPath); });
             displayTypeButtons.forEach(b => b.addEventListener('click', () => { displayTypeButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.displayType = b.dataset.displayType; }));
             orderButtons.forEach(b => b.addEventListener('click', () => { orderButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.order = b.dataset.order; }));
-            displayDurationSlider.addEventListener('input', (e) => { currentSettings.displayDuration = parseInt(e.target.value); displayDurationValue.textContent = `${currentSettings.displayDuration} Sekunden`; });
+            
+            // GEÄNDERT: Event-Listener für das neue Dropdown, der alte für den Slider wurde entfernt
+            displayDurationSelect.addEventListener('change', (e) => {
+                currentSettings.displayDuration = parseInt(e.target.value);
+            });
             
             soundOnOffButtons.forEach(b => b.addEventListener('click', () => {
                 soundOnOffButtons.forEach(btn => btn.classList.remove('selected'));
@@ -430,6 +443,8 @@
             slidesWrapper.addEventListener('touchstart', touchStart, { passive: true });
             
             async function initializeApp() { 
+                // NEU: Beide Dropdowns beim Start befüllen
+                populateDisplayDurationSelect();
                 populateSoundDelaySelect();
                 await loadSetsManifest(); 
                 showScreen('screen-mode-selection'); 
