@@ -131,7 +131,7 @@
                 </div>
             </div>
             <div class="form-group hidden" id="setting-display-duration-group">
-                <label for="display-duration-slider">Minimale Anzeigedauer:</label> <!-- Text leicht angepasst -->
+                <label for="display-duration-slider">Minimale Anzeigedauer:</label>
                 <input type="range" id="display-duration-slider" min="1" max="10" value="3" step="1">
                 <span id="display-duration-value">3 Sekunden</span>
             </div>
@@ -195,8 +195,6 @@
             };
             let soundTimeoutId = null, autoNextTimeoutId = null, isNavigating = false;
             let progressDotElements = [];
-
-            // NEU: Handler für das "ended"-Event, damit wir ihn bei Bedarf entfernen können
             let currentAudioEndHandler = null;
             
             let touchStartX = 0, touchStartY = 0, currentTranslate = 0;
@@ -239,7 +237,7 @@
 
             async function loadSetsManifest() { try { const r = await fetch('sets.json?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); availableItemSets = await r.json(); itemSetSelect.innerHTML = ''; if (availableItemSets.length === 0) { itemSetSelect.innerHTML = '<option value="">Keine Sets</option>'; btnStartExercise.disabled = true; return false; } availableItemSets.forEach(set => { const o=document.createElement('option'); o.value=set.path; o.textContent=set.name; itemSetSelect.appendChild(o); }); btnStartExercise.disabled=false; if(itemSetSelect.options.length>0){itemSetSelect.selectedIndex=0;currentItemSetPath=itemSetSelect.value; await loadItemSet(currentItemSetPath);} return true; } catch (e) { console.error("Fehler beim Laden von sets.json:", e); itemSetSelect.innerHTML = '<option>Fehler</option>'; btnStartExercise.disabled = true; return false; } }
             async function loadItemSet(path) { if (!path) return false; try { const r = await fetch(path + '?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); currentItemSetData = await r.json(); const o = itemSetSelect.querySelector(`option[value="${path}"]`); currentSetNameH2.textContent = o ? `Set: ${o.text}` : `Set: ${path.split('/').pop().replace('.json','')}`; if (!Array.isArray(currentItemSetData)) { console.error("Set ist kein Array."); currentItemSetData = []; return false; } return true; } catch (e) { console.error(`Fehler bei ${path}:`, e); currentItemSetData = []; return false; } }
-            function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
+            function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { if(currentShuffledItems[i].type === 'end') continue; const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
             function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('active', index === currentItemIndex); }); }
             
             function playCurrentItemSound(delay = 0) {
@@ -254,12 +252,10 @@
                 }, delay * 1000);
             }
 
-            // MODIFIZIERT: Die Stopp-Funktion räumt jetzt auch den Auto-Modus-Sound-Listener auf.
             function stopAllAutomation() {
                 clearTimeout(soundTimeoutId);
                 clearTimeout(autoNextTimeoutId);
                 audioPlayer.pause();
-                // NEU: Entfernt den spezifischen Listener für den Auto-Modus, falls er existiert.
                 if (currentAudioEndHandler) {
                     audioPlayer.removeEventListener('ended', currentAudioEndHandler);
                     audioPlayer.removeEventListener('error', currentAudioEndHandler);
@@ -270,7 +266,7 @@
             function exitCurrentExercise() { stopAllAutomation(); }
             
             function populateSlide(slideElement, itemIndex) {
-                const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item) return;
+                const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item || item.type === 'end') return;
                 let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : "";
                 if (currentSettings.displayType === 'image_only') displayImage = true;
                 if (currentSettings.displayType === 'word_only') displayWord = true;
@@ -297,43 +293,27 @@
                 setTimeout(() => { slideToReset.classList.remove('no-transition'); isNavigating = false; }, 20);
             }
 
-            // MODIFIZIERT: Komplette Überarbeitung der Logik für den automatischen Schritt
             function runAutoModeStep() {
-                stopAllAutomation(); // Stellt sicher, dass alte Timer und Listener entfernt werden
-
+                stopAllAutomation(); 
                 const item = currentShuffledItems[currentItemIndex];
                 const hasSound = item && item.sound && currentSettings.soundOn;
-
                 let displayDurationFinished = false;
-                // Wenn es keinen Ton gibt, ist die "Sound"-Bedingung sofort erfüllt.
                 let soundPlaybackFinished = !hasSound;
-
-                // Diese Funktion wird von beiden "Events" (Timer und Sound-Ende) aufgerufen.
                 const tryProceedToNext = () => {
-                    // Nur wenn BEIDE Bedingungen erfüllt sind, geht es weiter.
                     if (displayDurationFinished && soundPlaybackFinished) {
                         moveSlider(-1);
                     }
                 };
-
-                // 1. Timer für die minimale Anzeigedauer starten
                 autoNextTimeoutId = setTimeout(() => {
                     displayDurationFinished = true;
                     tryProceedToNext();
                 }, currentSettings.displayDuration * 1000);
-
-                // 2. Sound abspielen, falls vorhanden
                 if (hasSound) {
                     playCurrentItemSound(currentSettings.soundDelay);
-                    
-                    // Wir definieren einen Handler, der auf das Ende des Sounds wartet.
                     currentAudioEndHandler = () => {
                         soundPlaybackFinished = true;
-                        // Wichtig: Den Listener nach Ausführung entfernen, wird von stopAllAutomation() erledigt.
                         tryProceedToNext();
                     };
-
-                    // Hängen den Handler an das 'ended'- und 'error'-Event.
                     audioPlayer.addEventListener('ended', currentAudioEndHandler, { once: true });
                     audioPlayer.addEventListener('error', currentAudioEndHandler, { once: true });
                 }
@@ -358,9 +338,16 @@
                 if (currentMode === 'manual') stopAllAutomation();
 
                 let newIndex = currentItemIndex - direction;
-                if (newIndex >= currentShuffledItems.length) { 
-                    showModal('exercise-end-modal'); exitCurrentExercise(); return;
-                } else if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; }
+
+                if (newIndex >= currentShuffledItems.length || (currentShuffledItems[newIndex] && currentShuffledItems[newIndex].type === 'end')) {
+                    exitCurrentExercise();
+                    // NEU: Dynamische Anpassung des Button-Textes basierend auf der Einstellung
+                    btnReshuffle.textContent = (currentSettings.order === 'chaotic') ? 'Neu mischen' : 'Neu starten';
+                    showModal('exercise-end-modal');
+                    isNavigating = false;
+                    return;
+                }
+                if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; }
                 
                 currentItemIndex = newIndex;
                 currentSlide.style.transform = `translateX(${direction * 100}%)`;
@@ -424,44 +411,15 @@
                 const loaded = await loadItemSet(currentItemSetPath || itemSetSelect.value);
                 if (!loaded || !currentItemSetData || currentItemSetData.length === 0) { alert("Bitte ein gültiges Set mit Inhalten auswählen."); return; }
                 document.getElementById('loading-overlay').classList.remove('hidden');
-                currentShuffledItems = (currentSettings.order === 'chaotic') ? shuffleArray([...currentItemSetData]) : [...currentItemSetData];
-                // MODIFIZIERT: Logik für Übungsende angepasst
-                if (currentSettings.order === 'chaotic') {
-                    // Füge ein "Ende"-Objekt hinzu, um das Modal zuverlässig auszulösen
-                    currentShuffledItems.push({ type: 'end' });
-                }
+                let baseItems = [...currentItemSetData];
+                currentShuffledItems = (currentSettings.order === 'chaotic') ? shuffleArray(baseItems) : baseItems;
+                currentShuffledItems.push({ type: 'end' });
                 currentItemIndex = 0;
                 try { await preloadAssets(currentShuffledItems); } catch (error) { console.error("Fehler beim Vorladen:", error); }
                 generateProgressDots();
                 setupInitialState();
                 setTimeout(() => { document.getElementById('loading-overlay').classList.add('hidden'); showScreen('screen-exercise'); }, 200);
             });
-
-            // MODIFIZIERT: moveSlider prüft jetzt, ob das nächste Item das "Ende"-Objekt ist
-            function moveSlider(direction) {
-                if (isNavigating || direction === 0) { if(direction === 0) setSlidePositions(); return; }
-                isNavigating = true; 
-                if (currentMode === 'manual') stopAllAutomation();
-
-                let newIndex = currentItemIndex - direction;
-
-                // Prüfen, ob die Übung zu Ende ist
-                if (newIndex >= currentShuffledItems.length || (currentShuffledItems[newIndex] && currentShuffledItems[newIndex].type === 'end')) {
-                    exitCurrentExercise();
-                    showModal('exercise-end-modal');
-                    isNavigating = false;
-                    return;
-                }
-                if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; }
-                
-                currentItemIndex = newIndex;
-                currentSlide.style.transform = `translateX(${direction * 100}%)`;
-                let tempSlide;
-                if (direction === -1) { nextSlide.style.transform = `translateX(0)`; tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide; } 
-                else { prevSlide.style.transform = `translateX(0)`; tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide; }
-                currentSlide.addEventListener('transitionend', () => handleTransitionEnd(direction), { once: true });
-                updateUiForCurrentItem();
-            }
 
             btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); btnStartExercise.click(); });
             btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); exitCurrentExercise(); showScreen('screen-settings'); });
