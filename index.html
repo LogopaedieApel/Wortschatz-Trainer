@@ -130,7 +130,6 @@
                     <button data-order="ordered">Geordnet</button>
                 </div>
             </div>
-            <!-- GEÄNDERT: Schieberegler durch ein Dropdown-Menü ersetzt -->
             <div class="form-group hidden" id="setting-display-duration-group">
                 <label for="display-duration-select">Minimale Anzeigedauer:</label>
                 <select id="display-duration-select"></select>
@@ -210,7 +209,6 @@
             const settingDisplayTypeGroup = document.getElementById('setting-display-type-group'), displayTypeButtons = document.querySelectorAll('#display-type-buttons button');
             const settingOrderGroup = document.getElementById('setting-order-group'), orderButtons = document.querySelectorAll('#order-buttons button');
             
-            // GEÄNDERT: Referenzen für das neue Dropdown, der alte Slider wird nicht mehr gebraucht
             const settingDisplayDurationGroup = document.getElementById('setting-display-duration-group'), displayDurationSelect = document.getElementById('display-duration-select');
             
             const settingSoundOnOffGroup = document.getElementById('setting-sound-on-off-group'), soundOnOffButtons = document.querySelectorAll('#sound-on-off-buttons button');
@@ -258,10 +256,21 @@
                 clearTimeout(soundTimeoutId);
                 clearTimeout(autoNextTimeoutId);
                 audioPlayer.pause();
+                
+                // Dieser Teil ist für den Automatik-Modus
                 if (currentAudioEndHandler) {
                     audioPlayer.removeEventListener('ended', currentAudioEndHandler);
                     audioPlayer.removeEventListener('error', currentAudioEndHandler);
                     currentAudioEndHandler = null;
+                }
+                
+                // NEU: Zusätzliche Sicherheitsmaßnahme speziell für den manuellen Modus.
+                // Wenn eine Navigation den Sound abbricht, muss der Button wieder freigegeben werden.
+                if (currentMode === 'manual') {
+                    soundButton.disabled = false;
+                    // Das Zurücksetzen der src stoppt die Wiedergabe und entfernt alle alten Event-Listener
+                    // die von playCurrentItemSound hinzugefügt wurden.
+                    audioPlayer.src = '';
                 }
             }
 
@@ -336,8 +345,15 @@
             
             function moveSlider(direction) {
                 if (isNavigating || direction === 0) { if(direction === 0) setSlidePositions(); return; }
+                
+                // NEU: Die aufgerufene Funktion stopAllAutomation() wurde optimiert,
+                // um das Problem im manuellen Modus zu beheben.
+                if (currentMode === 'manual') {
+                    stopAllAutomation();
+                }
+
                 isNavigating = true; 
-                if (currentMode === 'manual') stopAllAutomation();
+                
                 let newIndex = currentItemIndex - direction;
                 if (newIndex >= currentShuffledItems.length || (currentShuffledItems[newIndex] && currentShuffledItems[newIndex].type === 'end')) {
                     exitCurrentExercise();
@@ -356,7 +372,6 @@
                 updateUiForCurrentItem();
             }
             
-            // NEU: Funktion zum Befüllen des Anzeigedauer-Dropdowns
             function populateDisplayDurationSelect() {
                 displayDurationSelect.innerHTML = '';
                 for (let i = 1; i <= 10; i++) {
@@ -365,7 +380,6 @@
                     option.textContent = i === 1 ? '1 Sekunde' : `${i} Sekunden`;
                     displayDurationSelect.appendChild(option);
                 }
-                // Standardwert aus den Einstellungen setzen
                 displayDurationSelect.value = currentSettings.displayDuration;
             }
 
@@ -404,7 +418,6 @@
             displayTypeButtons.forEach(b => b.addEventListener('click', () => { displayTypeButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.displayType = b.dataset.displayType; }));
             orderButtons.forEach(b => b.addEventListener('click', () => { orderButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.order = b.dataset.order; }));
             
-            // GEÄNDERT: Event-Listener für das neue Dropdown, der alte für den Slider wurde entfernt
             displayDurationSelect.addEventListener('change', (e) => {
                 currentSettings.displayDuration = parseInt(e.target.value);
             });
@@ -443,7 +456,6 @@
             slidesWrapper.addEventListener('touchstart', touchStart, { passive: true });
             
             async function initializeApp() { 
-                // NEU: Beide Dropdowns beim Start befüllen
                 populateDisplayDurationSelect();
                 populateSoundDelaySelect();
                 await loadSetsManifest(); 
