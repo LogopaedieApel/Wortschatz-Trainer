@@ -33,7 +33,9 @@
         #screen-mode-selection, #screen-settings { justify-content: center; }
         .screen.zoom-out { transform: scale(0.9); opacity: 0; pointer-events: none; position: absolute; top: 0; left: 0; }
         .screen.zoom-in { transform: scale(1); opacity: 1; position: relative; }
-        button, .clickable-card { padding: 12px 20px; border: none; background-color: var(--button-color); color: var(--button-text-color); border-radius: var(--border-radius); cursor: pointer; font-size: 1rem; transition: background-color 0.3s ease; text-align: center; }
+        button, .clickable-card, select { padding: 12px 20px; border: 1px solid #ccc; background-color: var(--button-color); color: var(--button-text-color); border-radius: var(--border-radius); cursor: pointer; font-size: 1rem; transition: background-color 0.3s ease; text-align: center; }
+        button, .clickable-card { border: none; }
+        select { background-color: var(--card-background); color: var(--text-color); width: 100%; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23333333' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; padding-right: 2.5rem; }
         button:hover, .clickable-card:hover { background-color: var(--light-green); }
         button:disabled { background-color: #ccc; cursor: not-allowed; }
         
@@ -66,20 +68,12 @@
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; }
         .setting-button-group { display: flex; gap: 10px; }
-        .setting-button-group button { flex-grow: 1; }
-        .setting-button-group button.selected { background-color: var(--light-green); }
+        .setting-button-group button { flex-grow: 1; background-color: #e0e0e0; color: var(--text-color); }
+        .setting-button-group button.selected { background-color: var(--light-green); color: var(--button-text-color); }
         input[type="range"] { width: 100%; }
 
         #screen-exercise { padding: 0 !important; background-color: #fff; overflow: hidden; display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
-        .main-content-area {
-            flex-grow: 1;
-            width: 100%;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* KORREKTUR: Vertikale Zentrierung hinzugefügt */
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-        }
+        .main-content-area { flex-grow: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; justify-content: center; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
         .slides-wrapper { position: relative; overflow: hidden; width: 100%; aspect-ratio: 4 / 3; max-width: 800px; margin: 0 auto; flex-shrink: 0; }
         .slide { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; transition: transform var(--transition-speed) ease-out; transform: translateX(200%); }
         .slide.is-grabbing, .slide.no-transition { transition: none !important; }
@@ -90,44 +84,15 @@
         .progress-dot { width: 10px; height: 10px; background-color: #ddd; border-radius: 50%; transition: background-color 0.3s ease, transform 0.3s ease; }
         .progress-dot.active { background-color: var(--light-green); transform: scale(1.4); }
 
-        #bottom-controls-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            max-width: 800px;
-            margin: 10px auto 0 auto;
-            /* flex-grow: 1; KORREKTUR: Diese Zeile wurde entfernt */
-        }
+        #bottom-controls-container { display: flex; justify-content: space-between; align-items: center; gap: 10px; width: 100%; max-width: 800px; margin: 10px auto 0 auto; }
         .arrow-group { display: flex; flex-direction: column; gap: 8px; width: 60px; }
-        
-        .center-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-grow: 1; /* KORREKTUR: Horizontale Zentrierung sichergestellt */
-        }
-        
+        .center-controls { display: flex; justify-content: center; align-items: center; flex-grow: 1; }
         .nav-arrow { font-size: 3rem; font-weight: 100; color: var(--text-color); background-color: var(--card-background); border: 1px solid #e0e0e0; min-height: 44px; display: flex; align-items: center; justify-content: center; border-radius: var(--border-radius); padding: 0; width: 100%; cursor: pointer; }
-        
         .sound-button { background-color: var(--card-background); background-image: url('lautsprecher.png'); background-repeat: no-repeat; background-position: center; background-size: 100%; transition: transform 0.15s ease, box-shadow 0.15s ease; width: 100px; height: 100px; border-radius: 50%; flex-shrink: 0; border: 1px solid #ddd; cursor: pointer; }
         .sound-button:disabled { background-color: var(--card-background); opacity: 0.5; cursor: not-allowed; filter: grayscale(80%); }
         .sound-button:hover, .sound-button:focus { background-color: var(--card-background); box-shadow: 0 0 8px rgba(0,0,0,0.1); }
-        
-        #btn-stop-auto-mode {
-            background-color: var(--stop-button-color);
-            color: var(--button-text-color);
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            font-weight: bold;
-            font-family: 'Comfortaa', cursive;
-            border: none;
-        }
+        #btn-stop-auto-mode { background-color: var(--stop-button-color); color: var(--button-text-color); width: 100px; height: 100px; border-radius: 50%; font-size: 1.5rem; font-weight: bold; font-family: 'Comfortaa', cursive; border: none; }
         #btn-stop-auto-mode:hover { background-color: #E04B6D; }
-
         #instructions-container { width: 100%; max-width: 800px; margin: 10px auto 0 auto; padding: 15px; background-color: var(--card-background); border-radius: var(--border-radius); border: 1px solid #e0e0e0; text-align: center; color: #777; flex-shrink: 0; }
     </style>
 </head>
@@ -167,13 +132,21 @@
             </div>
             <div class="form-group hidden" id="setting-display-duration-group">
                 <label for="display-duration-slider">Anzeigedauer:</label>
-                <input type="range" id="display-duration-slider" min="0" max="5" value="2" step="1">
-                <span id="display-duration-value">2 Sekunden</span>
+                <input type="range" id="display-duration-slider" min="1" max="10" value="3" step="1">
+                <span id="display-duration-value">3 Sekunden</span>
             </div>
+            <!-- NEU: Ton An/Aus Einstellung -->
+            <div class="form-group hidden" id="setting-sound-on-off-group">
+                <label>Ton:</label>
+                <div class="setting-button-group" id="sound-on-off-buttons">
+                    <button data-sound-on="true" class="selected">An</button>
+                    <button data-sound-on="false">Aus</button>
+                </div>
+            </div>
+            <!-- NEU: Überarbeitete Ton-Verzögerung als Dropdown -->
             <div class="form-group hidden" id="setting-sound-delay-group">
-                <label for="sound-delay-slider">Verzögerung Wort/Sound:</label>
-                <input type="range" id="sound-delay-slider" min="0" max="5" value="0" step="1">
-                <span id="sound-delay-value">0 Sekunden</span>
+                <label for="sound-delay-select">Ton-Verzögerung:</label>
+                <select id="sound-delay-select"></select>
             </div>
 
             <div style="display: flex; justify-content: space-between; margin-top: 30px;">
@@ -191,27 +164,21 @@
                 <div id="slide-3" class="slide"></div>
             </div>
             <div id="progress-dots-container"></div>
-
             <div id="bottom-controls-container">
                 <div class="arrow-group" id="arrow-group-left">
                     <button class="nav-arrow nav-arrow-right" aria-label="Nächstes Item">›</button>
                     <button class="nav-arrow nav-arrow-left" aria-label="Vorheriges Item">‹</button>
                 </div>
-            
                 <div class="center-controls">
                     <button class="sound-button" aria-label="Sound abspielen"></button>
                     <button id="btn-stop-auto-mode" class="hidden" aria-label="Automatischen Modus stoppen">Stopp</button>
                 </div>
-            
                 <div class="arrow-group" id="arrow-group-right">
                     <button class="nav-arrow nav-arrow-right" aria-label="Nächstes Item">›</button>
                     <button class="nav-arrow nav-arrow-left" aria-label="Vorheriges Item">‹</button>
                 </div>
             </div>
-
-            <div id="instructions-container">
-                Hier könnten Anweisungen zur Übung stehen.
-            </div>
+            <div id="instructions-container">Hier könnten Anweisungen zur Übung stehen.</div>
         </div>
     </div>
     
@@ -219,9 +186,16 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // NEU --> Standardeinstellungen erweitert
             let currentMode = null, availableItemSets = [], currentItemSetPath = null;
             let currentItemSetData = [], currentShuffledItems = [], currentItemIndex = 0;
-            let currentSettings = { displayType: 'image_only', soundDelay: 0, displayDuration: 2, order: 'chaotic' };
+            let currentSettings = { 
+                displayType: 'image_only', 
+                displayDuration: 3, 
+                order: 'chaotic',
+                soundOn: true,
+                soundDelay: 0
+            };
             let soundTimeoutId = null, autoNextTimeoutId = null, isNavigating = false;
             let progressDotElements = [];
             
@@ -238,7 +212,10 @@
             const settingDisplayTypeGroup = document.getElementById('setting-display-type-group'), displayTypeButtons = document.querySelectorAll('#display-type-buttons button');
             const settingOrderGroup = document.getElementById('setting-order-group'), orderButtons = document.querySelectorAll('#order-buttons button');
             const settingDisplayDurationGroup = document.getElementById('setting-display-duration-group'), displayDurationSlider = document.getElementById('display-duration-slider'), displayDurationValue = document.getElementById('display-duration-value');
-            const settingSoundDelayGroup = document.getElementById('setting-sound-delay-group'), soundDelaySlider = document.getElementById('sound-delay-slider'), soundDelayValue = document.getElementById('sound-delay-value');
+            
+            // NEU --> Neue Elemente für Toneinstellungen
+            const settingSoundOnOffGroup = document.getElementById('setting-sound-on-off-group'), soundOnOffButtons = document.querySelectorAll('#sound-on-off-buttons button');
+            const settingSoundDelayGroup = document.getElementById('setting-sound-delay-group'), soundDelaySelect = document.getElementById('sound-delay-select');
             
             const btnSettingsBack = document.getElementById('btn-settings-back'), btnStartExercise = document.getElementById('btn-start-exercise'), audioPlayer = document.getElementById('audio-player');
             const btnReshuffle = document.getElementById('btn-reshuffle'), btnNewSelection = document.getElementById('btn-new-selection');
@@ -254,19 +231,11 @@
             function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } return array; }
             
             function preloadAssets(items) {
-                const promises = [];
-                const loadedAssets = new Set();
+                const promises = []; const loadedAssets = new Set();
                 items.forEach(item => {
-                    if (item.image && !loadedAssets.has(item.image)) {
-                        promises.push(new Promise((resolve) => { const img = new Image(); img.src = item.image + '?t=' + new Date().getTime(); img.onload = resolve; img.onerror = resolve; }));
-                        loadedAssets.add(item.image);
-                    }
-                    if (item.sound && !loadedAssets.has(item.sound)) {
-                        promises.push(fetch(item.sound + '?t=' + new Date().getTime()).catch(err => console.error('Preloading sound failed:', err)));
-                        loadedAssets.add(item.sound);
-                    }
-                });
-                return Promise.all(promises);
+                    if (item.image && !loadedAssets.has(item.image)) { promises.push(new Promise((resolve) => { const img = new Image(); img.src = item.image + '?t=' + new Date().getTime(); img.onload = resolve; img.onerror = resolve; })); loadedAssets.add(item.image); }
+                    if (item.sound && !loadedAssets.has(item.sound)) { promises.push(fetch(item.sound + '?t=' + new Date().getTime()).catch(err => console.error('Preloading sound failed:', err))); loadedAssets.add(item.sound); }
+                }); return Promise.all(promises);
             }
 
             async function loadSetsManifest() { try { const r = await fetch('sets.json?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); availableItemSets = await r.json(); itemSetSelect.innerHTML = ''; if (availableItemSets.length === 0) { itemSetSelect.innerHTML = '<option value="">Keine Sets</option>'; btnStartExercise.disabled = true; return false; } availableItemSets.forEach(set => { const o=document.createElement('option'); o.value=set.path; o.textContent=set.name; itemSetSelect.appendChild(o); }); btnStartExercise.disabled=false; if(itemSetSelect.options.length>0){itemSetSelect.selectedIndex=0;currentItemSetPath=itemSetSelect.value; await loadItemSet(currentItemSetPath);} return true; } catch (e) { console.error("Fehler beim Laden von sets.json:", e); itemSetSelect.innerHTML = '<option>Fehler</option>'; btnStartExercise.disabled = true; return false; } }
@@ -275,123 +244,67 @@
             function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('active', index === currentItemIndex); }); }
             
             function playCurrentItemSound(delay = 0) {
-                clearTimeout(soundTimeoutId);
-                const item = currentShuffledItems[currentItemIndex];
+                clearTimeout(soundTimeoutId); const item = currentShuffledItems[currentItemIndex];
                 if (!item || !item.sound) { return; }
-                
                 soundTimeoutId = setTimeout(() => {
-                    audioPlayer.pause();
-                    audioPlayer.currentTime = 0;
-                    soundButton.disabled = true;
-                    
-                    const enableButton = () => {
-                        soundButton.disabled = false;
-                        audioPlayer.removeEventListener('ended', enableButton);
-                        audioPlayer.removeEventListener('error', enableButton);
-                    };
-                    
+                    audioPlayer.pause(); audioPlayer.currentTime = 0; soundButton.disabled = true;
+                    const enableButton = () => { soundButton.disabled = false; audioPlayer.removeEventListener('ended', enableButton); audioPlayer.removeEventListener('error', enableButton); };
                     audioPlayer.addEventListener('canplay', () => audioPlayer.play().catch(e => console.error("Sound-Abspielfehler:", e)), { once: true });
-                    audioPlayer.addEventListener('ended', enableButton, { once: true });
-                    audioPlayer.addEventListener('error', enableButton, { once: true });
-                    
+                    audioPlayer.addEventListener('ended', enableButton, { once: true }); audioPlayer.addEventListener('error', enableButton, { once: true });
                     audioPlayer.src = item.sound + '?t=' + new Date().getTime();
                 }, delay * 1000);
             }
 
-            function stopAllAutomation() {
-                clearTimeout(soundTimeoutId);
-                clearTimeout(autoNextTimeoutId);
-                audioPlayer.pause();
-            }
-            
-            function exitCurrentExercise() {
-                stopAllAutomation();
-            }
+            function stopAllAutomation() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); }
+            function exitCurrentExercise() { stopAllAutomation(); }
             
             function populateSlide(slideElement, itemIndex) {
-                const item = currentShuffledItems[itemIndex];
-                slideElement.innerHTML = '';
-                if (!item) return;
-
+                const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item) return;
                 let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : "";
                 if (currentSettings.displayType === 'image_only') displayImage = true;
                 if (currentSettings.displayType === 'word_only') displayWord = true;
                 if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; }
                 if (displayImage && !imagePath) { displayImage = false; displayWord = true; }
-
-                if (displayImage && imagePath) {
-                    const img = document.createElement('img');
-                    img.src = imagePath + '?t=' + new Date().getTime();
-                    img.alt = item.name || "";
-                    if (currentMode === 'manual') {
-                        img.addEventListener('click', () => moveSlider(-1));
-                    }
-                    slideElement.appendChild(img);
-                }
-                if (displayWord) {
-                    const p = document.createElement('p');
-                    p.className = 'word-text';
-                    p.textContent = item.name || "";
-                    slideElement.appendChild(p);
-                }
+                if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; if (currentMode === 'manual') { img.addEventListener('click', () => moveSlider(-1)); } slideElement.appendChild(img); }
+                if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); }
             }
 
             function setSlidePositions(animated = true) { slides.forEach(s => s.classList.toggle('no-transition', !animated)); const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; populateSlide(prevSlide, prevIndex); populateSlide(currentSlide, currentItemIndex); populateSlide(nextSlide, nextIndex); prevSlide.style.transform = `translateX(-100%)`; currentSlide.style.transform = `translateX(0)`; nextSlide.style.transform = `translateX(100%)`; if (!animated) { setTimeout(() => slides.forEach(s => s.classList.remove('no-transition')), 20); } }
             
             function updateExerciseUIForMode() {
                 const isManual = currentMode === 'manual';
-                arrowGroupLeft.classList.toggle('hidden', !isManual);
-                arrowGroupRight.classList.toggle('hidden', !isManual);
-                soundButton.classList.toggle('hidden', !isManual);
-                btnStopAutoMode.classList.toggle('hidden', isManual);
+                arrowGroupLeft.classList.toggle('hidden', !isManual); arrowGroupRight.classList.toggle('hidden', !isManual);
+                soundButton.classList.toggle('hidden', !isManual); btnStopAutoMode.classList.toggle('hidden', isManual);
             }
 
-            function setupInitialState() {
-                isNavigating = false;
-                setSlidePositions(false);
-                updateExerciseUIForMode();
-                updateUiForCurrentItem();
-            }
-
+            function setupInitialState() { isNavigating = false; setSlidePositions(false); updateExerciseUIForMode(); updateUiForCurrentItem(); }
             function handleTransitionEnd(direction) {
-                const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length;
-                const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length;
-                const slideToReset = direction === -1 ? nextSlide : prevSlide;
-                const indexToPopulate = direction === -1 ? nextIndex : prevIndex;
+                const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length;
+                const slideToReset = direction === -1 ? nextSlide : prevSlide; const indexToPopulate = direction === -1 ? nextIndex : prevIndex;
                 const positionToSet = direction === -1 ? '100%' : '-100%';
-                slideToReset.classList.add('no-transition');
-                populateSlide(slideToReset, indexToPopulate);
-                slideToReset.style.transform = `translateX(${positionToSet})`;
+                slideToReset.classList.add('no-transition'); populateSlide(slideToReset, indexToPopulate); slideToReset.style.transform = `translateX(${positionToSet})`;
                 setTimeout(() => { slideToReset.classList.remove('no-transition'); isNavigating = false; }, 20);
             }
 
+            // NEU --> Überarbeitete Logik für den Automatik-Modus
             function runAutoModeStep() {
                 const item = currentShuffledItems[currentItemIndex];
                 const itemHasSound = item && item.sound;
-                const soundShouldPlay = currentSettings.displayType === 'image_word' && itemHasSound;
-                
-                if (soundShouldPlay) {
+
+                if (currentSettings.soundOn && itemHasSound) {
                     playCurrentItemSound(currentSettings.soundDelay);
                 }
 
-                const soundDelayMs = soundShouldPlay ? currentSettings.soundDelay * 1000 : 0;
-                const displayDurationMs = currentSettings.displayDuration * 1000;
-                const totalDuration = displayDurationMs + soundDelayMs;
-
                 autoNextTimeoutId = setTimeout(() => {
                     moveSlider(-1);
-                }, totalDuration);
+                }, currentSettings.displayDuration * 1000);
             }
 
             function updateUiForCurrentItem() { 
                 updateProgressDots(); 
-                const item = currentShuffledItems[currentItemIndex]; 
-                const hasSound = item && item.sound; 
+                const item = currentShuffledItems[currentItemIndex]; const hasSound = item && item.sound; 
                 soundButton.classList.toggle('invisible', !hasSound);
-                
-                if (currentMode === 'auto') {
-                    runAutoModeStep();
-                }
+                if (currentMode === 'auto') { runAutoModeStep(); }
             }
 
             function touchStart(event) { if (isNavigating || currentMode === 'auto') return; touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; touchStartY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; slides.forEach(s => s.classList.add('is-grabbing')); slidesWrapper.addEventListener('touchmove', touchMove); slidesWrapper.addEventListener('touchend', touchEnd); }
@@ -400,21 +313,43 @@
             
             function moveSlider(direction) {
                 if (isNavigating || direction === 0) { if(direction === 0) setSlidePositions(); return; }
-                isNavigating = true;
-                stopAllAutomation();
-                
+                isNavigating = true; stopAllAutomation();
                 let newIndex = currentItemIndex - direction;
                 if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; } 
                 else if (newIndex >= currentShuffledItems.length) { newIndex = 0; }
                 currentItemIndex = newIndex;
-                
                 currentSlide.style.transform = `translateX(${direction * 100}%)`;
                 let tempSlide;
                 if (direction === -1) { nextSlide.style.transform = `translateX(0)`; tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide; } 
                 else { prevSlide.style.transform = `translateX(0)`; tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide; }
-                
                 currentSlide.addEventListener('transitionend', () => handleTransitionEnd(direction), { once: true });
                 updateUiForCurrentItem();
+            }
+            
+            // NEU --> Funktion zum Befüllen des Sound-Delay-Dropdowns
+            function populateSoundDelaySelect() {
+                soundDelaySelect.innerHTML = '';
+                for (let i = 0; i <= 5; i += 0.5) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i === 0 ? '0 Sek (sofort)' : `${i.toFixed(1)} Sek`;
+                    soundDelaySelect.appendChild(option);
+                }
+            }
+
+            // NEU --> Logik zum Anzeigen/Verstecken der richtigen Einstellungen je nach Modus
+            function configureSettingsScreen() {
+                let modeText = (currentMode === 'manual') ? 'Manuell' : 'Automatisch';
+                settingsTitle.textContent = `Einstellungen für: ${modeText}`;
+                
+                const isAutoMode = currentMode === 'auto';
+                settingOrderGroup.classList.toggle('hidden', !isAutoMode);
+                settingDisplayDurationGroup.classList.toggle('hidden', !isAutoMode);
+                settingSoundOnOffGroup.classList.toggle('hidden', !isAutoMode);
+
+                // Die Ton-Verzögerung ist nur sichtbar, wenn Auto-Modus UND Ton an
+                const showSoundDelay = isAutoMode && currentSettings.soundOn;
+                settingSoundDelayGroup.classList.toggle('hidden', !showSoundDelay);
             }
 
             hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); if (currentMode === 'auto') { stopAllAutomation(); } });
@@ -427,48 +362,32 @@
             window.addEventListener('click', (e) => { if (e.target.classList.contains('modal')) closeModal(e.target.id); });
             modeCards.forEach(c => c.addEventListener('click', () => { currentMode = c.dataset.mode; configureSettingsScreen(); showScreen('screen-settings'); }));
 
-            function configureSettingsScreen() {
-                let modeText = "";
-                const isAutoMode = currentMode === 'auto';
-                
-                if (currentMode === 'manual') modeText = 'Manuell';
-                else if (currentMode === 'auto') modeText = 'Automatisch';
-                settingsTitle.textContent = `Einstellungen für: ${modeText}`;
-
-                settingOrderGroup.classList.toggle('hidden', !isAutoMode);
-                settingDisplayDurationGroup.classList.toggle('hidden', !isAutoMode);
-
-                const showSoundDelay = isAutoMode && currentSettings.displayType === 'image_word';
-                settingSoundDelayGroup.classList.toggle('hidden', !showSoundDelay);
-            }
-            
             itemSetSelect.addEventListener('change', async (e) => { currentItemSetPath = e.target.value; await loadItemSet(currentItemSetPath); });
-            displayTypeButtons.forEach(b => b.addEventListener('click', () => { displayTypeButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.displayType = b.dataset.displayType; configureSettingsScreen(); }));
+            displayTypeButtons.forEach(b => b.addEventListener('click', () => { displayTypeButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.displayType = b.dataset.displayType; }));
             orderButtons.forEach(b => b.addEventListener('click', () => { orderButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.order = b.dataset.order; }));
-            
             displayDurationSlider.addEventListener('input', (e) => { currentSettings.displayDuration = parseInt(e.target.value); displayDurationValue.textContent = `${currentSettings.displayDuration} Sekunden`; });
-            soundDelaySlider.addEventListener('input', (e) => { currentSettings.soundDelay = parseInt(e.target.value); soundDelayValue.textContent = `${currentSettings.soundDelay} Sekunden`; });
+            
+            // NEU --> Event Listener für die neuen Toneinstellungen
+            soundOnOffButtons.forEach(b => b.addEventListener('click', () => {
+                soundOnOffButtons.forEach(btn => btn.classList.remove('selected'));
+                b.classList.add('selected');
+                currentSettings.soundOn = b.dataset.soundOn === 'true';
+                configureSettingsScreen(); // Zeigt/versteckt das Delay-Dropdown
+            }));
+            soundDelaySelect.addEventListener('change', (e) => {
+                currentSettings.soundDelay = parseFloat(e.target.value);
+            });
 
             btnSettingsBack.addEventListener('click', () => showScreen('screen-mode-selection'));
-            
             btnStartExercise.addEventListener('click', async () => {
                 const loaded = await loadItemSet(currentItemSetPath || itemSetSelect.value);
                 if (!loaded || !currentItemSetData || currentItemSetData.length === 0) { alert("Bitte ein gültiges Set mit Inhalten auswählen."); return; }
-
                 document.getElementById('loading-overlay').classList.remove('hidden');
-
-                if (currentSettings.order === 'chaotic') {
-                    currentShuffledItems = shuffleArray([...currentItemSetData]);
-                } else {
-                    currentShuffledItems = [...currentItemSetData];
-                }
+                currentShuffledItems = (currentSettings.order === 'chaotic') ? shuffleArray([...currentItemSetData]) : [...currentItemSetData];
                 currentItemIndex = 0;
-
                 try { await preloadAssets(currentShuffledItems); } catch (error) { console.error("Fehler beim Vorladen:", error); }
-
                 generateProgressDots();
                 setupInitialState();
-                
                 setTimeout(() => { document.getElementById('loading-overlay').classList.add('hidden'); showScreen('screen-exercise'); }, 200);
             });
 
@@ -477,16 +396,14 @@
             soundButton.addEventListener('click', () => playCurrentItemSound(0));
             navArrowsLeft.forEach(arrow => arrow.addEventListener('click', () => moveSlider(1)));
             navArrowsRight.forEach(arrow => arrow.addEventListener('click', () => moveSlider(-1)));
-            
-            btnStopAutoMode.addEventListener('click', () => {
-                exitCurrentExercise();
-                configureSettingsScreen();
-                showScreen('screen-settings');
-            });
-
+            btnStopAutoMode.addEventListener('click', () => { exitCurrentExercise(); configureSettingsScreen(); showScreen('screen-settings'); });
             slidesWrapper.addEventListener('touchstart', touchStart, { passive: true });
             
-            async function initializeApp() { await loadSetsManifest(); showScreen('screen-mode-selection'); }
+            async function initializeApp() { 
+                populateSoundDelaySelect(); // NEU: Dropdown beim Start befüllen
+                await loadSetsManifest(); 
+                showScreen('screen-mode-selection'); 
+            }
             initializeApp();
         });
     </script>
