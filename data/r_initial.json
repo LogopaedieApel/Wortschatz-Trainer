@@ -1,0 +1,92 @@
+[
+    {
+        "name": "Rad",
+        "sound": "sounds/r_initial/Rad.mp3",
+        "image": "images/r_initial/Rad.png"
+    },
+    {
+        "name": "Räuber",
+        "sound": "sounds/r_initial/Raeuber.mp3",
+        "image": "images/r_initial/Raeuber.png"
+    },
+    {
+        "name": "Rakete",
+        "sound": "sounds/r_initial/Rakete.mp3",
+        "image": "images/r_initial/Rakete.png"
+    },
+    {
+        "name": "Rauch",
+        "sound": "sounds/r_initial/Rauch.mp3",
+        "image": "images/r_initial/Rauch.png"
+    },
+    {
+        "name": "Raupe",
+        "sound": "sounds/r_initial/Raupe.mp3",
+        "image": "images/r_initial/Raupe.png"
+    },
+    {
+        "name": "rechnen",
+        "sound": "sounds/r_initial/rechnen.mp3",
+        "image": "images/r_initial/rechnen.png"
+    },
+    {
+        "name": "Regen",
+        "sound": "sounds/r_initial/Regen.mp3",
+        "image": "images/r_initial/Regen.png"
+    },
+    {
+        "name": "reich",
+        "sound": "sounds/r_initial/reich.mp3",
+        "image": "images/r_initial/reich.png"
+    },
+    {
+        "name": "Reifen",
+        "sound": "sounds/r_initial/Reifen.mp3",
+        "image": "images/r_initial/Reifen.png"
+    },
+    {
+        "name": "Reis",
+        "sound": "sounds/r_initial/Reis.mp3",
+        "image": "images/r_initial/Reis.png"
+    },
+    {
+        "name": "rennen",
+        "sound": "sounds/r_initial/rennen.mp3",
+        "image": "images/r_initial/rennen.png"
+    },
+    {
+        "name": "richtig",
+        "sound": "sounds/r_initial/richtig.mp3",
+        "image": "images/r_initial/richtig.png"
+    },
+    {
+        "name": "Rock",
+        "sound": "sounds/r_initial/Rock.mp3",
+        "image": "images/r_initial/Rock.png"
+    },
+    {
+        "name": "Rollschuhe",
+        "sound": "sounds/r_initial/Rollschuhe.mp3",
+        "image": "images/r_initial/Rollschuhe.png"
+    },
+    {
+        "name": "rot",
+        "sound": "sounds/r_initial/rot.mp3",
+        "image": "images/r_initial/rot.png"
+    },
+    {
+        "name": "Rücken",
+        "sound": "sounds/r_initial/Ruecken.mp3",
+        "image": "images/r_initial/Ruecken.png"
+    },
+    {
+        "name": "Rüssel",
+        "sound": "sounds/r_initial/Ruessel.mp3",
+        "image": "images/r_initial/Ruessel.png"
+    },
+    {
+        "name": "Rutsche",
+        "sound": "sounds/r_initial/Rutsche.mp3",
+        "image": "images/r_initial/Rutsche.png"
+    }
+]
