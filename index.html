@@ -63,6 +63,19 @@
         #screen-mode-selection h2 { color: var(--light-green); font-size: 1.5rem; margin-bottom: 30px; text-align: center; }
         .mode-selection-container { display: flex; gap: 20px; width: 100%; max-width: 900px; justify-content: center; align-items: stretch; }
         .mode-card { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center; cursor: pointer; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 150px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        
+        /* NEU: Styling für die Bilder in den Modus-Karten */
+        .mode-card img {
+            height: 80px;
+            width: auto;
+            margin-bottom: 15px;
+            border-radius: var(--border-radius); /* Optional: um die Ecken abzurunden */
+        }
+        .mode-card .subtitle {
+            font-size: 1.2rem;
+            font-family: 'Comfortaa', cursive;
+        }
+
         #screen-settings h2 { color: var(--dark-green); margin-bottom: 20px; text-align: center; }
         .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
         .form-group { margin-bottom: 20px; }
@@ -115,7 +128,21 @@
     <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p>Details...</p></div></div>
     <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu starten</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
     
-    <div id="screen-mode-selection" class="screen"><h1>Wortschatz-Trainer</h1><h2 id="current-set-name-h2">Set: [Lädt...]</h2><div class="mode-selection-container"><div class="mode-card clickable-card" data-mode="manual"><span class="emoji">🖐️</span><span class="subtitle">Manuell</span></div><div class="mode-card clickable-card" data-mode="auto"><span class="emoji">▶️</span><span class="subtitle">Automatisch</span></div></div><img src="logo.png" alt="Logo" class="site-logo"></div>
+    <div id="screen-mode-selection" class="screen">
+        <h1>Wortschatz-Trainer</h1>
+        <h2>Modus auswählen</h2>
+        <div class="mode-selection-container">
+            <div class="mode-card clickable-card" data-mode="manual">
+                <img src="manuell.jpeg" alt="Manuell Modus">
+                <span class="subtitle">Manuell</span>
+            </div>
+            <div class="mode-card clickable-card" data-mode="auto">
+                <img src="automatisch.jpg" alt="Automatisch Modus">
+                <span class="subtitle">Automatisch</span>
+            </div>
+        </div>
+        <img src="logo.png" alt="Logo" class="site-logo">
+    </div>
     
     <div id="screen-settings" class="screen hidden">
         <h2 id="settings-title">Einstellungen</h2>
@@ -211,7 +238,7 @@
 
             const screens = { modeSelection: document.getElementById('screen-mode-selection'), settings: document.getElementById('screen-settings'), exercise: document.getElementById('screen-exercise') };
             const slidesWrapper = document.querySelector('.slides-wrapper');
-            const currentSetNameH2 = document.getElementById('current-set-name-h2'), hamburgerIcon = document.getElementById('hamburger-icon'), menuContent = document.getElementById('menu-content');
+            const hamburgerIcon = document.getElementById('hamburger-icon'), menuContent = document.getElementById('menu-content');
             const anleitungModal = document.getElementById('anleitung-modal'), exerciseEndModal = document.getElementById('exercise-end-modal'), modalCloseButtons = document.querySelectorAll('.modal-close-button');
             const modeCards = document.querySelectorAll('.mode-card'), settingsTitle = document.getElementById('settings-title'), itemSetSelect = document.getElementById('item-set-select');
             
@@ -245,7 +272,7 @@
             }
 
             async function loadSetsManifest() { try { const r = await fetch('sets.json?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); availableItemSets = await r.json(); itemSetSelect.innerHTML = ''; if (availableItemSets.length === 0) { itemSetSelect.innerHTML = '<option value="">Keine Sets</option>'; btnStartExercise.disabled = true; return false; } availableItemSets.forEach(set => { const o=document.createElement('option'); o.value=set.path; o.textContent=set.name; itemSetSelect.appendChild(o); }); btnStartExercise.disabled=false; if(itemSetSelect.options.length>0){itemSetSelect.selectedIndex=0;currentItemSetPath=itemSetSelect.value; await loadItemSet(currentItemSetPath);} return true; } catch (e) { console.error("Fehler beim Laden von sets.json:", e); itemSetSelect.innerHTML = '<option>Fehler</option>'; btnStartExercise.disabled = true; return false; } }
-            async function loadItemSet(path) { if (!path) return false; try { const r = await fetch(path + '?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); currentItemSetData = await r.json(); const o = itemSetSelect.querySelector(`option[value="${path}"]`); currentSetNameH2.textContent = o ? `Set: ${o.text}` : `Set: ${path.split('/').pop().replace('.json','')}`; if (!Array.isArray(currentItemSetData)) { console.error("Set ist kein Array."); currentItemSetData = []; return false; } return true; } catch (e) { console.error(`Fehler bei ${path}:`, e); currentItemSetData = []; return false; } }
+            async function loadItemSet(path) { if (!path) return false; try { const r = await fetch(path + '?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); currentItemSetData = await r.json(); if (!Array.isArray(currentItemSetData)) { console.error("Set ist kein Array."); currentItemSetData = []; return false; } return true; } catch (e) { console.error(`Fehler bei ${path}:`, e); currentItemSetData = []; return false; } }
             function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { if(currentShuffledItems[i].type === 'end') continue; const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
             function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('active', index === currentItemIndex); }); }
             
@@ -266,19 +293,14 @@
                 clearTimeout(autoNextTimeoutId);
                 audioPlayer.pause();
                 
-                // Dieser Teil ist für den Automatik-Modus
                 if (currentAudioEndHandler) {
                     audioPlayer.removeEventListener('ended', currentAudioEndHandler);
                     audioPlayer.removeEventListener('error', currentAudioEndHandler);
                     currentAudioEndHandler = null;
                 }
                 
-                // NEU: Zusätzliche Sicherheitsmaßnahme speziell für den manuellen Modus.
-                // Wenn eine Navigation den Sound abbricht, muss der Button wieder freigegeben werden.
                 if (currentMode === 'manual') {
                     soundButton.disabled = false;
-                    // Das Zurücksetzen der src stoppt die Wiedergabe und entfernt alle alten Event-Listener
-                    // die von playCurrentItemSound hinzugefügt wurden.
                     audioPlayer.src = '';
                 }
             }
@@ -355,8 +377,6 @@
             function moveSlider(direction) {
                 if (isNavigating || direction === 0) { if(direction === 0) setSlidePositions(); return; }
                 
-                // NEU: Die aufgerufene Funktion stopAllAutomation() wurde optimiert,
-                // um das Problem im manuellen Modus zu beheben.
                 if (currentMode === 'manual') {
                     stopAllAutomation();
                 }
