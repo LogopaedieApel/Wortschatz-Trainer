@@ -26,7 +26,7 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         html, body { height: 100%; font-family: 'Arial', sans-serif; background-color: var(--background-color); color: var(--text-color); overflow: hidden; }
-        h1, h2, h3 { font-family: 'Comfortaa', cursive; }
+        h1, h2, h3, h4 { font-family: 'Comfortaa', cursive; } /* h4 hinzugefügt */
         .hidden { display: none !important; }
         .invisible { visibility: hidden !important; } 
         .screen { min-height: 100vh; padding: 20px; padding-top: 80px; display: flex; flex-direction: column; align-items: center; transition: transform var(--transition-speed) ease-in-out, opacity var(--transition-speed) ease-in-out; transform: scale(1); opacity: 1; width: 100%; height: 100%; overflow-y: auto; }
@@ -52,9 +52,15 @@
         .menu-content ul li a:hover { background-color: #e9e9e9; }
         .modal { position: fixed; z-index: 1002; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transform: scale(0.7); transition: opacity 0.3s ease, visibility 0s linear 0.3s, transform 0.3s ease; }
         .modal.show { opacity: 1; visibility: visible; transform: scale(1); transition: opacity 0.3s ease, visibility 0s linear 0s, transform 0.3s ease; }
-        .modal-content { background-color: var(--card-background); margin: auto; padding: 20px; border-radius: var(--border-radius); width: 80%; max-width: 600px; box-shadow: var(--box-shadow); position: relative; }
+        .modal-content { background-color: var(--card-background); margin: auto; padding: 20px; border-radius: var(--border-radius); width: 90%; max-width: 600px; box-shadow: var(--box-shadow); position: relative; max-height: 80vh; overflow-y: auto; } /* Bessere Responsivität */
         .modal-close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1; }
         
+        /* Styling für den Anleitungstext */
+        .modal-content h4 { color: var(--dark-green); margin-top: 20px; margin-bottom: 10px; }
+        .modal-content p, .modal-content li { line-height: 1.6; }
+        .modal-content ul { list-style-position: inside; padding-left: 10px; }
+
+
         #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--dark-green); font-size: 1.2rem; }
         .loading-spinner { border: 5px solid #f3f3f3; border-top: 5px solid var(--dark-green); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -64,18 +70,8 @@
         .mode-selection-container { display: flex; gap: 20px; width: 100%; max-width: 900px; justify-content: center; align-items: stretch; }
         .mode-card { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); text-align: center; cursor: pointer; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 150px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
         
-        /* NEU: Styling für die Bilder in den Modus-Karten */
-        .mode-card img {
-            height: 80px;
-            width: auto;
-            margin-bottom: 15px;
-            border-radius: var(--border-radius); /* Optional: um die Ecken abzurunden */
-        }
-        .mode-card .subtitle {
-            font-size: 1.2rem;
-            font-family: 'Comfortaa', cursive;
-            color: var(--light-green);
-        }
+        .mode-card img { height: 80px; width: auto; margin-bottom: 15px; border-radius: var(--border-radius); }
+        .mode-card .subtitle { font-size: 1.2rem; font-family: 'Comfortaa', cursive; color: var(--light-green); }
 
         #screen-settings h2 { color: var(--dark-green); margin-bottom: 20px; text-align: center; }
         .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
@@ -126,7 +122,50 @@
     </div>
 
     <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-manual">Manuell</a></li><li><a href="#" id="menu-auto">Automatisch</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
-    <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p>Details...</p></div></div>
+    
+    <!-- HIER IST DER AKTUALISIERTE TEIL -->
+    <div id="anleitung-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button" data-modal-id="anleitung-modal">×</span>
+            <h2>Anleitung</h2>
+            <p><strong>Willkommen beim Wortschatz-Trainer!</strong></p>
+            <p>Diese App hilft dir, deinen Wortschatz spielerisch zu erweitern und deine Aussprache zu verbessern. Hier ist eine kurze Erklärung der Funktionen:</p>
+
+            <h4>Erste Schritte: Modus auswählen</h4>
+            <p>Auf dem Startbildschirm wählst du zwischen zwei Lern-Modi:</p>
+            <ul>
+                <li><strong>Manuell:</strong> Du steuerst das Tempo selbst. Ideal, um in Ruhe zu lernen und zu wiederholen.</li>
+                <li><strong>Automatisch:</strong> Die App zeigt dir die Bilder nacheinander an. Perfekt, um dein Wissen zu festigen.</li>
+            </ul>
+
+            <h4>Der Manuelle Modus</h4>
+            <p>Nachdem du ein Lern-Set ausgewählt hast, kannst du:</p>
+            <ul>
+                <li><strong>Wischen:</strong> Wische auf dem Bild nach links oder rechts, um zur nächsten oder vorherigen Vokabel zu wechseln. Alternativ kannst du auch die Pfeil-Tasten an den Seiten nutzen.</li>
+                <li><strong>Ton abspielen:</strong> Tippe auf das Bild mit der Frau in der Mitte, um die Aussprache des Wortes anzuhören.</li>
+            </ul>
+
+            <h4>Der Automatische Modus</h4>
+            <p>In diesem Modus läuft die Übung von alleine ab. In den Einstellungen kannst du festlegen:</p>
+            <ul>
+                <li><strong>Anzeigedauer:</strong> Wie lange jedes Bild angezeigt wird.</li>
+                <li><strong>Reihenfolge:</strong> Ob die Bilder in einer festen oder zufälligen (chaotischen) Reihenfolge kommen.</li>
+                <li><strong>Ton:</strong> Ob die Aussprache automatisch abgespielt werden soll und wenn ja, mit welcher Verzögerung.</li>
+                <li><strong>Stoppen:</strong> Du kannst die Übung jederzeit mit dem großen roten "Stopp"-Knopf beenden und kehrst dann zu den Einstellungen zurück.</li>
+            </ul>
+
+            <h4>Das Menü (☰)</h4>
+            <p>Oben rechts findest du jederzeit das Menü. Von dort aus kannst du:</p>
+            <ul>
+                <li>Eine neue Übung in einem beliebigen Modus starten.</li>
+                <li>Zurück zur Modus-Auswahl gehen.</li>
+                <li>Diese Anleitung erneut aufrufen.</li>
+            </ul>
+            <p style="margin-top: 20px; text-align: center;"><strong>Viel Spaß beim Lernen!</strong></p>
+        </div>
+    </div>
+    <!-- ENDE DES AKTUALISIERTEN TEILS -->
+
     <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu starten</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
     
     <div id="screen-mode-selection" class="screen">
@@ -219,6 +258,7 @@
     <audio id="audio-player"></audio>
 
     <script>
+        // Dein Javascript-Code bleibt unverändert
         document.addEventListener('DOMContentLoaded', () => {
             let currentMode = null, availableItemSets = [], currentItemSetPath = null;
             let currentItemSetData = [], currentShuffledItems = [], currentItemIndex = 0;
