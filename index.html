@@ -26,7 +26,7 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html, body { height: 100%; font-family: 'Arial', sans-serif; background-color: var(--background-color); color: var(--text-color); overflow: hidden; }
-    h1, h2, h3, h4 { font-family: 'Comfortaa', cursive; } /* h4 hinzugefügt */
+    h1, h2, h3, h4 { font-family: 'Comfortaa', cursive; }
     .hidden { display: none !important; }
     .invisible { visibility: hidden !important; } 
     .screen { min-height: 100vh; padding: 20px; padding-top: 80px; display: flex; flex-direction: column; align-items: center; transition: transform var(--transition-speed) ease-in-out, opacity var(--transition-speed) ease-in-out; transform: scale(1); opacity: 1; width: 100%; height: 100%; overflow-y: auto; }
@@ -34,7 +34,6 @@
     .screen.zoom-out { transform: scale(0.9); opacity: 0; pointer-events: none; position: absolute; top: 0; left: 0; }
     .screen.zoom-in { transform: scale(1); opacity: 1; position: relative; }
     
-    /* ÄNDERUNG 1: Transition für die neuen Hover-Effekte erweitert */
     button, .clickable-card, select { 
         padding: 12px 20px; 
         border: 1px solid #ccc; 
@@ -43,16 +42,14 @@
         border-radius: var(--border-radius); 
         cursor: pointer; 
         font-size: 1rem; 
-        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Hinzugefügt: transform und box-shadow */
+        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
         text-align: center; 
     }
     
     button, .clickable-card { border: none; }
     select { background-color: var(--card-background); color: var(--text-color); width: 100%; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23333333' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; padding-right: 2.5rem; }
     
-    /* ÄNDERUNG 2: Der eigentliche neue Hover-Effekt */
-    button:hover, .clickable-card:hover {
-        /* background-color: var(--light-green); <-- Alte Regel entfernt */
+    button:not(:disabled):hover, .clickable-card:hover {
         transform: translateY(-3px);
         box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
@@ -60,8 +57,18 @@
     button:disabled { 
         background-color: #ccc; 
         cursor: not-allowed; 
-        transform: none; /* Sicherstellen, dass der Hover-Effekt bei deaktivierten Buttons nicht greift */
-        box-shadow: none;  /* Sicherstellen, dass der Hover-Effekt bei deaktivierten Buttons nicht greift */
+        transform: none;
+        box-shadow: none;
+    }
+    
+    button:not(:disabled):active, .clickable-card:active {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    button:focus-visible, .clickable-card:focus-visible {
+        outline: 2px solid var(--light-green);
+        outline-offset: 2px;
     }
     
     button, .nav-arrow, .clickable-card { -webkit-tap-highlight-color: transparent; outline: none; }
@@ -77,10 +84,9 @@
     .menu-content ul li a:hover { background-color: #e9e9e9; }
     .modal { position: fixed; z-index: 1002; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transform: scale(0.7); transition: opacity 0.3s ease, visibility 0s linear 0.3s, transform 0.3s ease; }
     .modal.show { opacity: 1; visibility: visible; transform: scale(1); transition: opacity 0.3s ease, visibility 0s linear 0s, transform 0.3s ease; }
-    .modal-content { background-color: var(--card-background); margin: auto; padding: 20px; border-radius: var(--border-radius); width: 90%; max-width: 600px; box-shadow: var(--box-shadow); position: relative; max-height: 80vh; overflow-y: auto; } /* Bessere Responsivität */
+    .modal-content { background-color: var(--card-background); margin: auto; padding: 20px; border-radius: var(--border-radius); width: 90%; max-width: 600px; box-shadow: var(--box-shadow); position: relative; max-height: 80vh; overflow-y: auto; }
     .modal-close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1; }
     
-    /* Styling für den Anleitungstext */
     .modal-content h4 { color: var(--dark-green); margin-top: 20px; margin-bottom: 10px; }
     .modal-content p, .modal-content li { line-height: 1.6; }
     .modal-content ul { list-style-position: inside; padding-left: 10px; }
@@ -94,7 +100,6 @@
     #screen-mode-selection h2 { color: var(--light-green); font-size: 1.5rem; margin-bottom: 30px; text-align: center; }
     .mode-selection-container { display: flex; gap: 20px; width: 100%; max-width: 900px; justify-content: center; align-items: stretch; }
     
-    /* Wichtig: Hier wird die Standard-Transition für die Modus-Karten definiert */
     .mode-card { 
         background-color: var(--card-background); 
         padding: 20px; 
@@ -107,7 +112,6 @@
         justify-content: center; 
         align-items: center; 
         min-height: 150px; 
-        /* Die Transition war hier schon, wird jetzt aber von der allgemeinen Regel oben übernommen */
         transition: transform 0.2s ease, box-shadow 0.2s ease; 
     }
     
@@ -123,8 +127,30 @@
     .setting-button-group button.selected { background-color: var(--light-green); color: var(--button-text-color); }
     input[type="range"] { width: 100%; }
 
-    #screen-exercise { padding: 0 !important; background-color: #fff; overflow: hidden; display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
-    .main-content-area { flex-grow: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; justify-content: center; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+    /* --- START DER ÄNDERUNGEN --- */
+
+    #screen-exercise {
+        padding: 0 !important;
+        background-color: #fff;
+        /* overflow: hidden;  <-- ÄNDERUNG 1: Diese Zeile entfernen oder auskommentieren */
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        height: 100dvh;
+    }
+    .main-content-area {
+        flex-grow: 1;
+        width: 100%;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        overflow-y: auto; /* <-- ÄNDERUNG 2: Diese Zeile hinzufügen, damit dieser Bereich scrollen kann */
+    }
+    
+    /* --- ENDE DER ÄNDERUNGEN --- */
+    
     .slides-wrapper { position: relative; overflow: hidden; width: 100%; aspect-ratio: 4 / 3; max-width: 800px; margin: 0 auto; flex-shrink: 0; }
     .slide { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; transition: transform var(--transition-speed) ease-out; transform: translateX(200%); }
     .slide.is-grabbing, .slide.no-transition { transition: none !important; }
@@ -143,7 +169,7 @@
     .sound-button:disabled { background-color: var(--card-background); opacity: 0.5; cursor: not-allowed; filter: grayscale(80%); }
     .sound-button:hover, .sound-button:focus { background-color: var(--card-background); box-shadow: 0 0 8px rgba(0,0,0,0.1); }
     #btn-stop-auto-mode { background-color: var(--stop-button-color); color: var(--button-text-color); width: 100px; height: 100px; border-radius: 50%; font-size: 1.5rem; font-weight: bold; font-family: 'Comfortaa', cursive; border: none; }
-    #btn-stop-auto-mode:hover { background-color: #E04B6D; transform: none; box-shadow: none;} /* Spezifische Regel für den Stopp-Button, um den globalen Hover-Effekt zu überschreiben */
+    #btn-stop-auto-mode:hover { background-color: #E04B6D; transform: none; box-shadow: none;}
     #instructions-container { width: 100%; max-width: 800px; margin: 10px auto 0 auto; padding: 15px; background-color: var(--card-background); border-radius: var(--border-radius); border: 1px solid #e0e0e0; text-align: center; color: #777; flex-shrink: 0; }
     
     .site-logo {
@@ -152,7 +178,7 @@
         right: 100px;
         width: 100px;
         height: 100px;
-        z-index: 900; /* Unter Menüs/Modals, aber über dem Hauptinhalt */
+        z-index: 900;
     }
 </style>
 </head>
