@@ -1,47 +1,11 @@
-{
-    "item_schal": {
-        "name": "Schal",
-        "sound": "sounds/Schal.mp3",
-        "image": "images/Schal.jpg"
-    },
-    "item_schatten": {
-        "name": "Schatten",
-        "sound": "sounds/Schatten.mp3",
-        "image": "images/Schatten.jpg"
-    },
-    "item_schere": {
-        "name": "Schere",
-        "sound": "sounds/Schere.mp3",
-        "image": "images/Schere.jpg"
-    },
-    "item_schuh": {
-        "name": "Schuh",
-        "sound": "sounds/Schuh.mp3",
-        "image": "images/Schuh.jpg"
-    },
-    "item_schule": {
-        "name": "Schule",
-        "sound": "sounds/Schule.mp3",
-        "image": "images/Schule.jpg"
-    },
-    "item_schiene": {
-        "name": "Schiene",
-        "sound": "sounds/Schiene.mp3",
-        "image": "images/Schiene.jpg"
-    },
-    "item_schiff": {
-        "name": "Schiff",
-        "sound": "sounds/Schiff.mp3",
-        "image": "images/Schiff.jpg"
-    },
-    "item_schokolade": {
-        "name": "Schokolade",
-        "sound": "sounds/Schokolade.mp3",
-        "image": "images/Schokolade.jpg"
-    },
-    "item_schaukel": {
-        "name": "Schaukel",
-        "sound": "sounds/Schaukel.mp3",
-        "image": "images/Schaukel.jpg"
-    }
-}
+[
+  "item_schal",
+  "item_schatten",
+  "item_schere",
+  "item_schuh",
+  "item_schule",
+  "item_schiene",
+  "item_schiff",
+  "item_schokolade",
+  "item_schaukel"
+]
