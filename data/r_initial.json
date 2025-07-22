@@ -1,92 +1,92 @@
-[
-    {
+{
+    "item_rad": {
         "name": "Rad",
-        "sound": "sounds/r_initial/Rad.mp3",
-        "image": "images/r_initial/Rad.jpg"
+        "sound": "sounds/Rad.mp3",
+        "image": "images/Rad.jpg"
     },
-    {
+    "item_raeuber": {
         "name": "Räuber",
-        "sound": "sounds/r_initial/Raeuber.mp3",
-        "image": "images/r_initial/Raeuber.jpg"
+        "sound": "sounds/Raeuber.mp3",
+        "image": "images/Raeuber.jpg"
     },
-    {
+    "item_rakete": {
         "name": "Rakete",
-        "sound": "sounds/r_initial/Rakete.mp3",
-        "image": "images/r_initial/Rakete.jpg"
+        "sound": "sounds/Rakete.mp3",
+        "image": "images/Rakete.jpg"
     },
-    {
+    "item_rauch": {
         "name": "Rauch",
-        "sound": "sounds/r_initial/Rauch.mp3",
-        "image": "images/r_initial/Rauch.jpg"
+        "sound": "sounds/Rauch.mp3",
+        "image": "images/Rauch.jpg"
     },
-    {
+    "item_raupe": {
         "name": "Raupe",
-        "sound": "sounds/r_initial/Raupe.mp3",
-        "image": "images/r_initial/Raupe.jpg"
+        "sound": "sounds/Raupe.mp3",
+        "image": "images/Raupe.jpg"
     },
-    {
+    "item_rechnen": {
         "name": "rechnen",
-        "sound": "sounds/r_initial/rechnen.mp3",
-        "image": "images/r_initial/rechnen.jpg"
+        "sound": "sounds/rechnen.mp3",
+        "image": "images/rechnen.jpg"
     },
-    {
+    "item_regen": {
         "name": "Regen",
-        "sound": "sounds/r_initial/Regen.mp3",
-        "image": "images/r_initial/Regen.jpg"
+        "sound": "sounds/Regen.mp3",
+        "image": "images/Regen.jpg"
     },
-    {
+    "item_reich": {
         "name": "reich",
-        "sound": "sounds/r_initial/reich.mp3",
-        "image": "images/r_initial/reich.jpg"
+        "sound": "sounds/reich.mp3",
+        "image": "images/reich.jpg"
     },
-    {
+    "item_reifen": {
         "name": "Reifen",
-        "sound": "sounds/r_initial/Reifen.mp3",
-        "image": "images/r_initial/Reifen.jpg"
+        "sound": "sounds/Reifen.mp3",
+        "image": "images/Reifen.jpg"
     },
-    {
+    "item_reis": {
         "name": "Reis",
-        "sound": "sounds/r_initial/Reis.mp3",
-        "image": "images/r_initial/Reis.jpg"
+        "sound": "sounds/Reis.mp3",
+        "image": "images/Reis.jpg"
     },
-    {
+    "item_rennen": {
         "name": "rennen",
-        "sound": "sounds/r_initial/rennen.mp3",
-        "image": "images/r_initial/rennen.jpg"
+        "sound": "sounds/rennen.mp3",
+        "image": "images/rennen.jpg"
     },
-    {
+    "item_richtig": {
         "name": "richtig",
-        "sound": "sounds/r_initial/richtig.mp3",
-        "image": "images/r_initial/richtig.jpg"
+        "sound": "sounds/richtig.mp3",
+        "image": "images/richtig.jpg"
     },
-    {
+    "item_rock": {
         "name": "Rock",
-        "sound": "sounds/r_initial/Rock.mp3",
-        "image": "images/r_initial/Rock.jpg"
+        "sound": "sounds/Rock.mp3",
+        "image": "images/Rock.jpg"
     },
-    {
+    "item_rollschuhe": {
         "name": "Rollschuhe",
-        "sound": "sounds/r_initial/Rollschuhe.mp3",
-        "image": "images/r_initial/Rollschuhe.jpg"
+        "sound": "sounds/Rollschuhe.mp3",
+        "image": "images/Rollschuhe.jpg"
     },
-    {
+    "item_rot": {
         "name": "rot",
-        "sound": "sounds/r_initial/rot.mp3",
-        "image": "images/r_initial/rot.jpg"
+        "sound": "sounds/rot.mp3",
+        "image": "images/rot.jpg"
     },
-    {
+    "item_ruecken": {
         "name": "Rücken",
-        "sound": "sounds/r_initial/Ruecken.mp3",
-        "image": "images/r_initial/Ruecken.jpg"
+        "sound": "sounds/Ruecken.mp3",
+        "image": "images/Ruecken.jpg"
     },
-    {
+    "item_ruessel": {
         "name": "Rüssel",
-        "sound": "sounds/r_initial/Ruessel.mp3",
-        "image": "images/r_initial/Ruessel.jpg"
+        "sound": "sounds/Ruessel.mp3",
+        "image": "images/Ruessel.jpg"
     },
-    {
+    "item_rutsche": {
         "name": "Rutsche",
-        "sound": "sounds/r_initial/Rutsche.mp3",
-        "image": "images/r_initial/Rutsche.jpg"
+        "sound": "sounds/Rutsche.mp3",
+        "image": "images/Rutsche.jpg"
     }
-]
+}
