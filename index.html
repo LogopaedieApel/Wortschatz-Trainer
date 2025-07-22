@@ -362,6 +362,7 @@
                 exercise: document.getElementById('screen-exercise')
             };
             const slides = [document.getElementById('slide-1'), document.getElementById('slide-2'), document.getElementById('slide-3')];
+            let prevSlide = slides[0], currentSlide = slides[1], nextSlide = slides[2];
             const slidesWrapper = document.querySelector('.slides-wrapper');
             const hamburgerIcon = document.getElementById('hamburger-icon'),
                 menuContent = document.getElementById('menu-content');
