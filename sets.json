@@ -1,18 +1,40 @@
-[
-  {
-    "name": "Zischlaute (Sch-Initial)",
-    "path": "data/sch_initial.json",
-    "description": "Übungen zum Laut Sch am Wortanfang."
+{
+  "artikulation": {
+    "displayName": "Artikulation",
+    "unterkategorieName": "Sprachlaut",
+    "laute": {
+      "sch": {
+        "displayName": "Sch",
+        "positionen": {
+          "initial": { "displayName": "Initial", "path": "data/sch_initial.json" },
+          "medial": { "displayName": "Medial", "path": "data/sch_medial.json" },
+          "final": { "displayName": "Final", "path": "data/sch_final.json" }
+        }
+      },
+      "r": {
+        "displayName": "R",
+        "positionen": {
+          "initial": { "displayName": "Initial", "path": "data/r_initial.json" },
+          "medial": { "displayName": "Medial", "path": "data/r_medial.json" },
+          "final": { "displayName": "Final", "path": "data/r_final.json" }
+        }
+      }
+    }
   },
-  {
-    "name": "Sonorante (R-Initial)",
-    "path": "data/r_initial.json",
-    "description": "Übungen zum Laut R am Wortanfang."
+  "wortschatz": {
+    "displayName": "Wortschatz",
+    "unterkategorieName": "Semantisches Feld",
+    "felder": {
+      "nahrungsmittel": { "displayName": "Nahrungsmittel", "path": "data/nahrungsmittel.json" },
+      "fahrzeuge": { "displayName": "Fahrzeuge", "path": "data/fahrzeuge.json" },
+      "kleidung": { "displayName": "Kleidung", "path": "data/kleidung.json" }
+    }
   },
-  {
-    "name": "Reine Rechtschreibung (Test)",
-    "path": "data/rechtschreibung_einfach.json",
-    "description": "Einfache Wörter zum Üben der Rechtschreibung (nur Wort und Ton)."
+  "rechtschreibung": {
+    "displayName": "Rechtschreibung",
+    "unterkategorieName": "Schwierigkeit",
+    "stufen": {
+        "einfach": { "displayName": "Einfach", "path": "data/rechtschreibung_einfach.json" }
+    }
   }
-  
-]
+}
