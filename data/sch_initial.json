@@ -1,47 +1,47 @@
-[
-    {
+{
+    "item_schal": {
         "name": "Schal",
-        "sound": "sounds/sch_initial/Schal.mp3",
-        "image": "images/sch_initial/Schal.jpg"
+        "sound": "sounds/Schal.mp3",
+        "image": "images/Schal.jpg"
     },
-    {
+    "item_schatten": {
         "name": "Schatten",
-        "sound": "sounds/sch_initial/Schatten.mp3",
-        "image": "images/sch_initial/Schatten.jpg"
+        "sound": "sounds/Schatten.mp3",
+        "image": "images/Schatten.jpg"
     },
-    {
+    "item_schere": {
         "name": "Schere",
-        "sound": "sounds/sch_initial/Schere.mp3",
-        "image": "images/sch_initial/Schere.jpg"
+        "sound": "sounds/Schere.mp3",
+        "image": "images/Schere.jpg"
     },
-    {
+    "item_schuh": {
         "name": "Schuh",
-        "sound": "sounds/sch_initial/Schuh.mp3",
-        "image": "images/sch_initial/Schuh.jpg"
+        "sound": "sounds/Schuh.mp3",
+        "image": "images/Schuh.jpg"
     },
-    {
+    "item_schule": {
         "name": "Schule",
-        "sound": "sounds/sch_initial/Schule.mp3",
-        "image": "images/sch_initial/Schule.jpg"
+        "sound": "sounds/Schule.mp3",
+        "image": "images/Schule.jpg"
     },
-    {
+    "item_schiene": {
         "name": "Schiene",
-        "sound": "sounds/sch_initial/Schiene.mp3",
-        "image": "images/sch_initial/Schiene.jpg"
+        "sound": "sounds/Schiene.mp3",
+        "image": "images/Schiene.jpg"
     },
-    {
+    "item_schiff": {
         "name": "Schiff",
-        "sound": "sounds/sch_initial/Schiff.mp3",
-        "image": "images/sch_initial/Schiff.jpg"
+        "sound": "sounds/Schiff.mp3",
+        "image": "images/Schiff.jpg"
     },
-    {
+    "item_schokolade": {
         "name": "Schokolade",
-        "sound": "sounds/sch_initial/Schokolade.mp3",
-        "image": "images/sch_initial/Schokolade.jpg"
+        "sound": "sounds/Schokolade.mp3",
+        "image": "images/Schokolade.jpg"
     },
-    {
+    "item_schaukel": {
         "name": "Schaukel",
-        "sound": "sounds/sch_initial/Schaukel.mp3",
-        "image": "images/sch_initial/Schaukel.jpg"
+        "sound": "sounds/Schaukel.mp3",
+        "image": "images/Schaukel.jpg"
     }
-]
+}
