@@ -11,154 +11,301 @@
     <title>Wortschatz-Trainer</title>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
-    :root {
-        --dark-green: #27633A;
-        --light-green: #6BAB58;
-        --background-color: #f4f4f4;
-        --card-background: #ffffff;
-        --text-color: #333333;
-        --button-color: var(--dark-green);
-        --button-text-color: #ffffff;
-        --stop-button-color: #C70039;
-        --border-radius: 8px;
-        --box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        --transition-speed: 0.3s;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    html, body { height: 100%; font-family: 'Arial', sans-serif; background-color: var(--background-color); color: var(--text-color); overflow: hidden; }
-    h1, h2, h3, h4 { font-family: 'Comfortaa', cursive; }
-    .hidden { display: none !important; }
-    .invisible { visibility: hidden !important; } 
-    .screen { min-height: 100vh; padding: 20px; padding-top: 80px; display: flex; flex-direction: column; align-items: center; transition: transform var(--transition-speed) ease-in-out, opacity var(--transition-speed) ease-in-out; transform: scale(1); opacity: 1; width: 100%; height: 100%; overflow-y: auto; }
-    #screen-mode-selection, #screen-settings { justify-content: center; }
-    .screen.zoom-out { transform: scale(0.9); opacity: 0; pointer-events: none; position: absolute; top: 0; left: 0; }
-    .screen.zoom-in { transform: scale(1); opacity: 1; position: relative; }
-    
-    button, .clickable-card, select { 
-        padding: 12px 20px; 
-        border: 1px solid #ccc; 
-        background-color: var(--button-color); 
-        color: var(--button-text-color); 
-        border-radius: var(--border-radius); 
-        cursor: pointer; 
-        font-size: 1rem; 
-        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-        text-align: center; 
-    }
-    
-    button, .clickable-card { border: none; }
-    select { background-color: var(--card-background); color: var(--text-color); width: 100%; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23333333' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; padding-right: 2.5rem; }
-    
-    button:not(:disabled):hover, .clickable-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }
-    
-    button:disabled { 
-        background-color: #ccc; 
-        cursor: not-allowed; 
-        transform: none;
-        box-shadow: none;
-    }
-    
-    button:not(:disabled):active, .clickable-card:active {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    document.addEventListener('DOMContentLoaded', () => {
+    // --- VARIABLEN ---
+    let currentMode = null,
+        availableItemSets = {},
+        masterItems = null, // Für die zentrale Item-Datenbank
+        currentItemSetPath = null;
+    let currentItemSetData = [],
+        currentShuffledItems = [],
+        currentItemIndex = 0;
+    let currentSettings = {
+        displayType: 'image_only',
+        displayDuration: 3,
+        order: 'chaotic',
+        soundOn: true,
+        soundDelay: 0
+    };
+    let soundTimeoutId = null,
+        autoNextTimeoutId = null,
+        isNavigating = false;
+    let progressDotElements = [];
+    let currentAudioEndHandler = null;
+    let touchStartX = 0,
+        touchStartY = 0,
+        currentTranslate = 0;
+
+    // --- DOM ELEMENTE ---
+    const screens = {
+        modeSelection: document.getElementById('screen-mode-selection'),
+        settings: document.getElementById('screen-settings'),
+        exercise: document.getElementById('screen-exercise')
+    };
+    const slides = [document.getElementById('slide-1'), document.getElementById('slide-2'), document.getElementById('slide-3')];
+    const slidesWrapper = document.querySelector('.slides-wrapper');
+    const hamburgerIcon = document.getElementById('hamburger-icon'),
+        menuContent = document.getElementById('menu-content');
+    const anleitungModal = document.getElementById('anleitung-modal'),
+        exerciseEndModal = document.getElementById('exercise-end-modal'),
+        modalCloseButtons = document.querySelectorAll('.modal-close-button');
+    const modeCards = document.querySelectorAll('.mode-card'),
+        settingsTitle = document.getElementById('settings-title');
+    const categorySelect = document.getElementById('category-select');
+    const subcategoryGroup = document.getElementById('subcategory-group');
+    const subcategoryLabel = document.getElementById('subcategory-label');
+    const subcategorySelect = document.getElementById('subcategory-select');
+    const specGroup = document.getElementById('spec-group');
+    const specSelect = document.getElementById('spec-select');
+    const settingDisplayTypeGroup = document.getElementById('setting-display-type-group'),
+        displayTypeButtons = document.querySelectorAll('#display-type-buttons button');
+    const settingOrderGroup = document.getElementById('setting-order-group'),
+        orderButtons = document.querySelectorAll('#order-buttons button');
+    const settingDisplayDurationGroup = document.getElementById('setting-display-duration-group'),
+        displayDurationSelect = document.getElementById('display-duration-select');
+    const settingSoundOnOffGroup = document.getElementById('setting-sound-on-off-group'),
+        soundOnOffButtons = document.querySelectorAll('#sound-on-off-buttons button');
+    const settingSoundDelayGroup = document.getElementById('setting-sound-delay-group'),
+        soundDelaySelect = document.getElementById('sound-delay-select');
+    const btnSettingsBack = document.getElementById('btn-settings-back'),
+        btnStartExercise = document.getElementById('btn-start-exercise'),
+        audioPlayer = document.getElementById('audio-player');
+    const btnReshuffle = document.getElementById('btn-reshuffle'),
+        btnNewSelection = document.getElementById('btn-new-selection');
+    const progressDotsContainer = document.getElementById('progress-dots-container');
+    const navArrowsLeft = document.querySelectorAll('.nav-arrow-left'),
+        navArrowsRight = document.querySelectorAll('.nav-arrow-right');
+    const soundButton = document.querySelector('.sound-button');
+    const btnStopAutoMode = document.getElementById('btn-stop-auto-mode');
+    const arrowGroupLeft = document.getElementById('arrow-group-left'),
+        arrowGroupRight = document.getElementById('arrow-group-right');
+
+    // --- FUNKTIONEN ---
+
+    function showScreen(screenIdToShow) {
+        Object.values(screens).forEach(screen => {
+            const isTarget = screen.id === screenIdToShow;
+            screen.classList.toggle('hidden', !isTarget);
+            screen.classList.toggle('zoom-out', !isTarget);
+            screen.classList.toggle('zoom-in', isTarget);
+        });
+        document.body.style.overflow = (screenIdToShow === 'screen-exercise') ? 'hidden' : 'auto';
+        window.scrollTo(0, 0);
     }
 
-    button:focus-visible, .clickable-card:focus-visible {
-        outline: 2px solid var(--light-green);
-        outline-offset: 2px;
+    function showModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) modal.classList.add('show');
     }
-    
-    button, .nav-arrow, .clickable-card { -webkit-tap-highlight-color: transparent; outline: none; }
-    button:focus, .nav-arrow:focus, .clickable-card:focus { outline: none; box-shadow: none; }
-    button:focus:not(:hover), .nav-arrow:focus:not(:hover), .clickable-card:focus:not(:hover) { /* Leer gelassen für Touch-App */ }
 
-    .hamburger-menu { position: fixed; top: calc(env(safe-area-inset-top) + 20px); right: 20px; z-index: 1001; }
-    .hamburger-icon { font-size: 2rem; cursor: pointer; background: var(--card-background); padding: 5px 10px; border-radius: var(--border-radius); user-select: none; }
-    .menu-content { display: none; position: absolute; right: 0; top: calc(100% + 10px); background-color: var(--card-background); box-shadow: var(--box-shadow); border-radius: var(--border-radius); padding: 10px; min-width: 200px; z-index: 1000; }
-    .menu-content.show { display: block; }
-    .menu-content ul { list-style: none; }
-    .menu-content ul li a { display: block; padding: 10px; text-decoration: none; color: var(--text-color); border-radius: 4px; }
-    .menu-content ul li a:hover { background-color: #e9e9e9; }
-    .modal { position: fixed; z-index: 1002; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transform: scale(0.7); transition: opacity 0.3s ease, visibility 0s linear 0.3s, transform 0.3s ease; }
-    .modal.show { opacity: 1; visibility: visible; transform: scale(1); transition: opacity 0.3s ease, visibility 0s linear 0s, transform 0.3s ease; }
-    .modal-content { background-color: var(--card-background); margin: auto; padding: 20px; border-radius: var(--border-radius); width: 90%; max-width: 600px; box-shadow: var(--box-shadow); position: relative; max-height: 80vh; overflow-y: auto; }
-    .modal-close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1; }
-    
-    .modal-content h4 { color: var(--dark-green); margin-top: 20px; margin-bottom: 10px; }
-    .modal-content p, .modal-content li { line-height: 1.6; }
-    .modal-content ul { list-style-position: inside; padding-left: 10px; }
-
-
-    #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--dark-green); font-size: 1.2rem; }
-    .loading-spinner { border: 5px solid #f3f3f3; border-top: 5px solid var(--dark-green); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-    #screen-mode-selection h1 { color: var(--dark-green); font-size: 2.5rem; margin-bottom: 10px; text-align: center; }
-    #screen-mode-selection h2 { color: var(--light-green); font-size: 1.5rem; margin-bottom: 30px; text-align: center; }
-    .mode-selection-container { display: flex; gap: 20px; width: 100%; max-width: 900px; justify-content: center; align-items: stretch; }
-    
-    .mode-card { 
-        background-color: var(--card-background); 
-        padding: 20px; 
-        border-radius: var(--border-radius); 
-        box-shadow: var(--box-shadow); 
-        text-align: center; 
-        cursor: pointer; 
-        flex: 1; display: flex; 
-        flex-direction: column; 
-        justify-content: center; 
-        align-items: center; 
-        min-height: 150px; 
-        transition: transform 0.2s ease, box-shadow 0.2s ease; 
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) modal.classList.remove('show');
     }
-    
-    .mode-card img { height: 80px; width: auto; margin-bottom: 15px; border-radius: var(--border-radius); }
-    .mode-card .subtitle { font-size: 1.2rem; font-family: 'Comfortaa', cursive; color: var(--light-green); }
 
-    #screen-settings h2 { color: var(--dark-green); margin-bottom: 20px; text-align: center; }
-    .settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; margin-bottom: 8px; }
-    .setting-button-group { display: flex; gap: 10px; }
-    .setting-button-group button { flex-grow: 1; background-color: #e0e0e0; color: var(--text-color); }
-    .setting-button-group button.selected { background-color: var(--light-green); color: var(--button-text-color); }
-    input[type="range"] { width: 100%; }
-
-    #screen-exercise { padding: 0 !important; background-color: #fff; display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
-    .main-content-area { flex-grow: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; justify-content: center; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); overflow-y: auto; }
-    
-    .slides-wrapper { position: relative; overflow: hidden; width: 100%; aspect-ratio: 4 / 3; max-width: 800px; margin: 0 auto; flex-shrink: 0; max-height: 55vh; }
-    .slide { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; transition: transform var(--transition-speed) ease-out; transform: translateX(200%); }
-    .slide.is-grabbing, .slide.no-transition { transition: none !important; }
-    .slide img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer; }
-    .slide .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; }
-    
-    #progress-dots-container { padding: 10px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; width: 100%; max-width: 800px; margin: 0 auto; }
-    .progress-dot { width: 10px; height: 10px; background-color: #ddd; border-radius: 50%; transition: background-color 0.3s ease, transform 0.3s ease; }
-    .progress-dot.active { background-color: var(--light-green); transform: scale(1.4); }
-
-    #bottom-controls-container { display: flex; justify-content: space-between; align-items: center; gap: 10px; width: 100%; max-width: 800px; margin: 10px auto 0 auto; }
-    .arrow-group { display: flex; flex-direction: column; gap: 8px; width: 60px; }
-    .center-controls { display: flex; justify-content: center; align-items: center; flex-grow: 1; }
-    .nav-arrow { font-size: 3rem; font-weight: 100; color: var(--text-color); background-color: var(--card-background); border: 1px solid #e0e0e0; min-height: 44px; display: flex; align-items: center; justify-content: center; border-radius: var(--border-radius); padding: 0; width: 100%; cursor: pointer; }
-    .sound-button { background-color: var(--card-background); background-image: url('lautsprecher.png'); background-repeat: no-repeat; background-position: center; background-size: 100%; transition: transform 0.15s ease, box-shadow 0.15s ease; width: 100px; height: 100px; border-radius: 50%; flex-shrink: 0; border: 1px solid #ddd; cursor: pointer; }
-    .sound-button:disabled { background-color: var(--card-background); opacity: 0.5; cursor: not-allowed; filter: grayscale(80%); }
-    .sound-button:hover, .sound-button:focus { background-color: var(--card-background); box-shadow: 0 0 8px rgba(0,0,0,0.1); }
-    #btn-stop-auto-mode { background-color: var(--stop-button-color); color: var(--button-text-color); width: 100px; height: 100px; border-radius: 50%; font-size: 1.5rem; font-weight: bold; font-family: 'Comfortaa', cursive; border: none; }
-    #btn-stop-auto-mode:hover { background-color: #E04B6D; transform: none; box-shadow: none;}
-    #instructions-container { width: 100%; max-width: 800px; margin: 10px auto 0 auto; padding: 15px; background-color: var(--card-background); border-radius: var(--border-radius); border: 1px solid #e0e0e0; text-align: center; color: #777; flex-shrink: 0; }
-    
-    .site-logo {
-        position: fixed;
-        bottom: 100px;
-        right: 100px;
-        width: 100px;
-        height: 100px;
-        z-index: 900;
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
     }
+
+    // Lädt die Set-Struktur (sets.json) und befüllt das erste Dropdown
+    async function loadSetsManifest() {
+        try {
+            const response = await fetch('sets.json?t=' + new Date().getTime());
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            availableItemSets = await response.json();
+            categorySelect.innerHTML = '<option value="">Bitte wählen...</option>';
+            for (const key in availableItemSets) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = availableItemSets[key].displayName;
+                categorySelect.appendChild(option);
+            }
+            btnStartExercise.disabled = true;
+        } catch (e) {
+            console.error("Fehler beim Laden von sets.json:", e);
+            categorySelect.innerHTML = '<option value="">Fehler beim Laden</option>';
+            btnStartExercise.disabled = true;
+        }
+    }
+
+    // Baut das finale Lernset aus den IDs (aus z.B. sch_initial.json) und den Daten aus master_items.json
+    async function loadItemSet(path) {
+        if (!path || !masterItems) return false;
+        try {
+            const response = await fetch(path + '?t=' + new Date().getTime());
+            if (!response.ok) throw new Error(`Set-Datei nicht gefunden: ${path}`);
+            const itemIds = await response.json();
+            if (!Array.isArray(itemIds)) {
+                console.error("Set-Datei ist kein Array von IDs:", path);
+                currentItemSetData = [];
+                return false;
+            }
+            currentItemSetData = itemIds.map(id => masterItems[id]).filter(item => item !== undefined);
+            if (currentItemSetData.length !== itemIds.length) {
+                console.warn(`In ${path} wurden eine oder mehrere Item-IDs nicht in master_items.json gefunden.`);
+            }
+            return true;
+        } catch (e) {
+            console.error(`Fehler beim Laden oder Verarbeiten des Sets ${path}:`, e);
+            currentItemSetData = [];
+            return false;
+        }
+    }
+
+    // Alle weiteren Funktionen (preloadAssets, playCurrentItemSound, etc.) bleiben hier unverändert...
+    // Ich füge sie hier der Vollständigkeit halber ein.
+    function preloadAssets(items) { const promises = []; const loadedAssets = new Set(); items.forEach(item => { if (item.image && !loadedAssets.has(item.image)) { promises.push(new Promise((resolve) => { const img = new Image(); img.src = item.image + '?t=' + new Date().getTime(); img.onload = resolve; img.onerror = resolve; })); loadedAssets.add(item.image); } if (item.sound && !loadedAssets.has(item.sound)) { promises.push(fetch(item.sound + '?t=' + new Date().getTime()).catch(err => console.error('Preloading sound failed:', err))); loadedAssets.add(item.sound); } }); return Promise.all(promises); }
+    function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { if(currentShuffledItems[i].type === 'end') continue; const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
+    function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('active', index === currentItemIndex); }); }
+    function playCurrentItemSound(delay = 0) { clearTimeout(soundTimeoutId); const item = currentShuffledItems[currentItemIndex]; if (!item || !item.sound) { return; } soundTimeoutId = setTimeout(() => { audioPlayer.pause(); audioPlayer.currentTime = 0; soundButton.disabled = true; const enableButton = () => { soundButton.disabled = false; audioPlayer.removeEventListener('ended', enableButton); audioPlayer.removeEventListener('error', enableButton); }; audioPlayer.addEventListener('canplay', () => audioPlayer.play().catch(e => console.error("Sound-Abspielfehler:", e)), { once: true }); audioPlayer.addEventListener('ended', enableButton, { once: true }); audioPlayer.addEventListener('error', enableButton, { once: true }); audioPlayer.src = item.sound + '?t=' + new Date().getTime(); }, delay * 1000); }
+    function stopAllAutomation() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); if (currentAudioEndHandler) { audioPlayer.removeEventListener('ended', currentAudioEndHandler); audioPlayer.removeEventListener('error', currentAudioEndHandler); currentAudioEndHandler = null; } if (currentMode === 'manual') { soundButton.disabled = false; audioPlayer.src = ''; } }
+    function exitCurrentExercise() { stopAllAutomation(); }
+    function populateSlide(slideElement, itemIndex) { const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item || item.type === 'end') return; let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : ""; if (currentSettings.displayType === 'image_only') displayImage = true; if (currentSettings.displayType === 'word_only') displayWord = true; if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; } if (displayImage && !imagePath) { displayImage = false; displayWord = true; } if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; if (currentMode === 'manual') { img.addEventListener('click', () => moveSlider(-1)); } slideElement.appendChild(img); } if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); } }
+    function setSlidePositions(animated = true) { slides.forEach(s => s.classList.toggle('no-transition', !animated)); const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; populateSlide(prevSlide, prevIndex); populateSlide(currentSlide, currentItemIndex); populateSlide(nextSlide, nextIndex); prevSlide.style.transform = `translateX(-100%)`; currentSlide.style.transform = `translateX(0)`; nextSlide.style.transform = `translateX(100%)`; if (!animated) { setTimeout(() => slides.forEach(s => s.classList.remove('no-transition')), 20); } }
+    function updateExerciseUIForMode() { const isManual = currentMode === 'manual'; arrowGroupLeft.classList.toggle('hidden', !isManual); arrowGroupRight.classList.toggle('hidden', !isManual); soundButton.classList.toggle('hidden', !isManual); btnStopAutoMode.classList.toggle('hidden', isManual); }
+    function setupInitialState() { isNavigating = false; setSlidePositions(false); updateExerciseUIForMode(); updateUiForCurrentItem(); }
+    function handleTransitionEnd(direction) { const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; const slideToReset = direction === -1 ? nextSlide : prevSlide; const indexToPopulate = direction === -1 ? nextIndex : prevIndex; const positionToSet = direction === -1 ? '100%' : '-100%'; slideToReset.classList.add('no-transition'); populateSlide(slideToReset, indexToPopulate); slideToReset.style.transform = `translateX(${positionToSet})`; setTimeout(() => { slideToReset.classList.remove('no-transition'); isNavigating = false; }, 20); }
+    function runAutoModeStep() { stopAllAutomation(); const item = currentShuffledItems[currentItemIndex]; const hasSound = item && item.sound && currentSettings.soundOn; let displayDurationFinished = false; let soundPlaybackFinished = !hasSound; const tryProceedToNext = () => { if (displayDurationFinished && soundPlaybackFinished) { moveSlider(-1); } }; autoNextTimeoutId = setTimeout(() => { displayDurationFinished = true; tryProceedToNext(); }, currentSettings.displayDuration * 1000); if (hasSound) { playCurrentItemSound(currentSettings.soundDelay); currentAudioEndHandler = () => { soundPlaybackFinished = true; tryProceedToNext(); }; audioPlayer.addEventListener('ended', currentAudioEndHandler, { once: true }); audioPlayer.addEventListener('error', currentAudioEndHandler, { once: true }); } }
+    function updateUiForCurrentItem() { updateProgressDots(); const item = currentShuffledItems[currentItemIndex]; const hasSound = item && item.sound; soundButton.classList.toggle('invisible', !hasSound); if (currentMode === 'auto') { runAutoModeStep(); } }
+    function touchStart(event) { if (isNavigating || currentMode === 'auto') return; touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; touchStartY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; slides.forEach(s => s.classList.add('is-grabbing')); slidesWrapper.addEventListener('touchmove', touchMove); slidesWrapper.addEventListener('touchend', touchEnd); }
+    function touchMove(event) { if (isNavigating || currentMode === 'auto') return; const currentX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; const currentY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; const deltaX = currentX - touchStartX; const deltaY = Math.abs(currentY - touchStartY); if (Math.abs(deltaX) < deltaY && !currentTranslate) return; currentTranslate = deltaX; prevSlide.style.transform = `translateX(calc(-100% + ${deltaX}px))`; currentSlide.style.transform = `translateX(${deltaX}px)`; nextSlide.style.transform = `translateX(calc(100% + ${deltaX}px))`; }
+    function touchEnd() { if (currentMode === 'auto') return; slidesWrapper.removeEventListener('touchmove', touchMove); slidesWrapper.removeEventListener('touchend', touchEnd); slides.forEach(s => s.classList.remove('is-grabbing')); const threshold = slidesWrapper.clientWidth / 4; let direction = 0; if (Math.abs(currentTranslate) > threshold) { direction = currentTranslate < 0 ? -1 : 1; } moveSlider(direction); currentTranslate = 0; }
+    function moveSlider(direction) { if (isNavigating || direction === 0) { if(direction === 0) setSlidePositions(); return; } if (currentMode === 'manual') { stopAllAutomation(); } isNavigating = true; let newIndex = currentItemIndex - direction; if (newIndex >= currentShuffledItems.length || (currentShuffledItems[newIndex] && currentShuffledItems[newIndex].type === 'end')) { exitCurrentExercise(); btnReshuffle.textContent = (currentSettings.order === 'chaotic') ? 'Neu mischen' : 'Neu starten'; showModal('exercise-end-modal'); isNavigating = false; return; } if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; } currentItemIndex = newIndex; currentSlide.style.transform = `translateX(${direction * 100}%)`; let tempSlide; if (direction === -1) { nextSlide.style.transform = `translateX(0)`; tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide; } else { prevSlide.style.transform = `translateX(0)`; tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide; } currentSlide.addEventListener('transitionend', () => handleTransitionEnd(direction), { once: true }); updateUiForCurrentItem(); }
+    function populateDisplayDurationSelect() { displayDurationSelect.innerHTML = ''; for (let i = 1; i <= 10; i++) { const option = document.createElement('option'); option.value = i; option.textContent = i === 1 ? '1 Sekunde' : `${i} Sekunden`; displayDurationSelect.appendChild(option); } displayDurationSelect.value = currentSettings.displayDuration; }
+    function populateSoundDelaySelect() { soundDelaySelect.innerHTML = ''; for (let i = 0; i <= 5; i += 0.5) { const option = document.createElement('option'); option.value = i; option.textContent = i === 0 ? '0 Sek (sofort)' : `${i.toFixed(1)} Sek`; soundDelaySelect.appendChild(option); } }
+    function configureSettingsScreen() { let modeText = (currentMode === 'manual') ? 'Manuell' : 'Automatisch'; settingsTitle.textContent = `Einstellungen für: ${modeText}`; const isAutoMode = currentMode === 'auto'; settingOrderGroup.classList.toggle('hidden', !isAutoMode); settingDisplayDurationGroup.classList.toggle('hidden', !isAutoMode); settingSoundOnOffGroup.classList.toggle('hidden', !isAutoMode); const showSoundDelay = isAutoMode && currentSettings.soundOn; settingSoundDelayGroup.classList.toggle('hidden', !showSoundDelay); }
+
+    // --- EVENT LISTENERS ---
+
+    // Dropdown-Logik
+    categorySelect.addEventListener('change', () => {
+        const selectedCategoryKey = categorySelect.value;
+        subcategoryGroup.classList.add('hidden');
+        specGroup.classList.add('hidden');
+        subcategorySelect.innerHTML = '';
+        specSelect.innerHTML = '';
+        btnStartExercise.disabled = true;
+        currentItemSetPath = null;
+        if (!selectedCategoryKey) return;
+        const categoryData = availableItemSets[selectedCategoryKey];
+        const subcategories = categoryData.laute || categoryData.felder || categoryData.stufen;
+        subcategoryLabel.textContent = categoryData.unterkategorieName + ':';
+        subcategorySelect.innerHTML = '<option value="">Bitte wählen...</option>';
+        for (const key in subcategories) {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = subcategories[key].displayName;
+            subcategorySelect.appendChild(option);
+        }
+        subcategoryGroup.classList.remove('hidden');
+    });
+
+    subcategorySelect.addEventListener('change', () => {
+        const selectedCategoryKey = categorySelect.value;
+        const selectedSubCategoryKey = subcategorySelect.value;
+        specGroup.classList.add('hidden');
+        specSelect.innerHTML = '';
+        btnStartExercise.disabled = true;
+        currentItemSetPath = null;
+        if (!selectedSubCategoryKey) return;
+        const subCategoryData = (availableItemSets[selectedCategoryKey].laute || availableItemSets[selectedCategoryKey].felder || availableItemSets[selectedCategoryKey].stufen)[selectedSubCategoryKey];
+        if (subCategoryData.path) {
+            currentItemSetPath = subCategoryData.path;
+            btnStartExercise.disabled = false;
+        } else if (subCategoryData.positionen) {
+            specSelect.innerHTML = '<option value="">Bitte wählen...</option>';
+            for (const key in subCategoryData.positionen) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = subCategoryData.positionen[key].displayName;
+                specSelect.appendChild(option);
+            }
+            specGroup.classList.remove('hidden');
+        }
+    });
+
+    specSelect.addEventListener('change', () => {
+        const selectedCategoryKey = categorySelect.value;
+        const selectedSubCategoryKey = subcategorySelect.value;
+        const selectedSpecKey = specSelect.value;
+        btnStartExercise.disabled = true;
+        currentItemSetPath = null;
+        if (!selectedSpecKey) return;
+        const specData = availableItemSets[selectedCategoryKey].laute[selectedSubCategoryKey].positionen[selectedSpecKey];
+        if (specData && specData.path) {
+            currentItemSetPath = specData.path;
+            btnStartExercise.disabled = false;
+        }
+    });
+
+    // Andere UI-Elemente
+    hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); if (currentMode === 'auto') { stopAllAutomation(); } });
+    document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
+    document.getElementById('menu-anleitung').addEventListener('click', (e) => { e.preventDefault(); showModal('anleitung-modal'); menuContent.classList.remove('show'); });
+    document.getElementById('menu-modus-auswahl').addEventListener('click', (e) => { e.preventDefault(); exitCurrentExercise(); showScreen('screen-mode-selection'); menuContent.classList.remove('show'); });
+    ['manual', 'auto'].forEach(modeKey => { document.getElementById(`menu-${modeKey}`).addEventListener('click', (e) => { e.preventDefault(); exitCurrentExercise(); currentMode = modeKey; configureSettingsScreen(); showScreen('screen-settings'); menuContent.classList.remove('show'); }); });
+    modalCloseButtons.forEach(b => b.addEventListener('click', () => closeModal(b.dataset.modalId)));
+    window.addEventListener('click', (e) => { if (e.target.classList.contains('modal')) closeModal(e.target.id); });
+    modeCards.forEach(c => c.addEventListener('click', () => { currentMode = c.dataset.mode; configureSettingsScreen(); showScreen('screen-settings'); }));
+    displayTypeButtons.forEach(b => b.addEventListener('click', () => { displayTypeButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.displayType = b.dataset.displayType; }));
+    orderButtons.forEach(b => b.addEventListener('click', () => { orderButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.order = b.dataset.order; }));
+    displayDurationSelect.addEventListener('change', (e) => { currentSettings.displayDuration = parseInt(e.target.value); });
+    soundOnOffButtons.forEach(b => b.addEventListener('click', () => { soundOnOffButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.soundOn = b.dataset.soundOn === 'true'; configureSettingsScreen(); }));
+    soundDelaySelect.addEventListener('change', (e) => { currentSettings.soundDelay = parseFloat(e.target.value); });
+    btnSettingsBack.addEventListener('click', () => showScreen('screen-mode-selection'));
+    btnStartExercise.addEventListener('click', async () => {
+        const loaded = await loadItemSet(currentItemSetPath);
+        if (!loaded || !currentItemSetData || currentItemSetData.length === 0) {
+            alert("Dieses Lernset ist leer oder konnte nicht geladen werden. Bitte wählen Sie ein anderes aus.");
+            return;
+        }
+        document.getElementById('loading-overlay').classList.remove('hidden');
+        let baseItems = [...currentItemSetData];
+        currentShuffledItems = (currentSettings.order === 'chaotic' && currentMode === 'auto') ? shuffleArray(baseItems) : baseItems;
+        currentShuffledItems.push({ type: 'end' });
+        currentItemIndex = 0;
+        await preloadAssets(currentShuffledItems);
+        generateProgressDots();
+        setupInitialState();
+        setTimeout(() => { document.getElementById('loading-overlay').classList.add('hidden'); showScreen('screen-exercise'); }, 200);
+    });
+    btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); btnStartExercise.click(); });
+    btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); exitCurrentExercise(); showScreen('screen-settings'); });
+    soundButton.addEventListener('click', () => playCurrentItemSound(0));
+    navArrowsLeft.forEach(arrow => arrow.addEventListener('click', () => moveSlider(1)));
+    navArrowsRight.forEach(arrow => arrow.addEventListener('click', () => moveSlider(-1)));
+    btnStopAutoMode.addEventListener('click', () => { exitCurrentExercise(); configureSettingsScreen(); showScreen('screen-settings'); });
+    slidesWrapper.addEventListener('touchstart', touchStart, { passive: true });
+
+    // --- INITIALISIERUNG ---
+    async function initializeApp() {
+        populateDisplayDurationSelect();
+        populateSoundDelaySelect();
+
+        // Schritt 1: Lade die zentrale Item-Datenbank. Dies MUSS zuerst geschehen.
+        try {
+            const response = await fetch('data/master_items.json?t=' + new Date().getTime());
+            if (!response.ok) throw new Error('Master-Item-Liste nicht gefunden');
+            masterItems = await response.json();
+        } catch (e) {
+            console.error("KRITISCHER FEHLER: master_items.json konnte nicht geladen werden.", e);
+            document.body.innerHTML = '<h1>Fehler</h1><p>Die Haupt-Datenbank der App (master_items.json) konnte nicht geladen werden. Bitte stellen Sie sicher, dass die Datei im "data"-Ordner liegt und der Name korrekt ist.</p>';
+            return; // App-Initialisierung abbrechen
+        }
+
+        // Schritt 2: Lade die Set-Struktur für die Dropdowns.
+        await loadSetsManifest();
+
+        // Schritt 3: Zeige den Startbildschirm.
+        showScreen('screen-mode-selection');
+    }
+
+    initializeApp();
+});
 </style>
 </head>
 <body>
