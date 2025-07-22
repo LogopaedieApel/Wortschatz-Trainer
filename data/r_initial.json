@@ -17,7 +17,7 @@
     {
         "name": "Rauch",
         "sound": "sounds/r_initial/Rauch.mp3",
-        "image": "images/r_initial/Rauch.png"
+        "image": "images/r_initial/Rauch.jpg"
     },
     {
         "name": "Raupe",
@@ -27,7 +27,7 @@
     {
         "name": "rechnen",
         "sound": "sounds/r_initial/rechnen.mp3",
-        "image": "images/r_initial/rechnen.png"
+        "image": "images/r_initial/rechnen.jpg"
     },
     {
         "name": "Regen",
@@ -42,7 +42,7 @@
     {
         "name": "Reifen",
         "sound": "sounds/r_initial/Reifen.mp3",
-        "image": "images/r_initial/Reifen.png"
+        "image": "images/r_initial/Reifen.jpg"
     },
     {
         "name": "Reis",
@@ -57,7 +57,7 @@
     {
         "name": "richtig",
         "sound": "sounds/r_initial/richtig.mp3",
-        "image": "images/r_initial/richtig.png"
+        "image": "images/r_initial/richtig.jpg"
     },
     {
         "name": "Rock",
@@ -67,7 +67,7 @@
     {
         "name": "Rollschuhe",
         "sound": "sounds/r_initial/Rollschuhe.mp3",
-        "image": "images/r_initial/Rollschuhe.png"
+        "image": "images/r_initial/Rollschuhe.jpg"
     },
     {
         "name": "rot",
@@ -87,6 +87,6 @@
     {
         "name": "Rutsche",
         "sound": "sounds/r_initial/Rutsche.mp3",
-        "image": "images/r_initial/Rutsche.png"
+        "image": "images/r_initial/Rutsche.jpg"
     }
 ]
