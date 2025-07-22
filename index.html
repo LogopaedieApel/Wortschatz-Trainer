@@ -555,21 +555,43 @@
             btnSettingsBack.addEventListener('click', () => showScreen('screen-mode-selection'));
             
             btnStartExercise.addEventListener('click', async () => {
-                const loaded = await loadItemSet(currentItemSetPath);
-                if (!loaded || !currentItemSetData || currentItemSetData.length === 0) {
-                    alert("Dieses Lernset ist leer oder konnte nicht geladen werden. Bitte wählen Sie ein anderes aus.");
-                    return;
-                }
-                document.getElementById('loading-overlay').classList.remove('hidden');
-                let baseItems = [...currentItemSetData];
-                currentShuffledItems = (currentSettings.order === 'chaotic' && currentMode === 'auto') ? shuffleArray(baseItems) : baseItems;
-                currentShuffledItems.push({ type: 'end' });
-                currentItemIndex = 0;
-                await preloadAssets(currentShuffledItems);
-                generateProgressDots();
-                setupInitialState();
-                setTimeout(() => { document.getElementById('loading-overlay').classList.add('hidden'); showScreen('screen-exercise'); }, 200);
-            });
+    const loadingOverlay = document.getElementById('loading-overlay');
+    
+    // Zuerst sicherstellen, dass ein Set ausgewählt ist
+    const loaded = await loadItemSet(currentItemSetPath);
+    if (!loaded || !currentItemSetData || currentItemSetData.length === 0) {
+        alert("Dieses Lernset ist leer oder konnte nicht geladen werden. Bitte wählen Sie ein anderes aus.");
+        return;
+    }
+
+    // Lade-Overlay anzeigen
+    loadingOverlay.classList.remove('hidden');
+
+    try {
+        // Schritt 1: Versuche, alle Assets vorzuladen
+        await preloadAssets(currentItemSetData);
+
+        // Schritt 2: Wenn das Vorladen erfolgreich war, bereite die Übung vor
+        let baseItems = [...currentItemSetData];
+        currentShuffledItems = (currentSettings.order === 'chaotic' && currentMode === 'auto') ? shuffleArray(baseItems) : baseItems;
+        currentShuffledItems.push({ type: 'end' });
+        currentItemIndex = 0;
+        
+        generateProgressDots();
+        setupInitialState();
+        showScreen('screen-exercise');
+
+    } catch (error) {
+        // Schritt 3A: Wenn ein Fehler beim Vorladen auftritt
+        console.error("Fehler beim Vorladen der Assets:", error);
+        alert("Ein oder mehrere Bilder/Töne konnten nicht geladen werden. Bitte überprüfen Sie die Dateipfade in 'master_items.json' und die Konsole (F12) für Details.");
+    
+    } finally {
+        // Schritt 3B: Dieser Teil wird IMMER ausgeführt, egal ob erfolgreich oder nicht.
+        // Verstecke das Lade-Overlay wieder.
+        loadingOverlay.classList.add('hidden');
+    }
+});
 
             btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); btnStartExercise.click(); });
             btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); exitCurrentExercise(); showScreen('screen-settings'); });
