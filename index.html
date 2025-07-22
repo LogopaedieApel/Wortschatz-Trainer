@@ -127,29 +127,8 @@
     .setting-button-group button.selected { background-color: var(--light-green); color: var(--button-text-color); }
     input[type="range"] { width: 100%; }
 
-    /* --- START DER ÄNDERUNGEN --- */
-
-    #screen-exercise {
-        padding: 0 !important;
-        background-color: #fff;
-        /* overflow: hidden;  <-- ÄNDERUNG 1: Diese Zeile entfernen oder auskommentieren */
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        height: 100dvh;
-    }
-    .main-content-area {
-        flex-grow: 1;
-        width: 100%;
-        min-height: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-        overflow-y: auto; /* <-- ÄNDERUNG 2: Diese Zeile hinzufügen, damit dieser Bereich scrollen kann */
-    }
-    
-    /* --- ENDE DER ÄNDERUNGEN --- */
+    #screen-exercise { padding: 0 !important; background-color: #fff; display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+    .main-content-area { flex-grow: 1; width: 100%; min-height: 0; display: flex; flex-direction: column; justify-content: center; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); overflow-y: auto; }
     
     .slides-wrapper { position: relative; overflow: hidden; width: 100%; aspect-ratio: 4 / 3; max-width: 800px; margin: 0 auto; flex-shrink: 0; max-height: 55vh; }
     .slide { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; transition: transform var(--transition-speed) ease-out; transform: translateX(200%); }
@@ -190,28 +169,24 @@
 
     <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-manual">Manuell</a></li><li><a href="#" id="menu-auto">Automatisch</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
     
-    <!-- HIER IST DER AKTUALISIERTE TEIL -->
     <div id="anleitung-modal" class="modal">
         <div class="modal-content">
             <span class="modal-close-button" data-modal-id="anleitung-modal">×</span>
             <h2>Anleitung</h2>
             <p><strong>Willkommen beim Wortschatz-Trainer!</strong></p>
             <p>Diese App hilft dir, deinen Wortschatz spielerisch zu erweitern und deine Aussprache zu verbessern. Hier ist eine kurze Erklärung der Funktionen:</p>
-
             <h4>Erste Schritte: Modus auswählen</h4>
             <p>Auf dem Startbildschirm wählst du zwischen zwei Lern-Modi:</p>
             <ul>
                 <li><strong>Manuell:</strong> Du steuerst das Tempo selbst. Ideal, um in Ruhe zu lernen und zu wiederholen.</li>
                 <li><strong>Automatisch:</strong> Die App zeigt dir die Bilder nacheinander an. Perfekt, um dein Wissen zu festigen.</li>
             </ul>
-
             <h4>Der Manuelle Modus</h4>
             <p>Nachdem du ein Lern-Set ausgewählt hast, kannst du:</p>
             <ul>
                 <li><strong>Wischen:</strong> Wische auf dem Bild nach links oder rechts, um zur nächsten oder vorherigen Vokabel zu wechseln. Alternativ kannst du auch die Pfeil-Tasten an den Seiten nutzen.</li>
                 <li><strong>Ton abspielen:</strong> Tippe auf das Bild mit der Frau in der Mitte, um die Aussprache des Wortes anzuhören.</li>
             </ul>
-
             <h4>Der Automatische Modus</h4>
             <p>In diesem Modus läuft die Übung von alleine ab. In den Einstellungen kannst du festlegen:</p>
             <ul>
@@ -220,7 +195,6 @@
                 <li><strong>Ton:</strong> Ob die Aussprache automatisch abgespielt werden soll und wenn ja, mit welcher Verzögerung.</li>
                 <li><strong>Stoppen:</strong> Du kannst die Übung jederzeit mit dem großen roten "Stopp"-Knopf beenden und kehrst dann zu den Einstellungen zurück.</li>
             </ul>
-
             <h4>Das Menü (☰)</h4>
             <p>Oben rechts findest du jederzeit das Menü. Von dort aus kannst du:</p>
             <ul>
@@ -231,7 +205,6 @@
             <p style="margin-top: 20px; text-align: center;"><strong>Viel Spaß beim Lernen!</strong></p>
         </div>
     </div>
-    <!-- ENDE DES AKTUALISIERTEN TEILS -->
 
     <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu starten</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
     
@@ -254,10 +227,26 @@
     <div id="screen-settings" class="screen hidden">
         <h2 id="settings-title">Einstellungen</h2>
         <div class="settings-form">
+            
+            <!-- HIER BEGINNEN DIE HTML-ÄNDERUNGEN -->
             <div class="form-group">
-                <label for="item-set-select">Lern-Set:</label>
-                <select id="item-set-select"><option>Lade Sets...</option></select>
+                <label for="category-select">Bereich:</label>
+                <select id="category-select">
+                    <option value="">Lade Sets...</option>
+                </select>
             </div>
+
+            <div class="form-group hidden" id="subcategory-group">
+                <label for="subcategory-select" id="subcategory-label">Detail:</label>
+                <select id="subcategory-select"></select>
+            </div>
+
+            <div class="form-group hidden" id="spec-group">
+                <label for="spec-select">Position im Wort:</label>
+                <select id="spec-select"></select>
+            </div>
+            <!-- HIER ENDEN DIE HTML-ÄNDERUNGEN -->
+
             <div class="form-group" id="setting-display-type-group">
                 <label>Anzeige:</label>
                 <div class="setting-button-group" id="display-type-buttons">
@@ -325,9 +314,8 @@
     <audio id="audio-player"></audio>
 
     <script>
-        // Dein Javascript-Code bleibt unverändert
         document.addEventListener('DOMContentLoaded', () => {
-            let currentMode = null, availableItemSets = [], currentItemSetPath = null;
+            let currentMode = null, availableItemSets = {}, currentItemSetPath = null; // ÄNDERUNG: availableItemSets ist jetzt ein Objekt
             let currentItemSetData = [], currentShuffledItems = [], currentItemIndex = 0;
             let currentSettings = { 
                 displayType: 'image_only', 
@@ -348,7 +336,16 @@
             const slidesWrapper = document.querySelector('.slides-wrapper');
             const hamburgerIcon = document.getElementById('hamburger-icon'), menuContent = document.getElementById('menu-content');
             const anleitungModal = document.getElementById('anleitung-modal'), exerciseEndModal = document.getElementById('exercise-end-modal'), modalCloseButtons = document.querySelectorAll('.modal-close-button');
-            const modeCards = document.querySelectorAll('.mode-card'), settingsTitle = document.getElementById('settings-title'), itemSetSelect = document.getElementById('item-set-select');
+            const modeCards = document.querySelectorAll('.mode-card'), settingsTitle = document.getElementById('settings-title');
+            
+            // HIER BEGINNEN DIE JAVASCRIPT-ÄNDERUNGEN (VARIABLEN)
+            const categorySelect = document.getElementById('category-select');
+            const subcategoryGroup = document.getElementById('subcategory-group');
+            const subcategoryLabel = document.getElementById('subcategory-label');
+            const subcategorySelect = document.getElementById('subcategory-select');
+            const specGroup = document.getElementById('spec-group');
+            const specSelect = document.getElementById('spec-select');
+            // HIER ENDEN DIE JAVASCRIPT-ÄNDERUNGEN (VARIABLEN)
             
             const settingDisplayTypeGroup = document.getElementById('setting-display-type-group'), displayTypeButtons = document.querySelectorAll('#display-type-buttons button');
             const settingOrderGroup = document.getElementById('setting-order-group'), orderButtons = document.querySelectorAll('#order-buttons button');
@@ -379,7 +376,115 @@
                 }); return Promise.all(promises);
             }
 
-            async function loadSetsManifest() { try { const r = await fetch('sets.json?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); availableItemSets = await r.json(); itemSetSelect.innerHTML = ''; if (availableItemSets.length === 0) { itemSetSelect.innerHTML = '<option value="">Keine Sets</option>'; btnStartExercise.disabled = true; return false; } availableItemSets.forEach(set => { const o=document.createElement('option'); o.value=set.path; o.textContent=set.name; itemSetSelect.appendChild(o); }); btnStartExercise.disabled=false; if(itemSetSelect.options.length>0){itemSetSelect.selectedIndex=0;currentItemSetPath=itemSetSelect.value; await loadItemSet(currentItemSetPath);} return true; } catch (e) { console.error("Fehler beim Laden von sets.json:", e); itemSetSelect.innerHTML = '<option>Fehler</option>'; btnStartExercise.disabled = true; return false; } }
+            // HIER BEGINNEN DIE JAVASCRIPT-ÄNDERUNGEN (FUNKTIONEN)
+
+            // VÖLLIG NEUE Logik zum Laden der hierarchischen sets.json
+            async function loadSetsManifest() {
+                try {
+                    const response = await fetch('sets.json?t=' + new Date().getTime());
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    availableItemSets = await response.json();
+                    
+                    categorySelect.innerHTML = '<option value="">Bitte wählen...</option>';
+                    
+                    for (const key in availableItemSets) {
+                        const option = document.createElement('option');
+                        option.value = key;
+                        option.textContent = availableItemSets[key].displayName;
+                        categorySelect.appendChild(option);
+                    }
+                    
+                    btnStartExercise.disabled = true; // Start-Button anfangs deaktivieren
+                    return true;
+                } catch (e) {
+                    console.error("Fehler beim Laden von sets.json:", e);
+                    categorySelect.innerHTML = '<option value="">Fehler beim Laden</option>';
+                    btnStartExercise.disabled = true;
+                    return false;
+                }
+            }
+            
+            // Event-Listener für das erste Dropdown (Bereich)
+            categorySelect.addEventListener('change', () => {
+                const selectedCategoryKey = categorySelect.value;
+                
+                // Alle untergeordneten Menüs zurücksetzen
+                subcategoryGroup.classList.add('hidden');
+                specGroup.classList.add('hidden');
+                subcategorySelect.innerHTML = '';
+                specSelect.innerHTML = '';
+                btnStartExercise.disabled = true;
+                currentItemSetPath = null;
+
+                if (!selectedCategoryKey) return;
+
+                const categoryData = availableItemSets[selectedCategoryKey];
+                const subcategories = categoryData.laute || categoryData.felder || categoryData.stufen;
+
+                subcategoryLabel.textContent = categoryData.unterkategorieName + ':';
+                subcategorySelect.innerHTML = '<option value="">Bitte wählen...</option>';
+
+                for (const key in subcategories) {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = subcategories[key].displayName;
+                    subcategorySelect.appendChild(option);
+                }
+                
+                subcategoryGroup.classList.remove('hidden');
+            });
+
+            // Event-Listener für das zweite Dropdown (Sprachlaut / Semant. Feld)
+            subcategorySelect.addEventListener('change', () => {
+                const selectedCategoryKey = categorySelect.value;
+                const selectedSubCategoryKey = subcategorySelect.value;
+
+                specGroup.classList.add('hidden');
+                specSelect.innerHTML = '';
+                btnStartExercise.disabled = true;
+                currentItemSetPath = null;
+
+                if (!selectedSubCategoryKey) return;
+
+                const subCategoryData = (availableItemSets[selectedCategoryKey].laute || availableItemSets[selectedCategoryKey].felder || availableItemSets[selectedCategoryKey].stufen)[selectedSubCategoryKey];
+                
+                // Fall 1: Das Set ist hier bereits vollständig definiert (z.B. bei Wortschatz)
+                if (subCategoryData.path) {
+                    currentItemSetPath = subCategoryData.path;
+                    btnStartExercise.disabled = false;
+                } 
+                // Fall 2: Es gibt eine dritte Ebene (z.B. bei Artikulation)
+                else if (subCategoryData.positionen) {
+                    specSelect.innerHTML = '<option value="">Bitte wählen...</option>';
+                    for (const key in subCategoryData.positionen) {
+                        const option = document.createElement('option');
+                        option.value = key;
+                        option.textContent = subCategoryData.positionen[key].displayName;
+                        specSelect.appendChild(option);
+                    }
+                    specGroup.classList.remove('hidden');
+                }
+            });
+
+            // Event-Listener für das dritte Dropdown (Position)
+            specSelect.addEventListener('change', () => {
+                const selectedCategoryKey = categorySelect.value;
+                const selectedSubCategoryKey = subcategorySelect.value;
+                const selectedSpecKey = specSelect.value;
+                
+                btnStartExercise.disabled = true;
+                currentItemSetPath = null;
+
+                if (!selectedSpecKey) return;
+
+                const specData = availableItemSets[selectedCategoryKey].laute[selectedSubCategoryKey].positionen[selectedSpecKey];
+                if (specData && specData.path) {
+                    currentItemSetPath = specData.path;
+                    btnStartExercise.disabled = false;
+                }
+            });
+            // HIER ENDEN DIE JAVASCRIPT-ÄNDERUNGEN (FUNKTIONEN)
+
             async function loadItemSet(path) { if (!path) return false; try { const r = await fetch(path + '?t=' + new Date().getTime()); if (!r.ok) throw new Error(`${r.status}`); currentItemSetData = await r.json(); if (!Array.isArray(currentItemSetData)) { console.error("Set ist kein Array."); currentItemSetData = []; return false; } return true; } catch (e) { console.error(`Fehler bei ${path}:`, e); currentItemSetData = []; return false; } }
             function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { if(currentShuffledItems[i].type === 'end') continue; const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
             function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('active', index === currentItemIndex); }); }
@@ -396,151 +501,24 @@
                 }, delay * 1000);
             }
 
-            function stopAllAutomation() {
-                clearTimeout(soundTimeoutId);
-                clearTimeout(autoNextTimeoutId);
-                audioPlayer.pause();
-                
-                if (currentAudioEndHandler) {
-                    audioPlayer.removeEventListener('ended', currentAudioEndHandler);
-                    audioPlayer.removeEventListener('error', currentAudioEndHandler);
-                    currentAudioEndHandler = null;
-                }
-                
-                if (currentMode === 'manual') {
-                    soundButton.disabled = false;
-                    audioPlayer.src = '';
-                }
-            }
-
+            function stopAllAutomation() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); if (currentAudioEndHandler) { audioPlayer.removeEventListener('ended', currentAudioEndHandler); audioPlayer.removeEventListener('error', currentAudioEndHandler); currentAudioEndHandler = null; } if (currentMode === 'manual') { soundButton.disabled = false; audioPlayer.src = ''; } }
             function exitCurrentExercise() { stopAllAutomation(); }
             
-            function populateSlide(slideElement, itemIndex) {
-                const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item || item.type === 'end') return;
-                let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : "";
-                if (currentSettings.displayType === 'image_only') displayImage = true;
-                if (currentSettings.displayType === 'word_only') displayWord = true;
-                if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; }
-                if (displayImage && !imagePath) { displayImage = false; displayWord = true; }
-                if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; if (currentMode === 'manual') { img.addEventListener('click', () => moveSlider(-1)); } slideElement.appendChild(img); }
-                if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); }
-            }
-
+            function populateSlide(slideElement, itemIndex) { const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item || item.type === 'end') return; let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : ""; if (currentSettings.displayType === 'image_only') displayImage = true; if (currentSettings.displayType === 'word_only') displayWord = true; if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; } if (displayImage && !imagePath) { displayImage = false; displayWord = true; } if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; if (currentMode === 'manual') { img.addEventListener('click', () => moveSlider(-1)); } slideElement.appendChild(img); } if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); } }
             function setSlidePositions(animated = true) { slides.forEach(s => s.classList.toggle('no-transition', !animated)); const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; populateSlide(prevSlide, prevIndex); populateSlide(currentSlide, currentItemIndex); populateSlide(nextSlide, nextIndex); prevSlide.style.transform = `translateX(-100%)`; currentSlide.style.transform = `translateX(0)`; nextSlide.style.transform = `translateX(100%)`; if (!animated) { setTimeout(() => slides.forEach(s => s.classList.remove('no-transition')), 20); } }
-            
-            function updateExerciseUIForMode() {
-                const isManual = currentMode === 'manual';
-                arrowGroupLeft.classList.toggle('hidden', !isManual); arrowGroupRight.classList.toggle('hidden', !isManual);
-                soundButton.classList.toggle('hidden', !isManual); btnStopAutoMode.classList.toggle('hidden', isManual);
-            }
-
+            function updateExerciseUIForMode() { const isManual = currentMode === 'manual'; arrowGroupLeft.classList.toggle('hidden', !isManual); arrowGroupRight.classList.toggle('hidden', !isManual); soundButton.classList.toggle('hidden', !isManual); btnStopAutoMode.classList.toggle('hidden', isManual); }
             function setupInitialState() { isNavigating = false; setSlidePositions(false); updateExerciseUIForMode(); updateUiForCurrentItem(); }
-            function handleTransitionEnd(direction) {
-                const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length;
-                const slideToReset = direction === -1 ? nextSlide : prevSlide; const indexToPopulate = direction === -1 ? nextIndex : prevIndex;
-                const positionToSet = direction === -1 ? '100%' : '-100%';
-                slideToReset.classList.add('no-transition'); populateSlide(slideToReset, indexToPopulate); slideToReset.style.transform = `translateX(${positionToSet})`;
-                setTimeout(() => { slideToReset.classList.remove('no-transition'); isNavigating = false; }, 20);
-            }
-
-            function runAutoModeStep() {
-                stopAllAutomation(); 
-                const item = currentShuffledItems[currentItemIndex];
-                const hasSound = item && item.sound && currentSettings.soundOn;
-                let displayDurationFinished = false;
-                let soundPlaybackFinished = !hasSound;
-                const tryProceedToNext = () => {
-                    if (displayDurationFinished && soundPlaybackFinished) {
-                        moveSlider(-1);
-                    }
-                };
-                autoNextTimeoutId = setTimeout(() => {
-                    displayDurationFinished = true;
-                    tryProceedToNext();
-                }, currentSettings.displayDuration * 1000);
-                if (hasSound) {
-                    playCurrentItemSound(currentSettings.soundDelay);
-                    currentAudioEndHandler = () => {
-                        soundPlaybackFinished = true;
-                        tryProceedToNext();
-                    };
-                    audioPlayer.addEventListener('ended', currentAudioEndHandler, { once: true });
-                    audioPlayer.addEventListener('error', currentAudioEndHandler, { once: true });
-                }
-            }
-
-            function updateUiForCurrentItem() { 
-                updateProgressDots(); 
-                const item = currentShuffledItems[currentItemIndex]; const hasSound = item && item.sound; 
-                soundButton.classList.toggle('invisible', !hasSound);
-                if (currentMode === 'auto') {
-                    runAutoModeStep();
-                }
-            }
-
+            function handleTransitionEnd(direction) { const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; const slideToReset = direction === -1 ? nextSlide : prevSlide; const indexToPopulate = direction === -1 ? nextIndex : prevIndex; const positionToSet = direction === -1 ? '100%' : '-100%'; slideToReset.classList.add('no-transition'); populateSlide(slideToReset, indexToPopulate); slideToReset.style.transform = `translateX(${positionToSet})`; setTimeout(() => { slideToReset.classList.remove('no-transition'); isNavigating = false; }, 20); }
+            function runAutoModeStep() { stopAllAutomation(); const item = currentShuffledItems[currentItemIndex]; const hasSound = item && item.sound && currentSettings.soundOn; let displayDurationFinished = false; let soundPlaybackFinished = !hasSound; const tryProceedToNext = () => { if (displayDurationFinished && soundPlaybackFinished) { moveSlider(-1); } }; autoNextTimeoutId = setTimeout(() => { displayDurationFinished = true; tryProceedToNext(); }, currentSettings.displayDuration * 1000); if (hasSound) { playCurrentItemSound(currentSettings.soundDelay); currentAudioEndHandler = () => { soundPlaybackFinished = true; tryProceedToNext(); }; audioPlayer.addEventListener('ended', currentAudioEndHandler, { once: true }); audioPlayer.addEventListener('error', currentAudioEndHandler, { once: true }); } }
+            function updateUiForCurrentItem() { updateProgressDots(); const item = currentShuffledItems[currentItemIndex]; const hasSound = item && item.sound; soundButton.classList.toggle('invisible', !hasSound); if (currentMode === 'auto') { runAutoModeStep(); } }
             function touchStart(event) { if (isNavigating || currentMode === 'auto') return; touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; touchStartY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; slides.forEach(s => s.classList.add('is-grabbing')); slidesWrapper.addEventListener('touchmove', touchMove); slidesWrapper.addEventListener('touchend', touchEnd); }
             function touchMove(event) { if (isNavigating || currentMode === 'auto') return; const currentX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; const currentY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; const deltaX = currentX - touchStartX; const deltaY = Math.abs(currentY - touchStartY); if (Math.abs(deltaX) < deltaY && !currentTranslate) return; currentTranslate = deltaX; prevSlide.style.transform = `translateX(calc(-100% + ${deltaX}px))`; currentSlide.style.transform = `translateX(${deltaX}px)`; nextSlide.style.transform = `translateX(calc(100% + ${deltaX}px))`; }
             function touchEnd() { if (currentMode === 'auto') return; slidesWrapper.removeEventListener('touchmove', touchMove); slidesWrapper.removeEventListener('touchend', touchEnd); slides.forEach(s => s.classList.remove('is-grabbing')); const threshold = slidesWrapper.clientWidth / 4; let direction = 0; if (Math.abs(currentTranslate) > threshold) { direction = currentTranslate < 0 ? -1 : 1; } moveSlider(direction); currentTranslate = 0; }
+            function moveSlider(direction) { if (isNavigating || direction === 0) { if(direction === 0) setSlidePositions(); return; } if (currentMode === 'manual') { stopAllAutomation(); } isNavigating = true; let newIndex = currentItemIndex - direction; if (newIndex >= currentShuffledItems.length || (currentShuffledItems[newIndex] && currentShuffledItems[newIndex].type === 'end')) { exitCurrentExercise(); btnReshuffle.textContent = (currentSettings.order === 'chaotic') ? 'Neu mischen' : 'Neu starten'; showModal('exercise-end-modal'); isNavigating = false; return; } if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; } currentItemIndex = newIndex; currentSlide.style.transform = `translateX(${direction * 100}%)`; let tempSlide; if (direction === -1) { nextSlide.style.transform = `translateX(0)`; tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide; } else { prevSlide.style.transform = `translateX(0)`; tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide; } currentSlide.addEventListener('transitionend', () => handleTransitionEnd(direction), { once: true }); updateUiForCurrentItem(); }
+            function populateDisplayDurationSelect() { displayDurationSelect.innerHTML = ''; for (let i = 1; i <= 10; i++) { const option = document.createElement('option'); option.value = i; option.textContent = i === 1 ? '1 Sekunde' : `${i} Sekunden`; displayDurationSelect.appendChild(option); } displayDurationSelect.value = currentSettings.displayDuration; }
+            function populateSoundDelaySelect() { soundDelaySelect.innerHTML = ''; for (let i = 0; i <= 5; i += 0.5) { const option = document.createElement('option'); option.value = i; option.textContent = i === 0 ? '0 Sek (sofort)' : `${i.toFixed(1)} Sek`; soundDelaySelect.appendChild(option); } }
+            function configureSettingsScreen() { let modeText = (currentMode === 'manual') ? 'Manuell' : 'Automatisch'; settingsTitle.textContent = `Einstellungen für: ${modeText}`; const isAutoMode = currentMode === 'auto'; settingOrderGroup.classList.toggle('hidden', !isAutoMode); settingDisplayDurationGroup.classList.toggle('hidden', !isAutoMode); settingSoundOnOffGroup.classList.toggle('hidden', !isAutoMode); const showSoundDelay = isAutoMode && currentSettings.soundOn; settingSoundDelayGroup.classList.toggle('hidden', !showSoundDelay); }
             
-            function moveSlider(direction) {
-                if (isNavigating || direction === 0) { if(direction === 0) setSlidePositions(); return; }
-                
-                if (currentMode === 'manual') {
-                    stopAllAutomation();
-                }
-
-                isNavigating = true; 
-                
-                let newIndex = currentItemIndex - direction;
-                if (newIndex >= currentShuffledItems.length || (currentShuffledItems[newIndex] && currentShuffledItems[newIndex].type === 'end')) {
-                    exitCurrentExercise();
-                    btnReshuffle.textContent = (currentSettings.order === 'chaotic') ? 'Neu mischen' : 'Neu starten';
-                    showModal('exercise-end-modal');
-                    isNavigating = false;
-                    return;
-                }
-                if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; }
-                currentItemIndex = newIndex;
-                currentSlide.style.transform = `translateX(${direction * 100}%)`;
-                let tempSlide;
-                if (direction === -1) { nextSlide.style.transform = `translateX(0)`; tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide; } 
-                else { prevSlide.style.transform = `translateX(0)`; tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide; }
-                currentSlide.addEventListener('transitionend', () => handleTransitionEnd(direction), { once: true });
-                updateUiForCurrentItem();
-            }
-            
-            function populateDisplayDurationSelect() {
-                displayDurationSelect.innerHTML = '';
-                for (let i = 1; i <= 10; i++) {
-                    const option = document.createElement('option');
-                    option.value = i;
-                    option.textContent = i === 1 ? '1 Sekunde' : `${i} Sekunden`;
-                    displayDurationSelect.appendChild(option);
-                }
-                displayDurationSelect.value = currentSettings.displayDuration;
-            }
-
-            function populateSoundDelaySelect() {
-                soundDelaySelect.innerHTML = '';
-                for (let i = 0; i <= 5; i += 0.5) {
-                    const option = document.createElement('option');
-                    option.value = i;
-                    option.textContent = i === 0 ? '0 Sek (sofort)' : `${i.toFixed(1)} Sek`;
-                    soundDelaySelect.appendChild(option);
-                }
-            }
-
-            function configureSettingsScreen() {
-                let modeText = (currentMode === 'manual') ? 'Manuell' : 'Automatisch';
-                settingsTitle.textContent = `Einstellungen für: ${modeText}`;
-                const isAutoMode = currentMode === 'auto';
-                settingOrderGroup.classList.toggle('hidden', !isAutoMode);
-                settingDisplayDurationGroup.classList.toggle('hidden', !isAutoMode);
-                settingSoundOnOffGroup.classList.toggle('hidden', !isAutoMode);
-                const showSoundDelay = isAutoMode && currentSettings.soundOn;
-                settingSoundDelayGroup.classList.toggle('hidden', !showSoundDelay);
-            }
-
             hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); if (currentMode === 'auto') { stopAllAutomation(); } });
             document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
             document.getElementById('menu-anleitung').addEventListener('click', (e) => { e.preventDefault(); showModal('anleitung-modal'); menuContent.classList.remove('show'); });
@@ -551,31 +529,23 @@
             window.addEventListener('click', (e) => { if (e.target.classList.contains('modal')) closeModal(e.target.id); });
             modeCards.forEach(c => c.addEventListener('click', () => { currentMode = c.dataset.mode; configureSettingsScreen(); showScreen('screen-settings'); }));
 
-            itemSetSelect.addEventListener('change', async (e) => { currentItemSetPath = e.target.value; await loadItemSet(currentItemSetPath); });
+            // ALTER Event-Listener wurde entfernt. Die neuen stehen weiter oben.
             displayTypeButtons.forEach(b => b.addEventListener('click', () => { displayTypeButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.displayType = b.dataset.displayType; }));
             orderButtons.forEach(b => b.addEventListener('click', () => { orderButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.order = b.dataset.order; }));
             
-            displayDurationSelect.addEventListener('change', (e) => {
-                currentSettings.displayDuration = parseInt(e.target.value);
-            });
+            displayDurationSelect.addEventListener('change', (e) => { currentSettings.displayDuration = parseInt(e.target.value); });
             
-            soundOnOffButtons.forEach(b => b.addEventListener('click', () => {
-                soundOnOffButtons.forEach(btn => btn.classList.remove('selected'));
-                b.classList.add('selected');
-                currentSettings.soundOn = b.dataset.soundOn === 'true';
-                configureSettingsScreen();
-            }));
-            soundDelaySelect.addEventListener('change', (e) => {
-                currentSettings.soundDelay = parseFloat(e.target.value);
-            });
+            soundOnOffButtons.forEach(b => b.addEventListener('click', () => { soundOnOffButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.soundOn = b.dataset.soundOn === 'true'; configureSettingsScreen(); }));
+            soundDelaySelect.addEventListener('change', (e) => { currentSettings.soundDelay = parseFloat(e.target.value); });
 
             btnSettingsBack.addEventListener('click', () => showScreen('screen-mode-selection'));
             btnStartExercise.addEventListener('click', async () => {
-                const loaded = await loadItemSet(currentItemSetPath || itemSetSelect.value);
+                // Die Logik hier ist nun einfacher, da currentItemSetPath durch die Dropdowns gesetzt wird.
+                const loaded = await loadItemSet(currentItemSetPath);
                 if (!loaded || !currentItemSetData || currentItemSetData.length === 0) { alert("Bitte ein gültiges Set mit Inhalten auswählen."); return; }
                 document.getElementById('loading-overlay').classList.remove('hidden');
                 let baseItems = [...currentItemSetData];
-                currentShuffledItems = (currentSettings.order === 'chaotic') ? shuffleArray(baseItems) : baseItems;
+                currentShuffledItems = (currentSettings.order === 'chaotic' && currentMode === 'auto') ? shuffleArray(baseItems) : baseItems;
                 currentShuffledItems.push({ type: 'end' });
                 currentItemIndex = 0;
                 try { await preloadAssets(currentShuffledItems); } catch (error) { console.error("Fehler beim Vorladen:", error); }
@@ -595,7 +565,7 @@
             async function initializeApp() { 
                 populateDisplayDurationSelect();
                 populateSoundDelaySelect();
-                await loadSetsManifest(); 
+                await loadSetsManifest(); // Lädt jetzt die neue Struktur und befüllt das erste Dropdown
                 showScreen('screen-mode-selection'); 
             }
             initializeApp();
