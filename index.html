@@ -380,6 +380,7 @@
             let touchStartX = 0,
                 touchStartY = 0,
                 currentTranslate = 0;
+            let isRestartingExercise = false;
 
             // --- DOM ELEMENTE ---
             const screens = {
@@ -487,10 +488,53 @@
             function touchStart(event) { if (isNavigating || currentMode === 'auto') return; touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; touchStartY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; slides.forEach(s => s.classList.add('is-grabbing')); slidesWrapper.addEventListener('touchmove', touchMove); slidesWrapper.addEventListener('touchend', touchEnd); }
             function touchMove(event) { if (isNavigating || currentMode === 'auto') return; const currentX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; const currentY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; const deltaX = currentX - touchStartX; const deltaY = Math.abs(currentY - touchStartY); if (Math.abs(deltaX) < deltaY && !currentTranslate) return; currentTranslate = deltaX; prevSlide.style.transform = `translateX(calc(-100% + ${deltaX}px))`; currentSlide.style.transform = `translateX(${deltaX}px)`; nextSlide.style.transform = `translateX(calc(100% + ${deltaX}px))`; }
             function touchEnd() { if (currentMode === 'auto') return; slidesWrapper.removeEventListener('touchmove', touchMove); slidesWrapper.removeEventListener('touchend', touchEnd); slides.forEach(s => s.classList.remove('is-grabbing')); const threshold = slidesWrapper.clientWidth / 4; let direction = 0; if (Math.abs(currentTranslate) > threshold) { direction = currentTranslate < 0 ? -1 : 1; } moveSlider(direction); currentTranslate = 0; }
-            function moveSlider(direction) { if (isNavigating || direction === 0) { if(direction === 0) setSlidePositions(); return; } if (currentMode === 'manual') { stopAllAutomation(); } isNavigating = true; let newIndex = currentItemIndex - direction; if (newIndex >= currentShuffledItems.length || (currentShuffledItems[newIndex] && currentShuffledItems[newIndex].type === 'end')) { exitCurrentExercise(); btnReshuffle.textContent = (currentSettings.order === 'chaotic') ? 'Neu mischen' : 'Neu starten'; showModal('exercise-end-modal'); isNavigating = false; return; } if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; } currentItemIndex = newIndex; currentSlide.style.transform = `translateX(${direction * 100}%)`; let tempSlide; if (direction === -1) { nextSlide.style.transform = `translateX(0)`; tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide; } else { prevSlide.style.transform = `translateX(0)`; tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide; } currentSlide.addEventListener('transitionend', () => handleTransitionEnd(direction), { once: true }); updateUiForCurrentItem(); }
-            function populateDisplayDurationSelect() { displayDurationSelect.innerHTML = ''; for (let i = 1; i <= 10; i++) { const option = document.createElement('option'); option.value = i; option.textContent = i === 1 ? '1 Sekunde' : `${i} Sekunden`; displayDurationSelect.appendChild(option); } displayDurationSelect.value = currentSettings.displayDuration; }
-            function populateSoundDelaySelect() { soundDelaySelect.innerHTML = ''; for (let i = 0; i <= 5; i += 0.5) { const option = document.createElement('option'); option.value = i; option.textContent = i === 0 ? '0 Sek (sofort)' : `${i.toFixed(1)} Sek`; soundDelaySelect.appendChild(option); } }
-            function configureSettingsScreen() { let modeText = (currentMode === 'manual') ? 'Manuell' : 'Automatisch'; settingsTitle.textContent = `Einstellungen für: ${modeText}`; const isAutoMode = currentMode === 'auto'; settingOrderGroup.classList.toggle('hidden', !isAutoMode); settingDisplayDurationGroup.classList.toggle('hidden', !isAutoMode); settingSoundOnOffGroup.classList.toggle('hidden', !isAutoMode); const showSoundDelay = isAutoMode && currentSettings.soundOn; settingSoundDelayGroup.classList.toggle('hidden', !showSoundDelay); }
+            
+            function moveSlider(direction) {
+                if (isNavigating || direction === 0) {
+                    if (direction === 0) setSlidePositions();
+                    return;
+                }
+                if (currentMode === 'manual') {
+                    stopAllAutomation();
+                }
+                isNavigating = true;
+                let newIndex = currentItemIndex - direction;
+                if (newIndex >= currentShuffledItems.length || (currentShuffledItems[newIndex] && currentShuffledItems[newIndex].type === 'end')) {
+                    exitCurrentExercise();
+                    
+                    const isAutoOrdered = currentMode === 'auto' && currentSettings.order === 'ordered';
+                    btnReshuffle.textContent = isAutoOrdered ? 'Neu starten' : 'Neu mischen';
+
+                    showModal('exercise-end-modal');
+                    isNavigating = false;
+                    return;
+                }
+                if (newIndex < 0) {
+                    newIndex = currentShuffledItems.length - 1;
+                }
+                currentItemIndex = newIndex;
+                currentSlide.style.transform = `translateX(${direction * 100}%)`;
+                let tempSlide;
+                if (direction === -1) {
+                    nextSlide.style.transform = `translateX(0)`;
+                    tempSlide = prevSlide;
+                    prevSlide = currentSlide;
+                    currentSlide = nextSlide;
+                    nextSlide = tempSlide;
+                } else {
+                    prevSlide.style.transform = `translateX(0)`;
+                    tempSlide = nextSlide;
+                    nextSlide = currentSlide;
+                    currentSlide = prevSlide;
+                    prevSlide = tempSlide;
+                }
+                currentSlide.addEventListener('transitionend', () => handleTransitionEnd(direction), { once: true });
+                updateUiForCurrentItem();
+            }
+
+            function populateDisplayDurationSelect() { if (displayDurationSelect) { displayDurationSelect.innerHTML = ''; for (let i = 1; i <= 10; i++) { const option = document.createElement('option'); option.value = i; option.textContent = i === 1 ? '1 Sekunde' : `${i} Sekunden`; displayDurationSelect.appendChild(option); } displayDurationSelect.value = currentSettings.displayDuration; } }
+            function populateSoundDelaySelect() { if (soundDelaySelect) { soundDelaySelect.innerHTML = ''; for (let i = 0; i <= 5; i += 0.5) { const option = document.createElement('option'); option.value = i; option.textContent = i === 0 ? '0 Sek (sofort)' : `${i.toFixed(1)} Sek`; soundDelaySelect.appendChild(option); } } }
+            function configureSettingsScreen() { if (settingsTitle) { let modeText = (currentMode === 'manual') ? 'Manuell' : 'Automatisch'; settingsTitle.textContent = `Einstellungen für: ${modeText}`; } const isAutoMode = currentMode === 'auto'; if (settingOrderGroup) settingOrderGroup.classList.toggle('hidden', !isAutoMode); if (settingDisplayDurationGroup) settingDisplayDurationGroup.classList.toggle('hidden', !isAutoMode); if (settingSoundOnOffGroup) settingSoundOnOffGroup.classList.toggle('hidden', !isAutoMode); const showSoundDelay = isAutoMode && currentSettings.soundOn; if (settingSoundDelayGroup) settingSoundDelayGroup.classList.toggle('hidden', !showSoundDelay); }
 
             let availableListsForCategory = [];
 
@@ -547,6 +591,7 @@
             }
 
             function checkIfStartIsPossible() {
+                if (!btnStartExercise) return;
                 const selectedLists = listSelectionContainer.querySelectorAll('select');
                 let atLeastOneSelected = false;
                 selectedLists.forEach(select => {
@@ -594,7 +639,7 @@
             if (btnStartExercise) {
                 btnStartExercise.addEventListener('click', async () => {
                     const loadingOverlay = document.getElementById('loading-overlay');
-                    loadingOverlay.classList.remove('hidden');
+                    if (loadingOverlay) loadingOverlay.classList.remove('hidden');
 
                     const selectedListPaths = [];
                     const listSelects = listSelectionContainer.querySelectorAll('select');
@@ -606,7 +651,7 @@
 
                     if (selectedListPaths.length === 0) {
                         alert("Bitte wählen Sie mindestens eine Liste aus.");
-                        loadingOverlay.classList.add('hidden');
+                        if (loadingOverlay) loadingOverlay.classList.add('hidden');
                         return;
                     }
 
@@ -622,14 +667,25 @@
 
                     if (currentItemSetData.length === 0) {
                         alert("Die ausgewählten Listen sind leer oder konnten nicht geladen werden.");
-                        loadingOverlay.classList.add('hidden');
+                        if (loadingOverlay) loadingOverlay.classList.add('hidden');
                         return;
                     }
 
                     try {
                         await preloadAssets(currentItemSetData);
                         let baseItems = [...currentItemSetData];
-                        currentShuffledItems = (currentSettings.order === 'chaotic' && currentMode === 'auto') ? shuffleArray(baseItems) : baseItems;
+
+                        const shouldShuffle =
+                            (currentMode === 'auto' && currentSettings.order === 'chaotic') ||
+                            (currentMode === 'manual' && selectedListPaths.length > 1) ||
+                            (currentMode === 'manual' && isRestartingExercise);
+
+                        if (isRestartingExercise) {
+                            isRestartingExercise = false;
+                        }
+                        
+                        currentShuffledItems = shouldShuffle ? shuffleArray(baseItems) : baseItems;
+
                         currentShuffledItems.push({ type: 'end' });
                         currentItemIndex = 0;
                         generateProgressDots();
@@ -639,13 +695,13 @@
                         console.error("Fehler beim Vorladen der Assets:", error);
                         alert("Ein oder mehrere Bilder/Töne konnten nicht geladen werden.");
                     } finally {
-                        loadingOverlay.classList.add('hidden');
+                        if (loadingOverlay) loadingOverlay.classList.add('hidden');
                     }
                 });
             }
 
             if (hamburgerIcon) hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); if (currentMode === 'auto') { stopAllAutomation(); } });
-            document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
+            document.addEventListener('click', () => { if (menuContent && menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
             window.addEventListener('click', (e) => { if (e.target.classList.contains('modal')) closeModal(e.target.id); });
 
             const menuAnleitung = document.getElementById('menu-anleitung');
@@ -679,7 +735,17 @@
             if (displayDurationSelect) displayDurationSelect.addEventListener('change', (e) => { currentSettings.displayDuration = parseInt(e.target.value); });
             if (soundDelaySelect) soundDelaySelect.addEventListener('change', (e) => { currentSettings.soundDelay = parseFloat(e.target.value); });
             if (btnSettingsBack) btnSettingsBack.addEventListener('click', () => showScreen('screen-mode-selection'));
-            if (btnReshuffle) btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); if (btnStartExercise) btnStartExercise.click(); });
+            
+            if (btnReshuffle) {
+                btnReshuffle.addEventListener('click', () => {
+                    isRestartingExercise = true;
+                    closeModal('exercise-end-modal');
+                    if (btnStartExercise) {
+                        btnStartExercise.click();
+                    }
+                });
+            }
+
             if (btnNewSelection) btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); exitCurrentExercise(); showScreen('screen-settings'); });
             if (soundButton) soundButton.addEventListener('click', () => playCurrentItemSound(0));
             if (btnStopAutoMode) btnStopAutoMode.addEventListener('click', () => { exitCurrentExercise(); configureSettingsScreen(); showScreen('screen-settings'); });
