@@ -142,15 +142,34 @@
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+        align-items: center;
         padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         overflow-y: auto;
     }
     
-    .slides-wrapper { position: relative; overflow: visible; width: 100%; aspect-ratio: 4 / 3; max-width: 800px; margin: 0 auto; flex-shrink: 0; max-height: 55vh; }
+    .slides-wrapper {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        max-width: 800px;
+        margin: 0 auto;
+        flex-shrink: 0;
+        max-height: 55vh;
+    }
     .slide { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; transition: transform var(--transition-speed) ease-out; transform: translateX(200%); }
     .slide.is-grabbing, .slide.no-transition { transition: none !important; }
     .slide img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer; }
-    .slide .word-text { font-size: 2.5rem; font-weight: bold; color: var(--dark-green); text-align: center; font-family: 'Lexend', sans-serif; line-height: 1.2; }
+    
+    #word-display-area {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--dark-green);
+        text-align: center;
+        line-height: 1.2;
+        min-height: 3rem; /* Prevents layout jumps when text appears/disappears */
+        margin-top: 10px;
+    }
     
     #progress-dots-container { padding: 10px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; width: 100%; max-width: 800px; margin: 0 auto; }
     .progress-dot { width: 10px; height: 10px; background-color: #ddd; border-radius: 50%; transition: background-color 0.3s ease, transform 0.3s ease; }
@@ -244,7 +263,6 @@
         <h2 id="settings-title">Einstellungen</h2>
         <div class="settings-form">
             
-            <!-- HIER BEGINNEN DIE HTML-ÄNDERUNGEN -->
             <div class="form-group">
                 <label for="category-select">Bereich:</label>
                 <select id="category-select">
@@ -261,7 +279,6 @@
                 <label for="spec-select">Position im Wort:</label>
                 <select id="spec-select"></select>
             </div>
-            <!-- HIER ENDEN DIE HTML-ÄNDERUNGEN -->
             
             <div class="form-group" id="setting-display-type-group">
                 <label>Anzeige:</label>
@@ -308,6 +325,9 @@
                 <div id="slide-2" class="slide"></div>
                 <div id="slide-3" class="slide"></div>
             </div>
+            
+            <div id="word-display-area" class="hidden"></div>
+            
             <div id="progress-dots-container"></div>
             <div id="bottom-controls-container">
                 <div class="arrow-group" id="arrow-group-left">
@@ -372,7 +392,6 @@
             const modeCards = document.querySelectorAll('.mode-card'),
                 settingsTitle = document.getElementById('settings-title');
                 
-            // NEUE DOM-Elemente für die kaskadierenden Dropdowns
             const categorySelect = document.getElementById('category-select');
             const subcategoryGroup = document.getElementById('subcategory-group');
             const subcategoryLabel = document.getElementById('subcategory-label');
@@ -402,6 +421,7 @@
             const btnStopAutoMode = document.getElementById('btn-stop-auto-mode');
             const arrowGroupLeft = document.getElementById('arrow-group-left'),
                 arrowGroupRight = document.getElementById('arrow-group-right');
+            const wordDisplayArea = document.getElementById('word-display-area');
 
             // --- FUNKTIONEN ---
 
@@ -411,7 +431,6 @@
             function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[array[i], array[j]] = [array[j], array[i]]; } return array; }
             function preloadAssets(items) { const promises = []; const loadedAssets = new Set(); items.forEach(item => { if (item.image && !loadedAssets.has(item.image)) { promises.push(new Promise((resolve) => { const img = new Image(); img.src = item.image + '?t=' + new Date().getTime(); img.onload = resolve; img.onerror = resolve; })); loadedAssets.add(item.image); } if (item.sound && !loadedAssets.has(item.sound)) { promises.push(fetch(item.sound + '?t=' + new Date().getTime()).catch(err => console.error('Preloading sound failed:', err))); loadedAssets.add(item.sound); } }); return Promise.all(promises); }
 
-            // NEUE Ladefunktionen
             async function loadSetsManifest() {
                 try {
                     const response = await fetch('sets.json?t=' + new Date().getTime());
@@ -455,19 +474,72 @@
                 }
             }
             
-            // Übrige Funktionen (unverändert)
             function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { if(currentShuffledItems[i].type === 'end') continue; const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
             function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('active', index === currentItemIndex); }); }
             function playCurrentItemSound(delay = 0) { clearTimeout(soundTimeoutId); const item = currentShuffledItems[currentItemIndex]; if (!item || !item.sound) { return; } soundTimeoutId = setTimeout(() => { audioPlayer.pause(); audioPlayer.currentTime = 0; soundButton.disabled = true; const enableButton = () => { soundButton.disabled = false; audioPlayer.removeEventListener('ended', enableButton); audioPlayer.removeEventListener('error', enableButton); }; audioPlayer.addEventListener('canplay', () => audioPlayer.play().catch(e => console.error("Sound-Abspielfehler:", e)), { once: true }); audioPlayer.addEventListener('ended', enableButton, { once: true }); audioPlayer.addEventListener('error', enableButton, { once: true }); audioPlayer.src = item.sound + '?t=' + new Date().getTime(); }, delay * 1000); }
             function stopAllAutomation() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); if (currentAudioEndHandler) { audioPlayer.removeEventListener('ended', currentAudioEndHandler); audioPlayer.removeEventListener('error', currentAudioEndHandler); currentAudioEndHandler = null; } if (currentMode === 'manual') { soundButton.disabled = false; audioPlayer.src = ''; } }
             function exitCurrentExercise() { stopAllAutomation(); }
-            function populateSlide(slideElement, itemIndex) { const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item || item.type === 'end') return; let displayImage = false, displayWord = false, imagePath = item.image ? item.image.trim() : ""; if (currentSettings.displayType === 'image_only') displayImage = true; if (currentSettings.displayType === 'word_only') displayWord = true; if (currentSettings.displayType === 'image_word') { displayImage = true; displayWord = true; } if (displayImage && !imagePath) { displayImage = false; displayWord = true; } if (displayImage && imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; if (currentMode === 'manual') { img.addEventListener('click', () => moveSlider(-1)); } slideElement.appendChild(img); } if (displayWord) { const p = document.createElement('p'); p.className = 'word-text'; p.textContent = item.name || ""; slideElement.appendChild(p); } }
+
+            function populateSlide(slideElement, itemIndex) {
+                const item = currentShuffledItems[itemIndex];
+                slideElement.innerHTML = '';
+                if (!item || item.type === 'end' || currentSettings.displayType === 'word_only') {
+                    return;
+                }
+                const imagePath = item.image ? item.image.trim() : "";
+                if (imagePath) {
+                    const img = document.createElement('img');
+                    img.src = imagePath + '?t=' + new Date().getTime();
+                    img.alt = item.name || "";
+                    if (currentMode === 'manual') {
+                        img.addEventListener('click', () => moveSlider(-1));
+                    }
+                    slideElement.appendChild(img);
+                }
+            }
+
             function setSlidePositions(animated = true) { slides.forEach(s => s.classList.toggle('no-transition', !animated)); const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; populateSlide(prevSlide, prevIndex); populateSlide(currentSlide, currentItemIndex); populateSlide(nextSlide, nextIndex); prevSlide.style.transform = `translateX(-100%)`; currentSlide.style.transform = `translateX(0)`; nextSlide.style.transform = `translateX(100%)`; if (!animated) { setTimeout(() => slides.forEach(s => s.classList.remove('no-transition')), 20); } }
             function updateExerciseUIForMode() { const isManual = currentMode === 'manual'; arrowGroupLeft.classList.toggle('hidden', !isManual); arrowGroupRight.classList.toggle('hidden', !isManual); soundButton.classList.toggle('hidden', !isManual); btnStopAutoMode.classList.toggle('hidden', isManual); }
             function setupInitialState() { isNavigating = false; setSlidePositions(false); updateExerciseUIForMode(); updateUiForCurrentItem(); }
             function handleTransitionEnd(direction) { const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; const slideToReset = direction === -1 ? nextSlide : prevSlide; const indexToPopulate = direction === -1 ? nextIndex : prevIndex; const positionToSet = direction === -1 ? '100%' : '-100%'; slideToReset.classList.add('no-transition'); populateSlide(slideToReset, indexToPopulate); slideToReset.style.transform = `translateX(${positionToSet})`; setTimeout(() => { slideToReset.classList.remove('no-transition'); isNavigating = false; }, 20); }
             function runAutoModeStep() { stopAllAutomation(); const item = currentShuffledItems[currentItemIndex]; const hasSound = item && item.sound && currentSettings.soundOn; let displayDurationFinished = false; let soundPlaybackFinished = !hasSound; const tryProceedToNext = () => { if (displayDurationFinished && soundPlaybackFinished) { moveSlider(-1); } }; autoNextTimeoutId = setTimeout(() => { displayDurationFinished = true; tryProceedToNext(); }, currentSettings.displayDuration * 1000); if (hasSound) { playCurrentItemSound(currentSettings.soundDelay); currentAudioEndHandler = () => { soundPlaybackFinished = true; tryProceedToNext(); }; audioPlayer.addEventListener('ended', currentAudioEndHandler, { once: true }); audioPlayer.addEventListener('error', currentAudioEndHandler, { once: true }); } }
-            function updateUiForCurrentItem() { updateProgressDots(); const item = currentShuffledItems[currentItemIndex]; const hasSound = item && item.sound; soundButton.classList.toggle('invisible', !hasSound); if (currentMode === 'auto') { runAutoModeStep(); } }
+
+            function updateUiForCurrentItem() {
+                updateProgressDots();
+                const item = currentShuffledItems[currentItemIndex];
+
+                if (!item || item.type === 'end') {
+                    wordDisplayArea.classList.add('hidden');
+                    soundButton.classList.add('invisible');
+                    return;
+                }
+
+                const hasSound = item && item.sound;
+                soundButton.classList.toggle('invisible', !hasSound);
+
+                let showWord = currentSettings.displayType === 'word_only' || currentSettings.displayType === 'image_word';
+                let showImage = currentSettings.displayType === 'image_only' || currentSettings.displayType === 'image_word';
+                
+                if (showImage && !item.image) {
+                    showWord = true;
+                    showImage = false;
+                }
+
+                if (showWord) {
+                    wordDisplayArea.textContent = item.name || "";
+                    wordDisplayArea.classList.remove('hidden');
+                } else {
+                    wordDisplayArea.textContent = "";
+                    wordDisplayArea.classList.add('hidden');
+                }
+
+                slidesWrapper.classList.toggle('invisible', !showImage);
+
+                if (currentMode === 'auto') {
+                    runAutoModeStep();
+                }
+            }
+
             function touchStart(event) { if (isNavigating || currentMode === 'auto') return; touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; touchStartY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; slides.forEach(s => s.classList.add('is-grabbing')); slidesWrapper.addEventListener('touchmove', touchMove); slidesWrapper.addEventListener('touchend', touchEnd); }
             function touchMove(event) { if (isNavigating || currentMode === 'auto') return; const currentX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; const currentY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; const deltaX = currentX - touchStartX; const deltaY = Math.abs(currentY - touchStartY); if (Math.abs(deltaX) < deltaY && !currentTranslate) return; currentTranslate = deltaX; prevSlide.style.transform = `translateX(calc(-100% + ${deltaX}px))`; currentSlide.style.transform = `translateX(${deltaX}px)`; nextSlide.style.transform = `translateX(calc(100% + ${deltaX}px))`; }
             function touchEnd() { if (currentMode === 'auto') return; slidesWrapper.removeEventListener('touchmove', touchMove); slidesWrapper.removeEventListener('touchend', touchEnd); slides.forEach(s => s.classList.remove('is-grabbing')); const threshold = slidesWrapper.clientWidth / 4; let direction = 0; if (Math.abs(currentTranslate) > threshold) { direction = currentTranslate < 0 ? -1 : 1; } moveSlider(direction); currentTranslate = 0; }
@@ -478,7 +550,6 @@
 
             // --- EVENT LISTENERS ---
             
-            // NEUE Dropdown-Logik
             categorySelect.addEventListener('change', () => {
                 const selectedCategoryKey = categorySelect.value;
                 subcategoryGroup.classList.add('hidden');
@@ -539,7 +610,6 @@
                 }
             });
 
-            // Übrige Event Listeners
             hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); if (currentMode === 'auto') { stopAllAutomation(); } });
             document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
             document.getElementById('menu-anleitung').addEventListener('click', (e) => { e.preventDefault(); showModal('anleitung-modal'); menuContent.classList.remove('show'); });
@@ -556,43 +626,30 @@
             btnSettingsBack.addEventListener('click', () => showScreen('screen-mode-selection'));
             
             btnStartExercise.addEventListener('click', async () => {
-    const loadingOverlay = document.getElementById('loading-overlay');
-    
-    // Zuerst sicherstellen, dass ein Set ausgewählt ist
-    const loaded = await loadItemSet(currentItemSetPath);
-    if (!loaded || !currentItemSetData || currentItemSetData.length === 0) {
-        alert("Dieses Lernset ist leer oder konnte nicht geladen werden. Bitte wählen Sie ein anderes aus.");
-        return;
-    }
-
-    // Lade-Overlay anzeigen
-    loadingOverlay.classList.remove('hidden');
-
-    try {
-        // Schritt 1: Versuche, alle Assets vorzuladen
-        await preloadAssets(currentItemSetData);
-
-        // Schritt 2: Wenn das Vorladen erfolgreich war, bereite die Übung vor
-        let baseItems = [...currentItemSetData];
-        currentShuffledItems = (currentSettings.order === 'chaotic' && currentMode === 'auto') ? shuffleArray(baseItems) : baseItems;
-        currentShuffledItems.push({ type: 'end' });
-        currentItemIndex = 0;
-        
-        generateProgressDots();
-        setupInitialState();
-        showScreen('screen-exercise');
-
-    } catch (error) {
-        // Schritt 3A: Wenn ein Fehler beim Vorladen auftritt
-        console.error("Fehler beim Vorladen der Assets:", error);
-        alert("Ein oder mehrere Bilder/Töne konnten nicht geladen werden. Bitte überprüfen Sie die Dateipfade in 'master_items.json' und die Konsole (F12) für Details.");
-    
-    } finally {
-        // Schritt 3B: Dieser Teil wird IMMER ausgeführt, egal ob erfolgreich oder nicht.
-        // Verstecke das Lade-Overlay wieder.
-        loadingOverlay.classList.add('hidden');
-    }
-});
+                const loadingOverlay = document.getElementById('loading-overlay');
+                loadingOverlay.classList.remove('hidden');
+                const loaded = await loadItemSet(currentItemSetPath);
+                if (!loaded || !currentItemSetData || currentItemSetData.length === 0) {
+                    alert("Dieses Lernset ist leer oder konnte nicht geladen werden. Bitte wählen Sie ein anderes aus.");
+                    loadingOverlay.classList.add('hidden');
+                    return;
+                }
+                try {
+                    await preloadAssets(currentItemSetData);
+                    let baseItems = [...currentItemSetData];
+                    currentShuffledItems = (currentSettings.order === 'chaotic' && currentMode === 'auto') ? shuffleArray(baseItems) : baseItems;
+                    currentShuffledItems.push({ type: 'end' });
+                    currentItemIndex = 0;
+                    generateProgressDots();
+                    setupInitialState();
+                    showScreen('screen-exercise');
+                } catch (error) {
+                    console.error("Fehler beim Vorladen der Assets:", error);
+                    alert("Ein oder mehrere Bilder/Töne konnten nicht geladen werden.");
+                } finally {
+                    loadingOverlay.classList.add('hidden');
+                }
+            });
 
             btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); btnStartExercise.click(); });
             btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); exitCurrentExercise(); showScreen('screen-settings'); });
@@ -606,25 +663,18 @@
             async function initializeApp() {
                 populateDisplayDurationSelect();
                 populateSoundDelaySelect();
-
-                // Schritt 1: Lade die zentrale Item-Datenbank. Dies MUSS zuerst geschehen.
                 try {
                     const response = await fetch('data/master_items.json?t=' + new Date().getTime());
                     if (!response.ok) throw new Error('Master-Item-Liste nicht gefunden');
                     masterItems = await response.json();
                 } catch (e) {
                     console.error("KRITISCHER FEHLER: master_items.json konnte nicht geladen werden.", e);
-                    document.body.innerHTML = '<h1>Fehler</h1><p>Die Haupt-Datenbank der App (master_items.json) konnte nicht geladen werden. Bitte stellen Sie sicher, dass die Datei im "data"-Ordner liegt und der Name korrekt ist.</p>';
-                    return; // App-Initialisierung abbrechen
+                    document.body.innerHTML = '<h1>Fehler</h1><p>Die Haupt-Datenbank der App (master_items.json) konnte nicht geladen werden.</p>';
+                    return;
                 }
-
-                // Schritt 2: Lade die Set-Struktur für die Dropdowns.
                 await loadSetsManifest();
-
-                // Schritt 3: Zeige den Startbildschirm.
                 showScreen('screen-mode-selection');
             }
-
             initializeApp();
         });
     </script>
