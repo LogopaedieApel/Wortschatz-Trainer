@@ -167,7 +167,7 @@
         color: var(--dark-green);
         text-align: center;
         line-height: 1.2;
-        min-height: 3rem; /* Prevents layout jumps when text appears/disappears */
+        min-height: 3rem;
         margin-top: 0px;
     }
     
@@ -188,14 +188,13 @@
     #instructions-container { width: 100%; max-width: 800px; margin: 10px auto 0 auto; padding: 15px; background-color: var(--card-background); border-radius: var(--border-radius); border: 1px solid #e0e0e0; text-align: center; color: #777; flex-shrink: 0; }
     .site-logo { position: fixed; bottom: 100px; right: 100px; width: 100px; height: 100px; z-index: 900; }
 
-    /* NEU: Zusätzliche Stile für die neue Listen-Auswahl */
     #list-selection-area {
-        display: none; /* Wird per JS sichtbar gemacht, wenn eine Kategorie gewählt ist */
+        display: none;
     }
     #list-selection-container {
         display: flex;
         flex-direction: column;
-        gap: 10px; /* Abstand zwischen den Listen-Zeilen */
+        gap: 10px;
         margin-bottom: 10px;
     }
     .list-selection-row {
@@ -204,7 +203,7 @@
         gap: 10px;
     }
     .list-selection-row select {
-        flex-grow: 1; /* Das Dropdown nimmt den meisten Platz ein */
+        flex-grow: 1;
     }
     #btn-add-list {
         width: 40px;
@@ -234,7 +233,7 @@
         background-color: #C70039;
         border-color: #C70039;
         color: white;
-        transform: none; /* Überschreibt den allgemeinen Button-Hover-Effekt */
+        transform: none;
         box-shadow: none;
     }
     .btn-delete-list svg {
@@ -252,16 +251,24 @@
 
     <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-manual">Manuell</a></li><li><a href="#" id="menu-auto">Automatisch</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
     
-    <div id="anleitung-modal" class="modal">
-        <!-- Modal Inhalt bleibt unverändert -->
-    </div>
+    <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p><strong>Willkommen beim Wortschatz-Trainer!</strong></p><p>Diese App hilft dir, deinen Wortschatz spielerisch zu erweitern und deine Aussprache zu verbessern. Hier ist eine kurze Erklärung der Funktionen:</p><h4>Erste Schritte: Modus auswählen</h4><p>Auf dem Startbildschirm wählst du zwischen zwei Lern-Modi:</p><ul><li><strong>Manuell:</strong> Du steuerst das Tempo selbst. Ideal, um in Ruhe zu lernen und zu wiederholen.</li><li><strong>Automatisch:</strong> Die App zeigt dir die Bilder nacheinander an. Perfekt, um dein Wissen zu festigen.</li></ul><h4>Der Manuelle Modus</h4><p>Nachdem du ein Lern-Set ausgewählt hast, kannst du:</p><ul><li><strong>Wischen:</strong> Wische auf dem Bild nach links oder rechts, um zur nächsten oder vorherigen Vokabel zu wechseln. Alternativ kannst du auch die Pfeil-Tasten an den Seiten nutzen.</li><li><strong>Ton abspielen:</strong> Tippe auf das Bild mit der Frau in der Mitte, um die Aussprache des Wortes anzuhören.</li></ul><h4>Der Automatische Modus</h4><p>In diesem Modus läuft die Übung von alleine ab. In den Einstellungen kannst du festlegen:</p><ul><li><strong>Anzeigedauer:</strong> Wie lange jedes Bild angezeigt wird.</li><li><strong>Reihenfolge:</strong> Ob die Bilder in einer festen oder zufälligen (chaotischen) Reihenfolge kommen.</li><li><strong>Ton:</strong> Ob die Aussprache automatisch abgespielt werden soll und wenn ja, mit welcher Verzögerung.</li><li><strong>Stoppen:</strong> Du kannst die Übung jederzeit mit dem großen roten "Stopp"-Knopf beenden und kehrst dann zu den Einstellungen zurück.</li></ul><h4>Das Menü (☰)</h4><p>Oben rechts findest du jederzeit das Menü. Von dort aus kannst du:</p><ul><li>Eine neue Übung in einem beliebigen Modus starten.</li><li>Zurück zur Modus-Auswahl gehen.</li><li>Diese Anleitung erneut aufrufen.</li></ul><p style="margin-top: 20px; text-align: center;"><strong>Viel Spaß beim Lernen!</strong></p></div></div>
 
-    <div id="exercise-end-modal" class="modal">
-        <!-- Modal Inhalt bleibt unverändert -->
-    </div>
+    <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu starten</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
     
     <div id="screen-mode-selection" class="screen">
-        <!-- Screen Inhalt bleibt unverändert -->
+        <h1>Wortschatz-Trainer</h1>
+        <h2>Modus auswählen</h2>
+        <div class="mode-selection-container">
+            <div class="mode-card clickable-card" data-mode="manual">
+                <img src="manuell.png" alt="Manuell Modus">
+                <span class="subtitle">Manuell</span>
+            </div>
+            <div class="mode-card clickable-card" data-mode="auto">
+                <img src="automatisch.jpg" alt="Automatisch Modus">
+                <span class="subtitle">Automatisch</span>
+            </div>
+        </div>
+        <img src="logo.png" alt="Logo" class="site-logo">
     </div>
     
     <div id="screen-settings" class="screen hidden">
@@ -275,29 +282,41 @@
                 </select>
             </div>
 
-            <!-- NEU: Dieser Block ersetzt die alten Dropdowns -->
             <div class="form-group" id="list-selection-area">
                 <label>Liste(n):</label>
-                <div id="list-selection-container">
-                    <!-- Hier werden die Dropdown-Listen dynamisch per JS eingefügt -->
-                </div>
+                <div id="list-selection-container"></div>
                 <button id="btn-add-list" class="hidden" aria-label="Weitere Liste hinzufügen">+</button>
             </div>
             
             <div class="form-group" id="setting-display-type-group">
-                <!-- Inhalt bleibt unverändert -->
+                <label>Anzeige:</label>
+                <div class="setting-button-group" id="display-type-buttons">
+                    <button data-display-type="image_only" class="selected">Nur Bild</button>
+                    <button data-display-type="word_only">Nur Wort</button>
+                    <button data-display-type="image_word">Bild & Wort</button>
+                </div>
             </div>
             <div class="form-group hidden" id="setting-order-group">
-                <!-- Inhalt bleibt unverändert -->
+                <label>Reihenfolge:</label>
+                <div class="setting-button-group" id="order-buttons">
+                    <button data-order="chaotic" class="selected">Chaotisch</button>
+                    <button data-order="ordered">Geordnet</button>
+                </div>
             </div>
             <div class="form-group hidden" id="setting-display-duration-group">
-                <!-- Inhalt bleibt unverändert -->
+                <label for="display-duration-select">Minimale Anzeigedauer:</label>
+                <select id="display-duration-select"></select>
             </div>
             <div class="form-group hidden" id="setting-sound-on-off-group">
-                <!-- Inhalt bleibt unverändert -->
+                <label>Ton:</label>
+                <div class="setting-button-group" id="sound-on-off-buttons">
+                    <button data-sound-on="true" class="selected">An</button>
+                    <button data-sound-on="false">Aus</button>
+                </div>
             </div>
             <div class="form-group hidden" id="setting-sound-delay-group">
-                <!-- Inhalt bleibt unverändert -->
+                <label for="sound-delay-select">Ton-Verzögerung:</label>
+                <select id="sound-delay-select"></select>
             </div>
 
             <div style="display: flex; justify-content: space-between; margin-top: 30px;">
@@ -308,7 +327,30 @@
     </div>
     
     <div id="screen-exercise" class="screen hidden">
-        <!-- Screen Inhalt bleibt unverändert -->
+        <div class="main-content-area">
+            <div class="slides-wrapper">
+                <div id="slide-1" class="slide"></div>
+                <div id="slide-2" class="slide"></div>
+                <div id="slide-3" class="slide"></div>
+            </div>
+            <div id="word-display-area" class="hidden"></div>
+            <div id="progress-dots-container"></div>
+            <div id="bottom-controls-container">
+                <div class="arrow-group" id="arrow-group-left">
+                    <button class="nav-arrow nav-arrow-right" aria-label="Nächstes Item">›</button>
+                    <button class="nav-arrow nav-arrow-left" aria-label="Vorheriges Item">‹</button>
+                </div>
+                <div class="center-controls">
+                    <button class="sound-button" aria-label="Sound abspielen"></button>
+                    <button id="btn-stop-auto-mode" class="hidden" aria-label="Automatischen Modus stoppen">STOP</button>
+                </div>
+                <div class="arrow-group" id="arrow-group-right">
+                    <button class="nav-arrow nav-arrow-right" aria-label="Nächstes Item">›</button>
+                    <button class="nav-arrow nav-arrow-left" aria-label="Vorheriges Item">‹</button>
+                </div>
+            </div>
+            <div id="instructions-container">Führen Sie die Übung immer genau nach Anweisung durch. Kinder sollten zu Beginn nicht alleine trainieren.</div>
+        </div>
     </div>
     
     <audio id="audio-player"></audio>
@@ -318,8 +360,7 @@
             // --- VARIABLEN ---
             let currentMode = null,
                 availableItemSets = {}, 
-                masterItems = null; // Für die zentrale Item-Datenbank
-            // NEU: currentItemSetPath wird entfernt, da wir mehrere Pfade haben
+                masterItems = null;
                 
             let currentItemSetData = [],
                 currentShuffledItems = [],
@@ -358,8 +399,6 @@
                 settingsTitle = document.getElementById('settings-title');
                 
             const categorySelect = document.getElementById('category-select');
-
-            // NEU: Neue DOM-Elemente für die Listenauswahl
             const listSelectionArea = document.getElementById('list-selection-area');
             const listSelectionContainer = document.getElementById('list-selection-container');
             const btnAddList = document.getElementById('btn-add-list');
@@ -390,7 +429,6 @@
 
             // --- FUNKTIONEN ---
 
-            // Unveränderte Hilfsfunktionen
             function showScreen(screenIdToShow) { Object.values(screens).forEach(screen => { const isTarget = screen.id === screenIdToShow; screen.classList.toggle('hidden', !isTarget); screen.classList.toggle('zoom-out', !isTarget); screen.classList.toggle('zoom-in', isTarget); }); document.body.style.overflow = (screenIdToShow === 'screen-exercise') ? 'hidden' : 'auto'; window.scrollTo(0, 0); }
             function showModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.add('show'); }
             function closeModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.remove('show'); }
@@ -417,7 +455,6 @@
                 }
             }
             
-            // NEU: Angepasste Funktion gibt ein Array von IDs zurück
             async function loadItemSet(path) {
                 if (!path || !masterItems) return [];
                 try {
@@ -435,7 +472,6 @@
                 }
             }
 
-            // Restliche Funktionen (generateProgressDots, playCurrentItemSound, etc.) bleiben größtenteils unverändert...
             function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { if(currentShuffledItems[i].type === 'end') continue; const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
             function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('active', index === currentItemIndex); }); }
             function playCurrentItemSound(delay = 0) { clearTimeout(soundTimeoutId); const item = currentShuffledItems[currentItemIndex]; if (!item || !item.sound) { return; } soundTimeoutId = setTimeout(() => { audioPlayer.pause(); audioPlayer.currentTime = 0; soundButton.disabled = true; const enableButton = () => { soundButton.disabled = false; audioPlayer.removeEventListener('ended', enableButton); audioPlayer.removeEventListener('error', enableButton); }; audioPlayer.addEventListener('canplay', () => audioPlayer.play().catch(e => console.error("Sound-Abspielfehler:", e)), { once: true }); audioPlayer.addEventListener('ended', enableButton, { once: true }); audioPlayer.addEventListener('error', enableButton, { once: true }); audioPlayer.src = item.sound + '?t=' + new Date().getTime(); }, delay * 1000); }
@@ -456,10 +492,6 @@
             function populateSoundDelaySelect() { soundDelaySelect.innerHTML = ''; for (let i = 0; i <= 5; i += 0.5) { const option = document.createElement('option'); option.value = i; option.textContent = i === 0 ? '0 Sek (sofort)' : `${i.toFixed(1)} Sek`; soundDelaySelect.appendChild(option); } }
             function configureSettingsScreen() { let modeText = (currentMode === 'manual') ? 'Manuell' : 'Automatisch'; settingsTitle.textContent = `Einstellungen für: ${modeText}`; const isAutoMode = currentMode === 'auto'; settingOrderGroup.classList.toggle('hidden', !isAutoMode); settingDisplayDurationGroup.classList.toggle('hidden', !isAutoMode); settingSoundOnOffGroup.classList.toggle('hidden', !isAutoMode); const showSoundDelay = isAutoMode && currentSettings.soundOn; settingSoundDelayGroup.classList.toggle('hidden', !showSoundDelay); }
 
-
-            // --- EVENT LISTENERS ---
-            
-            // NEU: Kompletter Logik-Block für die neue Listenauswahl
             let availableListsForCategory = [];
 
             function flattenLists(categoryData) {
@@ -525,111 +557,133 @@
                 btnStartExercise.disabled = !atLeastOneSelected;
             }
 
-            categorySelect.addEventListener('change', () => {
-                const selectedCategoryKey = categorySelect.value;
-                listSelectionContainer.innerHTML = ''; 
 
-                if (selectedCategoryKey) {
-                    const categoryData = availableItemSets[selectedCategoryKey];
-                    availableListsForCategory = flattenLists(categoryData);
-                    listSelectionArea.style.display = 'block';
-                    btnAddList.classList.remove('hidden');
-                    addListSelectionRow(); 
-                } else {
-                    listSelectionArea.style.display = 'none';
-                    btnAddList.classList.add('hidden');
-                }
-                checkIfStartIsPossible();
-            });
+            // --- EVENT LISTENERS ---
 
-            btnAddList.addEventListener('click', addListSelectionRow);
+            if (categorySelect) {
+                categorySelect.addEventListener('change', () => {
+                    const selectedCategoryKey = categorySelect.value;
+                    listSelectionContainer.innerHTML = ''; 
 
-            listSelectionContainer.addEventListener('click', (e) => {
-                const deleteButton = e.target.closest('.btn-delete-list');
-                if (deleteButton) {
-                    deleteButton.parentElement.remove();
+                    if (selectedCategoryKey) {
+                        const categoryData = availableItemSets[selectedCategoryKey];
+                        availableListsForCategory = flattenLists(categoryData);
+                        listSelectionArea.style.display = 'block';
+                        btnAddList.classList.remove('hidden');
+                        addListSelectionRow(); 
+                    } else {
+                        listSelectionArea.style.display = 'none';
+                        btnAddList.classList.add('hidden');
+                    }
                     checkIfStartIsPossible();
+                });
+            }
+            
+            if (btnAddList) btnAddList.addEventListener('click', addListSelectionRow);
+            if (listSelectionContainer) {
+                listSelectionContainer.addEventListener('click', (e) => {
+                    const deleteButton = e.target.closest('.btn-delete-list');
+                    if (deleteButton) {
+                        deleteButton.parentElement.remove();
+                        checkIfStartIsPossible();
+                    }
+                });
+                listSelectionContainer.addEventListener('change', checkIfStartIsPossible);
+            }
+
+            if (btnStartExercise) {
+                btnStartExercise.addEventListener('click', async () => {
+                    const loadingOverlay = document.getElementById('loading-overlay');
+                    loadingOverlay.classList.remove('hidden');
+
+                    const selectedListPaths = [];
+                    const listSelects = listSelectionContainer.querySelectorAll('select');
+                    listSelects.forEach(select => {
+                        if (select.value) {
+                            selectedListPaths.push(select.value);
+                        }
+                    });
+
+                    if (selectedListPaths.length === 0) {
+                        alert("Bitte wählen Sie mindestens eine Liste aus.");
+                        loadingOverlay.classList.add('hidden');
+                        return;
+                    }
+
+                    let allItemIds = [];
+                    for (const path of selectedListPaths) {
+                        const ids = await loadItemSet(path);
+                        allItemIds.push(...ids);
+                    }
+
+                    const uniqueItemIds = [...new Set(allItemIds)];
+                    
+                    currentItemSetData = uniqueItemIds.map(id => masterItems[id]).filter(item => item !== undefined);
+
+                    if (currentItemSetData.length === 0) {
+                        alert("Die ausgewählten Listen sind leer oder konnten nicht geladen werden.");
+                        loadingOverlay.classList.add('hidden');
+                        return;
+                    }
+
+                    try {
+                        await preloadAssets(currentItemSetData);
+                        let baseItems = [...currentItemSetData];
+                        currentShuffledItems = (currentSettings.order === 'chaotic' && currentMode === 'auto') ? shuffleArray(baseItems) : baseItems;
+                        currentShuffledItems.push({ type: 'end' });
+                        currentItemIndex = 0;
+                        generateProgressDots();
+                        setupInitialState();
+                        showScreen('screen-exercise');
+                    } catch (error) {
+                        console.error("Fehler beim Vorladen der Assets:", error);
+                        alert("Ein oder mehrere Bilder/Töne konnten nicht geladen werden.");
+                    } finally {
+                        loadingOverlay.classList.add('hidden');
+                    }
+                });
+            }
+
+            if (hamburgerIcon) hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); if (currentMode === 'auto') { stopAllAutomation(); } });
+            document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
+            window.addEventListener('click', (e) => { if (e.target.classList.contains('modal')) closeModal(e.target.id); });
+
+            const menuAnleitung = document.getElementById('menu-anleitung');
+            if (menuAnleitung) menuAnleitung.addEventListener('click', (e) => { e.preventDefault(); showModal('anleitung-modal'); menuContent.classList.remove('show'); });
+
+            const menuModusAuswahl = document.getElementById('menu-modus-auswahl');
+            if (menuModusAuswahl) menuModusAuswahl.addEventListener('click', (e) => { e.preventDefault(); exitCurrentExercise(); showScreen('screen-mode-selection'); menuContent.classList.remove('show'); });
+
+            ['manual', 'auto'].forEach(modeKey => {
+                const menuLink = document.getElementById(`menu-${modeKey}`);
+                if (menuLink) {
+                    menuLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        exitCurrentExercise();
+                        currentMode = modeKey;
+                        configureSettingsScreen();
+                        showScreen('screen-settings');
+                        menuContent.classList.remove('show');
+                    });
                 }
             });
 
-            listSelectionContainer.addEventListener('change', checkIfStartIsPossible);
-
-            // Restliche Event Listener (unverändert)
-            hamburgerIcon.addEventListener('click', (e) => { e.stopPropagation(); menuContent.classList.toggle('show'); if (currentMode === 'auto') { stopAllAutomation(); } });
-            document.addEventListener('click', () => { if (menuContent.classList.contains('show')) menuContent.classList.remove('show'); });
-            document.getElementById('menu-anleitung').addEventListener('click', (e) => { e.preventDefault(); showModal('anleitung-modal'); menuContent.classList.remove('show'); });
-            document.getElementById('menu-modus-auswahl').addEventListener('click', (e) => { e.preventDefault(); exitCurrentExercise(); showScreen('screen-mode-selection'); menuContent.classList.remove('show'); });
-            ['manual', 'auto'].forEach(modeKey => { document.getElementById(`menu-${modeKey}`).addEventListener('click', (e) => { e.preventDefault(); exitCurrentExercise(); currentMode = modeKey; configureSettingsScreen(); showScreen('screen-settings'); menuContent.classList.remove('show'); }); });
             modalCloseButtons.forEach(b => b.addEventListener('click', () => closeModal(b.dataset.modalId)));
-            window.addEventListener('click', (e) => { if (e.target.classList.contains('modal')) closeModal(e.target.id); });
             modeCards.forEach(c => c.addEventListener('click', () => { currentMode = c.dataset.mode; configureSettingsScreen(); showScreen('screen-settings'); }));
             displayTypeButtons.forEach(b => b.addEventListener('click', () => { displayTypeButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.displayType = b.dataset.displayType; }));
             orderButtons.forEach(b => b.addEventListener('click', () => { orderButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.order = b.dataset.order; }));
-            displayDurationSelect.addEventListener('change', (e) => { currentSettings.displayDuration = parseInt(e.target.value); });
             soundOnOffButtons.forEach(b => b.addEventListener('click', () => { soundOnOffButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.soundOn = b.dataset.soundOn === 'true'; configureSettingsScreen(); }));
-            soundDelaySelect.addEventListener('change', (e) => { currentSettings.soundDelay = parseFloat(e.target.value); });
-            btnSettingsBack.addEventListener('click', () => showScreen('screen-mode-selection'));
-            
-            // NEU: Komplett ersetzter Event-Listener für den Start-Button
-            btnStartExercise.addEventListener('click', async () => {
-                const loadingOverlay = document.getElementById('loading-overlay');
-                loadingOverlay.classList.remove('hidden');
-
-                const selectedListPaths = [];
-                const listSelects = listSelectionContainer.querySelectorAll('select');
-                listSelects.forEach(select => {
-                    if (select.value) {
-                        selectedListPaths.push(select.value);
-                    }
-                });
-
-                if (selectedListPaths.length === 0) {
-                    alert("Bitte wählen Sie mindestens eine Liste aus.");
-                    loadingOverlay.classList.add('hidden');
-                    return;
-                }
-
-                let allItemIds = [];
-                for (const path of selectedListPaths) {
-                    const ids = await loadItemSet(path);
-                    allItemIds.push(...ids);
-                }
-
-                const uniqueItemIds = [...new Set(allItemIds)];
-                
-                currentItemSetData = uniqueItemIds.map(id => masterItems[id]).filter(item => item !== undefined);
-
-                if (currentItemSetData.length === 0) {
-                    alert("Die ausgewählten Listen sind leer oder konnten nicht geladen werden.");
-                    loadingOverlay.classList.add('hidden');
-                    return;
-                }
-
-                try {
-                    await preloadAssets(currentItemSetData);
-                    let baseItems = [...currentItemSetData];
-                    currentShuffledItems = (currentSettings.order === 'chaotic' && currentMode === 'auto') ? shuffleArray(baseItems) : baseItems;
-                    currentShuffledItems.push({ type: 'end' });
-                    currentItemIndex = 0;
-                    generateProgressDots();
-                    setupInitialState();
-                    showScreen('screen-exercise');
-                } catch (error) {
-                    console.error("Fehler beim Vorladen der Assets:", error);
-                    alert("Ein oder mehrere Bilder/Töne konnten nicht geladen werden.");
-                } finally {
-                    loadingOverlay.classList.add('hidden');
-                }
-            });
-
-            // Restliche Event Listener (unverändert)
-            btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); btnStartExercise.click(); });
-            btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); exitCurrentExercise(); showScreen('screen-settings'); });
-            soundButton.addEventListener('click', () => playCurrentItemSound(0));
             navArrowsLeft.forEach(arrow => arrow.addEventListener('click', () => moveSlider(1)));
             navArrowsRight.forEach(arrow => arrow.addEventListener('click', () => moveSlider(-1)));
-            btnStopAutoMode.addEventListener('click', () => { exitCurrentExercise(); configureSettingsScreen(); showScreen('screen-settings'); });
-            slidesWrapper.addEventListener('touchstart', touchStart, { passive: true });
+
+            if (displayDurationSelect) displayDurationSelect.addEventListener('change', (e) => { currentSettings.displayDuration = parseInt(e.target.value); });
+            if (soundDelaySelect) soundDelaySelect.addEventListener('change', (e) => { currentSettings.soundDelay = parseFloat(e.target.value); });
+            if (btnSettingsBack) btnSettingsBack.addEventListener('click', () => showScreen('screen-mode-selection'));
+            if (btnReshuffle) btnReshuffle.addEventListener('click', () => { closeModal('exercise-end-modal'); if (btnStartExercise) btnStartExercise.click(); });
+            if (btnNewSelection) btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); exitCurrentExercise(); showScreen('screen-settings'); });
+            if (soundButton) soundButton.addEventListener('click', () => playCurrentItemSound(0));
+            if (btnStopAutoMode) btnStopAutoMode.addEventListener('click', () => { exitCurrentExercise(); configureSettingsScreen(); showScreen('screen-settings'); });
+            if (slidesWrapper) slidesWrapper.addEventListener('touchstart', touchStart, { passive: true });
 
             // --- INITIALISIERUNG ---
             async function initializeApp() {
