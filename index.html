@@ -476,6 +476,7 @@
 
             // Quiz-spezifische Variablen
             let correctQuizItem = null;
+            let quizPool = []; // NEU: Eine einheitliche Quelle für alle Quiz-Items
 
             // --- DOM ELEMENTE ---
             const screens = {
@@ -662,7 +663,7 @@
                     
                     const isAutoOrdered = currentMode === 'auto' && currentSettings.order === 'ordered';
                     btnReshuffle.textContent = isAutoOrdered ? 'Neu starten' : 'Neu mischen';
-
+                    document.getElementById('exercise-end-message').textContent = "Alle Items bearbeitet."; // Reset message
                     showModal('exercise-end-modal');
                     isNavigating = false;
                     return;
@@ -717,6 +718,7 @@
                 if (currentItemIndex >= currentShuffledItems.length - 1) { // -1 to account for 'end' object
                     exitCurrentExercise();
                     btnReshuffle.textContent = 'Neu mischen';
+                    document.getElementById('exercise-end-message').textContent = "Alle Items bearbeitet."; // Reset message
                     showModal('exercise-end-modal');
                     return;
                 }
@@ -724,12 +726,13 @@
 
                 correctQuizItem = currentShuffledItems[currentItemIndex];
                 
-                const itemsWithImages = currentItemSetData.filter(item => item.image);
-                const incorrectItems = shuffleArray(itemsWithImages.filter(item => item.id !== correctQuizItem.id)).slice(0, 3);
-
-                if (incorrectItems.length < 3 || !correctQuizItem.image) {
-                     console.error("Nicht genügend Items für eine Quiz-Runde vorhanden.");
-                     document.getElementById('exercise-end-message').textContent = "Nicht genügend unterschiedliche Bilder für ein Quiz vorhanden.";
+                // KORREKTUR: Falsche Antworten werden aus dem selben Pool wie die richtigen Antworten gezogen (quizPool)
+                const incorrectItems = shuffleArray(quizPool.filter(item => item.id !== correctQuizItem.id)).slice(0, 3);
+                
+                // Diese Prüfung sollte dank der neuen Logik beim Start nicht mehr fehlschlagen, ist aber als Sicherheitsnetz gut.
+                if (incorrectItems.length < 3) {
+                     console.error("Kritischer Fehler: Nicht genügend Items für eine Quiz-Runde gefunden, obwohl die Start-Prüfung bestanden wurde.");
+                     document.getElementById('exercise-end-message').textContent = "Ein interner Fehler ist aufgetreten. Nicht genügend unterschiedliche Bilder für diese Runde vorhanden.";
                      showModal('exercise-end-modal');
                      return;
                 }
@@ -821,24 +824,28 @@
                         return;
                     }
                      
-                    // Quiz benötigt mindestens 4 Items mit Bildern
-                    if (currentMode === 'quiz' && currentItemSetData.filter(item => item.image).length < 4) {
-                        alert("Für den Quiz-Modus werden mindestens 4 verschiedene Items mit Bildern aus den ausgewählten Listen benötigt.");
-                        if (loadingOverlay) loadingOverlay.classList.add('hidden');
-                        return;
+                    // KORREKTUR: Robuste Logik für die Vorbereitung des Quiz-Modus
+                    if (currentMode === 'quiz') {
+                        // NEU: Ein Pool von Items, die für das Quiz geeignet sind (Bild UND Ton müssen vorhanden sein)
+                        quizPool = currentItemSetData.filter(item => item.image && item.sound);
+
+                        // NEU: Die entscheidende Prüfung: Gibt es genug (mind. 4) geeignete Items?
+                        if (quizPool.length < 4) {
+                            alert("Für den Quiz-Modus werden mindestens 4 verschiedene Items mit Bild UND Ton aus den ausgewählten Listen benötigt.");
+                            if (loadingOverlay) loadingOverlay.classList.add('hidden');
+                            return;
+                        }
+                        currentShuffledItems = shuffleArray([...quizPool]); // Die Reihenfolge der Fragen mischen
+                    } else {
+                        // Logik für manuelle und automatische Modi
+                        const baseItems = [...currentItemSetData];
+                        const shouldShuffle = (currentMode === 'auto' && currentSettings.order === 'chaotic') || (currentMode === 'manual' && selectedListPaths.length > 1) || (currentMode === 'manual' && isRestartingExercise);
+                        currentShuffledItems = shouldShuffle ? shuffleArray(baseItems) : baseItems;
                     }
 
                     try {
-                        await preloadAssets(currentItemSetData);
-                        let baseItems = [...currentItemSetData];
+                        await preloadAssets(currentItemSetData); // Alle Assets vorladen
                         
-                        if (currentMode === 'quiz') {
-                           currentShuffledItems = shuffleArray(baseItems.filter(item => item.sound && item.image));
-                        } else {
-                            const shouldShuffle = (currentMode === 'auto' && currentSettings.order === 'chaotic') || (currentMode === 'manual' && selectedListPaths.length > 1) || (currentMode === 'manual' && isRestartingExercise);
-                            currentShuffledItems = shouldShuffle ? shuffleArray(baseItems) : baseItems;
-                        }
-
                         if (isRestartingExercise) isRestartingExercise = false;
                         
                         currentShuffledItems.push({ type: 'end' });
