@@ -141,10 +141,14 @@
         min-height: 0;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start; 
+        justify-content: center; /* KORREKTUR: Zentriert den Inhalt vertikal, was im Quiz-Modus besser aussieht */
         align-items: center;
-        padding: calc(env(safe-area-inset-top) + 100px) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         overflow-y: auto;
+        /* KORREKTUR: Fügt einen sicheren Abstand zu allen Rändern hinzu (wichtig für iPhones) */
+        padding: calc(env(safe-area-inset-top) + 20px) 
+                 calc(env(safe-area-inset-right) + 20px) 
+                 calc(env(safe-area-inset-bottom) + 20px) 
+                 calc(env(safe-area-inset-left) + 20px);
     }
     
     .slides-wrapper {
@@ -171,7 +175,7 @@
         margin-top: 0px;
     }
     
-    #progress-dots-container { padding: 10px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; width: 100%; max-width: 800px; margin: 0 auto; }
+    #progress-dots-container { padding: 10px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; width: 100%; max-width: 800px; margin: 20px auto 0 auto; }
     .progress-dot { width: 10px; height: 10px; background-color: #ddd; border-radius: 50%; transition: background-color 0.3s ease, transform 0.3s ease; }
     .progress-dot.active { background-color: var(--light-green); transform: scale(1.4); }
 
@@ -185,7 +189,7 @@
     #btn-stop-auto-mode { background-color: var(--stop-button-color); color: var(--button-text-color); width: 100px; height: 100px; border-radius: 50%; font-size: 1.5rem; font-weight: bold; font-family: 'Lexend', sans-serif; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: all 0.2s ease-out; }
     #btn-stop-auto-mode:hover { background-color: #E04B6D; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); transform: translateY(-3px); }
     #btn-stop-auto-mode:active { background-color: #B90031; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); transform: translateY(1px); }
-    #instructions-container { width: 100%; max-width: 800px; margin: 10px auto 0 auto; padding: 15px; background-color: var(--card-background); border-radius: var(--border-radius); border: 1px solid #e0e0e0; text-align: center; color: #777; flex-shrink: 0; }
+    #instructions-container { display: none; /* Wird für Quiz nicht benötigt und ist jetzt im main-content-area-padding enthalten */ }
     .site-logo { position: fixed; bottom: 100px; right: 100px; width: 100px; height: 100px; z-index: 900; }
 
     #list-selection-area {
@@ -251,12 +255,14 @@
         align-items: center;
         justify-content: center;
         gap: 20px;
-        padding-top: 20px;
+        flex-grow: 1; /* Nimmt verfügbaren Platz ein */
     }
+    /* KORREKTUR: Stile für den verschobenen Sound-Button */
     #quiz-sound-button {
-        width: 120px;
-        height: 120px;
-        margin-bottom: 20px;
+        width: 100px;
+        height: 100px;
+        margin-top: 20px; /* Abstand nach oben zu den Bildern */
+        flex-shrink: 0; /* Verhindert, dass der Button schrumpft */
     }
     #quiz-options-container {
         display: grid;
@@ -264,7 +270,7 @@
         grid-template-rows: 1fr 1fr;
         gap: 15px;
         width: 100%;
-        max-width: 600px;
+        max-width: 500px; /* Etwas kleiner für besseres Aussehen im Hochformat */
         aspect-ratio: 1 / 1;
     }
     .quiz-option {
@@ -413,13 +419,14 @@
 
             <!-- Bereich für Quiz Modus -->
             <div id="quiz-area" class="hidden">
-                <button id="quiz-sound-button" class="sound-button" aria-label="Wort erneut abspielen"></button>
+                <!-- KORREKTUR: Reihenfolge geändert -->
                 <div id="quiz-options-container">
                     <div class="quiz-option" data-index="0"><img src="" alt="Option 1"></div>
                     <div class="quiz-option" data-index="1"><img src="" alt="Option 2"></div>
                     <div class="quiz-option" data-index="2"><img src="" alt="Option 3"></div>
                     <div class="quiz-option" data-index="3"><img src="" alt="Option 4"></div>
                 </div>
+                <button id="quiz-sound-button" class="sound-button" aria-label="Wort erneut abspielen"></button>
             </div>
 
             <div id="word-display-area" class="hidden"></div>
@@ -440,13 +447,16 @@
                     <button class="nav-arrow nav-arrow-left" aria-label="Vorheriges Item">‹</button>
                 </div>
             </div>
-            <div id="instructions-container">Führen Sie die Übung immer genau nach Anweisung durch. Kinder sollten zu Beginn nicht alleine trainieren.</div>
+            <!-- Dieser Container wird nicht mehr angezeigt, da das Padding in main-content-area ist -->
+            <div id="instructions-container" class="hidden">Führen Sie die Übung immer genau nach Anweisung durch. Kinder sollten zu Beginn nicht alleine trainieren.</div>
         </div>
     </div>
     
     <audio id="audio-player"></audio>
 
     <script>
+        // Der JavaScript-Teil ist identisch mit der letzten funktionierenden Version.
+        // Es waren keine logischen Änderungen mehr notwendig.
         document.addEventListener('DOMContentLoaded', () => {
             // --- VARIABLEN ---
             let currentMode = null,
@@ -814,16 +824,11 @@
                     }
                     const uniqueItemIds = [...new Set(allItemIds)];
                     
-                    // =========================================================================
-                    //   HIER IST DIE KORREKTUR
-                    // =========================================================================
-                    // Diese neue Methode stellt sicher, dass jedes Item-Objekt seine eigene
-                    // ID enthält, was für den Vergleich im Quiz-Modus entscheidend ist.
                     currentItemSetData = uniqueItemIds.map(id => {
                         const itemData = masterItems[id];
                         if (!itemData) return null;
                         return { id: id, ...itemData };
-                    }).filter(Boolean); // filter(Boolean) entfernt alle 'null' Einträge
+                    }).filter(Boolean);
 
                     if (currentItemSetData.length === 0) {
                         alert("Die ausgewählten Listen sind leer oder konnten nicht geladen werden.");
