@@ -512,7 +512,51 @@
             function setupInitialState() { isNavigating = false; updateExerciseUIForMode(); if (currentMode === 'quiz') { setupQuizRound(); } else { setSlidePositions(false); updateUiForCurrentItem(); } }
             function handleTransitionEnd(direction) { const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; const slideToReset = direction === -1 ? nextSlide : prevSlide; const indexToPopulate = direction === -1 ? nextIndex : prevIndex; const positionToSet = direction === -1 ? '100%' : '-100%'; slideToReset.classList.add('no-transition'); populateSlide(slideToReset, indexToPopulate); slideToReset.style.transform = `translateX(${positionToSet})`; setTimeout(() => { slideToReset.classList.remove('no-transition'); isNavigating = false; }, 20); }
             function runAutoModeStep() { stopAllAutomation(); const item = currentShuffledItems[currentItemIndex]; const hasSound = item && item.sound && currentSettings.soundOn; let displayDurationFinished = false; let soundPlaybackFinished = !hasSound; const tryProceedToNext = () => { if (displayDurationFinished && soundPlaybackFinished) { moveSlider(-1); } }; autoNextTimeoutId = setTimeout(() => { displayDurationFinished = true; tryProceedToNext(); }, currentSettings.displayDuration * 1000); if (hasSound) { playItemSound(item, currentSettings.soundDelay); currentAudioEndHandler = () => { soundPlaybackFinished = true; tryProceedToNext(); }; audioPlayer.addEventListener('ended', currentAudioEndHandler, { once: true }); audioPlayer.addEventListener('error', currentAudioEndHandler, { once: true }); } }
-            function updateUiForCurrentItem() { updateProgressDots(); const item = currentShuffledItems[currentItemIndex]; if (!item || item.type === 'end') { wordDisplayArea.classList.add('hidden'); soundButton.classList.add('invisible'); return; } const hasSound = item && item.sound; soundButton.classList.toggle('invisible', !hasSound); let showWord = currentSettings.displayType === 'word_only' || currentSettings.displayType === 'image_word'; let showImage = currentSettings.displayType === 'image_only' || currentSettings.displayType === 'image_word'; if (showImage && !item.image) { showWord = true; showImage = false; } if (showWord) { wordDisplayArea.textContent = item.name || ""; wordDisplayArea.classList.remove('hidden'); } else { wordDisplayArea.textContent = ""; wordDisplayArea.classList.add('hidden'); } slidesWrapper.classList.toggle('invisible', !showImage); if (currentMode === 'manual' && currentSettings.autoplaySoundManual) { playItemSound(item, 0); } if (currentMode === 'auto') { runAutoModeStep(); } }
+            function updateUiForCurrentItem() {
+    updateProgressDots();
+    const item = currentShuffledItems[currentItemIndex];
+    
+    if (!item || item.type === 'end') {
+        wordDisplayArea.classList.add('hidden');
+        // Im auto-Modus ist der Button schon weg. Im manuellen Modus müssen wir ihn hier ausblenden.
+        if (currentMode === 'manual') {
+            soundButton.classList.add('invisible');
+        }
+        return;
+    }
+
+    // Die Sichtbarkeit des Sound-Buttons (je nachdem ob das Item Ton hat)
+    // soll NUR im manuellen Modus gesteuert werden.
+    if (currentMode === 'manual') {
+        const hasSound = item && item.sound;
+        soundButton.classList.toggle('invisible', !hasSound);
+    }
+    
+    let showWord = currentSettings.displayType === 'word_only' || currentSettings.displayType === 'image_word';
+    let showImage = currentSettings.displayType === 'image_only' || currentSettings.displayType === 'image_word';
+    
+    if (showImage && !item.image) {
+        showWord = true;
+        showImage = false;
+    }
+    
+    if (showWord) {
+        wordDisplayArea.textContent = item.name || "";
+        wordDisplayArea.classList.remove('hidden');
+    } else {
+        wordDisplayArea.textContent = "";
+        wordDisplayArea.classList.add('hidden');
+    }
+    
+    slidesWrapper.classList.toggle('invisible', !showImage);
+    
+    if (currentMode === 'manual' && currentSettings.autoplaySoundManual) {
+        playItemSound(item, 0);
+    }
+    if (currentMode === 'auto') {
+        runAutoModeStep();
+    }
+}
             function touchStart(event) { if (isNavigating || currentMode !== 'manual') return; touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; touchStartY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; slides.forEach(s => s.classList.add('is-grabbing')); slidesWrapper.addEventListener('touchmove', touchMove); slidesWrapper.addEventListener('touchend', touchEnd); }
             function touchMove(event) { if (isNavigating || currentMode !== 'manual') return; const currentX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; const currentY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; const deltaX = currentX - touchStartX; const deltaY = Math.abs(currentY - touchStartY); if (Math.abs(deltaX) < deltaY && !currentTranslate) return; currentTranslate = deltaX; prevSlide.style.transform = `translateX(calc(-100% + ${deltaX}px))`; currentSlide.style.transform = `translateX(${deltaX}px)`; nextSlide.style.transform = `translateX(calc(100% + ${deltaX}px))`; }
             function touchEnd() { if (currentMode !== 'manual') return; slidesWrapper.removeEventListener('touchmove', touchMove); slidesWrapper.removeEventListener('touchend', touchEnd); slides.forEach(s => s.classList.remove('is-grabbing')); const threshold = slidesWrapper.clientWidth / 4; let direction = 0; if (Math.abs(currentTranslate) > threshold) { direction = currentTranslate < 0 ? -1 : 1; } moveSlider(direction); currentTranslate = 0; }
