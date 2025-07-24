@@ -599,7 +599,7 @@
                         currentShuffledItems = shuffleArray([...quizPool]);
                     } else {
                         const baseItems = [...currentItemSetData];
-                        const shouldShuffle = (currentMode === 'auto' && currentSettings.order === 'chaotic') || (currentMode === 'manual' && selectedListPaths.length > 1) || (currentMode === 'manual' && isRestartingExercise);
+                        const shouldShuffle = (currentMode === 'auto' && currentSettings.order === 'chaotic') || (currentMode === 'manual');
                         currentShuffledItems = shouldShuffle ? shuffleArray(baseItems) : baseItems;
                     }
                     try {
