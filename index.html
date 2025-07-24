@@ -467,7 +467,8 @@
             const progressDotsContainer = document.getElementById('progress-dots-container');
             const navArrowsLeft = document.querySelectorAll('.nav-arrow-left'),
                 navArrowsRight = document.querySelectorAll('.nav-arrow-right');
-            const soundButton = document.querySelector('.sound-button');
+            // RICHTIG (wählt nur den Button, der sich im Container der unteren Steuerung befindet)
+            const soundButton = document.querySelector('#bottom-controls-container .sound-button');
             const btnStopAutoMode = document.getElementById('btn-stop-auto-mode');
             const bottomControlsContainer = document.getElementById('bottom-controls-container');
             const wordDisplayArea = document.getElementById('word-display-area');
