@@ -468,9 +468,10 @@
             const navArrowsLeft = document.querySelectorAll('.nav-arrow-left'),
                 navArrowsRight = document.querySelectorAll('.nav-arrow-right');
             // RICHTIG (wählt nur den Button, der sich im Container der unteren Steuerung befindet)
-            const soundButton = document.querySelector('#bottom-controls-container .sound-button');
-            const btnStopAutoMode = document.getElementById('btn-stop-auto-mode');
+            // -- DIESE ZEILEN EINFÜGEN --
             const bottomControlsContainer = document.getElementById('bottom-controls-container');
+            const soundButton = bottomControlsContainer.querySelector('.sound-button');
+            const btnStopAutoMode = document.getElementById('btn-stop-auto-mode');
             const wordDisplayArea = document.getElementById('word-display-area');
 
             // Quiz DOM Elemente
