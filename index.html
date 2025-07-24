@@ -251,7 +251,7 @@
 
     <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-manual">Manuell</a></li><li><a href="#" id="menu-auto">Automatisch</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
     
-    <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p><strong>Willkommen beim Wortschatz-Trainer!</strong></p><p>Diese App hilft dir, deinen Wortschatz spielerisch zu erweitern und deine Aussprache zu verbessern. Hier ist eine kurze Erklärung der Funktionen:</p><h4>Erste Schritte: Modus auswählen</h4><p>Auf dem Startbildschirm wählst du zwischen zwei Lern-Modi:</p><ul><li><strong>Manuell:</strong> Du steuerst das Tempo selbst. Ideal, um in Ruhe zu lernen und zu wiederholen.</li><li><strong>Automatisch:</strong> Die App zeigt dir die Bilder nacheinander an. Perfekt, um dein Wissen zu festigen.</li></ul><h4>Der Manuelle Modus</h4><p>Nachdem du ein Lern-Set ausgewählt hast, kannst du:</p><ul><li><strong>Wischen:</strong> Wische auf dem Bild nach links oder rechts, um zur nächsten oder vorherigen Vokabel zu wechseln. Alternativ kannst du auch die Pfeil-Tasten an den Seiten nutzen.</li><li><strong>Ton abspielen:</strong> Tippe auf das Bild mit der Frau in der Mitte, um die Aussprache des Wortes anzuhören.</li></ul><h4>Der Automatische Modus</h4><p>In diesem Modus läuft die Übung von alleine ab. In den Einstellungen kannst du festlegen:</p><ul><li><strong>Anzeigedauer:</strong> Wie lange jedes Bild angezeigt wird.</li><li><strong>Reihenfolge:</strong> Ob die Bilder in einer festen oder zufälligen (chaotischen) Reihenfolge kommen.</li><li><strong>Ton:</strong> Ob die Aussprache automatisch abgespielt werden soll und wenn ja, mit welcher Verzögerung.</li><li><strong>Stoppen:</strong> Du kannst die Übung jederzeit mit dem großen roten "Stopp"-Knopf beenden und kehrst dann zu den Einstellungen zurück.</li></ul><h4>Das Menü (☰)</h4><p>Oben rechts findest du jederzeit das Menü. Von dort aus kannst du:</p><ul><li>Eine neue Übung in einem beliebigen Modus starten.</li><li>Zurück zur Modus-Auswahl gehen.</li><li>Diese Anleitung erneut aufrufen.</li></ul><p style="margin-top: 20px; text-align: center;"><strong>Viel Spaß beim Lernen!</strong></p></div></div>
+    <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p><strong>Willkommen beim Wortschatz-Trainer!</strong></p><p>Diese App hilft dir, deinen Wortschatz spielerisch zu erweitern und deine Aussprache zu verbessern. Hier ist eine kurze Erklärung der Funktionen:</p><h4>Erste Schritte: Modus auswählen</h4><p>Auf dem Startbildschirm wählst du zwischen zwei Lern-Modi:</p><ul><li><strong>Manuell:</strong> Du steuerst das Tempo selbst. Ideal, um in Ruhe zu lernen und zu wiederholen.</li><li><strong>Automatisch:</strong> Die App zeigt dir die Bilder nacheinander an. Perfekt, um dein Wissen zu festigen.</li></ul><h4>Der Manuelle Modus</h4><p>Nachdem du ein Lern-Set ausgewählt hast, kannst du:</p><ul><li><strong>Wischen:</strong> Wische auf dem Bild nach links oder rechts, um zur nächsten oder vorherigen Vokabel zu wechseln. Alternativ kannst du auch die Pfeil-Tasten an den Seiten nutzen.</li><li><strong>Ton abspielen:</strong> Tippe auf das Bild mit der Frau in der Mitte, um die Aussprache des Wortes anzuhören.</li><li><strong>Ton sofort abspielen (Neue Funktion):</strong> In den Einstellungen kannst du festlegen, dass der Ton für jedes Bild sofort abgespielt wird, wenn es erscheint.</li></ul><h4>Der Automatische Modus</h4><p>In diesem Modus läuft die Übung von alleine ab. In den Einstellungen kannst du festlegen:</p><ul><li><strong>Anzeigedauer:</strong> Wie lange jedes Bild angezeigt wird.</li><li><strong>Reihenfolge:</strong> Ob die Bilder in einer festen oder zufälligen (chaotischen) Reihenfolge kommen.</li><li><strong>Ton:</strong> Ob die Aussprache automatisch abgespielt werden soll und wenn ja, mit welcher Verzögerung.</li><li><strong>Stoppen:</strong> Du kannst die Übung jederzeit mit dem großen roten "Stopp"-Knopf beenden und kehrst dann zu den Einstellungen zurück.</li></ul><h4>Das Menü (☰)</h4><p>Oben rechts findest du jederzeit das Menü. Von dort aus kannst du:</p><ul><li>Eine neue Übung in einem beliebigen Modus starten.</li><li>Zurück zur Modus-Auswahl gehen.</li><li>Diese Anleitung erneut aufrufen.</li></ul><p style="margin-top: 20px; text-align: center;"><strong>Viel Spaß beim Lernen!</strong></p></div></div>
 
     <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu starten</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
     
@@ -319,6 +319,16 @@
                 <select id="sound-delay-select"></select>
             </div>
 
+            <!-- NEUE FUNKTION HIER EINGEFÜGT -->
+            <div class="form-group hidden" id="setting-autoplay-sound-manual-group">
+                <label>Ton sofort abspielen:</label>
+                <div class="setting-button-group" id="autoplay-sound-manual-buttons">
+                    <button data-autoplay-sound="true">An</button>
+                    <button data-autoplay-sound="false" class="selected">Aus</button>
+                </div>
+            </div>
+            <!-- ENDE NEUE FUNKTION -->
+
             <div style="display: flex; justify-content: space-between; margin-top: 30px;">
                 <button id="btn-settings-back">Zurück</button>
                 <button id="btn-start-exercise">Start</button>
@@ -370,7 +380,8 @@
                 displayDuration: 3,
                 order: 'chaotic',
                 soundOn: true,
-                soundDelay: 0
+                soundDelay: 0,
+                autoplaySoundManual: false // NEUE EINSTELLUNG
             };
             let soundTimeoutId = null,
                 autoNextTimeoutId = null,
@@ -414,6 +425,11 @@
                 soundOnOffButtons = document.querySelectorAll('#sound-on-off-buttons button');
             const settingSoundDelayGroup = document.getElementById('setting-sound-delay-group'),
                 soundDelaySelect = document.getElementById('sound-delay-select');
+            
+            // NEUE DOM-ELEMENTE
+            const settingAutoplaySoundManualGroup = document.getElementById('setting-autoplay-sound-manual-group'),
+                  autoplaySoundManualButtons = document.querySelectorAll('#autoplay-sound-manual-buttons button');
+
             const btnSettingsBack = document.getElementById('btn-settings-back'),
                 btnStartExercise = document.getElementById('btn-start-exercise'),
                 audioPlayer = document.getElementById('audio-player');
@@ -484,7 +500,42 @@
             function setupInitialState() { isNavigating = false; setSlidePositions(false); updateExerciseUIForMode(); updateUiForCurrentItem(); }
             function handleTransitionEnd(direction) { const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; const slideToReset = direction === -1 ? nextSlide : prevSlide; const indexToPopulate = direction === -1 ? nextIndex : prevIndex; const positionToSet = direction === -1 ? '100%' : '-100%'; slideToReset.classList.add('no-transition'); populateSlide(slideToReset, indexToPopulate); slideToReset.style.transform = `translateX(${positionToSet})`; setTimeout(() => { slideToReset.classList.remove('no-transition'); isNavigating = false; }, 20); }
             function runAutoModeStep() { stopAllAutomation(); const item = currentShuffledItems[currentItemIndex]; const hasSound = item && item.sound && currentSettings.soundOn; let displayDurationFinished = false; let soundPlaybackFinished = !hasSound; const tryProceedToNext = () => { if (displayDurationFinished && soundPlaybackFinished) { moveSlider(-1); } }; autoNextTimeoutId = setTimeout(() => { displayDurationFinished = true; tryProceedToNext(); }, currentSettings.displayDuration * 1000); if (hasSound) { playCurrentItemSound(currentSettings.soundDelay); currentAudioEndHandler = () => { soundPlaybackFinished = true; tryProceedToNext(); }; audioPlayer.addEventListener('ended', currentAudioEndHandler, { once: true }); audioPlayer.addEventListener('error', currentAudioEndHandler, { once: true }); } }
-            function updateUiForCurrentItem() { updateProgressDots(); const item = currentShuffledItems[currentItemIndex]; if (!item || item.type === 'end') { wordDisplayArea.classList.add('hidden'); soundButton.classList.add('invisible'); return; } const hasSound = item && item.sound; soundButton.classList.toggle('invisible', !hasSound); let showWord = currentSettings.displayType === 'word_only' || currentSettings.displayType === 'image_word'; let showImage = currentSettings.displayType === 'image_only' || currentSettings.displayType === 'image_word'; if (showImage && !item.image) { showWord = true; showImage = false; } if (showWord) { wordDisplayArea.textContent = item.name || ""; wordDisplayArea.classList.remove('hidden'); } else { wordDisplayArea.textContent = ""; wordDisplayArea.classList.add('hidden'); } slidesWrapper.classList.toggle('invisible', !showImage); if (currentMode === 'auto') { runAutoModeStep(); } }
+            
+            function updateUiForCurrentItem() {
+                updateProgressDots();
+                const item = currentShuffledItems[currentItemIndex];
+                if (!item || item.type === 'end') {
+                    wordDisplayArea.classList.add('hidden');
+                    soundButton.classList.add('invisible');
+                    return;
+                }
+                const hasSound = item && item.sound;
+                soundButton.classList.toggle('invisible', !hasSound);
+                let showWord = currentSettings.displayType === 'word_only' || currentSettings.displayType === 'image_word';
+                let showImage = currentSettings.displayType === 'image_only' || currentSettings.displayType === 'image_word';
+                if (showImage && !item.image) {
+                    showWord = true;
+                    showImage = false;
+                }
+                if (showWord) {
+                    wordDisplayArea.textContent = item.name || "";
+                    wordDisplayArea.classList.remove('hidden');
+                } else {
+                    wordDisplayArea.textContent = "";
+                    wordDisplayArea.classList.add('hidden');
+                }
+                slidesWrapper.classList.toggle('invisible', !showImage);
+
+                // NEUE LOGIK FÜR MANUELLEN MODUS
+                if (currentMode === 'manual' && currentSettings.autoplaySoundManual) {
+                    playCurrentItemSound(0);
+                }
+
+                if (currentMode === 'auto') {
+                    runAutoModeStep();
+                }
+            }
+
             function touchStart(event) { if (isNavigating || currentMode === 'auto') return; touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; touchStartY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; slides.forEach(s => s.classList.add('is-grabbing')); slidesWrapper.addEventListener('touchmove', touchMove); slidesWrapper.addEventListener('touchend', touchEnd); }
             function touchMove(event) { if (isNavigating || currentMode === 'auto') return; const currentX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; const currentY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; const deltaX = currentX - touchStartX; const deltaY = Math.abs(currentY - touchStartY); if (Math.abs(deltaX) < deltaY && !currentTranslate) return; currentTranslate = deltaX; prevSlide.style.transform = `translateX(calc(-100% + ${deltaX}px))`; currentSlide.style.transform = `translateX(${deltaX}px)`; nextSlide.style.transform = `translateX(calc(100% + ${deltaX}px))`; }
             function touchEnd() { if (currentMode === 'auto') return; slidesWrapper.removeEventListener('touchmove', touchMove); slidesWrapper.removeEventListener('touchend', touchEnd); slides.forEach(s => s.classList.remove('is-grabbing')); const threshold = slidesWrapper.clientWidth / 4; let direction = 0; if (Math.abs(currentTranslate) > threshold) { direction = currentTranslate < 0 ? -1 : 1; } moveSlider(direction); currentTranslate = 0; }
@@ -534,7 +585,24 @@
 
             function populateDisplayDurationSelect() { if (displayDurationSelect) { displayDurationSelect.innerHTML = ''; for (let i = 1; i <= 10; i++) { const option = document.createElement('option'); option.value = i; option.textContent = i === 1 ? '1 Sekunde' : `${i} Sekunden`; displayDurationSelect.appendChild(option); } displayDurationSelect.value = currentSettings.displayDuration; } }
             function populateSoundDelaySelect() { if (soundDelaySelect) { soundDelaySelect.innerHTML = ''; for (let i = 0; i <= 5; i += 0.5) { const option = document.createElement('option'); option.value = i; option.textContent = i === 0 ? '0 Sek (sofort)' : `${i.toFixed(1)} Sek`; soundDelaySelect.appendChild(option); } } }
-            function configureSettingsScreen() { if (settingsTitle) { let modeText = (currentMode === 'manual') ? 'Manuell' : 'Automatisch'; settingsTitle.textContent = `Einstellungen für: ${modeText}`; } const isAutoMode = currentMode === 'auto'; if (settingOrderGroup) settingOrderGroup.classList.toggle('hidden', !isAutoMode); if (settingDisplayDurationGroup) settingDisplayDurationGroup.classList.toggle('hidden', !isAutoMode); if (settingSoundOnOffGroup) settingSoundOnOffGroup.classList.toggle('hidden', !isAutoMode); const showSoundDelay = isAutoMode && currentSettings.soundOn; if (settingSoundDelayGroup) settingSoundDelayGroup.classList.toggle('hidden', !showSoundDelay); }
+            
+            function configureSettingsScreen() {
+                if (settingsTitle) {
+                    let modeText = (currentMode === 'manual') ? 'Manuell' : 'Automatisch';
+                    settingsTitle.textContent = `Einstellungen für: ${modeText}`;
+                }
+                const isAutoMode = currentMode === 'auto';
+                if (settingOrderGroup) settingOrderGroup.classList.toggle('hidden', !isAutoMode);
+                if (settingDisplayDurationGroup) settingDisplayDurationGroup.classList.toggle('hidden', !isAutoMode);
+                if (settingSoundOnOffGroup) settingSoundOnOffGroup.classList.toggle('hidden', !isAutoMode);
+                const showSoundDelay = isAutoMode && currentSettings.soundOn;
+                if (settingSoundDelayGroup) settingSoundDelayGroup.classList.toggle('hidden', !showSoundDelay);
+
+                // NEUE FUNKTION SICHTBARKEIT STEUERN
+                if (settingAutoplaySoundManualGroup) {
+                    settingAutoplaySoundManualGroup.classList.toggle('hidden', currentMode !== 'manual');
+                }
+            }
 
             let availableListsForCategory = [];
 
@@ -729,6 +797,14 @@
             displayTypeButtons.forEach(b => b.addEventListener('click', () => { displayTypeButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.displayType = b.dataset.displayType; }));
             orderButtons.forEach(b => b.addEventListener('click', () => { orderButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.order = b.dataset.order; }));
             soundOnOffButtons.forEach(b => b.addEventListener('click', () => { soundOnOffButtons.forEach(btn => btn.classList.remove('selected')); b.classList.add('selected'); currentSettings.soundOn = b.dataset.soundOn === 'true'; configureSettingsScreen(); }));
+            
+            // NEUER EVENT LISTENER
+            autoplaySoundManualButtons.forEach(b => b.addEventListener('click', () => {
+                autoplaySoundManualButtons.forEach(btn => btn.classList.remove('selected'));
+                b.classList.add('selected');
+                currentSettings.autoplaySoundManual = b.dataset.autoplaySound === 'true';
+            }));
+
             navArrowsLeft.forEach(arrow => arrow.addEventListener('click', () => moveSlider(1)));
             navArrowsRight.forEach(arrow => arrow.addEventListener('click', () => moveSlider(-1)));
 
