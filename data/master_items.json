@@ -1,13 +1,33 @@
 {
+  "item_busch": {
+    "name": "Busch",
+    "sound": "sounds/Busch.mp3",
+    "image": "images/Busch.jpg"
+  },
   "item_dusche": {
     "name": "Dusche",
     "sound": "sounds/Dusche.mp3",
     "image": "images/Dusche.jpg"
   },
+  "item_fisch": {
+    "name": "Fisch",
+    "sound": "sounds/Fisch.mp3",
+    "image": "images/Fisch.jpg"
+  },
   "item_flasche": {
     "name": "Flasche",
     "sound": "sounds/Flasche.mp3",
     "image": "images/Flasche.jpg"
+  },
+  "item_fleisch": {
+    "name": "Fleisch",
+    "sound": "sounds/Fleisch.mp3",
+    "image": "images/Fleisch.jpg"
+  },
+  "item_frosch": {
+    "name": "Frosch",
+    "sound": "sounds/Frosch.mp3",
+    "image": "images/Frosch.jpg"
   },
   "item_geschenk": {
     "name": "Geschenk",
@@ -24,10 +44,25 @@
     "sound": "sounds/Lutscher.mp3",
     "image": "images/Lutscher.jpg"
   },
+  "item_matsch": {
+    "name": "Matsch",
+    "sound": "sounds/Matsch.mp3",
+    "image": "images/Matsch.jpg"
+  },
+  "item_mensch": {
+    "name": "Mensch",
+    "sound": "sounds/Mensch.mp3",
+    "image": "images/Mensch.jpg"
+  },
   "item_muschel": {
     "name": "Muschel",
     "sound": "sounds/Muschel.mp3",
     "image": "images/Muschel.jpg"
+  },
+  "item_orange": {
+    "name": "Orange",
+    "sound": "sounds/Orange.mp3",
+    "image": "images/Orange.jpg"
   },
   "item_rad": {
     "name": "Rad",
@@ -169,9 +204,19 @@
     "sound": "sounds/Schule.mp3",
     "image": "images/Schule.jpg"
   },
+  "item_switch": {
+    "name": "Switch",
+    "sound": "sounds/Switch.mp3",
+    "image": "images/Switch.jpg"
+  },
   "item_tasche": {
     "name": "Tasche",
     "sound": "sounds/Tasche.mp3",
     "image": "images/Tasche.jpg"
+  },
+  "item_tisch": {
+    "name": "Tisch",
+    "sound": "sounds/Tisch.mp3",
+    "image": "images/Tisch.jpg"
   }
 }
