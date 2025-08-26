@@ -60,9 +60,9 @@
     "image": "images/Muschel.jpg"
   },
   "item_orange": {
-    "name": "Orange",
-    "sound": "sounds/Orange.mp3",
-    "image": "images/Orange.jpg"
+    "name": "orange",
+    "sound": "sounds/orange.mp3",
+    "image": "images/orange.jpg"
   },
   "item_rad": {
     "name": "Rad",
