@@ -1,0 +1,40 @@
+{
+  "artikulation": {
+    "displayName": "Artikulation",
+    "unterkategorieName": "Sprachlaut",
+    "laute": {
+      "sch": {
+        "displayName": "Sch",
+        "positionen": {
+          "initial": { "displayName": "Initial", "path": "data/sch_initial.json" },
+          "medial": { "displayName": "Medial", "path": "data/sch_medial.json" },
+          "final": { "displayName": "Final", "path": "data/sch_final.json" }
+        }
+      },
+      "r": {
+        "displayName": "R",
+        "positionen": {
+          "initial": { "displayName": "Initial", "path": "data/r_initial.json" },
+          "medial": { "displayName": "Medial", "path": "data/r_medial.json" },
+          "final": { "displayName": "Final", "path": "data/r_final.json" }
+        }
+      }
+    }
+  },
+  "wortschatz": {
+    "displayName": "Wortschatz",
+    "unterkategorieName": "Semantisches Feld",
+    "felder": {
+      "nahrungsmittel": { "displayName": "Nahrungsmittel", "path": "data/nahrungsmittel.json" },
+      "fahrzeuge": { "displayName": "Fahrzeuge", "path": "data/fahrzeuge.json" },
+      "kleidung": { "displayName": "Kleidung", "path": "data/kleidung.json" }
+    }
+  },
+  "rechtschreibung": {
+    "displayName": "Rechtschreibung",
+    "unterkategorieName": "Schwierigkeit",
+    "stufen": {
+        "einfach": { "displayName": "Einfach", "path": "data/rechtschreibung_einfach.json" }
+    }
+  }
+}
