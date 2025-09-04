@@ -6,6 +6,9 @@ const PORT = 3000;
 
 const setsManifestPath = path.join(__dirname, 'sets.json');
 const dbPath = path.join(__dirname, 'data', 'items_database.json');
+const imagesBasePath = path.join(__dirname, 'data', 'images');
+const soundsBasePath = path.join(__dirname, 'data', 'sounds');
+
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(__dirname));
@@ -20,20 +23,13 @@ app.get('/api/get-all-data', async (req, res) => {
 
         const flatSets = {};
         
-        // NEUE, ROBUSTERE LOGIK ZUM FINDEN UND BENENNEN DER SETS
         const findAndLoadSets = async (node, nameParts = [], topCategory = '') => {
             for (const key in node) {
                 const child = node[key];
                 if (!child || typeof child !== 'object') continue;
-
-                // Bestimme die Top-Level-Kategorie (Artikulation, Wortschatz, etc.)
                 const currentTopCategory = (node === manifest) ? child.displayName : topCategory;
-
-                if (child.path) { // Wir haben ein Set gefunden
-                    // Baue den Namen aus den relevanten Teilen zusammen
-                    // (z.B. ['Sch', 'Initial'] -> "Sch Initial")
+                if (child.path) {
                     const finalDisplayName = [...nameParts, child.displayName].join(' ');
-
                     try {
                         const setContent = await fs.readFile(path.join(__dirname, child.path), 'utf8');
                         flatSets[child.path] = {
@@ -45,9 +41,7 @@ app.get('/api/get-all-data', async (req, res) => {
                         console.warn(`Warnung: Set-Datei ${child.path} nicht gefunden.`);
                         flatSets[child.path] = { displayName: finalDisplayName, topCategory: currentTopCategory, items: [] };
                     }
-                } else { // Wir haben eine Gruppe/Kategorie, tauche tiefer ein
-                    // Heuristik: Kurze Namen wie "Sch", "R" sind Teil des Namens.
-                    // Lange Namen wie "Positionen" oder "Laute" werden übersprungen.
+                } else {
                     const newNameParts = (child.displayName && child.displayName.length <= 5)
                         ? [...nameParts, child.displayName]
                         : nameParts;
@@ -57,17 +51,88 @@ app.get('/api/get-all-data', async (req, res) => {
         };
 
         await findAndLoadSets(manifest);
-
         res.json({ database, manifest, flatSets });
-
     } catch (error) {
         console.error("Fehler beim Laden der Daten:", error);
         res.status(500).json({ message: "Konnte die Daten nicht laden." });
     }
 });
 
-// Der Endpunkt zum Speichern muss nicht geändert werden
+// GEÄNDERT: Der Scan-Endpunkt liefert jetzt auch den Ordnernamen mit
+app.get('/api/scan-for-new-files', async (req, res) => {
+    try {
+        const dbContent = await fs.readFile(dbPath, 'utf8');
+        const database = JSON.parse(dbContent);
+        const existingIds = new Set(Object.keys(database));
+
+        const getAllFiles = async (dirPath, fileList = []) => {
+            const files = await fs.readdir(dirPath);
+            for (const file of files) {
+                const filePath = path.join(dirPath, file);
+                const stat = await fs.stat(filePath);
+                if (stat.isDirectory()) {
+                    await getAllFiles(filePath, fileList);
+                } else {
+                    // Ignoriere Systemdateien wie .gitkeep
+                    if (path.basename(file).startsWith('.')) continue;
+                    fileList.push(filePath);
+                }
+            }
+            return fileList;
+        };
+
+        const imageFiles = await getAllFiles(imagesBasePath);
+        const soundFiles = await getAllFiles(soundsBasePath);
+
+        const foundAssets = {}; 
+
+        const processFiles = (files, type) => {
+            for (const file of files) {
+                const id = path.parse(file).name.toLowerCase();
+                // NEU: Extrahiere den Namen des Eltern-Ordners
+                const folder = path.basename(path.dirname(file)).toLowerCase();
+                
+                if (!foundAssets[id]) foundAssets[id] = {};
+                
+                foundAssets[id][type] = path.relative(__dirname, file).replace(/\\/g, '/');
+                // NEU: Speichere den Ordnernamen. Wenn Bild und Ton in verschiedenen
+                // Ordnern liegen, hat der Bild-Ordner Priorität.
+                if (!foundAssets[id].folder || type === 'image') {
+                    foundAssets[id].folder = folder;
+                }
+            }
+        };
+
+        processFiles(imageFiles, 'image');
+        processFiles(soundFiles, 'sound');
+
+        const newItems = {};
+        for (const id in foundAssets) {
+            const hasNormalId = existingIds.has(id);
+            const hasPrefixedId = existingIds.has(`item_${id}`);
+
+            if (!hasNormalId && !hasPrefixedId) {
+                newItems[id] = {
+                    name: id.charAt(0).toUpperCase() + id.slice(1),
+                    image: foundAssets[id].image || '',
+                    sound: foundAssets[id].sound || '',
+                    folder: foundAssets[id].folder || '' // NEU: Füge Ordner zur Antwort hinzu
+                };
+            }
+        }
+        
+        console.log(`${Object.keys(newItems).length} neue Items gefunden.`);
+        res.json({ newItems });
+
+    } catch (error) {
+        console.error("Fehler beim Scannen der Dateien:", error);
+        res.status(500).json({ message: "Fehler beim Scannen der Asset-Ordner." });
+    }
+});
+
+
 app.post('/api/save-all-data', async (req, res) => {
+    // ... (dieser Teil bleibt unverändert)
     const { database, manifest } = req.body;
     try {
         await fs.writeFile(dbPath, JSON.stringify(database, null, 2));
