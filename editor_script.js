@@ -1,9 +1,10 @@
-// ... (der Anfang der Datei bis zur renderTable Funktion bleibt gleich)
+// Global variables to hold the state of the application
 let database = {};
 let manifest = {};
 let flatSets = {};
 let hasUnsavedChanges = false;
 
+// DOM Element references
 const tableHead = document.querySelector('#editor-table thead');
 const tableBody = document.querySelector('#editor-table tbody');
 const saveButton = document.getElementById('save-button');
@@ -15,6 +16,10 @@ const addSetButton = document.getElementById('add-set-button');
 const searchInput = document.getElementById('search-input');
 const scanFilesButton = document.getElementById('scan-files-button');
 
+/**
+ * Updates the UI to reflect whether there are unsaved changes.
+ * @param {boolean} isUnsaved - True if there are unsaved changes.
+ */
 function setUnsavedChanges(isUnsaved) {
     hasUnsavedChanges = isUnsaved;
     if (isUnsaved) {
@@ -27,12 +32,14 @@ function setUnsavedChanges(isUnsaved) {
     }
 }
 
+// Event listener to detect any changes in the table
 tableBody.addEventListener('input', (event) => {
     if (event.target.tagName === 'INPUT') {
         setUnsavedChanges(true);
     }
 });
 
+// Event listener for the delete buttons on each row
 tableBody.addEventListener('click', (event) => {
     if (event.target.classList.contains('delete-button')) {
         const row = event.target.closest('tr');
@@ -45,6 +52,7 @@ tableBody.addEventListener('click', (event) => {
     }
 });
 
+// Event listener for the header checkboxes to select/deselect all in a column
 tableHead.addEventListener('change', (event) => {
     if (event.target.matches('input[type="checkbox"].header-checkbox')) {
         const path = event.target.dataset.path;
@@ -57,7 +65,7 @@ tableHead.addEventListener('change', (event) => {
     }
 });
 
-
+// Warn user before leaving the page if there are unsaved changes
 window.addEventListener('beforeunload', (event) => {
     if (hasUnsavedChanges) {
         event.preventDefault();
@@ -65,6 +73,9 @@ window.addEventListener('beforeunload', (event) => {
     }
 });
 
+/**
+ * Filters the table rows based on the search input value.
+ */
 function filterTable() {
     const searchTerm = searchInput.value.toLowerCase();
     const rows = tableBody.querySelectorAll('tr');
@@ -77,13 +88,19 @@ function filterTable() {
     });
 }
 
+/**
+ * Renders the entire editor table based on the current state of `database` and `flatSets`.
+ */
 function renderTable() {
+    // Group sets by top-level category for structured columns
     const groupedSets = {};
     for (const path in flatSets) {
         const set = flatSets[path];
         if (!groupedSets[set.topCategory]) { groupedSets[set.topCategory] = []; }
         groupedSets[set.topCategory].push({ ...set, path });
     }
+    
+    // Create a sorted list of column paths to ensure consistent order
     const orderedColumnPaths = [];
     const sortedTopCategories = Object.keys(groupedSets).sort();
     sortedTopCategories.forEach(topCategory => {
@@ -94,10 +111,13 @@ function renderTable() {
     tableHead.innerHTML = '';
     tableBody.innerHTML = '';
 
+    // Create table header rows
     const topHeaderRow = document.createElement('tr');
     topHeaderRow.className = 'top-header-row';
     const subHeaderRow = document.createElement('tr');
     subHeaderRow.className = 'sub-header-row';
+    
+    // Fixed columns headers
     ['ID', 'Name', 'Bild', 'Ton'].forEach((text, index) => {
         const th = document.createElement('th');
         th.rowSpan = 2;
@@ -113,6 +133,7 @@ function renderTable() {
     actionTh.textContent = 'Aktionen';
     topHeaderRow.appendChild(actionTh);
     
+    // Dynamic category columns headers
     sortedTopCategories.forEach(topCategory => {
         const setsInGroup = groupedSets[topCategory];
         const topTh = document.createElement('th');
@@ -139,6 +160,7 @@ function renderTable() {
     tableHead.appendChild(topHeaderRow);
     tableHead.appendChild(subHeaderRow);
 
+    // Create table body rows for each item in the database
     const sortedItemIds = Object.keys(database).sort();
     sortedItemIds.forEach(id => {
         const item = database[id];
@@ -157,15 +179,17 @@ function renderTable() {
             <td style="text-align: center;"><button class="delete-button" title="Dieses Wort löschen">❌</button></td>
         `;
 
+        // Create a checkbox cell for each category column
         orderedColumnPaths.forEach(path => {
             const cell = document.createElement('td');
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
-            // GEÄNDERT: Automatisches Anhaken für neue Items aus Ordnern
+            
             let isChecked = flatSets[path] && flatSets[path].items.includes(id);
+            
             if (item.isNew && item.folder) {
-                // Regel: Der Ordnername muss im Pfad der Kategorie enthalten sein
-                if (path.toLowerCase().includes(item.folder)) {
+                const pathSegments = path.toLowerCase().split(/[/_.]+/);
+                if (pathSegments.includes(item.folder.toLowerCase())) {
                     isChecked = true;
                 }
             }
@@ -179,13 +203,15 @@ function renderTable() {
 
         if (isNewItem) {
             delete item.isNew;
-            delete item.folder; // Ordner-Info wird nach dem Rendern nicht mehr gebraucht
+            delete item.folder; 
         }
     });
     filterTable();
 }
 
-// ... (readTableIntoState, loadData, saveData, addNewSet bleiben unverändert)
+/**
+ * Reads the current state from the HTML table and updates the JavaScript objects.
+ */
 function readTableIntoState() {
     const newDatabase = {};
     const newFlatSets = JSON.parse(JSON.stringify(flatSets));
@@ -201,7 +227,7 @@ function readTableIntoState() {
             itemData[input.dataset.field] = input.value;
         });
         newDatabase[id] = itemData;
-        row.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        row.querySelectorAll('input[type="checkbox"][data-path]').forEach(checkbox => {
             if (checkbox.checked) {
                 const path = checkbox.dataset.path;
                 if (newFlatSets[path]) {
@@ -214,6 +240,9 @@ function readTableIntoState() {
     flatSets = newFlatSets;
 }
 
+/**
+ * Fetches all data from the server and initializes the editor.
+ */
 async function loadData() {
     try {
         statusMessage.textContent = "Lade Daten...";
@@ -232,6 +261,9 @@ async function loadData() {
     }
 }
 
+/**
+ * Saves all current data to the server.
+ */
 async function saveData() {
     try {
         readTableIntoState();
@@ -256,12 +288,16 @@ async function saveData() {
         const result = await response.json();
         statusMessage.textContent = `Erfolg: ${result.message}`;
         setUnsavedChanges(false);
+        await loadData();
     } catch (error) {
         console.error('Fehler beim Speichern:', error);
         statusMessage.textContent = "Fehler: Daten konnten nicht gespeichert werden.";
     }
 }
 
+/**
+ * Adds a new set (column) to the editor.
+ */
 function addNewSet() {
     const pathParts = newSetPathInput.value.trim().split('/').filter(p => p);
     const displayName = newSetDisplayNameInput.value.trim();
@@ -293,9 +329,9 @@ function addNewSet() {
     setUnsavedChanges(true);
 }
 
-
-// GEÄNDERT: Die Scan-Funktion lädt jetzt nicht mehr pauschal die Daten neu,
-// da die renderTable Funktion die neuen Items direkt verarbeiten kann.
+/**
+ * Scans for new asset files, automatically creates new columns if needed, and adds new items.
+ */
 async function scanForNewFiles() {
     if (hasUnsavedChanges && !confirm("Sie haben ungespeicherte Änderungen. Wenn Sie jetzt nach neuen Dateien suchen, gehen die aktuellen Änderungen verloren. Fortfahren?")) {
         return;
@@ -310,23 +346,63 @@ async function scanForNewFiles() {
         const newItemCount = Object.keys(newItems).length;
         if (newItemCount === 0) {
             statusMessage.textContent = 'Keine neuen Dateien gefunden.';
-            // Lade trotzdem neu, um sicherzustellen, dass der Zustand konsistent ist
             await loadData();
             return;
         }
 
-        // Lade die aktuellen Daten, um eine saubere Basis zu haben
         await loadData();
+
+        const uniqueNewFolders = [...new Set(Object.values(newItems).map(item => item.folder).filter(f => f))];
         
-        // Füge die neuen Items zur lokalen Datenbank hinzu
+        let createdNewColumns = false;
+        uniqueNewFolders.forEach(folder => {
+            const folderLower = folder.toLowerCase();
+            
+            const columnExists = Object.keys(flatSets).some(path => {
+                const pathSegments = path.toLowerCase().split(/[/_.]+/);
+                return pathSegments.includes(folderLower);
+            });
+
+            if (!columnExists) {
+                console.log(`Erstelle neue Spalte für Ordner: "${folder}" (als Initial-Laut)`);
+                
+                const topCategory = 'Artikulation'; 
+                
+                // === HIER SIND DIE ÄNDERUNGEN ===
+                const displayName = `${folder.toUpperCase()} Initial`; // z.B. "B Initial"
+                const newPath = `data/sets/artikulation_${folderLower}_initial.json`; // z.B. "..._b_initial.json"
+                const newKey = `${folderLower}_initial`; // z.B. "b_initial"
+
+                flatSets[newPath] = { 
+                    displayName: displayName, 
+                    items: [], 
+                    topCategory: topCategory 
+                };
+
+                if (!manifest[topCategory] || typeof manifest[topCategory] !== 'object') {
+                    manifest[topCategory] = { displayName: topCategory };
+                }
+                manifest[topCategory][newKey] = {
+                    displayName: displayName,
+                    path: newPath
+                };
+                
+                createdNewColumns = true;
+            }
+        });
+
         for (const id in newItems) {
-            // isNew und folder sind temporäre Eigenschaften für renderTable
             database[id] = { ...newItems[id], isNew: true, folder: newItems[id].folder };
         }
         
-        renderTable(); // renderTable wird die neuen Items mit Haken versehen
+        renderTable(); 
         setUnsavedChanges(true);
-        statusMessage.textContent = `${newItemCount} neue(s) Item(s) wurden hinzugefügt und automatisch zugeordnet.`;
+
+        let message = `${newItemCount} neue(s) Item(s) wurden hinzugefügt und automatisch zugeordnet.`;
+        if (createdNewColumns) {
+            message += " Es wurden außerdem neue Initial-Kategorien basierend auf den Ordnernamen erstellt.";
+        }
+        statusMessage.textContent = message;
 
     } catch (error) {
         console.error('Fehler beim Scannen:', error);
@@ -334,7 +410,7 @@ async function scanForNewFiles() {
     }
 }
 
-
+// Attach event listeners to UI elements
 searchInput.addEventListener('input', filterTable);
 saveButton.addEventListener('click', saveData);
 
@@ -349,4 +425,5 @@ addRowButton.addEventListener('click', () => {
 addSetButton.addEventListener('click', addNewSet);
 scanFilesButton.addEventListener('click', scanForNewFiles);
 
+// Initial data load when the page is ready
 document.addEventListener('DOMContentLoaded', loadData);
