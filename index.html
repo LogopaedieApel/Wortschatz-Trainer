@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -570,7 +569,31 @@
             function setupQuizRound() { if (currentItemIndex >= currentShuffledItems.length - 1) { exitCurrentExercise(); btnReshuffle.textContent = 'Neu mischen'; document.getElementById('exercise-end-message').textContent = "Alle Items bearbeitet."; showModal('exercise-end-modal'); return; } updateProgressDots(); correctQuizItem = currentShuffledItems[currentItemIndex]; const incorrectItems = shuffleArray(quizPool.filter(item => item.id !== correctQuizItem.id)).slice(0, 3); if (incorrectItems.length < 3) { console.error("Kritischer Fehler: Nicht genügend Items für eine Quiz-Runde gefunden."); document.getElementById('exercise-end-message').textContent = "Ein interner Fehler ist aufgetreten. Nicht genügend unterschiedliche Bilder für diese Runde vorhanden."; showModal('exercise-end-modal'); return; } const options = shuffleArray([correctQuizItem, ...incorrectItems]); const optionElements = quizOptionsContainer.querySelectorAll('.quiz-option'); optionElements.forEach((div, index) => { const item = options[index]; div.innerHTML = `<img src="${item.image}?t=${new Date().getTime()}" alt="Antwortmöglichkeit">`; div.dataset.itemId = item.id; div.className = 'quiz-option'; }); quizOptionsContainer.classList.remove('disabled'); playItemSound(correctQuizItem, 0.5); }
             function handleQuizAnswer(event) { const selectedOption = event.target.closest('.quiz-option'); if (!selectedOption || quizOptionsContainer.classList.contains('disabled')) return; quizOptionsContainer.classList.add('disabled'); const selectedItemId = selectedOption.dataset.itemId; const allOptions = quizOptionsContainer.querySelectorAll('.quiz-option'); allOptions.forEach(opt => { if (opt.dataset.itemId === correctQuizItem.id) { opt.classList.add('correct'); } else if (opt === selectedOption) { opt.classList.add('incorrect'); } else { opt.classList.add('faded'); } }); setTimeout(() => { currentItemIndex++; setupQuizRound(); }, 2000); }
             let availableListsForCategory = []; 
-            function flattenLists(categoryData) { const lists = []; const mainKey = Object.keys(categoryData).find(k => k === 'laute' || k === 'felder' || k === 'stufen'); if (!mainKey) return lists; const subcategories = categoryData[mainKey]; for (const subKey in subcategories) { const subData = subcategories[subKey]; if (subData.path) { lists.push({ text: subData.displayName, value: subData.path }); } else if (subData.positionen) { for (const posKey in subData.positionen) { const posData = subData.positionen[posKey]; lists.push({ text: `${subData.displayName} - ${posData.displayName}`, value: posData.path }); } } } return lists; }
+            function flattenLists(categoryData) {
+    const lists = [];
+
+    // Wir durchlaufen jetzt einfach alle Einträge...
+    for (const key in categoryData) {
+        // ...und ignorieren die, die keine Listen sind.
+        if (key === 'displayName' || key === 'unterkategorieName') {
+            continue;
+        }
+
+        const item = categoryData[key];
+
+        // Wenn ein Eintrag einen Pfad und einen Anzeigenamen hat, ist es eine Liste.
+        if (item && item.path && item.displayName) {
+            lists.push({
+                text: item.displayName,
+                value: item.path
+            });
+        }
+    }
+
+    // Sortiere die fertige Liste alphabetisch für eine saubere Anzeige
+    lists.sort((a, b) => a.text.localeCompare(b.text));
+    
+    return lists; }
             function populateListDropdown(selectElement) { selectElement.innerHTML = '<option value="">Liste auswählen...</option>'; availableListsForCategory.forEach(list => { const option = document.createElement('option'); option.value = list.value; option.textContent = list.text; selectElement.appendChild(option); }); }
             function addListSelectionRow() { const row = document.createElement('div'); row.className = 'list-selection-row'; const select = document.createElement('select'); populateListDropdown(select); const deleteBtn = document.createElement('button'); deleteBtn.className = 'btn-delete-list'; deleteBtn.setAttribute('aria-label', 'Diese Liste entfernen'); deleteBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>`; row.appendChild(select); row.appendChild(deleteBtn); listSelectionContainer.appendChild(row); checkIfStartIsPossible(); }
             function checkIfStartIsPossible() { if (!btnStartExercise) return; const selectedLists = listSelectionContainer.querySelectorAll('select'); let atLeastOneSelected = false; selectedLists.forEach(select => { if (select.value) { atLeastOneSelected = true; } }); btnStartExercise.disabled = !atLeastOneSelected; }
@@ -704,7 +727,7 @@
             if (slidesWrapper) slidesWrapper.addEventListener('touchstart', touchStart, { passive: true });
 
             // --- INITIALISIERUNG ---
-            async function initializeApp() { populateDisplayDurationSelect(); populateSoundDelaySelect(); try { const response = await fetch('data/master_items.json?t=' + new Date().getTime()); if (!response.ok) throw new Error('Master-Item-Liste nicht gefunden'); masterItems = await response.json(); } catch (e) { console.error("KRITISCHER FEHLER: master_items.json konnte nicht geladen werden.", e); document.body.innerHTML = '<h1>Fehler</h1><p>Die Haupt-Datenbank der App (master_items.json) konnte nicht geladen werden.</p>'; return; } await loadSetsManifest(); showScreen('screen-mode-selection'); }
+            async function initializeApp() { populateDisplayDurationSelect(); populateSoundDelaySelect(); try { const response = await fetch('data/items_database.json?t=' + new Date().getTime()); if (!response.ok) throw new Error('Master-Item-Liste nicht gefunden'); masterItems = await response.json(); } catch (e) { console.error("KRITISCHER FEHLER: master_items.json konnte nicht geladen werden.", e); document.body.innerHTML = '<h1>Fehler</h1><p>Die Haupt-Datenbank der App (items_database.json) konnte nicht geladen werden.</p>'; return; } await loadSetsManifest(); showScreen('screen-mode-selection'); }
             initializeApp();
         });
     </script>

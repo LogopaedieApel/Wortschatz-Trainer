@@ -2,37 +2,22 @@
   "artikulation": {
     "displayName": "Artikulation",
     "unterkategorieName": "Sprachlaut",
-    "laute": {
-      "sch": {
-        "displayName": "Sch",
-        "positionen": {
-          "initial": {
-            "displayName": "Initial",
-            "path": "data/sets/sch_initial.json"
-          },
-          "medial": {
-            "displayName": "Medial",
-            "path": "data/sets/sch_medial.json"
-          },
-          "final": {
-            "displayName": "Final",
-            "path": "data/sets/sch_final.json"
-          }
-        }
-      },
-      "r": {
-        "displayName": "R",
-        "positionen": {
-          "initial": {
-            "displayName": "Initial",
-            "path": "data/sets/r_initial.json"
-          }
-        }
-      }
-    }
-  },
-  "Artikulation": {
-    "displayName": "Artikulation",
+    "sch_initial": {
+      "displayName": "Sch - Initial",
+      "path": "data/sets/artikulation_sch_initial.json"
+    },
+    "sch_medial": {
+      "displayName": "Sch - Medial",
+      "path": "data/sets/artikulation_sch_medial.json"
+    },
+    "sch_final": {
+      "displayName": "Sch - Final",
+      "path": "data/sets/artikulation_sch_final.json"
+    },
+    "r_initial": {
+      "displayName": "R - Initial",
+      "path": "data/sets/artikulation_r_initial.json"
+    },
     "b_initial": {
       "displayName": "B Initial",
       "path": "data/sets/artikulation_b_initial.json"
