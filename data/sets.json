@@ -1,26 +1,13 @@
 {
-  "artikulation": {
+  "Artikulation": {
     "displayName": "Artikulation",
-    "unterkategorieName": "Sprachlaut",
-    "sch_initial": {
-      "displayName": "Sch - Initial",
-      "path": "data/sets/artikulation_sch_initial.json"
-    },
-    "sch_medial": {
-      "displayName": "Sch - Medial",
-      "path": "data/sets/artikulation_sch_medial.json"
-    },
-    "sch_final": {
-      "displayName": "Sch - Final",
-      "path": "data/sets/artikulation_sch_final.json"
-    },
-    "r_initial": {
-      "displayName": "R - Initial",
-      "path": "data/sets/artikulation_r_initial.json"
-    },
     "b_initial": {
       "displayName": "B Initial",
       "path": "data/sets/artikulation_b_initial.json"
+    },
+    "d_initial": {
+      "displayName": "D Initial",
+      "path": "data/sets/artikulation_d_initial.json"
     },
     "f_initial": {
       "displayName": "F Initial",
@@ -50,32 +37,29 @@
       "displayName": "M Initial",
       "path": "data/sets/artikulation_m_initial.json"
     },
+    "o_initial": {
+      "displayName": "O Initial",
+      "path": "data/sets/artikulation_o_initial.json"
+    },
     "p_initial": {
       "displayName": "P Initial",
       "path": "data/sets/artikulation_p_initial.json"
+    },
+    "r_initial": {
+      "displayName": "R Initial",
+      "path": "data/sets/artikulation_r_initial.json"
     },
     "s_initial": {
       "displayName": "S Initial",
       "path": "data/sets/artikulation_s_initial.json"
     },
+    "sch_initial": {
+      "displayName": "SCH Initial",
+      "path": "data/sets/artikulation_sch_initial.json"
+    },
     "t_initial": {
       "displayName": "T Initial",
       "path": "data/sets/artikulation_t_initial.json"
-    },
-    "CH1 medial": {
-      "displayName": "CH1 medial",
-      "path": "data/sets/Artikulation_CH1 medial.json"
-    }
-  },
-  "Artikulation": {
-    "displayName": "Artikulation",
-    "d_initial": {
-      "displayName": "D Initial",
-      "path": "data/sets/artikulation_d_initial.json"
-    },
-    "o_initial": {
-      "displayName": "O Initial",
-      "path": "data/sets/artikulation_o_initial.json"
     }
   }
 }
