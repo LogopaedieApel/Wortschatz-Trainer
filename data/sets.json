@@ -61,5 +61,12 @@
       "displayName": "T Initial",
       "path": "data/sets/artikulation_t_initial.json"
     }
+  },
+  "Wortschatz": {
+    "displayName": "Wortschatz",
+    "Nahrnungsmittel": {
+      "displayName": "Nahrungsmittel",
+      "path": "data/sets/Wortschatz_Nahrnungsmittel.json"
+    }
   }
 }

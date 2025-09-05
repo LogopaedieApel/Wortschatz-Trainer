@@ -53,15 +53,41 @@ tableBody.addEventListener('click', (event) => {
 });
 
 // Event listener for the header checkboxes to select/deselect all in a column
-tableHead.addEventListener('change', (event) => {
+tableHead.addEventListener('click', (event) => {
     if (event.target.matches('input[type="checkbox"].header-checkbox')) {
-        const path = event.target.dataset.path;
-        const isChecked = event.target.checked;
-        const columnCheckboxes = tableBody.querySelectorAll(`input[type="checkbox"][data-path="${path}"]`);
-        columnCheckboxes.forEach(checkbox => {
-            checkbox.checked = isChecked;
-        });
-        setUnsavedChanges(true);
+        // Schritt 1: Verhindere SOFORT die Standard-Browser-Aktion.
+        // Das Häkchen erscheint jetzt NICHT, bevor der User zustimmt.
+        event.preventDefault();
+
+        const headerCheckbox = event.target;
+        const willBeChecked = !headerCheckbox.checked; // Der Zustand, den die Box nach der Aktion hätte
+
+        // Schritt 2: Zeige die passende Sicherheitsabfrage
+        const confirmationMessage = willBeChecked
+            ? "Möchten Sie wirklich alle sichtbaren Wörter in dieser Spalte markieren?"
+            : "Möchten Sie wirklich bei allen sichtbaren Wörtern in dieser Spalte die Markierung entfernen?";
+
+        if (window.confirm(confirmationMessage)) {
+            // Schritt 3: Nur wenn der User "OK" klickt, führen wir die Änderungen durch
+            
+            // Zuerst die Header-Checkbox manuell auf den neuen Zustand setzen
+            headerCheckbox.checked = willBeChecked;
+
+            // Dann alle Checkboxen in den sichtbaren Zeilen anpassen
+            const path = headerCheckbox.dataset.path;
+            tableBody.querySelectorAll('tr').forEach(row => {
+                if (row.style.display !== 'none') {
+                    const checkbox = row.querySelector(`input[type="checkbox"][data-path="${path}"]`);
+                    if (checkbox) {
+                        checkbox.checked = willBeChecked;
+                    }
+                }
+            });
+
+            setUnsavedChanges(true);
+        }
+        // Wenn der User "Abbrechen" klickt, passiert einfach gar nichts,
+        // da wir die Standard-Aktion am Anfang verhindert haben.
     }
 });
 
