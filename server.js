@@ -4,7 +4,8 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
-const setsManifestPath = path.join(__dirname, 'sets.json');
+// KORRIGIERT: Der Pfad zur Manifest-Datei wurde an die neue Struktur angepasst.
+const setsManifestPath = path.join(__dirname, 'data', 'sets.json'); 
 const dbPath = path.join(__dirname, 'data', 'items_database.json');
 const imagesBasePath = path.join(__dirname, 'data', 'images');
 const soundsBasePath = path.join(__dirname, 'data', 'sounds');
@@ -73,7 +74,6 @@ app.get('/api/scan-for-new-files', async (req, res) => {
                 if (stat.isDirectory()) {
                     await getAllFiles(filePath, fileList);
                 } else {
-                    // Ignoriere Systemdateien wie .gitkeep
                     if (path.basename(file).startsWith('.')) continue;
                     fileList.push(filePath);
                 }
@@ -89,14 +89,11 @@ app.get('/api/scan-for-new-files', async (req, res) => {
         const processFiles = (files, type) => {
             for (const file of files) {
                 const id = path.parse(file).name.toLowerCase();
-                // NEU: Extrahiere den Namen des Eltern-Ordners
                 const folder = path.basename(path.dirname(file)).toLowerCase();
                 
                 if (!foundAssets[id]) foundAssets[id] = {};
                 
                 foundAssets[id][type] = path.relative(__dirname, file).replace(/\\/g, '/');
-                // NEU: Speichere den Ordnernamen. Wenn Bild und Ton in verschiedenen
-                // Ordnern liegen, hat der Bild-Ordner Priorität.
                 if (!foundAssets[id].folder || type === 'image') {
                     foundAssets[id].folder = folder;
                 }
@@ -116,7 +113,7 @@ app.get('/api/scan-for-new-files', async (req, res) => {
                     name: id.charAt(0).toUpperCase() + id.slice(1),
                     image: foundAssets[id].image || '',
                     sound: foundAssets[id].sound || '',
-                    folder: foundAssets[id].folder || '' // NEU: Füge Ordner zur Antwort hinzu
+                    folder: foundAssets[id].folder || ''
                 };
             }
         }
@@ -132,7 +129,6 @@ app.get('/api/scan-for-new-files', async (req, res) => {
 
 
 app.post('/api/save-all-data', async (req, res) => {
-    // ... (dieser Teil bleibt unverändert)
     const { database, manifest } = req.body;
     try {
         await fs.writeFile(dbPath, JSON.stringify(database, null, 2));
