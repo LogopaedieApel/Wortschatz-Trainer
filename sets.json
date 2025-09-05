@@ -8,15 +8,15 @@
         "positionen": {
           "initial": {
             "displayName": "Initial",
-            "path": "data/sets/sch_initial.json"
+            "path": "data/sets/artikulation_sch_initial.json"
           },
           "medial": {
             "displayName": "Medial",
-            "path": "data/sets/sch_medial.json"
+            "path": "data/sets/artikulation_sch_medial.json"
           },
           "final": {
             "displayName": "Final",
-            "path": "data/sets/sch_final.json"
+            "path": "data/sets/artikulation_sch_final.json"
           }
         }
       },
@@ -25,14 +25,11 @@
         "positionen": {
           "initial": {
             "displayName": "Initial",
-            "path": "data/sets/r_initial.json"
+            "path": "data/sets/artikulation_r_initial.json"
           }
         }
       }
-    }
-  },
-  "Artikulation": {
-    "displayName": "Artikulation",
+    },
     "b_initial": {
       "displayName": "B Initial",
       "path": "data/sets/artikulation_b_initial.json"
