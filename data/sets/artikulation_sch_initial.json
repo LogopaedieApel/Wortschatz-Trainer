@@ -1,11 +1,15 @@
 [
-  "item_schal",
-  "item_schatten",
-  "item_schaukel",
-  "item_schere",
-  "item_schiene",
-  "item_schiff",
-  "item_schokolade",
-  "item_schuh",
-  "item_schule"
+  "schal",
+  "schatten",
+  "schaukel",
+  "schere",
+  "schiene",
+  "schiff",
+  "schokolade",
+  "schuh",
+  "schule",
+  "specht",
+  "stechen",
+  "streicheln",
+  "strich"
 ]

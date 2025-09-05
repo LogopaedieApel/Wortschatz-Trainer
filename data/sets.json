@@ -66,5 +66,16 @@
       "displayName": "CH1 medial",
       "path": "data/sets/Artikulation_CH1 medial.json"
     }
+  },
+  "Artikulation": {
+    "displayName": "Artikulation",
+    "d_initial": {
+      "displayName": "D Initial",
+      "path": "data/sets/artikulation_d_initial.json"
+    },
+    "o_initial": {
+      "displayName": "O Initial",
+      "path": "data/sets/artikulation_o_initial.json"
+    }
   }
 }
