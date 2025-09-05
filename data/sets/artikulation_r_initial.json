@@ -6,6 +6,7 @@
   "item_raupe",
   "item_rechnen",
   "item_regen",
+  "item_regenschirm",
   "item_reich",
   "item_reifen",
   "item_reis",
@@ -16,7 +17,5 @@
   "item_rot",
   "item_ruecken",
   "item_ruessel",
-  "item_rutsche",
-  "rechts",
-  "riechen"
+  "item_rutsche"
 ]
