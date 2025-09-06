@@ -1,4 +1,4 @@
-// presentation.js (FINALE VERSION)
+// presentation.js (FINALE VERSION - PASST ZU AMBIDEXTROUS CONTROLS)
 
 document.addEventListener('DOMContentLoaded', () => {
     const { currentSettings, currentExerciseWords } = window.appState;
@@ -17,8 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressDotsContainer = document.getElementById('progress-dots-container');
     const bottomControlsContainer = document.getElementById('bottom-controls-container');
     const autoModeControls = document.getElementById('auto-mode-controls');
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
+    
+    // Wählt alle Buttons mit den Klassen aus
+    const prevBtns = document.querySelectorAll('.prev-btn');
+    const nextBtns = document.querySelectorAll('.next-btn');
+
     const btnPauseResume = document.getElementById('btn-pause-resume');
     const btnRestart = document.getElementById('btn-restart-exercise');
     const btnBackToSettings = document.getElementById('btn-back-to-settings');
@@ -46,18 +49,13 @@ document.addEventListener('DOMContentLoaded', () => {
         dots.forEach((dot, index) => dot.classList.toggle('active', index === currentIndex));
     };
     
-    // NEUE SLIDER-LOGIK: Steuert Klassen statt Transform
     const updateSlider = () => {
         const slides = imageSlider.querySelectorAll('.slide');
         slides.forEach((slide, index) => {
             slide.classList.remove('active', 'prev', 'next');
-            if (index === currentIndex) {
-                slide.classList.add('active');
-            } else if (index === currentIndex - 1) {
-                slide.classList.add('prev');
-            } else if (index === currentIndex + 1) {
-                slide.classList.add('next');
-            }
+            if (index === currentIndex) slide.classList.add('active');
+            else if (index === currentIndex - 1) slide.classList.add('prev');
+            else if (index === currentIndex + 1) slide.classList.add('next');
         });
 
         const currentWord = currentExerciseWords[currentIndex];
@@ -88,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         createProgressDots();
         currentIndex = 0;
-        // Kurze Verzögerung, damit die CSS-Transition beim ersten Laden greift
         setTimeout(() => {
             updateSlider();
             window.showScreen('screen-exercise');
@@ -152,8 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     btnSettingsBack.addEventListener('click', () => window.showScreen('screen-presentation-selection'));
-    nextBtn.addEventListener('click', showNext);
-    prevBtn.addEventListener('click', showPrev);
+    
+    // Fügt Listener zu ALLEN Pfeil-Buttons hinzu
+    prevBtns.forEach(btn => btn.addEventListener('click', showPrev));
+    nextBtns.forEach(btn => btn.addEventListener('click', showNext));
+
     btnPauseResume.addEventListener('click', pauseResumeAutoMode);
     imageSlider.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
     imageSlider.addEventListener('touchend', e => {
