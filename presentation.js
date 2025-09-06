@@ -1,9 +1,9 @@
-// presentation.js
+// presentation.js (KORRIGIERT)
 
 document.addEventListener('DOMContentLoaded', () => {
     // Globale Variablen aus common.js holen
     const { currentSettings, currentExerciseWords } = window.appState;
-    const { loadingOverlay, screenSettings, screenExercise, currentSetTitle, wordDisplay, exerciseEndModal } = window.domElements;
+    const { wordDisplay, exerciseEndModal } = window.domElements;
 
     // === DOM-Elemente NUR für die Präsentation ===
     const screenPresentationSelection = document.getElementById('screen-presentation-selection');
@@ -15,9 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnStartExercise = document.getElementById('btn-start-exercise');
     const btnSettingsBack = document.getElementById('btn-settings-back');
     
-    // Übungs-Bildschirm Elemente
+    // Übungs-Bildschirm Elemente (ANGEPASST AN NEUE HTML)
     const imageSlider = document.getElementById('image-slider');
-    const sliderControls = document.getElementById('slider-controls');
+    const progressDotsContainer = document.getElementById('progress-dots-container'); // NEU
+    const bottomControlsContainer = document.getElementById('bottom-controls-container'); // ERSETZT slider-controls
     const autoModeControls = document.getElementById('auto-mode-controls');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
@@ -37,6 +38,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === Funktionen NUR für die Präsentation ===
 
+    function createProgressDots() {
+        progressDotsContainer.innerHTML = '';
+        for (let i = 0; i < currentExerciseWords.length; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('progress-dot');
+            dot.dataset.index = i;
+            progressDotsContainer.appendChild(dot);
+        }
+    }
+
+    function updateProgressDots() {
+        const dots = progressDotsContainer.querySelectorAll('.progress-dot');
+        dots.forEach((dot, index) => {
+            if (index === currentIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+
     function setupPresentationExercise() {
         currentExerciseWords.length = 0; // Array leeren
         const baseWords = window.shuffleArray([...window.appState.allWords]);
@@ -44,17 +66,16 @@ document.addEventListener('DOMContentLoaded', () => {
             currentExerciseWords.push(...window.shuffleArray([...baseWords]));
         }
 
+        // Slider-Bilder erstellen (VEREINFACHT)
         imageSlider.innerHTML = '';
         currentExerciseWords.forEach(word => {
-            const slide = document.createElement('div');
-            slide.classList.add('slide');
             const img = document.createElement('img');
             img.src = word.image;
             img.alt = word.word;
-            slide.appendChild(img);
-            imageSlider.appendChild(slide);
+            imageSlider.appendChild(img); // Direkt das Bild einfügen, ohne extra div
         });
 
+        createProgressDots(); // Fortschrittspunkte erstellen
         currentIndex = 0;
         updateSlider();
         window.showScreen('screen-exercise');
@@ -80,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.playAudio(currentWord.audio);
         }
         
-        window.updateProgressBar(currentIndex, currentExerciseWords.length);
+        updateProgressDots(); // Punkte statt Progress-Bar aktualisieren
     }
     
     function showNext() {
@@ -118,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function endExercise() {
         clearInterval(autoModeInterval);
         exerciseEndModal.classList.remove('hidden');
-        document.getElementById('quiz-results').innerHTML = ''; // Keine Ergebnisse hier
+        document.getElementById('quiz-results').innerHTML = '';
     }
 
     // === Event Listeners NUR für die Präsentation ===
@@ -129,16 +150,17 @@ document.addEventListener('DOMContentLoaded', () => {
             
             document.getElementById('settings-title').textContent = `Einstellungen: ${card.querySelector('.subtitle').textContent}`;
             
+            // KORRIGIERT: Zeigt/versteckt die korrekten Container
             if (currentSettings.presentationType === 'manual') {
-                settingRepetitions.style.display = 'flex';
+                settingRepetitions.style.display = 'block'; // 'block' oder 'flex' je nach CSS
                 settingDelay.style.display = 'none';
-                sliderControls.style.display = 'flex';
-                autoModeControls.style.display = 'none';
+                bottomControlsContainer.classList.remove('hidden');
+                autoModeControls.classList.add('hidden');
             } else { // auto
-                settingRepetitions.style.display = 'flex';
-                settingDelay.style.display = 'flex';
-                sliderControls.style.display = 'none';
-                autoModeControls.style.display = 'flex';
+                settingRepetitions.style.display = 'block';
+                settingDelay.style.display = 'block';
+                bottomControlsContainer.classList.add('hidden');
+                autoModeControls.classList.remove('hidden');
             }
             window.showScreen('screen-settings');
         });
@@ -162,18 +184,14 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', showPrev);
     btnPauseResume.addEventListener('click', pauseResumeAutoMode);
 
-    // Touch-Gesten für den Slider
     imageSlider.addEventListener('touchstart', e => {
         touchStartX = e.touches[0].clientX;
     });
 
     imageSlider.addEventListener('touchend', e => {
         const touchEndX = e.changedTouches[0].clientX;
-        if (touchStartX - touchEndX > 50) { // Swipe left
-            showNext();
-        } else if (touchStartX - touchEndX < -50) { // Swipe right
-            showPrev();
-        }
+        if (touchStartX - touchEndX > 50) { showNext(); } 
+        else if (touchStartX - touchEndX < -50) { showPrev(); }
     });
 
     btnRestart.addEventListener('click', () => {
