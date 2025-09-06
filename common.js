@@ -1,4 +1,4 @@
-// common.js
+// common.js (Vollständig & Korrigiert)
 
 document.addEventListener('DOMContentLoaded', () => {
     // === Globale Zustandsvariablen ===
@@ -53,43 +53,83 @@ document.addEventListener('DOMContentLoaded', () => {
         return array;
     };
 
-    // Funktion zum Laden der Wort-Sets aus der Manifest-Datei
+    // --- NEUE, KORRIGIERTE FUNKTIONEN ---
+
+    // Funktion zum Laden der Wort-Sets aus sets.json
     async function loadSetsManifest() {
         try {
-            const response = await fetch('manifest.json');
+            // Lade die korrekte Datei aus dem Hauptverzeichnis
+            const response = await fetch('sets.json');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            const data = await response.json();
-            allSets = data.sets;
+            const categories = await response.json();
+
+            // Wandle das verschachtelte Objekt in eine flache Liste um
+            const flattenedSets = [];
+            for (const categoryKey in categories) {
+                const category = categories[categoryKey];
+                for (const setKey in category) {
+                    // Überspringe Metadaten wie 'displayName' auf Kategorie-Ebene
+                    if (typeof category[setKey] === 'object' && category[setKey].path) {
+                        const set = category[setKey];
+                        flattenedSets.push({
+                            id: `${categoryKey}_${setKey}`, // Eindeutige ID, z.B. "Artikulation_b_initial"
+                            name: set.displayName,
+                            file: set.path
+                        });
+                    }
+                }
+            }
+            allSets = flattenedSets;
             populateSetSelection();
+
         } catch (error) {
-            console.error("Fehler beim Laden der manifest.json:", error);
+            console.error("Fehler beim Laden der sets.json:", error);
             setSelectionContainer.innerHTML = '<p class="error">Wort-Sets konnten nicht geladen werden.</p>';
         }
     }
 
-    // Füllt die Checkboxen für die Wort-Sets
+    // Füllt die Checkboxen für die Wort-Sets (angepasst für Kategorien)
     function populateSetSelection() {
         if (!setSelectionContainer) return;
         setSelectionContainer.innerHTML = '<h2>Wort-Sets auswählen:</h2>';
-        allSets.forEach(set => {
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = set.id;
-            checkbox.value = set.file;
-            checkbox.dataset.setName = set.name;
 
-            const label = document.createElement('label');
-            label.htmlFor = set.id;
-            label.textContent = set.name;
+        // Hol die Kategorienamen aus den IDs, um Gruppen zu erstellen
+        const categories = [...new Set(allSets.map(set => set.id.split('_')[0]))];
 
-            const div = document.createElement('div');
-            div.appendChild(checkbox);
-            div.appendChild(label);
-            setSelectionContainer.appendChild(div);
+        categories.forEach(categoryName => {
+            const categoryContainer = document.createElement('div');
+            categoryContainer.classList.add('category-container');
+            
+            const categoryTitle = document.createElement('h3');
+            categoryTitle.textContent = categoryName;
+            categoryContainer.appendChild(categoryTitle);
+
+            const setsInCategory = allSets.filter(set => set.id.startsWith(categoryName));
+
+            setsInCategory.forEach(set => {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = set.id;
+                checkbox.value = set.file;
+                checkbox.dataset.setName = set.name;
+
+                const label = document.createElement('label');
+                label.htmlFor = set.id;
+                label.textContent = set.name;
+
+                const div = document.createElement('div');
+                div.appendChild(checkbox);
+                div.appendChild(label);
+                categoryContainer.appendChild(div);
+            });
+            
+            setSelectionContainer.appendChild(categoryContainer);
         });
     }
+
+    // --- ENDE DER NEUEN FUNKTIONEN ---
 
     // Lädt die Wörter aus den ausgewählten JSON-Dateien
     window.loadWordsFromSelection = async function() {
