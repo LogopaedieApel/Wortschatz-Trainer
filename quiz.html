@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Quiz - Wortschatz-Trainer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="loading-overlay" class="hidden">
+        <div class="loading-spinner"></div>
+        <p>Lade Inhalte...</p>
+    </div>
+
+    <div class="hamburger-menu">
+        <span class="hamburger-icon" id="hamburger-icon">☰</span>
+        <div class="menu-content" id="menu-content">
+            <ul>
+                <li><a href="#" id="menu-anleitung">Anleitung</a></li>
+                <li><a href="presentation.html">Präsentation starten</a></li>
+                <li><a href="#" id="menu-quiz">Neues Quiz</a></li>
+                <li><a href="index.html">Zur Modus-Auswahl</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="anleitung-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Anleitung</h2>
+            <p>Wähle die Wort-Sets aus, die du üben möchtest, und starte das Quiz. ... (Weitere Anleitungsinhalte)</p>
+        </div>
+    </div>
+    
+    <div id="exercise-end-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Quiz beendet</h2>
+            <p>Du hast alle Fragen beantwortet.</p>
+            <div id="quiz-results"></div>
+            <button id="btn-restart-exercise">Erneut starten</button>
+            <button id="btn-back-to-settings">Zurück zu den Einstellungen</button>
+        </div>
+    </div>
+
+    <!-- EINSTELLUNGS-BILDSCHIRM (wird zuerst gezeigt) -->
+    <div id="screen-settings" class="screen">
+        <h1 id="settings-title">Quiz-Einstellungen</h1>
+        <div class="settings-container">
+            <div id="set-selection-container">
+                <h2>Wort-Sets auswählen:</h2>
+                <!-- Checkboxen werden hier dynamisch eingefügt -->
+            </div>
+        </div>
+        <div class="button-container">
+            <button id="btn-start-exercise">Quiz starten</button>
+            <a href="index.html" class="button-like-link" id="btn-settings-back">Zurück zur Modus-Auswahl</a>
+        </div>
+    </div>
+
+    <!-- ÜBUNGS-BILDSCHIRM (versteckt) -->
+    <div id="screen-exercise" class="screen hidden">
+        <div id="progress-bar-container">
+            <div id="progress-bar"></div>
+        </div>
+        <h2 id="current-set-title"></h2>
+        <div class="exercise-content">
+            <div id="word-display-container">
+                <p id="word-display">Frage wird geladen...</p>
+                <button id="audio-button" class="audio-button">▶️</button>
+            </div>
+            <div id="quiz-options-container">
+                <!-- Quiz-Antwortmöglichkeiten (Bilder) werden hier dynamisch eingefügt -->
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio-player"></audio>
+
+    <script src="common.js"></script>
+    <script src="quiz.js"></script>
+</body>
+</html>

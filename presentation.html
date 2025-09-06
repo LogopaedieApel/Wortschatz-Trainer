@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Präsentation - Wortschatz-Trainer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="loading-overlay" class="hidden">
+        <div class="loading-spinner"></div>
+        <p>Lade Inhalte...</p>
+    </div>
+
+    <div class="hamburger-menu">
+        <span class="hamburger-icon" id="hamburger-icon">☰</span>
+        <div class="menu-content" id="menu-content">
+            <ul>
+                <li><a href="#" id="menu-anleitung">Anleitung</a></li>
+                <li><a href="#" id="menu-manual">Manuell</a></li>
+                <li><a href="#" id="menu-auto">Automatisch</a></li>
+                <li><a href="quiz.html">Quiz starten</a></li>
+                <li><a href="index.html">Zur Modus-Auswahl</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="anleitung-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Anleitung</h2>
+            <p>Wähle einen Modus und stelle deine Übung ein. ... (Weitere Anleitungsinhalte)</p>
+        </div>
+    </div>
+
+    <div id="exercise-end-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Übung beendet</h2>
+            <p>Du hast alle Wörter durchgearbeitet.</p>
+            <div id="quiz-results"></div>
+            <button id="btn-restart-exercise">Erneut starten</button>
+            <button id="btn-back-to-settings">Zurück zu den Einstellungen</button>
+        </div>
+    </div>
+
+    <!-- BILDSCHIRM FÜR PRÄSENTATIONS-AUSWAHL (wird zuerst gezeigt) -->
+    <div id="screen-presentation-selection" class="screen">
+        <h1>Präsentation</h1>
+        <h2>Art der Präsentation wählen</h2>
+        <div class="mode-selection-container">
+            <div class="mode-card clickable-card" data-presentation-type="manual">
+                <img src="images/manuell.png" alt="Manuell Modus">
+                <span class="subtitle">Manuell</span>
+            </div>
+            <div class="mode-card clickable-card" data-presentation-type="auto">
+                <img src="images/automatisch.jpg" alt="Automatisch Modus">
+                <span class="subtitle">Automatisch</span>
+            </div>
+        </div>
+        <div class="back-button-container">
+            <a href="index.html" class="button-like-link" id="btn-presentation-back">Zurück zur Modus-Auswahl</a>
+        </div>
+    </div>
+
+    <!-- EINSTELLUNGS-BILDSCHIRM (versteckt) -->
+    <div id="screen-settings" class="screen hidden">
+        <h1 id="settings-title">Einstellungen</h1>
+        <div class="settings-container">
+            <div id="set-selection-container">
+                <h2>Wort-Sets auswählen:</h2>
+                <!-- Checkboxen werden hier dynamisch eingefügt -->
+            </div>
+            <div class="setting-item" id="setting-repetitions">
+                <label for="repetitions">Anzahl der Wiederholungen pro Wort:</label>
+                <input type="number" id="repetitions" value="1" min="1" max="5">
+            </div>
+            <div class="setting-item" id="setting-delay">
+                <label for="delay">Verzögerung im Auto-Modus (Sekunden):</label>
+                <input type="number" id="delay" value="3" min="1" max="10">
+            </div>
+        </div>
+        <div class="button-container">
+            <button id="btn-start-exercise">Übung starten</button>
+            <button id="btn-settings-back">Zurück</button>
+        </div>
+    </div>
+
+    <!-- ÜBUNGS-BILDSCHIRM (versteckt) -->
+    <div id="screen-exercise" class="screen hidden">
+        <div id="progress-bar-container">
+            <div id="progress-bar"></div>
+        </div>
+        <h2 id="current-set-title"></h2>
+        <div class="exercise-content">
+            <div id="image-slider-container">
+                <div id="image-slider" class="slider">
+                    <!-- Bilder werden hier dynamisch eingefügt -->
+                </div>
+            </div>
+            <div id="word-display-container">
+                <p id="word-display">&nbsp;</p>
+                <button id="audio-button" class="audio-button">▶️</button>
+            </div>
+            <div id="slider-controls" class="slider-controls">
+                <button id="prev-btn" class="nav-btn">❮</button>
+                <button id="next-btn" class="nav-btn">❯</button>
+            </div>
+             <div id="auto-mode-controls">
+                <button id="btn-pause-resume">Pause</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio-player"></audio>
+
+    <script src="common.js"></script>
+    <script src="presentation.js"></script>
+</body>
+</html>

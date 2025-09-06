@@ -3,177 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
-    <meta name="theme-color" content="#27633A">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192x192.png">
-
     <title>Wortschatz-Trainer</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Die CSS-Datei wird hier geladen -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="loading-overlay" class="hidden">
-        <div class="loading-spinner"></div>
-        <p>Lade Inhalte...</p>
-    </div>
 
-    <div class="hamburger-menu"><span class="hamburger-icon" id="hamburger-icon">☰</span><div class="menu-content" id="menu-content"><ul><li><a href="#" id="menu-anleitung">Anleitung</a></li><li><a href="#" id="menu-manual">Manuell</a></li><li><a href="#" id="menu-auto">Automatisch</a></li><li><a href="#" id="menu-quiz">Quiz</a></li><li><a href="#" id="menu-modus-auswahl">Zur Modus-Auswahl</a></li></ul></div></div>
-    
-    <div id="anleitung-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="anleitung-modal">×</span><h2>Anleitung</h2><p><strong>Willkommen beim Wortschatz-Trainer!</strong></p><p>Diese App hilft dir, deinen Wortschatz spielerisch zu erweitern und deine Aussprache zu verbessern. Hier ist eine kurze Erklärung der Funktionen:</p><h4>Erste Schritte: Modus auswählen</h4><p>Auf dem Startbildschirm wählst du zwischen zwei Haupt-Modi:</p><ul><li><strong>Präsentation:</strong> Hier werden dir die Vokabeln gezeigt. Du kannst wählen, ob du selbst durchklickst (Manuell) oder ob sie automatisch abgespielt werden (Automatisch). Ideal zum Lernen und Wiederholen.</li><li><strong>Quiz:</strong> Teste dein Wissen! Du hörst ein Wort und musst aus vier Bildern das richtige auswählen.</li></ul><h4>Der Manuelle Modus</h4><p>Nachdem du ein Lern-Set ausgewählt hast, kannst du:</p><ul><li><strong>Wischen:</strong> Wische auf dem Bild nach links oder rechts, um zur nächsten oder vorherigen Vokabel zu wechseln. Alternativ kannst du auch die Pfeil-Tasten an den Seiten nutzen.</li><li><strong>Ton abspielen:</strong> Tippe auf das Bild mit der Frau in der Mitte, um die Aussprache des Wortes anzuhören.</li><li><strong>Ton sofort abspielen (Neue Funktion):</strong> In den Einstellungen kannst du festlegen, dass der Ton für jedes Bild sofort abgespielt wird, wenn es erscheint.</li></ul><h4>Der Automatische Modus</h4><p>In diesem Modus läuft die Übung von alleine ab. In den Einstellungen kannst du verschiedene Parameter festlegen.</p><h4>Der Quiz Modus</h4><p>Hier wird dein Hörverständnis getestet:</p><ul><li><strong>Ablauf:</strong> Ein Wort wird vorgespielt. Auf dem Bildschirm erscheinen vier Bilder.</li><li><strong>Deine Aufgabe:</strong> Tippe auf das Bild, das zu dem gehörten Wort passt.</li><li><strong>Feedback:</strong> Du erhältst sofort eine Rückmeldung, ob deine Antwort richtig oder falsch war.</li><li><strong>Nächste Runde:</strong> Nach kurzer Zeit startet automatisch die nächste Frage.</li></ul><h4>Das Menü (☰)</h4><p>Oben rechts findest du jederzeit das Menü. Von dort aus kannst du eine neue Übung starten, zur Modus-Auswahl zurückkehren oder diese Anleitung erneut aufrufen.</p><p style="margin-top: 20px; text-align: center;"><strong>Viel Spaß beim Lernen!</strong></p></div></div>
-
-    <div id="exercise-end-modal" class="modal"><div class="modal-content"><span class="modal-close-button" data-modal-id="exercise-end-modal">×</span><h2>Übung beendet!</h2><p id="exercise-end-message">Alle Items bearbeitet.</p><div style="text-align: center; margin-top: 20px; display: flex; justify-content: space-around;"><button id="btn-reshuffle">Neu starten</button><button id="btn-new-selection">Neue Auswahl</button></div></div></div>
-    
-    <!-- ANGEPASSTER STARTBILDSCHIRM -->
+    <!-- Startbildschirm als zentraler Hub -->
     <div id="screen-mode-selection" class="screen">
         <h1>Wortschatz-Trainer</h1>
         <h2>Modus auswählen</h2>
         <div class="mode-selection-container">
-            <!-- NEUE KARTE: Präsentation -->
-            <div class="mode-card clickable-card" data-mode="presentation">
-                <img src="praesentation.png" alt="Präsentation Modus">
+            <!-- Karte, die zu presentation.html führt -->
+            <a href="presentation.html" class="mode-card clickable-card" data-mode="presentation">
+                <img src="images/praesentation.png" alt="Präsentation Modus">
                 <span class="subtitle">Präsentation</span>
-            </div>
-            <!-- Quiz-Karte bleibt unverändert -->
-            <div class="mode-card clickable-card" data-mode="quiz">
-                <img src="quiz.png" alt="Quiz Modus">
+            </a>
+            <!-- Karte, die zu quiz.html führt -->
+            <a href="quiz.html" class="mode-card clickable-card" data-mode="quiz">
+                <img src="images/quiz.png" alt="Quiz Modus">
                 <span class="subtitle">Quiz</span>
-            </div>
+            </a>
         </div>
-        <img src="logo.png" alt="Logo" class="site-logo">
+        <img src="images/logo.png" alt="Logo" class="site-logo">
     </div>
 
-    <!-- NEUER BILDSCHIRM FÜR PRÄSENTATIONS-AUSWAHL -->
-    <div id="screen-presentation-selection" class="screen hidden">
-        <h1>Präsentation</h1>
-        <h2>Art der Präsentation wählen</h2>
-        <div class="mode-selection-container">
-            <!-- Die ursprünglichen Karten sind hierher umgezogen -->
-            <div class="mode-card clickable-card" data-mode="manual">
-                <img src="manuell.png" alt="Manuell Modus">
-                <span class="subtitle">Manuell</span>
-            </div>
-            <div class="mode-card clickable-card" data-mode="auto">
-                <img src="automatisch.jpg" alt="Automatisch Modus">
-                <span class="subtitle">Automatisch</span>
-            </div>
-        </div>
-        <!-- Button, um einen Schritt zurückzugehen -->
-        <div class="back-button-container">
-            <button id="btn-presentation-back">Zurück zur Modus-Auswahl</button>
-        </div>
-    </div>
-    
-    <div id="screen-settings" class="screen hidden">
-        <h2 id="settings-title">Einstellungen</h2>
-        <div class="settings-form">
-            
-            <div class="form-group">
-                <label for="category-select">Bereich:</label>
-                <select id="category-select">
-                    <option value="">Lade Sets...</option>
-                </select>
-            </div>
-
-            <div class="form-group" id="list-selection-area">
-                <label>Liste(n):</label>
-                <div id="list-selection-container"></div>
-                <button id="btn-add-list" class="hidden" aria-label="Weitere Liste hinzufügen">+</button>
-            </div>
-            
-            <div class="form-group" id="setting-display-type-group">
-                <label>Anzeige:</label>
-                <div class="setting-button-group" id="display-type-buttons">
-                    <button data-display-type="image_only" class="selected">Nur Bild</button>
-                    <button data-display-type="word_only">Nur Wort</button>
-                    <button data-display-type="image_word">Bild & Wort</button>
-                </div>
-            </div>
-            <div class="form-group hidden" id="setting-order-group">
-                <label>Reihenfolge:</label>
-                <div class="setting-button-group" id="order-buttons">
-                    <button data-order="chaotic" class="selected">Chaotisch</button>
-                    <button data-order="ordered">Geordnet</button>
-                </div>
-            </div>
-            <div class="form-group hidden" id="setting-display-duration-group">
-                <label for="display-duration-select">Minimale Anzeigedauer:</label>
-                <select id="display-duration-select"></select>
-            </div>
-            <div class="form-group hidden" id="setting-sound-on-off-group">
-                <label>Ton:</label>
-                <div class="setting-button-group" id="sound-on-off-buttons">
-                    <button data-sound-on="true" class="selected">An</button>
-                    <button data-sound-on="false">Aus</button>
-                </div>
-            </div>
-            <div class="form-group hidden" id="setting-sound-delay-group">
-                <label for="sound-delay-select">Ton-Verzögerung:</label>
-                <select id="sound-delay-select"></select>
-            </div>
-
-            <div class="form-group hidden" id="setting-autoplay-sound-manual-group">
-                <label>Ton sofort abspielen:</label>
-                <div class="setting-button-group" id="autoplay-sound-manual-buttons">
-                    <button data-autoplay-sound="true">An</button>
-                    <button data-autoplay-sound="false" class="selected">Aus</button>
-                </div>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; margin-top: 30px;">
-                <button id="btn-settings-back">Zurück</button>
-                <button id="btn-start-exercise">Start</button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="screen-exercise" class="screen hidden">
-        <div class="main-content-area">
-            <!-- Slider für Manuell/Auto Modus -->
-            <div class="slides-wrapper">
-                <div id="slide-1" class="slide"></div>
-                <div id="slide-2" class="slide"></div>
-                <div id="slide-3" class="slide"></div>
-            </div>
-
-            <!-- Bereich für Quiz Modus -->
-            <div id="quiz-area" class="hidden">
-                <div id="quiz-options-container">
-                    <div class="quiz-option" data-index="0"><img src="" alt="Option 1"></div>
-                    <div class="quiz-option" data-index="1"><img src="" alt="Option 2"></div>
-                    <div class="quiz-option" data-index="2"><img src="" alt="Option 3"></div>
-                    <div class="quiz-option" data-index="3"><img src="" alt="Option 4"></div>
-                </div>
-                <button id="quiz-sound-button" class="sound-button" aria-label="Wort erneut abspielen"></button>
-            </div>
-
-            <div id="word-display-area" class="hidden"></div>
-            <div id="progress-dots-container"></div>
-
-            <!-- Steuerung für Manuell/Auto Modus -->
-            <div id="bottom-controls-container">
-                <div class="arrow-group" id="arrow-group-left">
-                    <button class="nav-arrow nav-arrow-right" aria-label="Nächstes Item">›</button>
-                    <button class="nav-arrow nav-arrow-left" aria-label="Vorheriges Item">‹</button>
-                </div>
-                <div class="center-controls">
-                    <button class="sound-button" aria-label="Sound abspielen"></button>
-                    <button id="btn-stop-auto-mode" class="hidden" aria-label="Automatischen Modus stoppen">STOP</button>
-                </div>
-                <div class="arrow-group" id="arrow-group-right">
-                    <button class="nav-arrow nav-arrow-right" aria-label="Nächstes Item">›</button>
-                    <button class="nav-arrow nav-arrow-left" aria-label="Vorheriges Item">‹</button>
-                </div>
-            </div>
-            <div id="instructions-container" class="hidden">Führen Sie die Übung immer genau nach Anweisung durch. Kinder sollten zu Beginn nicht alleine trainieren.</div>
-        </div>
-    </div>
-    
-    <audio id="audio-player"></audio>
-
-    <!-- Die JavaScript-Datei wird hier am Ende des Bodys geladen -->
-    <script src="script.js"></script>
 </body>
 </html>
