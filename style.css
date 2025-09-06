@@ -144,7 +144,7 @@ button:not(:disabled):active, .clickable-card:active, .button-like-link:active {
     width: 100%; height: 100%; 
     background-color: rgba(0,0,0,0.5); 
     display: flex; align-items: center; justify-content: center; 
-    opacity: 1; visibility: visible; /* Angepasst von 'hidden' zu 'visible' für Transition */
+    opacity: 1; visibility: visible;
     transition: opacity 0.3s ease;
 }
 .modal.hidden {
@@ -292,135 +292,165 @@ button:not(:disabled):active, .clickable-card:active, .button-like-link:active {
     font-size: 1rem;
 }
 
-
 /* ============================================= */
-/*               6. Screen: Übung                */
+/*          6. Screen: Übung (KORRIGIERT)        */
 /* ============================================= */
 #screen-exercise {
-    padding: 0 !important; /* Wichtig, um den ganzen Bildschirm zu füllen */
+    padding: 20px;
+    padding-top: calc(env(safe-area-inset-top) + 20px);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 20px);
     background-color: var(--card-background);
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Fallback */
-    height: 100dvh; /* Nutzt die dynamische Viewport-Höhe */
-    justify-content: space-between;
+    height: 100vh;
+    height: 100dvh;
+    justify-content: center;
+    align-items: center;
 }
 
 #current-set-title {
-    padding: 10px;
-    padding-top: calc(env(safe-area-inset-top) + 60px); /* Platz für Hamburger */
+    position: absolute;
+    top: calc(env(safe-area-inset-top) + 60px);
+    left: 20px;
+    right: 20px;
     color: var(--light-green);
     font-size: 1.2rem;
-    flex-shrink: 0;
+    text-align: center;
 }
 
 .exercise-content {
+    width: 100%;
+    max-width: 800px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 20px;
 }
 
-/* --- Progress Bar (NEU) --- */
-#progress-bar-container {
-    width: 100%;
-    background-color: #e0e0e0;
-    height: 8px;
-    position: fixed; /* Oben fixiert */
-    top: 0;
-    left: 0;
-    z-index: 100;
-}
-#progress-bar {
-    width: 0%; /* Wird via JS gesteuert */
-    height: 100%;
-    background-color: var(--light-green);
-    transition: width 0.3s ease-out;
-}
-
-/* --- Image Slider --- */
 #image-slider-container {
     position: relative;
-    overflow: hidden;
     width: 100%;
     aspect-ratio: 4 / 3;
     margin: 0 auto;
-    flex-shrink: 0;
-    max-height: 55vh;
 }
+
 #image-slider {
     width: 100%;
     height: 100%;
-    display: flex; /* Wichtig für horizontales Layout der Bilder */
+    display: flex;
 }
+
 #image-slider img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    flex-shrink: 0; /* Verhindert das Schrumpfen der Bilder */
+    flex-shrink: 0;
 }
 
-/* --- Wort- & Audio-Anzeige --- */
 #word-display-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
+    text-align: center;
+    margin-top: 15px;
 }
+
 #word-display {
     font-size: 2.5rem;
     font-weight: bold;
     color: var(--dark-green);
-    text-align: center;
-    line-height: 1.2;
     min-height: 3rem;
 }
-.audio-button {
-    font-size: 1.5rem;
-    background: transparent;
-    border: none;
-    color: var(--text-color);
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.audio-button:hover {
-    background-color: #e9e9e9;
-    transform: none;
-    box-shadow: none;
+
+#progress-dots-container { 
+    padding: 10px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    gap: 8px; 
+    width: 100%; 
+    max-width: 800px; 
+    margin: 20px auto 0 auto; 
 }
 
-/* --- Slider-Steuerung --- */
-#slider-controls {
+.progress-dot { 
+    width: 10px; 
+    height: 10px; 
+    background-color: #ddd; 
+    border-radius: 50%; 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+
+.progress-dot.active { 
+    background-color: var(--light-green); 
+    transform: scale(1.4); 
+}
+
+#bottom-controls-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     width: 100%;
-    padding: 20px 0;
+    max-width: 800px;
+    margin: 20px auto 0 auto;
 }
+
+.arrow-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 60px;
+}
+
 .nav-btn {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 100;
     color: var(--text-color);
-    background-color: transparent;
-    border: none;
-    padding: 0 20px;
+    background-color: var(--card-background);
+    border: 1px solid #e0e0e0;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius);
+    padding: 0;
+    width: 100%;
     cursor: pointer;
 }
+
+.center-controls {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.audio-button {
+    background-color: var(--card-background);
+    background-image: url('images/lautsprecher.png'); /* Pfad angepasst */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60%;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    color: transparent;
+    font-size: 0; /* Versteckt Text-Emoji noch besser */
+}
+
+.audio-button:hover {
+    background-color: var(--card-background);
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    transform: none;
+}
+
 #auto-mode-controls {
     margin-top: 10px;
 }
+
 #btn-pause-resume {
     background-color: var(--stop-button-color);
 }

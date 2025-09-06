@@ -90,27 +90,53 @@
 
     <!-- ÜBUNGS-BILDSCHIRM (versteckt) -->
     <div id="screen-exercise" class="screen hidden">
-        <div id="progress-bar-container">
-            <div id="progress-bar"></div>
-        </div>
+
+        <!-- Titel (wird jetzt absolut positioniert) -->
         <h2 id="current-set-title"></h2>
+
+        <!-- Haupt-Container für Slider, Text, Punkte etc. -->
         <div class="exercise-content">
+            
+            <!-- 1. Der Slider -->
             <div id="image-slider-container">
                 <div id="image-slider" class="slider">
                     <!-- Bilder werden hier dynamisch eingefügt -->
                 </div>
             </div>
+
+            <!-- 2. Die Wortanzeige (ohne den Audio-Button) -->
             <div id="word-display-container">
                 <p id="word-display">&nbsp;</p>
-                <button id="audio-button" class="audio-button">▶️</button>
             </div>
-            <div id="slider-controls" class="slider-controls">
-                <button id="prev-btn" class="nav-btn">❮</button>
-                <button id="next-btn" class="nav-btn">❯</button>
+
+            <!-- 3. Die Fortschritts-Punkte (WICHTIG: Dieser Container wird benötigt) -->
+            <div id="progress-dots-container">
+                <!-- Punkte werden hier dynamisch eingefügt -->
             </div>
-             <div id="auto-mode-controls">
+
+            <!-- 4. Der untere Steuerungs-Container (WICHTIG: Neue Struktur) -->
+            <div id="bottom-controls-container">
+                
+                <!-- Linke Pfeile -->
+                <div id="slider-controls-left" class="arrow-group">
+                     <button id="prev-btn" class="nav-btn">❮</button>
+                </div>
+
+                <!-- Mittlerer Audio-Button -->
+                <div class="center-controls">
+                    <button id="audio-button" class="audio-button">▶️</button>
+                </div>
+
+                <!-- Rechte Pfeile -->
+                <div id="slider-controls-right" class="arrow-group">
+                    <button id="next-btn" class="nav-btn">❯</button>
+                </div>
+            </div>
+
+             <div id="auto-mode-controls" class="hidden">
                 <button id="btn-pause-resume">Pause</button>
             </div>
+
         </div>
     </div>
 
