@@ -87,13 +87,13 @@
         </div>
     </div>
 
-    <!-- ÜBUNGS-BILDSCHIRM (FINALE STRUKTUR) -->
+    <!-- ÜBUNGS-BILDSCHIRM (FINALE STRUKTUR V4 - Ambidextrous Controls) -->
     <div id="screen-exercise" class="screen hidden">
         <h2 id="current-set-title"></h2>
         <div class="exercise-content">
             <div id="image-slider-container">
                 <div id="image-slider">
-                    <!-- Slides werden hier dynamisch eingefügt als <div class="slide">...</div> -->
+                    <!-- Slides werden hier dynamisch eingefügt -->
                 </div>
             </div>
             <div id="word-display-container">
@@ -101,16 +101,20 @@
             </div>
             <div id="progress-dots-container"></div>
             <div id="bottom-controls-container">
+                <!-- Linke Gruppe für Einhand-Bedienung -->
                 <div class="arrow-group">
-                    <button id="prev-btn" class="nav-btn">❮</button>
-                    <button class="nav-btn">❮</button> <!-- Visueller Duplikat-Button -->
+                    <button class="nav-btn prev-btn">&lt;</button> 
+                    <button class="nav-btn next-btn">&gt;</button> 
                 </div>
+                
                 <div class="center-controls">
                     <button id="audio-button" class="audio-button"></button>
                 </div>
+
+                <!-- Rechte Gruppe für Einhand-Bedienung -->
                 <div class="arrow-group">
-                    <button id="next-btn" class="nav-btn">❯</button>
-                    <button class="nav-btn">❯</button> <!-- Visueller Duplikat-Button -->
+                    <button class="nav-btn prev-btn">&lt;</button>
+                    <button class="nav-btn next-btn">&gt;</button>
                 </div>
             </div>
              <div id="auto-mode-controls" class="hidden">
