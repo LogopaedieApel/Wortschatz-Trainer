@@ -133,33 +133,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Lädt die Wörter aus den ausgewählten JSON-Dateien
     window.loadWordsFromSelection = async function() {
-        loadingOverlay.classList.remove('hidden');
-        const selectedFiles = Array.from(setSelectionContainer.querySelectorAll('input:checked')).map(cb => cb.value);
-        
-        if (selectedFiles.length === 0) {
-            alert("Bitte wähle mindestens ein Wort-Set aus.");
-            loadingOverlay.classList.add('hidden');
-            return false;
-        }
+    loadingOverlay.classList.remove('hidden');
 
-        currentSettings.selectedSets = Array.from(setSelectionContainer.querySelectorAll('input:checked')).map(cb => cb.dataset.setName);
-        allWords = [];
-        try {
-            for (const file of selectedFiles) {
-                const response = await fetch(file);
-                const data = await response.json();
-                allWords.push(...data.words);
-            }
-        } catch (error) {
-            console.error("Fehler beim Laden der Wortdateien:", error);
-            alert("Ein Fehler ist aufgetreten. Bitte versuche es erneut.");
-            loadingOverlay.classList.add('hidden');
-            return false;
-        }
-        
+    // Finde die vollen Set-Objekte für alle angehakten Checkboxen
+    const checkedIds = Array.from(setSelectionContainer.querySelectorAll('input:checked')).map(cb => cb.id);
+    if (checkedIds.length === 0) {
+        alert("Bitte wähle mindestens ein Wort-Set aus.");
         loadingOverlay.classList.add('hidden');
-        return true;
-    };
+        return false;
+    }
+    const selectedSets = allSets.filter(set => checkedIds.includes(set.id));
+
+    // Speichere die Namen der ausgewählten Sets
+    currentSettings.selectedSets = selectedSets.map(set => set.name);
+    
+    // Leere die globale Wortliste vor dem Neuladen
+    window.appState.allWords.length = 0; 
+    
+    try {
+        // Gehe durch jedes ausgewählte Set-Objekt
+        for (const set of selectedSets) {
+            
+            // --- NEUE LOGIK START ---
+            // Extrahiere den Unterordner-Namen aus der Set-ID
+            // z.B. aus "Artikulation_r_initial" wird "r"
+            const idParts = set.id.split('_');
+            const subfolder = idParts.length > 1 ? idParts[1] : ''; // z.B. 'r', 'sch'
+            
+            if (!subfolder) {
+                console.warn(`Konnte keinen Unterordner für das Set ${set.name} finden.`);
+                continue; // Nächstes Set bearbeiten
+            }
+            // --- NEUE LOGIK ENDE ---
+
+            const response = await fetch(set.file);
+            const wordList = await response.json(); 
+
+            // Gehe durch die Liste der Wörter und baue die kompletten Objekte zusammen
+            for (const wordString of wordList) {
+                const wordObject = {
+                    word: wordString.charAt(0).toUpperCase() + wordString.slice(1),
+                    
+                    // Baue die Pfade jetzt mit dem korrekten Unterordner zusammen
+                    image: `data/images/${subfolder}/${wordString}.jpg`,
+                    audio: `data/sounds/${subfolder}/${wordString}.mp3` // Annahme, dass sounds dieselbe Struktur hat
+                };
+                window.appState.allWords.push(wordObject);
+            }
+        }
+    } catch (error) {
+        console.error("Fehler beim Laden oder Verarbeiten der Wortdateien:", error);
+        alert("Ein Fehler ist aufgetreten. Bitte versuche es erneut.");
+        loadingOverlay.classList.add('hidden');
+        return false;
+    }
+    
+    loadingOverlay.classList.add('hidden');
+    return true;
+};
     
     // Spielt den Ton für ein Wort ab
     window.playAudio = function(audioSrc) {
