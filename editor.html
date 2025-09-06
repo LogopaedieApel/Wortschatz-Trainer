@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Wortschatz-Editor</title>
+    <style>
+        /* CSS bleibt unverändert */
+        body { font-family: sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; background-color: white; }
+        th { background-color: #f2f2f2; text-align: center; vertical-align: middle;}
+        td input[type="text"] { width: 98%; box-sizing: border-box; }
+        .controls { margin-bottom: 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        button { padding: 10px 15px; cursor: pointer; border: 1px solid #ccc; background-color: #f0f0f0; border-radius: 4px; }
+        #new-set-controls { border-left: 2px solid #ccc; padding-left: 20px; }
+        #status-message { font-weight: bold; }
+        #search-input { padding: 10px; width: 250px; border: 1px solid #ccc; border-radius: 4px; }
+
+        #editor-table thead .top-header-row th { position: sticky; top: 0; z-index: 2; }
+        #editor-table thead .sub-header-row th { position: sticky; top: 40px; z-index: 2; }
+        .sticky-col { position: sticky; left: 0; z-index: 1; }
+        .sticky-col.col-2 { left: 150px; }
+        #editor-table thead .sticky-col { z-index: 3; }
+        
+        #save-button.unsaved { background-color: #007bff; color: white; border-color: #0056b3; font-weight: bold; }
+        
+        .delete-button { background: none; border: none; color: #cc0000; cursor: pointer; font-size: 1.1em; padding: 0 5px; border-radius: 4px; }
+        .delete-button:hover { background-color: #ffdddd; }
+
+        input[readonly] {
+            background-color: #f5f5f5;
+            color: #555;
+            cursor: not-allowed;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wortschatz-Editor</h1>
+    <div class="controls">
+        <button id="save-button">Änderungen speichern</button>
+        <p id="status-message"></p>
+    </div>
+    <div class="controls">
+        <input type="text" id="search-input" placeholder="Wörter nach Namen filtern...">
+        <!-- NEUER BUTTON -->
+        <button id="scan-files-button">Neue Dateien importieren</button>
+        <div id="new-set-controls">
+            <input type="text" id="new-set-path" placeholder="Hierarchie/Dateiname (z.B. laute/sch/final)">
+            <input type="text" id="new-set-displayname" placeholder="Anzeigename (z.B. SCH im Auslaut)">
+            <button id="add-set-button">+ Neue Spalte hinzufügen</button>
+        </div>
+    </div>
+    <div id="table-wrapper" style="max-height: 70vh; overflow: auto;">
+        <table id="editor-table">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="controls" style="margin-top: 20px;">
+        <button id="add-row-button">+ Neue Zeile hinzufügen</button>
+    </div>
+
+    <script src="editor_script.js"></script>
+</body>
+</html>

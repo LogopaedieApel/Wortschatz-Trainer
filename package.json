@@ -1,0 +1,12 @@
+{
+  "name": "wortschatz-editor",
+  "version": "1.0.0",
+  "description": "Ein Editor zur Verwaltung der Wortschatz-Trainer Daten.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
