@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <!-- BILDSCHIRM FÜR PRÄSENTATIONS-AUSWAHL (wird zuerst gezeigt) -->
+    <!-- BILDSCHIRM FÜR PRÄSENTATIONS-AUSWAHL -->
     <div id="screen-presentation-selection" class="screen">
         <h1>Präsentation</h1>
         <h2>Art der Präsentation wählen</h2>
@@ -65,13 +65,12 @@
         </div>
     </div>
 
-    <!-- EINSTELLUNGS-BILDSCHIRM (versteckt) -->
+    <!-- EINSTELLUNGS-BILDSCHIRM -->
     <div id="screen-settings" class="screen hidden">
         <h1 id="settings-title">Einstellungen</h1>
         <div class="settings-container">
             <div id="set-selection-container">
                 <h2>Wort-Sets auswählen:</h2>
-                <!-- Checkboxen werden hier dynamisch eingefügt -->
             </div>
             <div class="setting-item" id="setting-repetitions">
                 <label for="repetitions">Anzahl der Wiederholungen pro Wort:</label>
@@ -88,55 +87,35 @@
         </div>
     </div>
 
-    <!-- ÜBUNGS-BILDSCHIRM (versteckt) -->
+    <!-- ÜBUNGS-BILDSCHIRM (FINALE STRUKTUR) -->
     <div id="screen-exercise" class="screen hidden">
-
-        <!-- Titel (wird jetzt absolut positioniert) -->
         <h2 id="current-set-title"></h2>
-
-        <!-- Haupt-Container für Slider, Text, Punkte etc. -->
         <div class="exercise-content">
-            
-            <!-- 1. Der Slider -->
             <div id="image-slider-container">
-                <div id="image-slider" class="slider">
-                    <!-- Bilder werden hier dynamisch eingefügt -->
+                <div id="image-slider">
+                    <!-- Slides werden hier dynamisch eingefügt als <div class="slide">...</div> -->
                 </div>
             </div>
-
-            <!-- 2. Die Wortanzeige (ohne den Audio-Button) -->
             <div id="word-display-container">
                 <p id="word-display">&nbsp;</p>
             </div>
-
-            <!-- 3. Die Fortschritts-Punkte (WICHTIG: Dieser Container wird benötigt) -->
-            <div id="progress-dots-container">
-                <!-- Punkte werden hier dynamisch eingefügt -->
-            </div>
-
-            <!-- 4. Der untere Steuerungs-Container (WICHTIG: Neue Struktur) -->
+            <div id="progress-dots-container"></div>
             <div id="bottom-controls-container">
-                
-                <!-- Linke Pfeile -->
-                <div id="slider-controls-left" class="arrow-group">
-                     <button id="prev-btn" class="nav-btn">❮</button>
+                <div class="arrow-group">
+                    <button id="prev-btn" class="nav-btn">❮</button>
+                    <button class="nav-btn">❮</button> <!-- Visueller Duplikat-Button -->
                 </div>
-
-                <!-- Mittlerer Audio-Button -->
                 <div class="center-controls">
-                    <button id="audio-button" class="audio-button">▶️</button>
+                    <button id="audio-button" class="audio-button"></button>
                 </div>
-
-                <!-- Rechte Pfeile -->
-                <div id="slider-controls-right" class="arrow-group">
+                <div class="arrow-group">
                     <button id="next-btn" class="nav-btn">❯</button>
+                    <button class="nav-btn">❯</button> <!-- Visueller Duplikat-Button -->
                 </div>
             </div>
-
              <div id="auto-mode-controls" class="hidden">
                 <button id="btn-pause-resume">Pause</button>
             </div>
-
         </div>
     </div>
 
