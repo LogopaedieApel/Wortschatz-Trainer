@@ -1,3 +1,6 @@
+/* ============================================= */
+/*          1. Globale Stile & Resets            */
+/* ============================================= */
 :root {
     --dark-green: #27633A;
     --light-green: #6BAB58;
@@ -11,19 +14,53 @@
     --box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     --transition-speed: 0.3s;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; font-family: 'Lexend', sans-serif; background-color: var(--background-color); color: var(--text-color); overflow: hidden; }
-h1, h2, h3, h4 { font-family: 'Lexend', sans-serif; }
-.hidden { display: none !important; }
-.invisible { visibility: hidden !important; } 
-.screen { min-height: 100vh; padding: 20px; padding-top: 80px; display: flex; flex-direction: column; align-items: center; transition: transform var(--transition-speed) ease-in-out, opacity var(--transition-speed) ease-in-out; transform: scale(1); opacity: 1; width: 100%; height: 100%; overflow-y: auto; }
-#screen-mode-selection, #screen-settings, #screen-presentation-selection { justify-content: center; }
-.screen.zoom-out { transform: scale(0.9); opacity: 0; pointer-events: none; position: absolute; top: 0; left: 0; }
-.screen.zoom-in { transform: scale(1); opacity: 1; position: relative; }
 
-button, .clickable-card, select { 
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    -webkit-tap-highlight-color: transparent; 
+}
+
+html, body { 
+    height: 100%; 
+    font-family: 'Lexend', sans-serif; 
+    background-color: var(--background-color); 
+    color: var(--text-color); 
+    overflow: hidden; 
+}
+
+h1, h2 { 
+    font-family: 'Lexend', sans-serif; 
+    text-align: center;
+}
+
+.hidden { 
+    display: none !important; 
+}
+
+/* ============================================= */
+/*             2. Basis-Layout & Buttons         */
+/* ============================================= */
+.screen { 
+    min-height: 100vh; 
+    padding: 20px; 
+    padding-top: 80px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    width: 100%; 
+    height: 100%; 
+    overflow-y: auto; 
+}
+
+#screen-presentation-selection, #screen-settings {
+    justify-content: center;
+}
+
+button, .clickable-card, .button-like-link { 
     padding: 12px 20px; 
-    border: 1px solid #ccc; 
+    border: none;
     background-color: var(--button-color); 
     color: var(--button-text-color); 
     border-radius: var(--border-radius); 
@@ -31,12 +68,10 @@ button, .clickable-card, select {
     font-size: 1rem; 
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
     text-align: center; 
+    text-decoration: none;
 }
 
-button, .clickable-card { border: none; }
-select { background-color: var(--card-background); color: var(--text-color); width: 100%; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23333333' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; padding-right: 2.5rem; }
-
-button:not(:disabled):hover, .clickable-card:hover {
+button:not(:disabled):hover, .clickable-card:hover, .button-like-link:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
@@ -48,45 +83,143 @@ button:disabled {
     box-shadow: none;
 }
 
-button:not(:disabled):active, .clickable-card:active {
+button:not(:disabled):active, .clickable-card:active, .button-like-link:active {
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-button:focus-visible, .clickable-card:focus-visible {
-    outline: 2px solid var(--light-green);
-    outline-offset: 2px;
+.button-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
 }
 
-button, .nav-arrow, .clickable-card { -webkit-tap-highlight-color: transparent; outline: none; }
-button:focus, .nav-arrow:focus, .clickable-card:focus { outline: none; box-shadow: none; }
-button:focus:not(:hover), .nav-arrow:focus:not(:hover), .clickable-card:focus:not(:hover) { /* Leer gelassen für Touch-App */ }
+/* ============================================= */
+/*          3. Globale UI-Komponenten            */
+/* ============================================= */
 
-.hamburger-menu { position: fixed; top: calc(env(safe-area-inset-top) + 20px); right: 20px; z-index: 1001; }
-.hamburger-icon { font-size: 2rem; cursor: pointer; background: var(--card-background); padding: 5px 10px; border-radius: var(--border-radius); user-select: none; }
-.menu-content { display: none; position: absolute; right: 0; top: calc(100% + 10px); background-color: var(--card-background); box-shadow: var(--box-shadow); border-radius: var(--border-radius); padding: 10px; min-width: 200px; z-index: 1000; }
+/* --- Hamburger Menü --- */
+.hamburger-menu { 
+    position: fixed; 
+    top: calc(env(safe-area-inset-top) + 20px); 
+    right: 20px; 
+    z-index: 1001; 
+}
+.hamburger-icon { 
+    font-size: 2rem; 
+    cursor: pointer; 
+    background: var(--card-background); 
+    padding: 5px 10px; 
+    border-radius: var(--border-radius); 
+    user-select: none; 
+    box-shadow: var(--box-shadow);
+}
+.menu-content { 
+    display: none; 
+    position: absolute; 
+    right: 0; 
+    top: calc(100% + 10px); 
+    background-color: var(--card-background); 
+    box-shadow: var(--box-shadow); 
+    border-radius: var(--border-radius); 
+    padding: 10px; 
+    min-width: 200px; 
+    z-index: 1000; 
+}
 .menu-content.show { display: block; }
 .menu-content ul { list-style: none; }
-.menu-content ul li a { display: block; padding: 10px; text-decoration: none; color: var(--text-color); border-radius: 4px; }
+.menu-content ul li a { 
+    display: block; 
+    padding: 10px; 
+    text-decoration: none; 
+    color: var(--text-color); 
+    border-radius: 4px; 
+}
 .menu-content ul li a:hover { background-color: #e9e9e9; }
-.modal { position: fixed; z-index: 1002; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transform: scale(0.7); transition: opacity 0.3s ease, visibility 0s linear 0.3s, transform 0.3s ease; }
-.modal.show { opacity: 1; visibility: visible; transform: scale(1); transition: opacity 0.3s ease, visibility 0s linear 0s, transform 0.3s ease; }
-.modal-content { background-color: var(--card-background); margin: auto; padding: 20px; border-radius: var(--border-radius); width: 90%; max-width: 600px; box-shadow: var(--box-shadow); position: relative; max-height: 80vh; overflow-y: auto; }
-.modal-close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; line-height: 1; }
 
-.modal-content h4 { color: var(--dark-green); margin-top: 20px; margin-bottom: 10px; }
-.modal-content p, .modal-content li { line-height: 1.6; }
-.modal-content ul { list-style-position: inside; padding-left: 10px; }
+/* --- Modals --- */
+.modal { 
+    position: fixed; z-index: 1002; 
+    left: 0; top: 0; 
+    width: 100%; height: 100%; 
+    background-color: rgba(0,0,0,0.5); 
+    display: flex; align-items: center; justify-content: center; 
+    opacity: 1; visibility: visible; /* Angepasst von 'hidden' zu 'visible' für Transition */
+    transition: opacity 0.3s ease;
+}
+.modal.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.modal-content { 
+    background-color: var(--card-background); 
+    margin: auto; padding: 20px; 
+    border-radius: var(--border-radius); 
+    width: 90%; max-width: 600px; 
+    box-shadow: var(--box-shadow); 
+    position: relative; 
+    max-height: 80vh; overflow-y: auto; 
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+.modal:not(.hidden) .modal-content {
+    transform: scale(1);
+}
+.close-button { 
+    color: #aaa; 
+    float: right; 
+    font-size: 28px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    line-height: 1; 
+}
+.modal-content h2 { color: var(--dark-green); margin-bottom: 10px; }
 
+/* --- Loading Overlay --- */
+#loading-overlay { 
+    position: fixed; top: 0; left: 0; 
+    width: 100%; height: 100%; 
+    background-color: rgba(255, 255, 255, 0.8); 
+    z-index: 9999; 
+    display: flex; flex-direction: column; 
+    justify-content: center; align-items: center; 
+    color: var(--dark-green); 
+    font-size: 1.2rem; 
+}
+.loading-spinner { 
+    border: 5px solid #f3f3f3; 
+    border-top: 5px solid var(--dark-green); 
+    border-radius: 50%; 
+    width: 50px; height: 50px; 
+    animation: spin 1s linear infinite; 
+    margin-bottom: 20px; 
+}
+@keyframes spin { 
+    0% { transform: rotate(0deg); } 
+    100% { transform: rotate(360deg); } 
+}
 
-#loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(255, 255, 255, 0.8); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--dark-green); font-size: 1.2rem; }
-.loading-spinner { border: 5px solid #f3f3f3; border-top: 5px solid var(--dark-green); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-#screen-mode-selection h1, #screen-presentation-selection h1 { color: var(--dark-green); font-size: 2.5rem; margin-bottom: 10px; text-align: center; }
-#screen-mode-selection h2, #screen-presentation-selection h2 { color: var(--light-green); font-size: 1.5rem; margin-bottom: 30px; text-align: center; }
-.mode-selection-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; width: 100%; max-width: 900px; }
-
+/* ============================================= */
+/*       4. Screen: Präsentations-Auswahl        */
+/* ============================================= */
+#screen-presentation-selection h1 { 
+    color: var(--dark-green); 
+    font-size: 2.5rem; 
+    margin-bottom: 10px; 
+}
+#screen-presentation-selection h2 { 
+    color: var(--light-green); 
+    font-size: 1.5rem; 
+    margin-bottom: 30px; 
+}
+.mode-selection-container { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 20px; 
+    width: 100%; 
+    max-width: 900px; 
+}
 .mode-card { 
     background-color: var(--card-background); 
     padding: 20px; 
@@ -101,156 +234,193 @@ button:focus:not(:hover), .nav-arrow:focus:not(:hover), .clickable-card:focus:no
     min-height: 150px; 
     transition: transform 0.2s ease, box-shadow 0.2s ease; 
 }
+.mode-card img { 
+    height: 80px; 
+    width: auto; 
+    margin-bottom: 15px; 
+    border-radius: var(--border-radius); 
+}
+.mode-card .subtitle { 
+    font-size: 1.2rem; 
+    font-family: 'Lexend', sans-serif; 
+    color: var(--light-green); 
+}
+.back-button-container {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 900px; 
+    display: flex;
+    justify-content: center;
+}
+#btn-presentation-back {
+    background-color: #6c757d;
+    max-width: 300px;
+}
 
-.mode-card img { height: 80px; width: auto; margin-bottom: 15px; border-radius: var(--border-radius); }
-.mode-card .subtitle { font-size: 1.2rem; font-family: 'Lexend', sans-serif; color: var(--light-green); }
+/* ============================================= */
+/*            5. Screen: Einstellungen           */
+/* ============================================= */
+#screen-settings #settings-title {
+    color: var(--dark-green);
+    margin-bottom: 20px;
+}
+.settings-container {
+    background-color: var(--card-background);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 500px;
+}
+#set-selection-container h2 {
+    color: var(--dark-green);
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+.setting-item { 
+    margin-bottom: 20px; 
+}
+.setting-item label { 
+    display: block; 
+    margin-bottom: 8px; 
+}
+.setting-item input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
 
-#screen-settings h2 { color: var(--dark-green); margin-bottom: 20px; text-align: center; }
-.settings-form { background-color: var(--card-background); padding: 20px; border-radius: var(--border-radius); box-shadow: var(--box-shadow); width: 100%; max-width: 500px; }
-.form-group { margin-bottom: 20px; }
-.form-group label { display: block; margin-bottom: 8px; }
-.setting-button-group { display: flex; gap: 10px; }
-.setting-button-group button { flex-grow: 1; background-color: #e0e0e0; color: var(--text-color); }
-.setting-button-group button.selected { background-color: var(--light-green); color: var(--button-text-color); }
-input[type="range"] { width: 100%; }
 
+/* ============================================= */
+/*               6. Screen: Übung                */
+/* ============================================= */
 #screen-exercise {
-    padding: 0 !important;
-    background-color: #fff;
+    padding: 0 !important; /* Wichtig, um den ganzen Bildschirm zu füllen */
+    background-color: var(--card-background);
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    height: 100dvh;
+    height: 100vh; /* Fallback */
+    height: 100dvh; /* Nutzt die dynamische Viewport-Höhe */
+    justify-content: space-between;
 }
-.main-content-area {
+
+#current-set-title {
+    padding: 10px;
+    padding-top: calc(env(safe-area-inset-top) + 60px); /* Platz für Hamburger */
+    color: var(--light-green);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.exercise-content {
     flex-grow: 1;
-    width: 100%;
-    min-height: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow-y: auto;
-    padding: calc(env(safe-area-inset-top) + 20px) 
-             calc(env(safe-area-inset-right) + 20px) 
-             calc(env(safe-area-inset-bottom) + 20px) 
-             calc(env(safe-area-inset-left) + 20px);
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-.slides-wrapper {
+/* --- Progress Bar (NEU) --- */
+#progress-bar-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    height: 8px;
+    position: fixed; /* Oben fixiert */
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+#progress-bar {
+    width: 0%; /* Wird via JS gesteuert */
+    height: 100%;
+    background-color: var(--light-green);
+    transition: width 0.3s ease-out;
+}
+
+/* --- Image Slider --- */
+#image-slider-container {
     position: relative;
     overflow: hidden;
     width: 100%;
     aspect-ratio: 4 / 3;
-    max-width: 800px;
     margin: 0 auto;
     flex-shrink: 0;
     max-height: 55vh;
 }
-.slide { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; transition: transform var(--transition-speed) ease-out; transform: translateX(200%); }
-.slide.is-grabbing, .slide.no-transition { transition: none !important; }
-.slide img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer; }
+#image-slider {
+    width: 100%;
+    height: 100%;
+    display: flex; /* Wichtig für horizontales Layout der Bilder */
+}
+#image-slider img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    flex-shrink: 0; /* Verhindert das Schrumpfen der Bilder */
+}
 
-#word-display-area {
+/* --- Wort- & Audio-Anzeige --- */
+#word-display-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+#word-display {
     font-size: 2.5rem;
     font-weight: bold;
     color: var(--dark-green);
     text-align: center;
     line-height: 1.2;
     min-height: 3rem;
-    margin-top: 0px;
 }
-
-#progress-dots-container { padding: 10px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; width: 100%; max-width: 800px; margin: 20px auto 0 auto; }
-.progress-dot { width: 10px; height: 10px; background-color: #ddd; border-radius: 50%; transition: background-color 0.3s ease, transform 0.3s ease; }
-.progress-dot.active { background-color: var(--light-green); transform: scale(1.4); }
-
-#bottom-controls-container { display: flex; justify-content: space-between; align-items: center; gap: 10px; width: 100%; max-width: 800px; margin: 10px auto 0 auto; }
-.arrow-group { display: flex; flex-direction: column; gap: 8px; width: 60px; }
-.center-controls { display: flex; justify-content: center; align-items: center; flex-grow: 1; }
-.nav-arrow { font-size: 3rem; font-weight: 100; color: var(--text-color); background-color: var(--card-background); border: 1px solid #e0e0e0; min-height: 44px; display: flex; align-items: center; justify-content: center; border-radius: var(--border-radius); padding: 0; width: 100%; cursor: pointer; }
-.sound-button { background-color: var(--card-background); background-image: url('lautsprecher.png'); background-repeat: no-repeat; background-position: center; background-size: 100%; transition: transform 0.15s ease, box-shadow 0.15s ease; width: 100px; height: 100px; border-radius: 50%; flex-shrink: 0; border: 1px solid #ddd; cursor: pointer; }
-.sound-button:disabled { background-color: var(--card-background); opacity: 0.5; cursor: not-allowed; filter: grayscale(80%); }
-.sound-button:hover, .sound-button:focus { background-color: var(--card-background); box-shadow: 0 0 8px rgba(0,0,0,0.1); }
-#btn-stop-auto-mode { background-color: var(--stop-button-color); color: var(--button-text-color); width: 100px; height: 100px; border-radius: 50%; font-size: 1.5rem; font-weight: bold; font-family: 'Lexend', sans-serif; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: all 0.2s ease-out; }
-#btn-stop-auto-mode:hover { background-color: #E04B6D; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); transform: translateY(-3px); }
-#btn-stop-auto-mode:active { background-color: #B90031; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); transform: translateY(1px); }
-#instructions-container { display: none; }
-.site-logo { position: fixed; bottom: 100px; right: 100px; width: 100px; height: 100px; z-index: 900; }
-
-#list-selection-area { display: none; }
-#list-selection-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
-.list-selection-row { display: flex; align-items: center; gap: 10px; }
-.list-selection-row select { flex-grow: 1; }
-#btn-add-list { width: 40px; height: 40px; font-size: 1.5rem; padding: 0; line-height: 1; background-color: #e0e0e0; color: var(--text-color); }
-#btn-add-list:not(:disabled):hover { background-color: var(--light-green); color: white; }
-.btn-delete-list { flex-shrink: 0; width: 40px; height: 40px; background-color: transparent; border: 1px solid #ccc; color: #888; padding: 8px; cursor: pointer; transition: background-color 0.2s, border-color 0.2s, color 0.2s; }
-.btn-delete-list:hover { background-color: #C70039; border-color: #C70039; color: white; transform: none; box-shadow: none; }
-.btn-delete-list svg { width: 100%; height: 100%; fill: currentColor; }
-
-/* --- QUIZ STYLES --- */
-#quiz-area { width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; flex-grow: 1; }
-#quiz-sound-button { width: 100px; height: 100px; margin-top: 20px; flex-shrink: 0; }
-#quiz-options-container { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 15px; width: 100%; max-width: 500px; aspect-ratio: 1 / 1; }
-.quiz-option { cursor: pointer; border: 4px solid transparent; border-radius: var(--border-radius); overflow: hidden; transition: all 0.3s ease; box-shadow: var(--box-shadow); background-color: white; }
- .quiz-option:hover { transform: scale(1.03); box-shadow: 0 6px 12px rgba(0,0,0,0.2); }
-.quiz-option img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.quiz-option.correct { border-color: var(--light-green); transform: scale(1.05); box-shadow: 0 0 15px var(--light-green); }
-.quiz-option.incorrect { border-color: var(--stop-button-color); opacity: 0.7; }
-.quiz-option.faded { opacity: 0.5; transform: scale(0.95); pointer-events: none; }
-#quiz-options-container.disabled .quiz-option { pointer-events: none; }
-/* --- END QUIZ STYLES --- */
-
-/* --- CSS-Ergänzung für den neuen Bildschirm --- */
-.back-button-container {
-    margin-top: 40px;
-    width: 100%;
-    max-width: 900px; /* Gleiche Breite wie mode-selection-container */
+.audio-button {
+    font-size: 1.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
     display: flex;
+    align-items: center;
     justify-content: center;
 }
-
-#btn-presentation-back {
-    background-color: #6c757d; /* Eine neutrale Farbe für "Zurück" */
-    max-width: 300px;
-}
-/* =================================
-   Styling für den Präsentations-Slider
-   ================================= */
-
-/* Der sichtbare Rahmen für den Slider */
-#image-slider-container {
-  width: 100%;
-  max-width: 600px; /* Maximale Breite, damit es auf großen Bildschirmen gut aussieht */
-  height: 60vh;     /* Höhe auf 60% des Bildschirms setzen */
-  max-height: 450px;
-  margin: 1rem auto; /* Zentrieren */
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: hidden; /* Das ist entscheidend: Alles außerhalb dieses Rahmens wird versteckt */
-  position: relative;
+.audio-button:hover {
+    background-color: #e9e9e9;
+    transform: none;
+    box-shadow: none;
 }
 
-/* Der "Filmstreifen", der alle Bilder enthält und bewegt wird */
-#image-slider {
-  display: flex; /* Bilder nebeneinander anordnen */
-  height: 100%;
-  transition: transform 0.5s ease-in-out; /* Für den sanften Gleit-Effekt */
+/* --- Slider-Steuerung --- */
+#slider-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 20px 0;
 }
-
-/* Jeder einzelne Slide, der ein Bild enthält */
-.slide {
-  width: 100%;
-  height: 100%;
-  flex-shrink: 0; /* Verhindert, dass die Slides schrumpfen */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.nav-btn {
+    font-size: 2.5rem;
+    font-weight: 100;
+    color: var(--text-color);
+    background-color: transparent;
+    border: none;
+    padding: 0 20px;
+    cursor: pointer;
 }
-
-/* Das Bild innerhalb eines Slides */
-.slide img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain; /* Stellt sicher, dass das ganze Bild sichtbar ist, ohne es zu verzerren */
+#auto-mode-controls {
+    margin-top: 10px;
+}
+#btn-pause-resume {
+    background-color: var(--stop-button-color);
 }
