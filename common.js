@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadSetsManifest() {
         try {
             // Lade die korrekte Datei aus dem Hauptverzeichnis
-            const response = await fetch('sets.json');
+            const response = await fetch('data/sets.json');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
