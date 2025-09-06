@@ -214,3 +214,43 @@ input[type="range"] { width: 100%; }
     background-color: #6c757d; /* Eine neutrale Farbe für "Zurück" */
     max-width: 300px;
 }
+/* =================================
+   Styling für den Präsentations-Slider
+   ================================= */
+
+/* Der sichtbare Rahmen für den Slider */
+#image-slider-container {
+  width: 100%;
+  max-width: 600px; /* Maximale Breite, damit es auf großen Bildschirmen gut aussieht */
+  height: 60vh;     /* Höhe auf 60% des Bildschirms setzen */
+  max-height: 450px;
+  margin: 1rem auto; /* Zentrieren */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden; /* Das ist entscheidend: Alles außerhalb dieses Rahmens wird versteckt */
+  position: relative;
+}
+
+/* Der "Filmstreifen", der alle Bilder enthält und bewegt wird */
+#image-slider {
+  display: flex; /* Bilder nebeneinander anordnen */
+  height: 100%;
+  transition: transform 0.5s ease-in-out; /* Für den sanften Gleit-Effekt */
+}
+
+/* Jeder einzelne Slide, der ein Bild enthält */
+.slide {
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0; /* Verhindert, dass die Slides schrumpfen */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Das Bild innerhalb eines Slides */
+.slide img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Stellt sicher, dass das ganze Bild sichtbar ist, ohne es zu verzerren */
+}
