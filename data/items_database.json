@@ -1,7 +1,7 @@
 {
   "becher": {
     "name": "Becher",
-    "image": "",
+    "image": "data/wörter/images/b/becher.jpg",
     "sound": "data/wörter/sounds/b/Becher.mp3"
   },
   "betonmischer": {
@@ -11,7 +11,7 @@
   },
   "broetchen": {
     "name": "Broetchen",
-    "image": "",
+    "image": "data/wörter/images/b/broetchen.jpg",
     "sound": "data/wörter/sounds/b/Broetchen.mp3"
   },
   "buchstaben": {
@@ -21,7 +21,7 @@
   },
   "buecher": {
     "name": "Buecher",
-    "image": "",
+    "image": "data/wörter/images/b/buecher.jpg",
     "sound": "data/wörter/sounds/b/Buecher.mp3"
   },
   "buntstifte": {
@@ -41,7 +41,7 @@
   },
   "faecher": {
     "name": "Faecher",
-    "image": "",
+    "image": "data/wörter/images/f/faecher.jpg",
     "sound": "data/wörter/sounds/f/Faecher.mp3"
   },
   "feuerloescher": {
@@ -81,7 +81,7 @@
   },
   "fruechte": {
     "name": "Fruechte",
-    "image": "",
+    "image": "data/wörter/images/f/fruechte.jpg",
     "sound": "data/wörter/sounds/f/Fruechte.mp3"
   },
   "geschenk": {
@@ -96,7 +96,7 @@
   },
   "gummibaerchen": {
     "name": "Gummibaerchen",
-    "image": "",
+    "image": "data/wörter/images/g/gummibaerchen.jpeg",
     "sound": "data/wörter/sounds/g/Gummibaerchen.mp3"
   },
   "gummistiefel": {
@@ -106,7 +106,7 @@
   },
   "haenchen": {
     "name": "Haenchen",
-    "image": "",
+    "image": "data/wörter/images/h/haenchen.jpg",
     "sound": "data/wörter/sounds/h/Haenchen.mp3"
   },
   "handschuhe": {
@@ -121,7 +121,7 @@
   },
   "hoernchen": {
     "name": "Hoernchen",
-    "image": "",
+    "image": "data/wörter/images/h/hoernchen.jpg",
     "sound": "data/wörter/sounds/h/Hoernchen.mp3"
   },
   "hubschrauber": {
@@ -131,12 +131,12 @@
   },
   "ich": {
     "name": "Ich",
-    "image": "",
+    "image": "data/wörter/images/i/ich.jpg",
     "sound": "data/wörter/sounds/i/ich.mp3"
   },
   "kaninchen": {
     "name": "Kaninchen",
-    "image": "",
+    "image": "data/wörter/images/k/kaninchen.jpg",
     "sound": "data/wörter/sounds/k/Kaninchen.mp3"
   },
   "ketchup": {
@@ -146,7 +146,7 @@
   },
   "kirche": {
     "name": "Kirche",
-    "image": "",
+    "image": "data/wörter/images/k/kirche.jpg",
     "sound": "data/wörter/sounds/k/Kirche.mp3"
   },
   "kirschen": {
@@ -156,12 +156,12 @@
   },
   "koechin": {
     "name": "Koechin",
-    "image": "",
+    "image": "data/wörter/images/k/koechin.jpg",
     "sound": "data/wörter/sounds/k/Koechin.mp3"
   },
   "kueche": {
     "name": "Kueche",
-    "image": "",
+    "image": "data/wörter/images/k/kueche.jpg",
     "sound": "data/wörter/sounds/k/Kueche.mp3"
   },
   "kuehlschrank": {
@@ -176,22 +176,22 @@
   },
   "leicht": {
     "name": "Leicht",
-    "image": "",
+    "image": "data/wörter/images/l/leicht.jpg",
     "sound": "data/wörter/sounds/l/leicht.mp3"
   },
   "leuchtturm": {
     "name": "Leuchtturm",
-    "image": "",
+    "image": "data/wörter/images/l/leuchtturm.jpg",
     "sound": "data/wörter/sounds/l/Leuchtturm.mp3"
   },
   "licht": {
     "name": "Licht",
-    "image": "",
+    "image": "data/wörter/images/l/licht.jpg",
     "sound": "data/wörter/sounds/l/Licht.mp3"
   },
   "loecher": {
     "name": "Loecher",
-    "image": "",
+    "image": "data/wörter/images/l/loecher.jpg",
     "sound": "data/wörter/sounds/l/Loecher.mp3"
   },
   "loeschen": {
@@ -206,7 +206,7 @@
   },
   "maedchen": {
     "name": "Maedchen",
-    "image": "",
+    "image": "data/wörter/images/m/maedchen.jpg",
     "sound": "data/wörter/sounds/m/Maedchen.mp3"
   },
   "matsch": {
@@ -231,7 +231,7 @@
   },
   "milch": {
     "name": "Milch",
-    "image": "",
+    "image": "data/wörter/images/m/milch.jpg",
     "sound": "data/wörter/sounds/m/Milch.mp3"
   },
   "muschel": {
@@ -246,7 +246,7 @@
   },
   "paeckchen": {
     "name": "Paeckchen",
-    "image": "",
+    "image": "data/wörter/images/p/paeckchen.jpg",
     "sound": "data/wörter/sounds/p/Paeckchen.mp3"
   },
   "pl_tzchen": {
@@ -291,7 +291,7 @@
   },
   "rechts": {
     "name": "Rechts",
-    "image": "",
+    "image": "data/wörter/images/r/rechts.jpeg",
     "sound": "data/wörter/sounds/r/rechts.mp3"
   },
   "regen": {
@@ -331,7 +331,7 @@
   },
   "riechen": {
     "name": "Riechen",
-    "image": "",
+    "image": "data/wörter/images/r/riechen.jpg",
     "sound": "data/wörter/sounds/r/riechen.mp3"
   },
   "rock": {
@@ -616,7 +616,7 @@
   },
   "seepferdchen": {
     "name": "Seepferdchen",
-    "image": "",
+    "image": "data/wörter/images/s/seepferdchen.jpeg",
     "sound": "data/wörter/sounds/s/Seepferdchen.mp3"
   },
   "ski": {
@@ -626,7 +626,7 @@
   },
   "specht": {
     "name": "Specht",
-    "image": "",
+    "image": "data/wörter/images/s/specht.jpeg",
     "sound": "data/wörter/sounds/sch/Specht.mp3"
   },
   "spucken": {
@@ -646,7 +646,7 @@
   },
   "stechen": {
     "name": "Stechen",
-    "image": "",
+    "image": "data/wörter/images/s/stechen.jpeg",
     "sound": "data/wörter/sounds/sch/stechen.mp3"
   },
   "stecker": {
@@ -676,7 +676,7 @@
   },
   "streicheln": {
     "name": "Streicheln",
-    "image": "",
+    "image": "data/wörter/images/s/streicheln.jpeg",
     "sound": "data/wörter/sounds/sch/streicheln.mp3"
   },
   "strich": {
@@ -691,7 +691,7 @@
   },
   "suessigkeiten": {
     "name": "Suessigkeiten",
-    "image": "",
+    "image": "data/wörter/images/s/suessigkeiten.jpg",
     "sound": "data/wörter/sounds/s/Suessigkeiten.mp3"
   },
   "sushi": {
@@ -716,7 +716,7 @@
   },
   "teppich": {
     "name": "Teppich",
-    "image": "",
+    "image": "data/wörter/images/t/teppich.jpeg",
     "sound": "data/wörter/sounds/t/Teppich.mp3"
   },
   "tisch": {
@@ -726,7 +726,7 @@
   },
   "tuecher": {
     "name": "Tuecher",
-    "image": "",
+    "image": "data/wörter/images/t/tuecher.jpg",
     "sound": "data/wörter/sounds/t/Tuecher.mp3"
   },
   "vogelscheuche": {
