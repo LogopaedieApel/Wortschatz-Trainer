@@ -249,6 +249,11 @@
     "image": "",
     "sound": "data/wörter/sounds/p/Paeckchen.mp3"
   },
+  "pl_tzchen": {
+    "name": "Pl Tzchen",
+    "image": "data/wörter/images/p/Plätzchen.jpeg",
+    "sound": ""
+  },
   "plaetzchen": {
     "name": "Plaetzchen",
     "image": "",
@@ -673,6 +678,11 @@
     "name": "Streicheln",
     "image": "",
     "sound": "data/wörter/sounds/sch/streicheln.mp3"
+  },
+  "strich": {
+    "name": "Strich",
+    "image": "data/wörter/images/s/Strich.jpeg",
+    "sound": ""
   },
   "strich_": {
     "name": "Strich ",
