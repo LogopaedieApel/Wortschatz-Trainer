@@ -410,21 +410,28 @@ async function scanForNewFiles() {
 /**
  * Gibt den Bildpfad für ein Item zurück. Falls das Feld leer ist, wird geprüft,
  * ob eine passende Bilddatei im Buchstaben-Ordner existiert.
+ * Die Existenz wird per Image-Preload geprüft.
  */
 function getImagePathForItem(id, item) {
     if (item.image && item.image.trim() !== "") return item.image;
     const first = id.charAt(0).toLowerCase();
-    const extensions = [".jpg", ".jpeg", ".png"]; // ggf. erweitern
+    const extensions = [".jpg", ".jpeg", ".png"];
     for (const ext of extensions) {
         const path = `data/wörter/images/${first}/${id}${ext}`;
-        // Prüfe, ob die Datei existiert (nur Anzeige, kein echtes File-Check im Browser)
-        if (window.imageCache && window.imageCache[path]) return path;
-        // Alternativ: Zeige einfach den Pfad an, falls die Datei existieren sollte
-        // (Backend/Server kann die Existenz prüfen, falls nötig)
-        // return path;
+        // Existenzprüfung per Image-Preload
+        if (window.imageExistenceCache && window.imageExistenceCache[path] !== undefined) {
+            if (window.imageExistenceCache[path]) return path;
+            continue;
+        }
+        const img = new window.Image();
+        img.src = path;
+        img.onload = function() { window.imageExistenceCache[path] = true; };
+        img.onerror = function() { window.imageExistenceCache[path] = false; };
+        // Initial: Zeige erst mal nichts, bis geprüft
     }
     return "";
 }
+if (!window.imageExistenceCache) window.imageExistenceCache = {};
 
 // Attach event listeners to UI elements
 searchInput.addEventListener('input', filterTable);
