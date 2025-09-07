@@ -37,13 +37,16 @@
 </head>
 <body>
     <h1>Wortschatz-Editor</h1>
+    <div class="tab-controls" style="margin-bottom: 20px;">
+        <button class="tab-button active" id="tab-woerter">Wörter</button>
+        <button class="tab-button" id="tab-saetze">Sätze</button>
+    </div>
     <div class="controls">
         <button id="save-button">Änderungen speichern</button>
         <p id="status-message"></p>
     </div>
     <div class="controls">
-        <input type="text" id="search-input" placeholder="Wörter nach Namen filtern...">
-        <!-- NEUER BUTTON -->
+        <input type="text" id="search-input" placeholder="Einträge nach Namen filtern...">
         <button id="scan-files-button">Neue Dateien importieren</button>
         <div id="new-set-controls">
             <input type="text" id="new-set-path" placeholder="Hierarchie/Dateiname (z.B. laute/sch/final)">

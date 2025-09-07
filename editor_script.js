@@ -3,6 +3,7 @@ let database = {};
 let manifest = {};
 let flatSets = {};
 let hasUnsavedChanges = false;
+let currentMode = 'woerter'; // 'woerter' oder 'saetze'
 
 // DOM Element references
 const tableHead = document.querySelector('#editor-table thead');
@@ -15,8 +16,21 @@ const newSetDisplayNameInput = document.getElementById('new-set-displayname');
 const addSetButton = document.getElementById('add-set-button');
 const searchInput = document.getElementById('search-input');
 const scanFilesButton = document.getElementById('scan-files-button');
+const tabWoerter = document.getElementById('tab-woerter');
+const tabSaetze = document.getElementById('tab-saetze');
 
+function switchMode(mode) {
+    if (mode !== 'woerter' && mode !== 'saetze') return;
+    currentMode = mode;
+    tabWoerter.classList.toggle('active', mode === 'woerter');
+    tabSaetze.classList.toggle('active', mode === 'saetze');
+    loadData();
+}
 /**
+if (tabWoerter && tabSaetze) {
+    tabWoerter.addEventListener('click', () => switchMode('woerter'));
+    tabSaetze.addEventListener('click', () => switchMode('saetze'));
+}
  * Updates the UI to reflect whether there are unsaved changes.
  * @param {boolean} isUnsaved - True if there are unsaved changes.
  */
@@ -271,16 +285,16 @@ function readTableIntoState() {
  */
 async function loadData() {
     try {
-        statusMessage.textContent = "Lade Daten...";
-        const response = await fetch('/api/get-all-data');
-        if (!response.ok) throw new Error('Server-Antwort war nicht OK');
-        const data = await response.json();
-        database = data.database;
-        manifest = data.manifest;
-        flatSets = data.flatSets;
-        renderTable();
-        statusMessage.textContent = "Daten erfolgreich geladen.";
-        setUnsavedChanges(false);
+    statusMessage.textContent = "Lade Daten...";
+    const response = await fetch(`/api/get-all-data?mode=${currentMode}`);
+    if (!response.ok) throw new Error('Server-Antwort war nicht OK');
+    const data = await response.json();
+    database = data.database;
+    manifest = data.manifest;
+    flatSets = data.flatSets;
+    renderTable();
+    statusMessage.textContent = `Daten für ${currentMode === 'woerter' ? 'Wörter' : 'Sätze'} erfolgreich geladen.`;
+    setUnsavedChanges(false);
     } catch (error) {
         console.error('Fehler beim Laden:', error);
         statusMessage.textContent = "Fehler: Konnte Daten nicht vom Server laden.";
