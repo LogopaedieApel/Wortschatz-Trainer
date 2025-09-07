@@ -7,8 +7,16 @@ const PORT = 3000;
 // KORRIGIERT: Der Pfad zur Manifest-Datei wurde an die neue Struktur angepasst.
 const setsManifestPath = path.join(__dirname, 'data', 'sets.json'); 
 const dbPath = path.join(__dirname, 'data', 'items_database.json');
-const imagesBasePath = path.join(__dirname, 'data', 'images');
-const soundsBasePath = path.join(__dirname, 'data', 'sounds');
+const imagesBasePaths = [
+    path.join(__dirname, 'data', 'images'),
+    path.join(__dirname, 'data', 'wörter', 'images'),
+    path.join(__dirname, 'data', 'sätze', 'images')
+];
+const soundsBasePaths = [
+    path.join(__dirname, 'data', 'sounds'),
+    path.join(__dirname, 'data', 'wörter', 'sounds'),
+    path.join(__dirname, 'data', 'sätze', 'sounds')
+];
 
 
 app.use(express.json({ limit: '10mb' }));
@@ -81,8 +89,18 @@ app.get('/api/scan-for-new-files', async (req, res) => {
             return fileList;
         };
 
-        const imageFiles = await getAllFiles(imagesBasePath);
-        const soundFiles = await getAllFiles(soundsBasePath);
+        let imageFiles = [];
+        let soundFiles = [];
+        for (const imgPath of imagesBasePaths) {
+            try {
+                imageFiles = imageFiles.concat(await getAllFiles(imgPath));
+            } catch (e) {}
+        }
+        for (const sndPath of soundsBasePaths) {
+            try {
+                soundFiles = soundFiles.concat(await getAllFiles(sndPath));
+            } catch (e) {}
+        }
 
         const foundAssets = {}; 
 
