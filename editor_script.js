@@ -181,7 +181,7 @@ function renderTable() {
         row.innerHTML = `
             <td class="sticky-col"><input type="text" value="${id}" class="id-input" style="width: 120px;" ${readonlyAttr} ${readonlyTitle}></td>
             <td class="sticky-col col-2"><input type="text" value="${item.name || ''}" data-field="name"></td>
-            <td><input type="text" value="${item.image || ''}" data-field="image"></td>
+            <td><input type="text" value="${getImagePathForItem(id, item)}" data-field="image"></td>
             <td><input type="text" value="${item.sound || ''}" data-field="sound"></td>
             <td style="text-align: center;"><button class="delete-button" title="Dieses Wort löschen">❌</button></td>
         `;
@@ -405,6 +405,25 @@ async function scanForNewFiles() {
         console.error('Fehler beim Scannen:', error);
         statusMessage.textContent = 'Fehler: Neue Dateien konnten nicht importiert werden.';
     }
+}
+
+/**
+ * Gibt den Bildpfad für ein Item zurück. Falls das Feld leer ist, wird geprüft,
+ * ob eine passende Bilddatei im Buchstaben-Ordner existiert.
+ */
+function getImagePathForItem(id, item) {
+    if (item.image && item.image.trim() !== "") return item.image;
+    const first = id.charAt(0).toLowerCase();
+    const extensions = [".jpg", ".jpeg", ".png"]; // ggf. erweitern
+    for (const ext of extensions) {
+        const path = `data/wörter/images/${first}/${id}${ext}`;
+        // Prüfe, ob die Datei existiert (nur Anzeige, kein echtes File-Check im Browser)
+        if (window.imageCache && window.imageCache[path]) return path;
+        // Alternativ: Zeige einfach den Pfad an, falls die Datei existieren sollte
+        // (Backend/Server kann die Existenz prüfen, falls nötig)
+        // return path;
+    }
+    return "";
 }
 
 // Attach event listeners to UI elements
