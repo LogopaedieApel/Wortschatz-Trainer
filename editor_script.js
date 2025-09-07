@@ -26,45 +26,12 @@ function switchMode(mode) {
     tabSaetze.classList.toggle('active', mode === 'saetze');
     loadData();
 }
-/**
+
+// Initialisiere die Tab-Buttons für den Moduswechsel
 if (tabWoerter && tabSaetze) {
     tabWoerter.addEventListener('click', () => switchMode('woerter'));
     tabSaetze.addEventListener('click', () => switchMode('saetze'));
 }
- * Updates the UI to reflect whether there are unsaved changes.
- * @param {boolean} isUnsaved - True if there are unsaved changes.
- */
-function setUnsavedChanges(isUnsaved) {
-    hasUnsavedChanges = isUnsaved;
-    if (isUnsaved) {
-        saveButton.classList.add('unsaved');
-        saveButton.textContent = 'Änderungen speichern*';
-        statusMessage.textContent = 'Es gibt ungespeicherte Änderungen.';
-    } else {
-        saveButton.classList.remove('unsaved');
-        saveButton.textContent = 'Änderungen speichern';
-    }
-}
-
-// Event listener to detect any changes in the table
-tableBody.addEventListener('input', (event) => {
-    if (event.target.tagName === 'INPUT') {
-        setUnsavedChanges(true);
-    }
-});
-
-// Event listener for the delete buttons on each row
-tableBody.addEventListener('click', (event) => {
-    if (event.target.classList.contains('delete-button')) {
-        const row = event.target.closest('tr');
-        const id = row.dataset.id;
-        const name = row.querySelector('input[data-field="name"]').value || id;
-        if (window.confirm(`Möchten Sie das Wort "${name}" wirklich endgültig löschen?`)) {
-            row.remove();
-            setUnsavedChanges(true);
-        }
-    }
-});
 
 // Event listener for the header checkboxes to select/deselect all in a column
 tableHead.addEventListener('click', (event) => {
@@ -347,7 +314,8 @@ function addNewSet() {
     }
     readTableIntoState();
     const newFileName = pathParts.join('_') + '.json';
-    const newPath = `data/sets/${newFileName}`;
+    const setsFolder = currentMode === 'saetze' ? 'sets_saetze' : 'sets';
+    const newPath = `data/${setsFolder}/${newFileName}`;
     if (flatSets[newPath]) {
          alert('Ein Set mit diesem Pfad existiert bereits.');
         return;
@@ -379,10 +347,11 @@ async function scanForNewFiles() {
 
     statusMessage.textContent = 'Suche nach neuen Dateien...';
     try {
-        const response = await fetch('/api/scan-for-new-files');
+        // Passiere den Modus korrekt an den Backend-Endpunkt
+        const response = await fetch(`/api/scan-for-new-files?mode=${currentMode}`);
         if (!response.ok) throw new Error('Server-Antwort war nicht OK');
         const { newItems } = await response.json();
-        
+
         const newItemCount = Object.keys(newItems).length;
         if (newItemCount === 0) {
             statusMessage.textContent = 'Keine neuen Dateien gefunden.';
@@ -393,32 +362,25 @@ async function scanForNewFiles() {
         await loadData();
 
         const uniqueNewFolders = [...new Set(Object.values(newItems).map(item => item.folder).filter(f => f))];
-        
         let createdNewColumns = false;
         uniqueNewFolders.forEach(folder => {
             const folderLower = folder.toLowerCase();
-            
             const columnExists = Object.keys(flatSets).some(path => {
                 const pathSegments = path.toLowerCase().split(/[/_.]+/);
                 return pathSegments.includes(folderLower);
             });
-
             if (!columnExists) {
                 console.log(`Erstelle neue Spalte für Ordner: "${folder}" (als Initial-Laut)`);
-                
                 const topCategory = 'Artikulation'; 
-                
-                // === HIER SIND DIE ÄNDERUNGEN ===
-                const displayName = `${folder.toUpperCase()} Initial`; // z.B. "B Initial"
-                const newPath = `data/sets/artikulation_${folderLower}_initial.json`; // z.B. "..._b_initial.json"
-                const newKey = `${folderLower}_initial`; // z.B. "b_initial"
-
+                const setsFolder = currentMode === 'saetze' ? 'sets_saetze' : 'sets';
+                const displayName = `${folder.toUpperCase()} Initial`;
+                const newPath = `data/${setsFolder}/artikulation_${folderLower}_initial.json`;
+                const newKey = `${folderLower}_initial`;
                 flatSets[newPath] = { 
                     displayName: displayName, 
                     items: [], 
                     topCategory: topCategory 
                 };
-
                 if (!manifest[topCategory] || typeof manifest[topCategory] !== 'object') {
                     manifest[topCategory] = { displayName: topCategory };
                 }
@@ -426,24 +388,19 @@ async function scanForNewFiles() {
                     displayName: displayName,
                     path: newPath
                 };
-                
                 createdNewColumns = true;
             }
         });
-
         for (const id in newItems) {
             database[id] = { ...newItems[id], isNew: true, folder: newItems[id].folder };
         }
-        
         renderTable(); 
         setUnsavedChanges(true);
-
         let message = `${newItemCount} neue(s) Item(s) wurden hinzugefügt und automatisch zugeordnet.`;
         if (createdNewColumns) {
             message += " Es wurden außerdem neue Initial-Kategorien basierend auf den Ordnernamen erstellt.";
         }
         statusMessage.textContent = message;
-
     } catch (error) {
         console.error('Fehler beim Scannen:', error);
         statusMessage.textContent = 'Fehler: Neue Dateien konnten nicht importiert werden.';

@@ -8,7 +8,7 @@ const PORT = 3000;
 const setsManifestPath = path.join(__dirname, 'data', 'sets.json'); 
 const dbPath = path.join(__dirname, 'data', 'items_database.json');
 const imagesBasePaths = [
-    path.join(__dirname, 'data', 'images'),
+    // path.join(__dirname, 'data', 'images'),
     path.join(__dirname, 'data', 'wörter', 'images'),
     path.join(__dirname, 'data', 'sätze', 'images')
 ];
@@ -24,10 +24,21 @@ app.use(express.static(__dirname));
 
 app.get('/api/get-all-data', async (req, res) => {
     try {
-        const dbContent = await fs.readFile(dbPath, 'utf8');
+        // Mode auslesen: 'woerter' oder 'saetze'
+        const mode = req.query.mode === 'saetze' ? 'saetze' : 'woerter';
+        let dbPathMode, setsManifestPathMode;
+        if (mode === 'woerter') {
+            dbPathMode = path.join(__dirname, 'data', 'items_database.json');
+            setsManifestPathMode = path.join(__dirname, 'data', 'sets.json');
+        } else {
+            dbPathMode = path.join(__dirname, 'data', 'items_database_saetze.json');
+            setsManifestPathMode = path.join(__dirname, 'data', 'sets_saetze.json');
+        }
+
+        const dbContent = await fs.readFile(dbPathMode, 'utf8');
         const database = JSON.parse(dbContent);
 
-        const manifestContent = await fs.readFile(setsManifestPath, 'utf8');
+        const manifestContent = await fs.readFile(setsManifestPathMode, 'utf8');
         const manifest = JSON.parse(manifestContent);
 
         const flatSets = {};
@@ -70,7 +81,21 @@ app.get('/api/get-all-data', async (req, res) => {
 // GEÄNDERT: Der Scan-Endpunkt liefert jetzt auch den Ordnernamen mit
 app.get('/api/scan-for-new-files', async (req, res) => {
     try {
-        const dbContent = await fs.readFile(dbPath, 'utf8');
+        // Mode auslesen: 'woerter' oder 'saetze'
+        const mode = req.query.mode === 'saetze' ? 'saetze' : 'woerter';
+        let dbPathMode;
+        let imagesBasePathsMode;
+        let soundsBasePathsMode;
+        if (mode === 'woerter') {
+            dbPathMode = path.join(__dirname, 'data', 'items_database.json');
+            imagesBasePathsMode = [path.join(__dirname, 'data', 'wörter', 'images')];
+            soundsBasePathsMode = [path.join(__dirname, 'data', 'wörter', 'sounds')];
+        } else {
+            dbPathMode = path.join(__dirname, 'data', 'items_database_saetze.json');
+            imagesBasePathsMode = [path.join(__dirname, 'data', 'sätze', 'images')];
+            soundsBasePathsMode = [path.join(__dirname, 'data', 'sätze', 'sounds')];
+        }
+        const dbContent = await fs.readFile(dbPathMode, 'utf8');
         const database = JSON.parse(dbContent);
         const existingIds = new Set(Object.keys(database));
 
@@ -91,51 +116,80 @@ app.get('/api/scan-for-new-files', async (req, res) => {
 
         let imageFiles = [];
         let soundFiles = [];
-        for (const imgPath of imagesBasePaths) {
+        for (const imgPath of imagesBasePathsMode) {
             try {
                 imageFiles = imageFiles.concat(await getAllFiles(imgPath));
             } catch (e) {}
         }
-        for (const sndPath of soundsBasePaths) {
+        for (const sndPath of soundsBasePathsMode) {
             try {
                 soundFiles = soundFiles.concat(await getAllFiles(sndPath));
             } catch (e) {}
         }
 
-        const foundAssets = {}; 
+        const foundAssets = {};
 
-        const processFiles = (files, type) => {
-            for (const file of files) {
-                const id = path.parse(file).name.toLowerCase();
-                const folder = path.basename(path.dirname(file)).toLowerCase();
-                
-                if (!foundAssets[id]) foundAssets[id] = {};
-                
-                foundAssets[id][type] = path.relative(__dirname, file).replace(/\\/g, '/');
-                if (!foundAssets[id].folder || type === 'image') {
-                    foundAssets[id].folder = folder;
-                }
+        // Hilfsfunktion: Generiere eine ID aus dem Dateinamen
+        const makeId = (filename) => filename.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9]+/g, '_').toLowerCase();
+
+        // Bestimme Basis-Pfade für Sätze oder Wörter
+        const isSaetze = mode === 'saetze';
+        const imageBase = isSaetze ? 'data/sätze/images/' : 'data/wörter/images/';
+        const soundBase = isSaetze ? 'data/sätze/sounds/' : 'data/wörter/sounds/';
+
+        // Bilddateien zuordnen
+        for (const file of imageFiles) {
+            const base = path.parse(file).name;
+            const id = makeId(base);
+            if (!foundAssets[id]) foundAssets[id] = {};
+            let relPath = path.relative(__dirname, file).replace(/\\/g, '/');
+            // Pfad ggf. anpassen
+            if (!relPath.startsWith(imageBase)) {
+                const parts = relPath.split('/');
+                const idx = parts.indexOf(isSaetze ? 'sätze' : 'wörter');
+                if (idx >= 0) relPath = parts.slice(idx).join('/');
+                relPath = 'data/' + relPath;
             }
-        };
+            foundAssets[id].image = relPath;
+        }
+        // Sounddateien zuordnen
+        for (const file of soundFiles) {
+            const base = path.parse(file).name;
+            const id = makeId(base);
+            if (!foundAssets[id]) foundAssets[id] = {};
+            let relPath = path.relative(__dirname, file).replace(/\\/g, '/');
+            if (!relPath.startsWith(soundBase)) {
+                const parts = relPath.split('/');
+                const idx = parts.indexOf(isSaetze ? 'sätze' : 'wörter');
+                if (idx >= 0) relPath = parts.slice(idx).join('/');
+                relPath = 'data/' + relPath;
+            }
+            foundAssets[id].sound = relPath;
+        }
 
-        processFiles(imageFiles, 'image');
-        processFiles(soundFiles, 'sound');
+        // Ordner zuordnen (optional, z.B. Reime)
+        for (const file of imageFiles.concat(soundFiles)) {
+            const base = path.parse(file).name;
+            const id = makeId(base);
+            const folder = path.basename(path.dirname(file)).toLowerCase();
+            if (!foundAssets[id].folder) foundAssets[id].folder = folder;
+        }
 
+        // Neue Items generieren
         const newItems = {};
         for (const id in foundAssets) {
             const hasNormalId = existingIds.has(id);
             const hasPrefixedId = existingIds.has(`item_${id}`);
-
             if (!hasNormalId && !hasPrefixedId) {
                 newItems[id] = {
-                    name: id.charAt(0).toUpperCase() + id.slice(1),
+                    name: id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
                     image: foundAssets[id].image || '',
                     sound: foundAssets[id].sound || '',
                     folder: foundAssets[id].folder || ''
                 };
             }
         }
-        
+
         console.log(`${Object.keys(newItems).length} neue Items gefunden.`);
         res.json({ newItems });
 
@@ -149,7 +203,17 @@ app.get('/api/scan-for-new-files', async (req, res) => {
 app.post('/api/save-all-data', async (req, res) => {
     const { database, manifest } = req.body;
     try {
-        await fs.writeFile(dbPath, JSON.stringify(database, null, 2));
+        // Mode auslesen: 'woerter' oder 'saetze'
+        const mode = (manifest && manifest.displayName && manifest.displayName.toLowerCase().includes('satz')) ? 'saetze' : 'woerter';
+        let dbPathMode, setsManifestPathMode;
+        if (mode === 'woerter') {
+            dbPathMode = path.join(__dirname, 'data', 'items_database.json');
+            setsManifestPathMode = path.join(__dirname, 'data', 'sets.json');
+        } else {
+            dbPathMode = path.join(__dirname, 'data', 'items_database_saetze.json');
+            setsManifestPathMode = path.join(__dirname, 'data', 'sets_saetze.json');
+        }
+        await fs.writeFile(dbPathMode, JSON.stringify(database, null, 2));
         const manifestToSave = JSON.parse(JSON.stringify(manifest));
 
         const saveSetContent = async (node) => {
@@ -166,7 +230,7 @@ app.post('/api/save-all-data', async (req, res) => {
         };
         
         await saveSetContent(manifestToSave);
-        await fs.writeFile(setsManifestPath, JSON.stringify(manifestToSave, null, 2));
+        await fs.writeFile(setsManifestPathMode, JSON.stringify(manifestToSave, null, 2));
 
         console.log("Daten erfolgreich gespeichert!");
         res.json({ message: 'Alle Daten erfolgreich aktualisiert!' });
