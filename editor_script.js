@@ -15,9 +15,9 @@ const newSetPathInput = document.getElementById('new-set-path');
 const newSetDisplayNameInput = document.getElementById('new-set-displayname');
 const addSetButton = document.getElementById('add-set-button');
 const searchInput = document.getElementById('search-input');
-const scanFilesButton = document.getElementById('scan-files-button');
 const tabWoerter = document.getElementById('tab-woerter');
 const tabSaetze = document.getElementById('tab-saetze');
+const saveStatus = document.getElementById('save-status');
 
 function switchMode(mode) {
     if (mode !== 'woerter' && mode !== 'saetze') return;
@@ -293,12 +293,12 @@ async function saveData() {
         });
         if (!response.ok) throw new Error('Fehler beim Speichern');
         const result = await response.json();
-        statusMessage.textContent = `Erfolg: ${result.message}`;
+        showSaveStatus(true);
         setUnsavedChanges(false);
         await loadData();
     } catch (error) {
+        showSaveStatus(false, error.message);
         console.error('Fehler beim Speichern:', error);
-        statusMessage.textContent = "Fehler: Daten konnten nicht gespeichert werden.";
     }
 }
 
@@ -335,76 +335,6 @@ function addNewSet() {
     newSetDisplayNameInput.value = '';
     renderTable();
     setUnsavedChanges(true);
-}
-
-/**
- * Scans for new asset files, automatically creates new columns if needed, and adds new items.
- */
-async function scanForNewFiles() {
-    if (hasUnsavedChanges && !confirm("Sie haben ungespeicherte Änderungen. Wenn Sie jetzt nach neuen Dateien suchen, gehen die aktuellen Änderungen verloren. Fortfahren?")) {
-        return;
-    }
-
-    statusMessage.textContent = 'Suche nach neuen Dateien...';
-    try {
-        // Passiere den Modus korrekt an den Backend-Endpunkt
-        const response = await fetch(`/api/scan-for-new-files?mode=${currentMode}`);
-        if (!response.ok) throw new Error('Server-Antwort war nicht OK');
-        const { newItems } = await response.json();
-
-        const newItemCount = Object.keys(newItems).length;
-        if (newItemCount === 0) {
-            statusMessage.textContent = 'Keine neuen Dateien gefunden.';
-            await loadData();
-            return;
-        }
-
-        await loadData();
-
-        const uniqueNewFolders = [...new Set(Object.values(newItems).map(item => item.folder).filter(f => f))];
-        let createdNewColumns = false;
-        uniqueNewFolders.forEach(folder => {
-            const folderLower = folder.toLowerCase();
-            const columnExists = Object.keys(flatSets).some(path => {
-                const pathSegments = path.toLowerCase().split(/[/_.]+/);
-                return pathSegments.includes(folderLower);
-            });
-            if (!columnExists) {
-                console.log(`Erstelle neue Spalte für Ordner: "${folder}" (als Initial-Laut)`);
-                const topCategory = 'Artikulation'; 
-                const setsFolder = currentMode === 'saetze' ? 'sets_saetze' : 'sets';
-                const displayName = `${folder.toUpperCase()} Initial`;
-                const newPath = `data/${setsFolder}/artikulation_${folderLower}_initial.json`;
-                const newKey = `${folderLower}_initial`;
-                flatSets[newPath] = { 
-                    displayName: displayName, 
-                    items: [], 
-                    topCategory: topCategory 
-                };
-                if (!manifest[topCategory] || typeof manifest[topCategory] !== 'object') {
-                    manifest[topCategory] = { displayName: topCategory };
-                }
-                manifest[topCategory][newKey] = {
-                    displayName: displayName,
-                    path: newPath
-                };
-                createdNewColumns = true;
-            }
-        });
-        for (const id in newItems) {
-            database[id] = { ...newItems[id], isNew: true, folder: newItems[id].folder };
-        }
-        renderTable(); 
-        setUnsavedChanges(true);
-        let message = `${newItemCount} neue(s) Item(s) wurden hinzugefügt und automatisch zugeordnet.`;
-        if (createdNewColumns) {
-            message += " Es wurden außerdem neue Initial-Kategorien basierend auf den Ordnernamen erstellt.";
-        }
-        statusMessage.textContent = message;
-    } catch (error) {
-        console.error('Fehler beim Scannen:', error);
-        statusMessage.textContent = 'Fehler: Neue Dateien konnten nicht importiert werden.';
-    }
 }
 
 /**
@@ -446,7 +376,190 @@ addRowButton.addEventListener('click', () => {
 });
 
 addSetButton.addEventListener('click', addNewSet);
-scanFilesButton.addEventListener('click', scanForNewFiles);
+
+// Automatische Speicherung bei Änderungen im Editor
+function autoSave() {
+    if (!hasUnsavedChanges) return;
+    saveData();
+}
+// Trigger für alle relevanten Änderungen
+['input', 'change'].forEach(eventType => {
+    if (tableBody) {
+        tableBody.addEventListener(eventType, () => {
+            setUnsavedChanges(true);
+            autoSave();
+        });
+    }
+});
+
+// Statusanzeige nach Speichern
+async function saveData() {
+    try {
+        readTableIntoState();
+        const updateManifestWithFlatData = (node) => {
+            for (const key in node) {
+                const child = node[key];
+                if (child && child.path && flatSets[child.path]) {
+                    child.items = flatSets[child.path].items;
+                } else if (typeof child === 'object' && child !== null) {
+                    updateManifestWithFlatData(child);
+                }
+            }
+        };
+        updateManifestWithFlatData(manifest);
+        statusMessage.textContent = "Speichere Daten...";
+        const response = await fetch('/api/save-all-data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ database: database, manifest: manifest })
+        });
+        if (!response.ok) throw new Error('Fehler beim Speichern');
+        const result = await response.json();
+        showSaveStatus(true);
+        setUnsavedChanges(false);
+        await loadData();
+    } catch (error) {
+        showSaveStatus(false, error.message);
+        console.error('Fehler beim Speichern:', error);
+    }
+}
+
+/**
+ * Shows the save status with a checkmark or cross.
+ * @param {boolean} success - Whether the save was successful.
+ * @param {string} [message] - Optional message to display on error.
+ */
+function showSaveStatus(success, message) {
+    if (success) {
+        saveStatus.innerHTML = '<span style="color:green;font-size:1.2em;">✔</span> Änderungen gespeichert';
+    } else {
+        saveStatus.innerHTML = `<span style="color:red;font-size:1.2em;">✖</span> ${message || 'Fehler beim Speichern'}`;
+    }
+}
+
+/**
+ * Button zum Synchronisieren der Dateien
+ */
+const syncFilesButton = document.createElement('button');
+syncFilesButton.textContent = 'Dateien synchronisieren';
+syncFilesButton.style.margin = '0 8px';
+syncFilesButton.addEventListener('click', async () => {
+    statusMessage.textContent = 'Synchronisiere Dateien...';
+    try {
+        const response = await fetch('/api/sync-files', { method: 'POST' });
+        const result = await response.json();
+        if (result.toDelete && result.toDelete.length > 0) {
+            if (confirm(`Es wurden ${result.toDelete.length} Datei(en) im Repo gefunden, die nicht lokal vorhanden sind. Sollen diese gelöscht werden?\n\n${result.toDelete.join('\n')}`)) {
+                await fetch('/api/delete-repo-files', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ files: result.toDelete })
+                });
+                statusMessage.textContent = 'Nicht-lokale Dateien wurden gelöscht.';
+            } else {
+                statusMessage.textContent = 'Löschvorgang abgebrochen.';
+            }
+        } else {
+            statusMessage.textContent = 'Dateien sind synchronisiert.';
+        }
+    } catch (error) {
+        statusMessage.textContent = 'Fehler bei der Synchronisierung.';
+        console.error(error);
+    }
+});
+// Button einfügen (z.B. neben "Neue Dateien importieren")
+if (saveButton && saveButton.parentNode) {
+    saveButton.parentNode.insertBefore(syncFilesButton, saveButton.nextSibling);
+}
+
+// Button zum Einsortieren unsortierter Sound-Dateien
+const sortSoundsButton = document.createElement('button');
+sortSoundsButton.textContent = 'Unsortierte Sound-Dateien einsortieren';
+sortSoundsButton.style.margin = '0 8px';
+sortSoundsButton.addEventListener('click', async () => {
+    statusMessage.textContent = 'Sortiere unsortierte Sound-Dateien...';
+    try {
+        const response = await fetch('/api/sort-unsorted-sounds', { method: 'POST' });
+        const result = await response.json();
+        if (result.moved && result.moved.length > 0) {
+            statusMessage.textContent = `${result.moved.length} Datei(en) wurden einsortiert.`;
+        } else {
+            statusMessage.textContent = 'Keine neuen unsortierten Dateien gefunden.';
+        }
+    } catch (error) {
+        statusMessage.textContent = 'Fehler beim Einsortieren.';
+        console.error(error);
+    }
+});
+// Button einfügen (z.B. neben "Dateien synchronisieren")
+if (syncFilesButton && syncFilesButton.parentNode) {
+    syncFilesButton.parentNode.insertBefore(sortSoundsButton, syncFilesButton.nextSibling);
+}
+
+// Button zum Einsortieren unsortierter Bild-Dateien
+const sortImagesButton = document.createElement('button');
+sortImagesButton.textContent = 'Unsortierte Bilder einsortieren';
+sortImagesButton.style.margin = '0 8px';
+sortImagesButton.addEventListener('click', async () => {
+    statusMessage.textContent = 'Sortiere unsortierte Bild-Dateien...';
+    try {
+        const response = await fetch('/api/sort-unsorted-images', { method: 'POST' });
+        const result = await response.json();
+        if (result.moved && result.moved.length > 0) {
+            statusMessage.textContent = `${result.moved.length} Bild(er) wurden einsortiert.`;
+        } else {
+            statusMessage.textContent = 'Keine neuen unsortierten Bilder gefunden.';
+        }
+    } catch (error) {
+        statusMessage.textContent = 'Fehler beim Einsortieren.';
+        console.error(error);
+    }
+});
+// Button einfügen (z.B. neben "Unsortierte Dateien einsortieren")
+if (sortSoundsButton && sortSoundsButton.parentNode) {
+    sortSoundsButton.parentNode.insertBefore(sortImagesButton, sortSoundsButton.nextSibling);
+}
+
+// Button zum Einsortieren aller unsortierten Dateien (Bilder & Sounds)
+const sortAllButton = document.createElement('button');
+sortAllButton.textContent = 'Unsortierte Dateien einsortieren';
+sortAllButton.style.margin = '0 8px';
+sortAllButton.addEventListener('click', async () => {
+    statusMessage.textContent = 'Sortiere unsortierte Dateien...';
+    let totalMoved = 0;
+    try {
+        // Sounds einsortieren
+        const soundResponse = await fetch('/api/sort-unsorted-sounds', { method: 'POST' });
+        const soundResult = await soundResponse.json();
+        if (soundResult.moved && soundResult.moved.length > 0) {
+            totalMoved += soundResult.moved.length;
+        }
+        // Bilder einsortieren
+        const imageResponse = await fetch('/api/sort-unsorted-images', { method: 'POST' });
+        const imageResult = await imageResponse.json();
+        if (imageResult.moved && imageResult.moved.length > 0) {
+            totalMoved += imageResult.moved.length;
+        }
+        if (totalMoved > 0) {
+            statusMessage.textContent = `${totalMoved} Datei(en) wurden einsortiert.`;
+        } else {
+            statusMessage.textContent = 'Keine neuen unsortierten Dateien gefunden.';
+        }
+    } catch (error) {
+        statusMessage.textContent = 'Fehler beim Einsortieren.';
+        console.error(error);
+    }
+});
+// Button einfügen (ersetzt die Einzel-Buttons)
+if (syncFilesButton && syncFilesButton.parentNode) {
+    syncFilesButton.parentNode.insertBefore(sortAllButton, syncFilesButton.nextSibling);
+    if (sortSoundsButton) sortSoundsButton.remove();
+    if (sortImagesButton) sortImagesButton.remove();
+}
 
 // Initial data load when the page is ready
 document.addEventListener('DOMContentLoaded', loadData);
+
+function setUnsavedChanges(state) {
+    hasUnsavedChanges = !!state;
+}

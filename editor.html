@@ -1,3 +1,7 @@
+    <table id="editor-table" style="width:100%;margin-top:16px;">
+        <thead></thead>
+        <tbody></tbody>
+    </table>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -42,12 +46,11 @@
         <button class="tab-button" id="tab-saetze">Sätze</button>
     </div>
     <div class="controls">
-        <button id="save-button">Änderungen speichern</button>
+    <span id="save-status" style="font-weight:bold;display:inline-block;margin-right:16px;"></span>
         <p id="status-message"></p>
     </div>
     <div class="controls">
         <input type="text" id="search-input" placeholder="Einträge nach Namen filtern...">
-        <button id="scan-files-button">Neue Dateien importieren</button>
         <div id="new-set-controls">
             <input type="text" id="new-set-path" placeholder="Hierarchie/Dateiname (z.B. laute/sch/final)">
             <input type="text" id="new-set-displayname" placeholder="Anzeigename (z.B. SCH im Auslaut)">

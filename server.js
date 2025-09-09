@@ -240,6 +240,64 @@ app.post('/api/save-all-data', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Editor-Server läuft! Öffne http://localhost:${PORT}/editor.html in deinem Browser.`);
+app.post('/api/sort-unsorted-images', async (req, res) => {
+    const unsortedDir = path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert');
+    const baseDir = path.join(__dirname, 'data', 'wörter', 'images');
+    try {
+        const files = await fs.readdir(unsortedDir);
+        const moved = [];
+        for (const file of files) {
+            if (file.startsWith('.')) continue; // skip hidden/system files
+            const first = file.charAt(0).toLowerCase();
+            const targetDir = path.join(baseDir, first);
+            const sourcePath = path.join(unsortedDir, file);
+            const targetPath = path.join(targetDir, file);
+            // Zielordner anlegen, falls nicht vorhanden
+            try { await fs.mkdir(targetDir, { recursive: true }); } catch {}
+            // Nur verschieben, wenn Datei im Zielordner nicht existiert
+            try {
+                await fs.access(targetPath);
+                // Datei existiert schon, überspringen
+                continue;
+            } catch {
+                await fs.rename(sourcePath, targetPath);
+                moved.push(file);
+            }
+        }
+        res.json({ moved });
+    } catch (error) {
+        console.error('Fehler beim Einsortieren der Bilder:', error);
+        res.status(500).json({ message: 'Fehler beim Einsortieren der Bilder.' });
+    }
+});
+
+app.post('/api/sort-unsorted-sounds', async (req, res) => {
+    const unsortedDir = path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert');
+    const baseDir = path.join(__dirname, 'data', 'wörter', 'sounds');
+    try {
+        const files = await fs.readdir(unsortedDir);
+        const moved = [];
+        for (const file of files) {
+            if (file.startsWith('.')) continue; // skip hidden/system files
+            const first = file.charAt(0).toLowerCase();
+            const targetDir = path.join(baseDir, first);
+            const sourcePath = path.join(unsortedDir, file);
+            const targetPath = path.join(targetDir, file);
+            // Zielordner anlegen, falls nicht vorhanden
+            try { await fs.mkdir(targetDir, { recursive: true }); } catch {}
+            // Nur verschieben, wenn Datei im Zielordner nicht existiert
+            try {
+                await fs.access(targetPath);
+                // Datei existiert schon, überspringen
+                continue;
+            } catch {
+                await fs.rename(sourcePath, targetPath);
+                moved.push(file);
+            }
+        }
+        res.json({ moved });
+    } catch (error) {
+        console.error('Fehler beim Einsortieren der Sounds:', error);
+        res.status(500).json({ message: 'Fehler beim Einsortieren der Sounds.' });
+    }
 });
