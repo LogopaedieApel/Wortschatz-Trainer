@@ -201,17 +201,15 @@ app.get('/api/scan-for-new-files', async (req, res) => {
 
 
 app.post('/api/save-all-data', async (req, res) => {
-    const { database, manifest } = req.body;
+    const { database, manifest, mode } = req.body;
     try {
-        // Mode auslesen: 'woerter' oder 'saetze'
-        const mode = (manifest && manifest.displayName && manifest.displayName.toLowerCase().includes('satz')) ? 'saetze' : 'woerter';
         let dbPathMode, setsManifestPathMode;
-        if (mode === 'woerter') {
-            dbPathMode = path.join(__dirname, 'data', 'items_database.json');
-            setsManifestPathMode = path.join(__dirname, 'data', 'sets.json');
-        } else {
+        if (mode === 'saetze') {
             dbPathMode = path.join(__dirname, 'data', 'items_database_saetze.json');
             setsManifestPathMode = path.join(__dirname, 'data', 'sets_saetze.json');
+        } else { // Default to 'woerter'
+            dbPathMode = path.join(__dirname, 'data', 'items_database.json');
+            setsManifestPathMode = path.join(__dirname, 'data', 'sets.json');
         }
         await fs.writeFile(dbPathMode, JSON.stringify(database, null, 2));
         const manifestToSave = JSON.parse(JSON.stringify(manifest));
@@ -300,4 +298,129 @@ app.post('/api/sort-unsorted-sounds', async (req, res) => {
         console.error('Fehler beim Einsortieren der Sounds:', error);
         res.status(500).json({ message: 'Fehler beim Einsortieren der Sounds.' });
     }
+});
+
+app.post('/api/sync-files', async (req, res) => {
+    try {
+        // Helper function to generate a manifest file from a directory of set files
+        const generateManifest = async (setsDir, manifestPath) => {
+            const newManifest = {};
+            try {
+                const files = await fs.readdir(setsDir);
+                for (const file of files) {
+                    if (path.extname(file) !== '.json') continue;
+
+                    const baseName = path.basename(file, '.json');
+                    const parts = baseName.split('_');
+                    
+                    if (parts.length < 1) continue;
+
+                    const mainCategoryKey = parts[0].toLowerCase();
+                    const subCategoryKey = parts.slice(1).join('_');
+
+                    const mainCategoryDisplayName = mainCategoryKey.charAt(0).toUpperCase() + mainCategoryKey.slice(1);
+                    
+                    let subCategoryDisplayName = parts.slice(1).map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
+                    if (subCategoryDisplayName === '') {
+                        subCategoryDisplayName = mainCategoryDisplayName;
+                    }
+
+
+                    if (!newManifest[mainCategoryDisplayName]) {
+                        newManifest[mainCategoryDisplayName] = {
+                            displayName: mainCategoryDisplayName
+                        };
+                    }
+
+                    const finalKey = subCategoryKey || mainCategoryKey;
+                    newManifest[mainCategoryDisplayName][finalKey] = {
+                        displayName: subCategoryDisplayName,
+                        path: path.join('data', path.basename(setsDir), file).replace(/\\/g, '/')
+                    };
+                }
+            } catch (error) {
+                if (error.code !== 'ENOENT') {
+                    console.error(`Error reading sets directory ${setsDir}:`, error);
+                }
+            }
+            await fs.writeFile(manifestPath, JSON.stringify(newManifest, null, 2));
+        };
+
+        // Generate manifests for both 'woerter' and 'saetze'
+        await generateManifest(path.join(__dirname, 'data', 'sets'), path.join(__dirname, 'data', 'sets.json'));
+        await generateManifest(path.join(__dirname, 'data', 'sets_saetze'), path.join(__dirname, 'data', 'sets_saetze.json'));
+
+        // Helper function to update the items database for a given mode
+        const updateDatabaseForMode = async (mode) => {
+            const modeName = mode === 'saetze' ? 'sätze' : 'wörter';
+            const dbPath = path.join(__dirname, 'data', mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
+            const imagesBasePath = path.join(__dirname, 'data', modeName, 'images');
+            const soundsBasePath = path.join(__dirname, 'data', modeName, 'sounds');
+            
+            const getAllFiles = async (dirPath, fileList = []) => {
+                try {
+                    const files = await fs.readdir(dirPath);
+                    for (const file of files) {
+                        const filePath = path.join(dirPath, file);
+                        const stat = await fs.stat(filePath);
+                        if (stat.isDirectory()) {
+                            await getAllFiles(filePath, fileList);
+                        } else if (!path.basename(file).startsWith('.')) {
+                            fileList.push(filePath);
+                        }
+                    }
+                } catch (err) {
+                    if (err.code !== 'ENOENT') console.error(`Error reading directory ${dirPath}:`, err);
+                }
+                return fileList;
+            };
+
+            const imageFiles = await getAllFiles(imagesBasePath);
+            const soundFiles = await getAllFiles(soundsBasePath);
+            const newDatabase = {};
+
+            const processFile = (filePath, type, basePath) => {
+                const relPath = path.relative(__dirname, filePath).replace(/\\/g, '/');
+                const fileName = path.basename(filePath);
+                const id = fileName.substring(0, fileName.lastIndexOf('.')).toLowerCase().replace(/[^a-z0-9_]/g, '_');
+                if (!id) return;
+
+                if (!newDatabase[id]) {
+                    newDatabase[id] = {
+                        name: id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+                        image: '', sound: '', folder: ''
+                    };
+                }
+                newDatabase[id][type] = relPath;
+
+                const parentDir = path.dirname(filePath);
+                const relDir = path.relative(basePath, parentDir);
+                if (relDir && !newDatabase[id].folder) {
+                    newDatabase[id].folder = path.basename(relDir).toLowerCase();
+                }
+            };
+
+            imageFiles.forEach(file => processFile(file, 'image', imagesBasePath));
+            soundFiles.forEach(file => processFile(file, 'sound', soundsBasePath));
+
+            await fs.writeFile(dbPath, JSON.stringify(newDatabase, null, 2));
+            return Object.keys(newDatabase).length;
+        };
+
+        // Update databases for both modes
+        const processedWoerter = await updateDatabaseForMode('woerter');
+        const processedSaetze = await updateDatabaseForMode('saetze');
+
+        res.json({ message: `Synchronisierung erfolgreich. ${processedWoerter} Wort-Einträge und ${processedSaetze} Satz-Einträge verarbeitet. Set-Konfigurationen aktualisiert.` });
+
+    } catch (error) {
+        console.error(`Fehler bei der Synchronisierung:`, error);
+        res.status(500).json({ message: 'Ein schwerwiegender Fehler ist bei der Synchronisierung aufgetreten.' });
+    }
+});
+
+// === KORREKTUR HINZUGEFÜGT ===
+// Dieser Block startet den Server und sorgt dafür, dass er aktiv bleibt.
+app.listen(PORT, () => {
+    console.log(`Server läuft und lauscht auf http://localhost:${PORT}`);
 });

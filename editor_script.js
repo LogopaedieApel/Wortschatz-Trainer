@@ -194,7 +194,8 @@ function renderTable() {
             
             let isChecked = flatSets[path] && flatSets[path].items.includes(id);
             
-            if (item.isNew && item.folder) {
+            // NEU: Logik zum automatischen Ankreuzen basierend auf dem Ordner
+            if (item.folder) {
                 const pathSegments = path.toLowerCase().split(/[/_.]+/);
                 if (pathSegments.includes(item.folder.toLowerCase())) {
                     isChecked = true;
@@ -268,39 +269,7 @@ async function loadData() {
     }
 }
 
-/**
- * Saves all current data to the server.
- */
-async function saveData() {
-    try {
-        readTableIntoState();
-        const updateManifestWithFlatData = (node) => {
-            for (const key in node) {
-                const child = node[key];
-                if (child && child.path && flatSets[child.path]) {
-                    child.items = flatSets[child.path].items;
-                } else if (typeof child === 'object' && child !== null) {
-                    updateManifestWithFlatData(child);
-                }
-            }
-        };
-        updateManifestWithFlatData(manifest);
-        statusMessage.textContent = "Speichere Daten...";
-        const response = await fetch('/api/save-all-data', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ database: database, manifest: manifest })
-        });
-        if (!response.ok) throw new Error('Fehler beim Speichern');
-        const result = await response.json();
-        showSaveStatus(true);
-        setUnsavedChanges(false);
-        await loadData();
-    } catch (error) {
-        showSaveStatus(false, error.message);
-        console.error('Fehler beim Speichern:', error);
-    }
-}
+
 
 /**
  * Adds a new set (column) to the editor.
@@ -338,30 +307,15 @@ function addNewSet() {
 }
 
 /**
- * Gibt den Bildpfad für ein Item zurück. Falls das Feld leer ist, wird geprüft,
- * ob eine passende Bilddatei im Buchstaben-Ordner existiert.
- * Die Existenz wird per Image-Preload geprüft.
+ * Gibt den Bildpfad für ein Item zurück.
+ * Diese Funktion verwendet nur noch den in der Datenbank hinterlegten Wert.
  */
 function getImagePathForItem(id, item) {
-    if (item.image && item.image.trim() !== "") return item.image;
-    const first = id.charAt(0).toLowerCase();
-    const extensions = [".jpg", ".jpeg", ".png"];
-    for (const ext of extensions) {
-        const path = `data/wörter/images/${first}/${id}${ext}`;
-        // Existenzprüfung per Image-Preload
-        if (window.imageExistenceCache && window.imageExistenceCache[path] !== undefined) {
-            if (window.imageExistenceCache[path]) return path;
-            continue;
-        }
-        const img = new window.Image();
-        img.src = path;
-        img.onload = function() { window.imageExistenceCache[path] = true; };
-        img.onerror = function() { window.imageExistenceCache[path] = false; };
-        // Initial: Zeige erst mal nichts, bis geprüft
-    }
-    return "";
+    return item.image || '';
 }
-if (!window.imageExistenceCache) window.imageExistenceCache = {};
+
+// Das Caching für die Bildexistenz wird nicht mehr benötigt.
+// if (!window.imageExistenceCache) window.imageExistenceCache = {};
 
 // Attach event listeners to UI elements
 searchInput.addEventListener('input', filterTable);
@@ -411,13 +365,14 @@ async function saveData() {
         const response = await fetch('/api/save-all-data', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ database: database, manifest: manifest })
+            body: JSON.stringify({ database: database, manifest: manifest, mode: currentMode })
         });
         if (!response.ok) throw new Error('Fehler beim Speichern');
         const result = await response.json();
         showSaveStatus(true);
         setUnsavedChanges(false);
-        await loadData();
+        // Nach dem Speichern die Daten neu laden, um Konsistenz sicherzustellen
+        await loadData(); 
     } catch (error) {
         showSaveStatus(false, error.message);
         console.error('Fehler beim Speichern:', error);
@@ -446,7 +401,11 @@ syncFilesButton.style.margin = '0 8px';
 syncFilesButton.addEventListener('click', async () => {
     statusMessage.textContent = 'Synchronisiere Dateien...';
     try {
-        const response = await fetch('/api/sync-files', { method: 'POST' });
+        const response = await fetch('/api/sync-files', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mode: currentMode }) 
+        });
         const result = await response.json();
         if (result.toDelete && result.toDelete.length > 0) {
             if (confirm(`Es wurden ${result.toDelete.length} Datei(en) im Repo gefunden, die nicht lokal vorhanden sind. Sollen diese gelöscht werden?\n\n${result.toDelete.join('\n')}`)) {
@@ -558,7 +517,9 @@ if (syncFilesButton && syncFilesButton.parentNode) {
 }
 
 // Initial data load when the page is ready
-document.addEventListener('DOMContentLoaded', loadData);
+document.addEventListener('DOMContentLoaded', () => {
+    switchMode('woerter');
+});
 
 function setUnsavedChanges(state) {
     hasUnsavedChanges = !!state;

@@ -1,8 +1,4 @@
-    <table id="editor-table" style="width:100%;margin-top:16px;">
-        <thead></thead>
-        <tbody></tbody>
-    </table>
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -46,7 +42,8 @@
         <button class="tab-button" id="tab-saetze">Sätze</button>
     </div>
     <div class="controls">
-    <span id="save-status" style="font-weight:bold;display:inline-block;margin-right:16px;"></span>
+        <button id="save-button">Änderungen speichern</button>
+        <span id="save-status" style="font-weight:bold;display:inline-block;margin-right:16px;"></span>
         <p id="status-message"></p>
     </div>
     <div class="controls">
@@ -67,6 +64,9 @@
         <button id="add-row-button">+ Neue Zeile hinzufügen</button>
     </div>
 
-    <script src="editor_script.js"></script>
+    <script>
+        // Fügt einen Zeitstempel an das Skript an, um Caching zu verhindern
+        document.write(`<script src="editor_script.js?v=${new Date().getTime()}"><\/script>`);
+    </script>
 </body>
 </html>
