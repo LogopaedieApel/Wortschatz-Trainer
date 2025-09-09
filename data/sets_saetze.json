@@ -1,10 +1,9 @@
 {
-	"Artikulation": {
-		"displayName": "Artikulation",
-		"reime_initial": {
-			"displayName": "REIME Initial",
-			"path": "data/sets_saetze/artikulation_reime_initial.json"
-		}
-	}
+  "Artikulation": {
+    "displayName": "Artikulation",
+    "reime_initial": {
+      "displayName": "Reime Initial",
+      "path": "data/sets_saetze/artikulation_reime_initial.json"
+    }
+  }
 }
-

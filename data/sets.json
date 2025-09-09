@@ -49,13 +49,17 @@
       "displayName": "R Initial",
       "path": "data/sets/artikulation_r_initial.json"
     },
+    "SCH medial": {
+      "displayName": "SCH medial",
+      "path": "data/sets/Artikulation_SCH medial.json"
+    },
+    "sch_initial": {
+      "displayName": "Sch Initial",
+      "path": "data/sets/artikulation_sch_initial.json"
+    },
     "s_initial": {
       "displayName": "S Initial",
       "path": "data/sets/artikulation_s_initial.json"
-    },
-    "sch_initial": {
-      "displayName": "SCH Initial",
-      "path": "data/sets/artikulation_sch_initial.json"
     },
     "t_initial": {
       "displayName": "T Initial",
@@ -64,16 +68,12 @@
     "w_initial": {
       "displayName": "W Initial",
       "path": "data/sets/artikulation_w_initial.json"
-    },
-    "SCH medial": {
-      "displayName": "SCH medial",
-      "path": "data/sets/Artikulation_SCH medial.json"
     }
   },
   "Wortschatz": {
     "displayName": "Wortschatz",
-    "nahrungsmittel": {
-      "displayName": "Nahrungsmittel",
+    "Nahrnungsmittel": {
+      "displayName": "Nahrnungsmittel",
       "path": "data/sets/Wortschatz_Nahrnungsmittel.json"
     }
   }

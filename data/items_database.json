@@ -38,8 +38,14 @@
   "busch": {
     "name": "Busch",
     "image": "data/wörter/images/b/Busch.jpg",
-    "sound": "data/wörter/sounds/sounds_unsortiert/Busch.mp3",
+    "sound": "data/wörter/sounds/b/Busch.mp3",
     "folder": "b"
+  },
+  "dreieck": {
+    "name": "Dreieck",
+    "image": "data/wörter/images/d/Dreieck.jpg",
+    "sound": "",
+    "folder": "d"
   },
   "dusche": {
     "name": "Dusche",
@@ -62,7 +68,7 @@
   "fisch": {
     "name": "Fisch",
     "image": "data/wörter/images/f/Fisch.jpg",
-    "sound": "data/wörter/sounds/sounds_unsortiert/Fisch.mp3",
+    "sound": "data/wörter/sounds/f/Fisch.mp3",
     "folder": "f"
   },
   "fische": {
@@ -80,7 +86,7 @@
   "fleisch": {
     "name": "Fleisch",
     "image": "data/wörter/images/f/Fleisch.jpg",
-    "sound": "data/wörter/sounds/sounds_unsortiert/Fleisch.mp3",
+    "sound": "data/wörter/sounds/f/Fleisch.mp3",
     "folder": "f"
   },
   "froesche": {
@@ -92,7 +98,7 @@
   "frosch": {
     "name": "Frosch",
     "image": "data/wörter/images/f/Frosch.jpg",
-    "sound": "data/wörter/sounds/sounds_unsortiert/Frosch.mp3",
+    "sound": "data/wörter/sounds/f/Frosch.mp3",
     "folder": "f"
   },
   "fruechte": {
@@ -160,24 +166,6 @@
     "image": "data/wörter/images/i/ich.jpg",
     "sound": "data/wörter/sounds/i/ich.mp3",
     "folder": "i"
-  },
-  "rechnen": {
-    "name": "Rechnen",
-    "image": "data/wörter/images/r/rechnen.jpg",
-    "sound": "data/wörter/sounds/r/rechnen.mp3",
-    "folder": "images_unsortiert"
-  },
-  "reich": {
-    "name": "Reich",
-    "image": "data/wörter/images/r/reich.jpg",
-    "sound": "data/wörter/sounds/r/reich.mp3",
-    "folder": "images_unsortiert"
-  },
-  "richtig": {
-    "name": "Richtig",
-    "image": "data/wörter/images/r/richtig.jpg",
-    "sound": "data/wörter/sounds/r/richtig.mp3",
-    "folder": "images_unsortiert"
   },
   "kaninchen": {
     "name": "Kaninchen",
@@ -323,6 +311,12 @@
     "sound": "",
     "folder": "p"
   },
+  "pommes": {
+    "name": "Pommes",
+    "image": "data/wörter/images/p/Pommes.jpg",
+    "sound": "",
+    "folder": "p"
+  },
   "rad": {
     "name": "Rad",
     "image": "data/wörter/images/r/Rad.jpg",
@@ -353,6 +347,12 @@
     "sound": "",
     "folder": "r"
   },
+  "rechnen": {
+    "name": "Rechnen",
+    "image": "data/wörter/images/r/rechnen.jpg",
+    "sound": "data/wörter/sounds/r/rechnen.mp3",
+    "folder": "r"
+  },
   "rechts": {
     "name": "Rechts",
     "image": "data/wörter/images/r/rechts.jpeg",
@@ -371,6 +371,12 @@
     "sound": "",
     "folder": "r"
   },
+  "reich": {
+    "name": "Reich",
+    "image": "data/wörter/images/r/reich.jpg",
+    "sound": "data/wörter/sounds/r/reich.mp3",
+    "folder": "r"
+  },
   "reifen": {
     "name": "Reifen",
     "image": "data/wörter/images/r/Reifen.jpg",
@@ -387,6 +393,12 @@
     "name": "Rennen",
     "image": "data/wörter/images/r/rennen.jpg",
     "sound": "",
+    "folder": "r"
+  },
+  "richtig": {
+    "name": "Richtig",
+    "image": "data/wörter/images/r/richtig.jpg",
+    "sound": "data/wörter/sounds/r/richtig.mp3",
     "folder": "r"
   },
   "riechen": {

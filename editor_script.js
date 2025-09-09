@@ -18,6 +18,8 @@ const searchInput = document.getElementById('search-input');
 const tabWoerter = document.getElementById('tab-woerter');
 const tabSaetze = document.getElementById('tab-saetze');
 const saveStatus = document.getElementById('save-status');
+const notificationArea = document.getElementById('notification-area');
+let debounceTimer; // Timer for debouncing save action
 
 function switchMode(mode) {
     if (mode !== 'woerter' && mode !== 'saetze') return;
@@ -251,18 +253,23 @@ function readTableIntoState() {
 /**
  * Fetches all data from the server and initializes the editor.
  */
-async function loadData() {
+async function loadData(isReload = false) {
     try {
-    statusMessage.textContent = "Lade Daten...";
-    const response = await fetch(`/api/get-all-data?mode=${currentMode}`);
-    if (!response.ok) throw new Error('Server-Antwort war nicht OK');
-    const data = await response.json();
-    database = data.database;
-    manifest = data.manifest;
-    flatSets = data.flatSets;
-    renderTable();
-    statusMessage.textContent = `Daten für ${currentMode === 'woerter' ? 'Wörter' : 'Sätze'} erfolgreich geladen.`;
-    setUnsavedChanges(false);
+        if (!isReload) {
+            statusMessage.textContent = "Lade Daten...";
+        }
+        const response = await fetch(`/api/get-all-data?mode=${currentMode}`);
+        if (!response.ok) throw new Error('Server-Antwort war nicht OK');
+        const data = await response.json();
+        database = data.database;
+        manifest = data.manifest;
+        flatSets = data.flatSets;
+        renderTable();
+        if (!isReload) {
+            statusMessage.textContent = `Daten für ${currentMode === 'woerter' ? 'Wörter' : 'Sätze'} erfolgreich geladen.`;
+            checkUnsortedFiles(); // Check for unsorted files after initial load
+        }
+        setUnsavedChanges(false);
     } catch (error) {
         console.error('Fehler beim Laden:', error);
         statusMessage.textContent = "Fehler: Konnte Daten nicht vom Server laden.";
@@ -319,7 +326,6 @@ function getImagePathForItem(id, item) {
 
 // Attach event listeners to UI elements
 searchInput.addEventListener('input', filterTable);
-saveButton.addEventListener('click', saveData);
 
 addRowButton.addEventListener('click', () => {
     readTableIntoState();
@@ -331,17 +337,26 @@ addRowButton.addEventListener('click', () => {
 
 addSetButton.addEventListener('click', addNewSet);
 
-// Automatische Speicherung bei Änderungen im Editor
-function autoSave() {
-    if (!hasUnsavedChanges) return;
-    saveData();
+// Debounced save function
+function debouncedSave() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+        if (hasUnsavedChanges) {
+            saveData();
+        }
+    }, 1500); // Wait 1.5 seconds after the last change
 }
-// Trigger für alle relevanten Änderungen
+
+// Trigger for all relevant changes
 ['input', 'change'].forEach(eventType => {
     if (tableBody) {
-        tableBody.addEventListener(eventType, () => {
+        tableBody.addEventListener(eventType, (event) => {
+            // Ignore events from the search input if it's inside the table structure
+            if (event.target.id === 'search-input') return;
+            
             setUnsavedChanges(true);
-            autoSave();
+            showSaveStatus(null, 'Änderungen werden gespeichert...'); // Show pending state
+            debouncedSave();
         });
     }
 });
@@ -361,7 +376,7 @@ async function saveData() {
             }
         };
         updateManifestWithFlatData(manifest);
-        statusMessage.textContent = "Speichere Daten...";
+        // No need to set status message here, it's handled by showSaveStatus
         const response = await fetch('/api/save-all-data', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -371,8 +386,11 @@ async function saveData() {
         const result = await response.json();
         showSaveStatus(true);
         setUnsavedChanges(false);
-        // Nach dem Speichern die Daten neu laden, um Konsistenz sicherzustellen
-        await loadData(); 
+        // Reload data after saving to ensure consistency, but do it quietly
+        const currentScroll = { x: window.scrollX, y: window.scrollY };
+        await loadData(true); // Pass a flag to suppress status messages
+        window.scrollTo(currentScroll.x, currentScroll.y);
+
     } catch (error) {
         showSaveStatus(false, error.message);
         console.error('Fehler beim Speichern:', error);
@@ -381,139 +399,223 @@ async function saveData() {
 
 /**
  * Shows the save status with a checkmark or cross.
- * @param {boolean} success - Whether the save was successful.
- * @param {string} [message] - Optional message to display on error.
+ * @param {boolean|null} success - True for success, false for error, null for pending.
+ * @param {string} [message] - Optional message to display.
  */
 function showSaveStatus(success, message) {
-    if (success) {
+    if (success === true) {
         saveStatus.innerHTML = '<span style="color:green;font-size:1.2em;">✔</span> Änderungen gespeichert';
-    } else {
+    } else if (success === false) {
         saveStatus.innerHTML = `<span style="color:red;font-size:1.2em;">✖</span> ${message || 'Fehler beim Speichern'}`;
+    } else { // Pending state
+        saveStatus.innerHTML = `<span style="font-size:1.2em;">...</span> ${message || 'Speichern...'}`;
     }
 }
 
 /**
- * Button zum Synchronisieren der Dateien
+ * Checks for unsorted files and displays a notification if any are found.
  */
-const syncFilesButton = document.createElement('button');
-syncFilesButton.textContent = 'Dateien synchronisieren';
-syncFilesButton.style.margin = '0 8px';
-syncFilesButton.addEventListener('click', async () => {
-    statusMessage.textContent = 'Synchronisiere Dateien...';
+async function checkUnsortedFiles() {
+    // This feature is currently only for 'woerter' mode
+    if (currentMode !== 'woerter') {
+        notificationArea.innerHTML = '';
+        return;
+    }
     try {
-        const response = await fetch('/api/sync-files', { 
+        const response = await fetch('/api/check-unsorted-files');
+        if (!response.ok) throw new Error('Prüfung auf unsortierte Dateien fehlgeschlagen.');
+        const data = await response.json();
+
+        notificationArea.innerHTML = ''; // Clear previous notifications
+        if (data.count > 0) {
+            const notificationLink = document.createElement('a');
+            notificationLink.href = '#';
+            notificationLink.innerHTML = `✨ ${data.count} neue ${data.count === 1 ? 'Datei' : 'Dateien'} gefunden. Hier klicken zum Einsortieren.`;
+            
+            // Add a tooltip to show the list of files
+            const fileList = data.files.join('\n');
+            notificationLink.title = fileList;
+
+            notificationLink.addEventListener('click', async (e) => {
+                e.preventDefault();
+                notificationArea.textContent = 'Analysiere unsortierte Dateien...';
+                await analyzeUnsortedFiles();
+            });
+            notificationArea.appendChild(notificationLink);
+        }
+    } catch (error) {
+        console.error(error);
+        notificationArea.textContent = 'Fehler bei der Prüfung auf neue Dateien.';
+    }
+}
+
+/**
+ * Triggers the server to analyze unsorted files and displays the conflict resolution dialog if needed.
+ */
+async function analyzeUnsortedFiles() {
+    try {
+        notificationArea.textContent = 'Analysiere unsortierte Dateien...';
+        const response = await fetch('/api/analyze-unsorted-files', { method: 'POST' });
+        if (!response.ok) throw new Error('Serverfehler bei der Analyse.');
+        
+        const result = await response.json();
+        console.log("Analyse-Ergebnis:", result);
+
+        const { movableFiles, conflicts } = result;
+
+        if (conflicts.length === 0 && movableFiles.length === 0) {
+            notificationArea.textContent = 'Keine neuen unsortierten Dateien gefunden.';
+            setTimeout(() => {
+                if (notificationArea.textContent === 'Keine neuen unsortierten Dateien gefunden.') {
+                    notificationArea.innerHTML = '';
+                }
+            }, 3000);
+            return;
+        }
+
+        if (conflicts.length > 0) {
+            displayConflictModal(movableFiles, conflicts);
+        } else {
+            // Automatically move files if there are no conflicts
+            const actions = movableFiles.map(f => ({ type: 'move', sourcePath: f.sourcePath, targetPath: f.targetPath, fileName: f.fileName }));
+            await resolveAndReload(actions);
+        }
+
+    } catch (error) {
+        console.error('Fehler bei der Analyse:', error);
+        notificationArea.textContent = 'Fehler bei der Analyse der Dateien.';
+    }
+}
+
+function displayConflictModal(movableFiles, conflicts) {
+    const modal = document.getElementById('conflict-modal');
+    const conflictList = document.getElementById('conflict-list');
+    conflictList.innerHTML = ''; // Clear previous content
+
+    // Header
+    const header = document.createElement('div');
+    header.className = 'conflict-item conflict-item-header';
+    header.innerHTML = `
+        <span>Datei</span>
+        <span>Neue Version (Unsortiert)</span>
+        <span>Alte Version (Zielordner)</span>
+        <span>Aktion</span>
+    `;
+    conflictList.appendChild(header);
+
+    conflicts.forEach(conflict => {
+        const item = document.createElement('div');
+        item.className = 'conflict-item';
+        item.dataset.fileName = conflict.fileName;
+
+        const isNewer = new Date(conflict.source.mtime) > new Date(conflict.target.mtime);
+        
+        item.innerHTML = `
+            <div class="conflict-details"><strong>${conflict.fileName}</strong></div>
+            <div class="conflict-details">
+                ${new Date(conflict.source.mtime).toLocaleString()}<br>
+                ${(conflict.source.size / 1024).toFixed(2)} KB
+            </div>
+            <div class="conflict-details">
+                ${new Date(conflict.target.mtime).toLocaleString()}<br>
+                ${(conflict.target.size / 1024).toFixed(2)} KB
+            </div>
+            <div class="conflict-actions">
+                <button data-action="replace" class="${isNewer ? 'selected' : ''}">Neue behalten</button>
+                <button data-action="keep_existing" class="${!isNewer ? 'selected' : ''}">Alte behalten</button>
+            </div>
+        `;
+        conflictList.appendChild(item);
+    });
+
+    // Add event listeners to action buttons within the modal
+    conflictList.querySelectorAll('.conflict-actions button').forEach(button => {
+        button.addEventListener('click', () => {
+            const parent = button.parentElement;
+            parent.querySelectorAll('button').forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+        });
+    });
+
+    document.getElementById('resolve-all-newer').onclick = () => {
+        conflictList.querySelectorAll('.conflict-item').forEach(item => {
+            if (item.classList.contains('conflict-item-header')) return;
+            item.querySelector('button[data-action="replace"]').click();
+        });
+    };
+
+    document.getElementById('resolve-all-older').onclick = () => {
+        conflictList.querySelectorAll('.conflict-item').forEach(item => {
+            if (item.classList.contains('conflict-item-header')) return;
+            item.querySelector('button[data-action="keep_existing"]').click();
+        });
+    };
+
+    document.getElementById('resolve-cancel').onclick = () => {
+        modal.style.display = 'none';
+        notificationArea.innerHTML = '';
+    };
+
+    document.getElementById('resolve-submit').onclick = async () => {
+        const actions = [...movableFiles.map(f => ({ type: 'move', sourcePath: f.sourcePath, targetPath: f.targetPath, fileName: f.fileName }))];
+        
+        conflictList.querySelectorAll('.conflict-item').forEach(item => {
+            if (item.classList.contains('conflict-item-header')) return;
+            const fileName = item.dataset.fileName;
+            const selectedButton = item.querySelector('button.selected');
+            if (selectedButton) {
+                const conflict = conflicts.find(c => c.fileName === fileName);
+                actions.push({
+                    type: selectedButton.dataset.action,
+                    sourcePath: conflict.source.path,
+                    targetPath: conflict.target.path,
+                    fileName: conflict.fileName
+                });
+            }
+        });
+
+        modal.style.display = 'none';
+        await resolveAndReload(actions);
+    };
+
+    modal.style.display = 'flex';
+    notificationArea.textContent = `${conflicts.length} Konflikt(e) gefunden. Bitte im Dialog lösen.`;
+}
+
+async function resolveAndReload(actions) {
+    notificationArea.textContent = 'Verarbeite Dateien...';
+    try {
+        const resolveResponse = await fetch('/api/resolve-conflicts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mode: currentMode }) 
+            body: JSON.stringify({ actions })
         });
-        const result = await response.json();
-        if (result.toDelete && result.toDelete.length > 0) {
-            if (confirm(`Es wurden ${result.toDelete.length} Datei(en) im Repo gefunden, die nicht lokal vorhanden sind. Sollen diese gelöscht werden?\n\n${result.toDelete.join('\n')}`)) {
-                await fetch('/api/delete-repo-files', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ files: result.toDelete })
-                });
-                statusMessage.textContent = 'Nicht-lokale Dateien wurden gelöscht.';
-            } else {
-                statusMessage.textContent = 'Löschvorgang abgebrochen.';
-            }
-        } else {
-            statusMessage.textContent = 'Dateien sind synchronisiert.';
+        if (!resolveResponse.ok) throw new Error('Serverfehler bei der Verarbeitung der Konflikte.');
+        
+        const resolveResult = await resolveResponse.json();
+        
+        let message = `${resolveResult.moved + resolveResult.deleted} Datei(en) verarbeitet.`;
+        if (resolveResult.errors.length > 0) {
+            message += ` ${resolveResult.errors.length} Fehler aufgetreten.`;
+            console.error("Fehler bei der Verarbeitung:", resolveResult.errors);
         }
-    } catch (error) {
-        statusMessage.textContent = 'Fehler bei der Synchronisierung.';
-        console.error(error);
-    }
-});
-// Button einfügen (z.B. neben "Neue Dateien importieren")
-if (saveButton && saveButton.parentNode) {
-    saveButton.parentNode.insertBefore(syncFilesButton, saveButton.nextSibling);
-}
+        statusMessage.textContent = message;
 
-// Button zum Einsortieren unsortierter Sound-Dateien
-const sortSoundsButton = document.createElement('button');
-sortSoundsButton.textContent = 'Unsortierte Sound-Dateien einsortieren';
-sortSoundsButton.style.margin = '0 8px';
-sortSoundsButton.addEventListener('click', async () => {
-    statusMessage.textContent = 'Sortiere unsortierte Sound-Dateien...';
-    try {
-        const response = await fetch('/api/sort-unsorted-sounds', { method: 'POST' });
-        const result = await response.json();
-        if (result.moved && result.moved.length > 0) {
-            statusMessage.textContent = `${result.moved.length} Datei(en) wurden einsortiert.`;
-        } else {
-            statusMessage.textContent = 'Keine neuen unsortierten Dateien gefunden.';
-        }
-    } catch (error) {
-        statusMessage.textContent = 'Fehler beim Einsortieren.';
-        console.error(error);
-    }
-});
-// Button einfügen (z.B. neben "Dateien synchronisieren")
-if (syncFilesButton && syncFilesButton.parentNode) {
-    syncFilesButton.parentNode.insertBefore(sortSoundsButton, syncFilesButton.nextSibling);
-}
+        // New Step: Sync database to create entries for new files
+        notificationArea.textContent = 'Synchronisiere Datenbank...';
+        const syncResponse = await fetch('/api/sync-files', { method: 'POST' });
+        if (!syncResponse.ok) throw new Error('Serverfehler bei der Datenbanksynchronisierung.');
+        const syncResult = await syncResponse.json();
+        console.log('Sync result:', syncResult.message);
+        
+        notificationArea.innerHTML = '';
+        await loadData(true); // Reload data to reflect changes
+        statusMessage.textContent = 'Ansicht wurde aktualisiert.';
 
-// Button zum Einsortieren unsortierter Bild-Dateien
-const sortImagesButton = document.createElement('button');
-sortImagesButton.textContent = 'Unsortierte Bilder einsortieren';
-sortImagesButton.style.margin = '0 8px';
-sortImagesButton.addEventListener('click', async () => {
-    statusMessage.textContent = 'Sortiere unsortierte Bild-Dateien...';
-    try {
-        const response = await fetch('/api/sort-unsorted-images', { method: 'POST' });
-        const result = await response.json();
-        if (result.moved && result.moved.length > 0) {
-            statusMessage.textContent = `${result.moved.length} Bild(er) wurden einsortiert.`;
-        } else {
-            statusMessage.textContent = 'Keine neuen unsortierten Bilder gefunden.';
-        }
     } catch (error) {
-        statusMessage.textContent = 'Fehler beim Einsortieren.';
-        console.error(error);
+        console.error('Fehler bei der Verarbeitung:', error);
+        notificationArea.textContent = 'Ein schwerer Fehler ist aufgetreten.';
     }
-});
-// Button einfügen (z.B. neben "Unsortierte Dateien einsortieren")
-if (sortSoundsButton && sortSoundsButton.parentNode) {
-    sortSoundsButton.parentNode.insertBefore(sortImagesButton, sortSoundsButton.nextSibling);
-}
-
-// Button zum Einsortieren aller unsortierten Dateien (Bilder & Sounds)
-const sortAllButton = document.createElement('button');
-sortAllButton.textContent = 'Unsortierte Dateien einsortieren';
-sortAllButton.style.margin = '0 8px';
-sortAllButton.addEventListener('click', async () => {
-    statusMessage.textContent = 'Sortiere unsortierte Dateien...';
-    let totalMoved = 0;
-    try {
-        // Sounds einsortieren
-        const soundResponse = await fetch('/api/sort-unsorted-sounds', { method: 'POST' });
-        const soundResult = await soundResponse.json();
-        if (soundResult.moved && soundResult.moved.length > 0) {
-            totalMoved += soundResult.moved.length;
-        }
-        // Bilder einsortieren
-        const imageResponse = await fetch('/api/sort-unsorted-images', { method: 'POST' });
-        const imageResult = await imageResponse.json();
-        if (imageResult.moved && imageResult.moved.length > 0) {
-            totalMoved += imageResult.moved.length;
-        }
-        if (totalMoved > 0) {
-            statusMessage.textContent = `${totalMoved} Datei(en) wurden einsortiert.`;
-        } else {
-            statusMessage.textContent = 'Keine neuen unsortierten Dateien gefunden.';
-        }
-    } catch (error) {
-        statusMessage.textContent = 'Fehler beim Einsortieren.';
-        console.error(error);
-    }
-});
-// Button einfügen (ersetzt die Einzel-Buttons)
-if (syncFilesButton && syncFilesButton.parentNode) {
-    syncFilesButton.parentNode.insertBefore(sortAllButton, syncFilesButton.nextSibling);
-    if (sortSoundsButton) sortSoundsButton.remove();
-    if (sortImagesButton) sortImagesButton.remove();
 }
 
 // Initial data load when the page is ready

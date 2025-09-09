@@ -269,6 +269,123 @@ app.post('/api/sort-unsorted-images', async (req, res) => {
     }
 });
 
+// This endpoint is obsolete and will be replaced by the new analysis and resolution flow;
+/*
+app.post('/api/sort-unsorted-files', async (req, res) => {
+    // ... old code ...
+});
+*/
+
+// New endpoint to analyze unsorted files and detect conflicts
+app.post('/api/analyze-unsorted-files', async (req, res) => {
+    const unsortedDirs = {
+        images: path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert'),
+        sounds: path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert')
+    };
+    const baseDirs = {
+        images: path.join(__dirname, 'data', 'wörter', 'images'),
+        sounds: path.join(__dirname, 'data', 'wörter', 'sounds')
+    };
+
+    const movableFiles = [];
+    const conflicts = [];
+
+    try {
+        for (const type of ['images', 'sounds']) {
+            const unsortedDir = unsortedDirs[type];
+            const baseDir = baseDirs[type];
+            
+            let files;
+            try {
+                files = await fs.readdir(unsortedDir);
+            } catch (e) {
+                if (e.code === 'ENOENT') continue; // Directory does not exist, skip.
+                throw e;
+            }
+
+            for (const file of files) {
+                if (file.startsWith('.')) continue;
+
+                const firstChar = file.charAt(0).toLowerCase();
+                const targetDir = path.join(baseDir, firstChar);
+                const sourcePath = path.join(unsortedDir, file);
+                const targetPath = path.join(targetDir, file);
+
+                try {
+                    await fs.access(targetPath);
+                    // File exists at target, so it's a conflict.
+                    const sourceStats = await fs.stat(sourcePath);
+                    const targetStats = await fs.stat(targetPath);
+                    conflicts.push({
+                        fileName: file,
+                        source: { path: sourcePath.replace(/\\/g, '/'), size: sourceStats.size, mtime: sourceStats.mtime },
+                        target: { path: targetPath.replace(/\\/g, '/'), size: targetStats.size, mtime: targetStats.mtime }
+                    });
+                } catch {
+                    // File does not exist at target, it's safely movable.
+                    movableFiles.push({
+                        fileName: file,
+                        sourcePath: sourcePath.replace(/\\/g, '/'),
+                        targetPath: targetPath.replace(/\\/g, '/')
+                    });
+                }
+            }
+        }
+        res.json({ movableFiles, conflicts });
+    } catch (error) {
+        console.error('[ANALYZE] ERROR: Failed during analysis.', error);
+        res.status(500).json({ message: 'Fehler bei der Analyse der unsortierten Dateien.' });
+    }
+});
+
+// New endpoint to resolve conflicts based on user decisions
+app.post('/api/resolve-conflicts', async (req, res) => {
+    const { actions } = req.body; // Expect an array of actions
+    let movedCount = 0;
+    let deletedCount = 0;
+    const errors = [];
+
+    if (!actions || !Array.isArray(actions)) {
+        return res.status(400).json({ message: 'Invalid request body' });
+    }
+
+    for (const action of actions) {
+        try {
+            const sourcePath = path.resolve(action.sourcePath);
+            const targetPath = action.targetPath ? path.resolve(action.targetPath) : null;
+
+            switch (action.type) {
+                case 'move': // For safely movable files
+                    if (!targetPath) throw new Error('Target path is missing for move action.');
+                    await fs.mkdir(path.dirname(targetPath), { recursive: true });
+                    await fs.rename(sourcePath, targetPath);
+                    movedCount++;
+                    break;
+                case 'replace': // For conflicts: keep new, replace old
+                    if (!targetPath) throw new Error('Target path is missing for replace action.');
+                    // Use rename as a more atomic move operation
+                    await fs.rename(sourcePath, targetPath);
+                    movedCount++;
+                    break;
+                case 'keep_existing': // For conflicts: keep old, delete new
+                    await fs.unlink(sourcePath);
+                    deletedCount++;
+                    break;
+            }
+        } catch (e) {
+            console.error(`[RESOLVE] ERROR: Failed to perform action for ${action.fileName}:`, e);
+            errors.push({ fileName: action.fileName, message: e.message });
+        }
+    }
+
+    res.json({
+        message: 'Konflikte wurden verarbeitet.',
+        moved: movedCount,
+        deleted: deletedCount,
+        errors: errors
+    });
+});
+
 app.post('/api/sort-unsorted-sounds', async (req, res) => {
     const unsortedDir = path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert');
     const baseDir = path.join(__dirname, 'data', 'wörter', 'sounds');
@@ -298,6 +415,98 @@ app.post('/api/sort-unsorted-sounds', async (req, res) => {
         console.error('Fehler beim Einsortieren der Sounds:', error);
         res.status(500).json({ message: 'Fehler beim Einsortieren der Sounds.' });
     }
+});
+
+app.post('/api/sort-unsorted-files', async (req, res) => {
+    const unsortedDirs = {
+        images: path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert'),
+        sounds: path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert')
+    };
+    const baseDirs = {
+        images: path.join(__dirname, 'data', 'wörter', 'images'),
+        sounds: path.join(__dirname, 'data', 'wörter', 'sounds')
+    };
+
+    let totalMoved = 0;
+    const movedFiles = [];
+
+    try {
+        for (const type of ['images', 'sounds']) {
+            const unsortedDir = unsortedDirs[type];
+            const baseDir = baseDirs[type];
+            
+            let files;
+            try {
+                files = await fs.readdir(unsortedDir);
+            } catch (e) {
+                if (e.code === 'ENOENT') {
+                    console.log(`[SORT] INFO: Unsorted directory not found, skipping: ${unsortedDir}`);
+                    continue;
+                }
+                throw e;
+            }
+
+            for (const file of files) {
+                if (file.startsWith('.')) continue;
+                const firstChar = file.charAt(0).toLowerCase();
+                const targetDir = path.join(baseDir, firstChar);
+                const sourcePath = path.join(unsortedDir, file);
+                const targetPath = path.join(targetDir, file);
+
+                console.log(`[SORT] Processing: ${file}`);
+                console.log(`[SORT]   Source: ${sourcePath}`);
+                console.log(`[SORT]   Target: ${targetPath}`);
+
+                await fs.mkdir(targetDir, { recursive: true });
+
+                try {
+                    await fs.access(targetPath);
+                    // Wenn fs.access erfolgreich ist, existiert die Datei bereits.
+                    console.log(`[SORT]   SKIPPING: Target file already exists.`);
+                } catch {
+                    // Wenn fs.access fehlschlägt, existiert die Datei nicht, also kopieren und dann löschen.
+                    try {
+                        console.log(`[SORT]   COPYING: Attempting to copy file...`);
+                        await fs.copyFile(sourcePath, targetPath);
+                        console.log(`[SORT]   SUCCESS: File copied.`);
+                        
+                        console.log(`[SORT]   DELETING: Attempting to delete original file...`);
+                        await fs.unlink(sourcePath);
+                        console.log(`[SORT]   SUCCESS: Original file deleted.`);
+
+                        movedFiles.push(file);
+                        totalMoved++;
+                    } catch (moveError) {
+                        console.error(`[SORT]   ERROR: Failed during copy/delete process for ${file}. Reason:`, moveError);
+                    }
+                }
+            }
+        }
+        console.log(`[SORT] FINISHED: Moved ${totalMoved} files in total.`);
+        res.json({ moved: movedFiles, count: totalMoved });
+    } catch (error) {
+        console.error('Fehler beim Einsortieren der Dateien:', error);
+        res.status(500).json({ message: 'Fehler beim Einsortieren der Dateien.' });
+    }
+});
+
+app.get('/api/check-unsorted-files', async (req, res) => {
+    const unsortedImageDir = path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert');
+    const unsortedSoundDir = path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert');
+    let filesList = [];
+    try {
+        const imageFiles = await fs.readdir(unsortedImageDir);
+        filesList = filesList.concat(imageFiles.filter(f => !f.startsWith('.')));
+    } catch (e) {
+        if (e.code !== 'ENOENT') console.error("Fehler beim Lesen des Bild-Verzeichnisses:", e);
+    }
+    try {
+        const soundFiles = await fs.readdir(unsortedSoundDir);
+        filesList = filesList.concat(soundFiles.filter(f => !f.startsWith('.')));
+    } catch (e) {
+        if (e.code !== 'ENOENT') console.error("Fehler beim Lesen des Sound-Verzeichnisses:", e);
+    }
+    res.json({ count: filesList.length, files: filesList });
 });
 
 app.post('/api/sync-files', async (req, res) => {
