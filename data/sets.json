@@ -64,6 +64,10 @@
     "w_initial": {
       "displayName": "W Initial",
       "path": "data/sets/artikulation_w_initial.json"
+    },
+    "SCH medial": {
+      "displayName": "SCH medial",
+      "path": "data/sets/Artikulation_SCH medial.json"
     }
   },
   "Wortschatz": {
