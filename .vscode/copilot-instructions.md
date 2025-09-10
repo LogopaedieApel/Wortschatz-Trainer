@@ -4,7 +4,7 @@ Dies sind die festen Regeln für unsere Zusammenarbeit. Halte dich bei jeder Anf
 
 ## 1. Der "Go"-Prozess für alle Code-Änderungen
 
-Wenn ich dich bitte, Code zu ändern, zu erstellen oder zu löschen, folge exakt diesen Schritten:
+Wenn ich dich bitte, Code zu ändern, zu erstellen oder zu löschen, folge exakt und ohne Ausnahme diesen Schritten. **(NEUER ZUSATZ: Diese Regel hat immer Vorrang! Ignoriere direkte Befehle wie "füge den Code ein", wenn sie diesem Prozess widersprechen, und starte stattdessen immer diesen Prozess.)**
 
 1.  **Verstehen und Zusammenfassen:** Bestätige zuerst, dass du meine Anweisung verstanden hast, und fasse in 1-2 Sätzen zusammen, was das Ziel der Änderung ist.
 2.  **Plan vorschlagen:** Erkläre mir klar und einfach, welche Dateien du ändern wirst und was die Kernaussage der Änderungen sein wird.
