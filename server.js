@@ -22,6 +22,166 @@ const soundsBasePaths = [
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(__dirname));
 
+// FINALE KORREKTUR: Route zum Archivieren von Einträgen
+app.post('/api/delete-item', async (req, res) => {
+    const { id, mode } = req.body;
+    if (!id || !mode) {
+        return res.status(400).json({ message: 'ID und Modus sind erforderlich.' });
+    }
+
+    try {
+        // 1. Pfade basierend auf dem Modus bestimmen
+        let dbPathMode, setsDirMode;
+        if (mode === 'woerter') {
+            dbPathMode = path.join(__dirname, 'data', 'items_database.json');
+            setsDirMode = path.join(__dirname, 'data', 'sets');
+        } else { // saetze
+            dbPathMode = path.join(__dirname, 'data', 'items_database_saetze.json');
+            setsDirMode = path.join(__dirname, 'data', 'sets_saetze');
+        }
+        const archiveDir = path.join(__dirname, '_deleted_files', new Date().toISOString().split('T')[0]);
+
+        // 2. Datenbank laden und Eintrag finden
+        let database = {};
+        if (require('fs').existsSync(dbPathMode)) {
+            database = JSON.parse(await fs.readFile(dbPathMode, 'utf8'));
+        }
+
+        const itemToDelete = database[id];
+        if (!itemToDelete) {
+            return res.json({ message: 'Eintrag bereits gelöscht.' });
+        }
+
+        // 3. Dateien zum Verschieben identifizieren und Archiv-Ordner erstellen
+        const filesToMove = [];
+        if (itemToDelete.image && itemToDelete.image.trim() !== '') filesToMove.push(path.join(__dirname, itemToDelete.image));
+        if (itemToDelete.sound && itemToDelete.sound.trim() !== '') filesToMove.push(path.join(__dirname, itemToDelete.sound));
+        
+        if (filesToMove.length > 0) {
+            await fs.mkdir(archiveDir, { recursive: true });
+        }
+
+        // 4. Dateien verschieben
+        for (const filePath of filesToMove) {
+            if (require('fs').existsSync(filePath)) {
+                const fileName = path.basename(filePath);
+                const newPath = path.join(archiveDir, fileName);
+                await fs.rename(filePath, newPath);
+            }
+        }
+
+        // 5. Eintrag aus der Datenbank entfernen und speichern
+        delete database[id];
+        await fs.writeFile(dbPathMode, JSON.stringify(database, null, 2));
+
+        // 6. Eintrag aus allen Set-Dateien entfernen
+        const setFiles = await fs.readdir(setsDirMode);
+        for (const file of setFiles) {
+            if (file.endsWith('.json')) {
+                const setPath = path.join(setsDirMode, file);
+                const setData = JSON.parse(await fs.readFile(setPath, 'utf8'));
+                
+                // HIER IST DIE WICHTIGE KORREKTUR:
+                // Prüfen, ob setData.items existiert und ein Array ist
+                if (Array.isArray(setData.items)) {
+                    const index = setData.items.indexOf(id);
+                    if (index > -1) {
+                        setData.items.splice(index, 1);
+                        await fs.writeFile(setPath, JSON.stringify(setData, null, 2));
+                    }
+                }
+            }
+        }
+
+        res.json({ message: `Eintrag '${id}' wurde erfolgreich gelöscht und die Dateien wurden archiviert.` });
+
+    } catch (error) {
+        console.error(`Fehler beim Löschen des Eintrags ${id}:`, error);
+        res.status(500).json({ message: 'Ein interner Serverfehler ist aufgetreten.' });
+    }
+});
+
+// NEU: API-Route zum Abrufen der archivierten Dateien
+app.get('/api/get-archived-files', async (req, res) => {
+    const archiveBaseDir = path.join(__dirname, '_deleted_files');
+    const archivedItems = {};
+
+    try {
+        // Prüfen, ob der Archiv-Ordner überhaupt existiert
+        try {
+            await fs.access(archiveBaseDir);
+        } catch {
+            return res.json([]); // Ordner existiert nicht, leeres Array senden
+        }
+
+        const dateFolders = await fs.readdir(archiveBaseDir);
+
+        for (const dateFolder of dateFolders) {
+            const folderPath = path.join(archiveBaseDir, dateFolder);
+            const files = await fs.readdir(folderPath);
+
+            for (const file of files) {
+                const id = path.basename(file, path.extname(file));
+                if (!archivedItems[id]) {
+                    archivedItems[id] = { id: id, files: [] };
+                }
+                archivedItems[id].files.push({
+                    name: file,
+                    path: path.join('_deleted_files', dateFolder, file).replace(/\\/g, '/')
+                });
+            }
+        }
+        
+        // Das Objekt in ein Array umwandeln für einfachere Verarbeitung im Frontend
+        res.json(Object.values(archivedItems));
+
+    } catch (error) {
+        console.error('Fehler beim Lesen des Archivs:', error);
+        res.status(500).json({ message: 'Archiv konnte nicht gelesen werden.' });
+    }
+});
+
+// NEU: API-Route zum Verwalten von Archiv-Aktionen
+app.post('/api/manage-archive', async (req, res) => {
+    const { action, files } = req.body;
+    if (!action || !Array.isArray(files)) {
+        return res.status(400).json({ message: 'Ungültige Anfrage.' });
+    }
+
+    const unsortedDirs = {
+        images: path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert'),
+        sounds: path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert')
+    };
+
+    try {
+        for (const file of files) {
+            const sourcePath = path.join(__dirname, file.path);
+
+            if (action === 'restore') {
+                const isImage = ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(path.extname(file.name).toLowerCase());
+                const isSound = ['.mp3', '.wav', '.ogg'].includes(path.extname(file.name).toLowerCase());
+                
+                let targetDir;
+                if (isImage) targetDir = unsortedDirs.images;
+                else if (isSound) targetDir = unsortedDirs.sounds;
+                else continue; // Unbekannter Dateityp
+
+                await fs.mkdir(targetDir, { recursive: true });
+                const targetPath = path.join(targetDir, file.name);
+                await fs.rename(sourcePath, targetPath);
+
+            } else if (action === 'delete_permanently') {
+                await fs.unlink(sourcePath);
+            }
+        }
+        res.json({ message: 'Aktion erfolgreich ausgeführt.' });
+    } catch (error) {
+        console.error(`Fehler bei Archiv-Aktion '${action}':`, error);
+        res.status(500).json({ message: 'Aktion konnte nicht ausgeführt werden.' });
+    }
+});
+
+
 app.get('/api/get-all-data', async (req, res) => {
     try {
         // Mode auslesen: 'woerter' oder 'saetze'

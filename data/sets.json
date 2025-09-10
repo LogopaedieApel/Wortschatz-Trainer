@@ -5,6 +5,10 @@
       "displayName": "B Initial",
       "path": "data/sets/artikulation_b_initial.json"
     },
+    "CH1 medial": {
+      "displayName": "CH1 medial",
+      "path": "data/sets/Artikulation_CH1 medial.json"
+    },
     "d_initial": {
       "displayName": "D Initial",
       "path": "data/sets/artikulation_d_initial.json"
@@ -68,10 +72,6 @@
     "w_initial": {
       "displayName": "W Initial",
       "path": "data/sets/artikulation_w_initial.json"
-    },
-    "CH1 medial": {
-      "displayName": "CH1 medial",
-      "path": "data/sets/Artikulation_CH1 medial.json"
     }
   },
   "Wortschatz": {

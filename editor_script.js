@@ -623,6 +623,162 @@ document.addEventListener('DOMContentLoaded', () => {
     switchMode('woerter');
 });
 
+// NEU: Logik für das Archiv-Modal
+const archiveModal = document.getElementById('archive-modal');
+const showArchiveButton = document.getElementById('show-archive-button');
+const archiveCloseButton = document.getElementById('archive-close-button');
+const archiveList = document.getElementById('archive-list');
+
+if (showArchiveButton) {
+    showArchiveButton.addEventListener('click', async () => {
+        archiveList.innerHTML = 'Lade Archiv...';
+        archiveModal.style.display = 'flex';
+        try {
+            const response = await fetch('/api/get-archived-files');
+            if (!response.ok) throw new Error('Server-Antwort nicht OK');
+            const items = await response.json();
+            renderArchiveList(items);
+        } catch (error) {
+            console.error('Fehler beim Laden des Archivs:', error);
+            archiveList.innerHTML = 'Fehler beim Laden des Archivs.';
+        }
+    });
+}
+
+if (archiveCloseButton) {
+    archiveCloseButton.addEventListener('click', () => {
+        archiveModal.style.display = 'none';
+    });
+}
+
+// Schließen des Modals bei Klick außerhalb des Inhalts
+if (archiveModal) {
+    archiveModal.addEventListener('click', (event) => {
+        if (event.target === archiveModal) {
+            archiveModal.style.display = 'none';
+        }
+    });
+}
+
+
+function renderArchiveList(items) {
+    archiveList.innerHTML = '';
+    if (items.length === 0) {
+        archiveList.innerHTML = '<p>Das Archiv ist leer.</p>';
+        return;
+    }
+
+    // Optional: Header für die Liste
+    const header = document.createElement('div');
+    header.className = 'archive-item archive-header';
+    header.innerHTML = `
+        <div class="archive-item-name">ID</div>
+        <div class="archive-item-files">Dateien</div>
+        <div class="archive-item-actions">Aktionen</div>
+    `;
+    archiveList.appendChild(header);
+
+    items.sort((a, b) => a.id.localeCompare(b.id)).forEach(item => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'archive-item';
+        
+        const fileNames = item.files.map(f => f.name).join(', ');
+
+        itemDiv.innerHTML = `
+            <div class="archive-item-name">${item.id}</div>
+            <div class="archive-item-files" title="${fileNames}">${fileNames}</div>
+            <div class="archive-item-actions">
+                <button class="restore-btn">Wiederherstellen</button>
+                <button class="delete-perm-btn">Endgültig löschen</button>
+            </div>
+        `;
+
+        itemDiv.querySelector('.restore-btn').addEventListener('click', () => handleArchiveItemAction('restore', item, itemDiv));
+        itemDiv.querySelector('.delete-perm-btn').addEventListener('click', () => handleArchiveItemAction('delete_permanently', item, itemDiv));
+
+        archiveList.appendChild(itemDiv);
+    });
+}
+
+async function handleArchiveItemAction(action, item, itemDiv) {
+    const actionText = action === 'restore' ? 'wiederherstellen' : 'endgültig löschen';
+    if (!window.confirm(`Möchten Sie die Dateien für "${item.id}" wirklich ${actionText}?`)) {
+        return;
+    }
+
+    try {
+        itemDiv.style.opacity = '0.5';
+        const response = await fetch('/api/manage-archive', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: action, files: item.files })
+        });
+
+        if (!response.ok) throw new Error('Serverfehler');
+
+        itemDiv.remove();
+        statusMessage.textContent = `"${item.id}" wurde erfolgreich ${actionText}.`;
+        
+        // Wenn wiederhergestellt, den Hinweis auf neue Dateien aktualisieren
+        if (action === 'restore') {
+            checkUnsortedFiles();
+        }
+
+    } catch (error) {
+        console.error(`Fehler bei Archiv-Aktion für ${item.id}:`, error);
+        alert(`Fehler: Aktion für "${item.id}" fehlgeschlagen.`);
+        itemDiv.style.opacity = '1';
+    }
+}
+
+
 function setUnsavedChanges(state) {
     hasUnsavedChanges = !!state;
+}
+
+// Event listener for delete buttons using event delegation
+if (tableBody) {
+    tableBody.addEventListener('click', async (event) => {
+        if (event.target.classList.contains('delete-button')) {
+            const row = event.target.closest('tr');
+            if (!row) return;
+            const id = row.dataset.id;
+            const nameInput = row.querySelector('input[data-field="name"]');
+            const name = nameInput ? nameInput.value : id;
+
+            if (window.confirm(`Möchten Sie den Eintrag "${name}" wirklich löschen? Die zugehörigen Dateien werden archiviert.`)) {
+                try {
+                    statusMessage.textContent = `Lösche "${name}"...`;
+                    const response = await fetch('/api/delete-item', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: id, mode: currentMode })
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || 'Serverfehler beim Löschen.');
+                    }
+
+                    // UI direkt aktualisieren für eine schnelle Rückmeldung
+                    row.remove();
+                    delete database[id];
+                    Object.values(flatSets).forEach(set => {
+                        const index = set.items.indexOf(id);
+                        if (index > -1) {
+                            set.items.splice(index, 1);
+                        }
+                    });
+
+                    statusMessage.textContent = `Eintrag "${name}" wurde erfolgreich gelöscht und archiviert.`;
+                    setUnsavedChanges(false); // Die Änderung wurde direkt auf dem Server gespeichert
+
+                } catch (error) {
+                    console.error('Fehler beim Löschen:', error);
+                    statusMessage.textContent = `Fehler: ${error.message}`;
+                    alert(`Der Eintrag konnte nicht gelöscht werden: ${error.message}`);
+                }
+            }
+        }
+    });
 }
