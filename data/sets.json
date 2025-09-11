@@ -5,6 +5,10 @@
       "displayName": "B Initial",
       "path": "data/sets/artikulation_b_initial.json"
     },
+    "CH1 medial": {
+      "displayName": "CH1 medial",
+      "path": "data/sets/Artikulation_CH1 medial.json"
+    },
     "d_initial": {
       "displayName": "D Initial",
       "path": "data/sets/artikulation_d_initial.json"
@@ -49,23 +53,31 @@
       "displayName": "R Initial",
       "path": "data/sets/artikulation_r_initial.json"
     },
+    "SCH medial": {
+      "displayName": "SCH medial",
+      "path": "data/sets/Artikulation_SCH medial.json"
+    },
+    "sch_initial": {
+      "displayName": "Sch Initial",
+      "path": "data/sets/artikulation_sch_initial.json"
+    },
     "s_initial": {
       "displayName": "S Initial",
       "path": "data/sets/artikulation_s_initial.json"
     },
-    "sch_initial": {
-      "displayName": "SCH Initial",
-      "path": "data/sets/artikulation_sch_initial.json"
-    },
     "t_initial": {
       "displayName": "T Initial",
       "path": "data/sets/artikulation_t_initial.json"
+    },
+    "w_initial": {
+      "displayName": "W Initial",
+      "path": "data/sets/artikulation_w_initial.json"
     }
   },
   "Wortschatz": {
     "displayName": "Wortschatz",
     "Nahrnungsmittel": {
-      "displayName": "Nahrungsmittel",
+      "displayName": "Nahrnungsmittel",
       "path": "data/sets/Wortschatz_Nahrnungsmittel.json"
     }
   }

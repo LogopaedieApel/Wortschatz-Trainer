@@ -33,34 +33,165 @@
             cursor: not-allowed;
             border: 1px solid #ddd;
         }
+
+        /* Styles for the conflict resolution modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 900px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .modal-header {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .modal-footer {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 15px;
+            text-align: right;
+        }
+        .conflict-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 200px;
+            gap: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+        .conflict-item-header {
+            font-weight: bold;
+        }
+        .conflict-item:last-child {
+            border-bottom: none;
+        }
+        .conflict-details {
+            font-size: 0.9em;
+        }
+        .conflict-details strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+        .conflict-actions button {
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+        .conflict-actions button.selected {
+            background-color: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        /* Styles for the archive modal */
+        #archive-modal .modal-content {
+            width: 90%;
+            max-width: 800px;
+        }
+        #archive-list {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1>Wortschatz-Editor</h1>
-    <div class="controls">
-        <button id="save-button">Änderungen speichern</button>
-        <p id="status-message"></p>
+    <div class="tab-controls" style="margin-bottom: 20px;">
+        <button class="tab-button active" id="tab-woerter">Wörter</button>
+        <button class="tab-button" id="tab-saetze">Sätze</button>
     </div>
     <div class="controls">
-        <input type="text" id="search-input" placeholder="Wörter nach Namen filtern...">
-        <!-- NEUER BUTTON -->
-        <button id="scan-files-button">Neue Dateien importieren</button>
-        <div id="new-set-controls">
-            <input type="text" id="new-set-path" placeholder="Hierarchie/Dateiname (z.B. laute/sch/final)">
-            <input type="text" id="new-set-displayname" placeholder="Anzeigename (z.B. SCH im Auslaut)">
-            <button id="add-set-button">+ Neue Spalte hinzufügen</button>
-        </div>
+        <span id="save-status" style="font-weight:bold;display:inline-block;margin-right:16px;"></span>
+        <p id="status-message" style="display: inline-block; margin-left: 10px;"></p>
+        <div id="notification-area" style="margin-left: 20px; font-weight: bold;"></div>
     </div>
+    <div class="controls">
+        <input type="text" id="search-input" placeholder="Einträge nach Namen filtern...">
+    </div>
+    <div class="controls">
+        <input type="text" id="new-set-path" placeholder="Hierarchie/Dateiname (z.B. tiere/bauernhof)">
+        <input type="text" id="new-set-displayname" placeholder="Anzeigename (z.B. Bauernhof)">
+        <button id="add-set-button">+ Neue Spalte hinzufügen</button>
+        <span style="border-left: 1px solid #ccc; margin: 0 10px;"></span>
+        <button id="add-row-button">+ Neue Zeile hinzufügen</button>
+        <button id="show-archive-button">♻️ Gelöschte Dateien</button>
+    </div>
+
     <div id="table-wrapper" style="max-height: 70vh; overflow: auto;">
         <table id="editor-table">
             <thead></thead>
-            <tbody></tbody>
+            <tbody>
+                <!-- Rows will be inserted here by JavaScript -->
+            </tbody>
         </table>
     </div>
     <div class="controls" style="margin-top: 20px;">
-        <button id="add-row-button">+ Neue Zeile hinzufügen</button>
+        <!-- Dieser Bereich ist jetzt leer -->
     </div>
 
-    <script src="editor_script.js"></script>
+    <!-- Modal for Conflict Resolution -->
+    <div id="conflict-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">Dateikonflikte gefunden</div>
+            <div id="conflict-list">
+                <!-- Conflict items will be injected here by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button id="resolve-all-newer">Alle neueren behalten</button>
+                <button id="resolve-all-older">Alle alten behalten</button>
+                <button id="resolve-submit">Auswahl bestätigen</button>
+                <button id="resolve-cancel">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEUES MODAL FÜR ARCHIVIERTE DATEIEN -->
+    <div id="archive-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-button" id="archive-close-button" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h2>Archivierte Dateien</h2>
+            <div id="archive-list" style="max-height: 60vh; overflow-y: auto;">
+                <!-- Inhalt wird per JavaScript eingefügt -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fügt einen Zeitstempel an das Skript an, um Caching zu verhindern
+        document.write(`<script src="editor_script.js?v=${new Date().getTime()}"><\/script>`);
+    </script>
 </body>
 </html>
