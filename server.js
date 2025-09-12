@@ -149,8 +149,14 @@ app.post('/api/manage-archive', async (req, res) => {
     }
 
     const unsortedDirs = {
-        images: path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert'),
-        sounds: path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert')
+        woerter: {
+            images: path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert'),
+            sounds: path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert')
+        },
+        saetze: {
+            images: path.join(__dirname, 'data', 'sätze', 'images', 'images_unsortiert'),
+            sounds: path.join(__dirname, 'data', 'sätze', 'sounds', 'sounds_unsortiert')
+        }
     };
 
     try {
@@ -158,12 +164,16 @@ app.post('/api/manage-archive', async (req, res) => {
             const sourcePath = path.join(__dirname, file.path);
 
             if (action === 'restore') {
+                // Heuristik: Dateinamen mit Leerzeichen sind Sätze, andere sind Wörter.
+                const mode = file.name.includes(' ') ? 'saetze' : 'woerter';
+                const targetDirsForMode = unsortedDirs[mode];
+
                 const isImage = ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(path.extname(file.name).toLowerCase());
                 const isSound = ['.mp3', '.wav', '.ogg'].includes(path.extname(file.name).toLowerCase());
                 
                 let targetDir;
-                if (isImage) targetDir = unsortedDirs.images;
-                else if (isSound) targetDir = unsortedDirs.sounds;
+                if (isImage) targetDir = targetDirsForMode.images;
+                else if (isSound) targetDir = targetDirsForMode.sounds;
                 else continue; // Unbekannter Dateityp
 
                 await fs.mkdir(targetDir, { recursive: true });
@@ -438,13 +448,35 @@ app.post('/api/sort-unsorted-files', async (req, res) => {
 
 // New endpoint to analyze unsorted files and detect conflicts
 app.post('/api/analyze-unsorted-files', async (req, res) => {
+    const mode = req.query.mode || 'woerter';
+
+    const dirs = {
+        woerter: {
+            unsortedImages: path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert'),
+            unsortedSounds: path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert'),
+            baseImages: path.join(__dirname, 'data', 'wörter', 'images'),
+            baseSounds: path.join(__dirname, 'data', 'wörter', 'sounds')
+        },
+        saetze: {
+            unsortedImages: path.join(__dirname, 'data', 'sätze', 'images', 'images_unsortiert'),
+            unsortedSounds: path.join(__dirname, 'data', 'sätze', 'sounds', 'sounds_unsortiert'),
+            baseImages: path.join(__dirname, 'data', 'sätze', 'images'),
+            baseSounds: path.join(__dirname, 'data', 'sätze', 'sounds')
+        }
+    };
+
+    const d = dirs[mode];
+    if (!d) {
+        return res.status(400).json({ message: 'Ungültiger Modus.' });
+    }
+
     const unsortedDirs = {
-        images: path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert'),
-        sounds: path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert')
+        images: d.unsortedImages,
+        sounds: d.unsortedSounds
     };
     const baseDirs = {
-        images: path.join(__dirname, 'data', 'wörter', 'images'),
-        sounds: path.join(__dirname, 'data', 'wörter', 'sounds')
+        images: d.baseImages,
+        sounds: d.baseSounds
     };
 
     const movableFiles = [];
@@ -651,81 +683,105 @@ app.post('/api/sort-unsorted-files', async (req, res) => {
 });
 
 app.get('/api/check-unsorted-files', async (req, res) => {
-    const unsortedImageDir = path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert');
-    const unsortedSoundDir = path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert');
+    const mode = req.query.mode || 'woerter'; // Default to 'woerter' if no mode is specified
+
+    const unsortedDirs = {
+        woerter: {
+            images: path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert'),
+            sounds: path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert')
+        },
+        saetze: {
+            images: path.join(__dirname, 'data', 'sätze', 'images', 'images_unsortiert'),
+            sounds: path.join(__dirname, 'data', 'sätze', 'sounds', 'sounds_unsortiert')
+        }
+    };
+
+    const dirsToCheck = unsortedDirs[mode];
+    if (!dirsToCheck) {
+        return res.status(400).json({ message: 'Ungültiger Modus.' });
+    }
+
     let filesList = [];
     try {
-        const imageFiles = await fs.readdir(unsortedImageDir);
+        const imageFiles = await fs.readdir(dirsToCheck.images);
         filesList = filesList.concat(imageFiles.filter(f => !f.startsWith('.')));
     } catch (e) {
-        if (e.code !== 'ENOENT') console.error("Fehler beim Lesen des Bild-Verzeichnisses:", e);
+        if (e.code !== 'ENOENT') console.error(`Fehler beim Lesen des Bild-Verzeichnisses für Modus '${mode}':`, e);
     }
     try {
-        const soundFiles = await fs.readdir(unsortedSoundDir);
+        const soundFiles = await fs.readdir(dirsToCheck.sounds);
         filesList = filesList.concat(soundFiles.filter(f => !f.startsWith('.')));
     } catch (e) {
-        if (e.code !== 'ENOENT') console.error("Fehler beim Lesen des Sound-Verzeichnisses:", e);
+        if (e.code !== 'ENOENT') console.error(`Fehler beim Lesen des Sound-Verzeichnisses für Modus '${mode}':`, e);
     }
     res.json({ count: filesList.length, files: filesList });
 });
 
 app.post('/api/sync-files', async (req, res) => {
+    const mode = req.query.mode || 'woerter';
+
     try {
         // Helper function to generate a manifest file from a directory of set files
         const generateManifest = async (setsDir, manifestPath) => {
-            const newManifest = {};
             try {
                 const files = await fs.readdir(setsDir);
+                const manifest = {};
                 for (const file of files) {
-                    if (path.extname(file) !== '.json') continue;
-
-                    const baseName = path.basename(file, '.json');
-                    const parts = baseName.split('_');
-                    
-                    if (parts.length < 1) continue;
-
-                    const mainCategoryKey = parts[0].toLowerCase();
-                    const subCategoryKey = parts.slice(1).join('_');
-
-                    const mainCategoryDisplayName = mainCategoryKey.charAt(0).toUpperCase() + mainCategoryKey.slice(1);
-                    
-                    let subCategoryDisplayName = parts.slice(1).map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
-                    if (subCategoryDisplayName === '') {
-                        subCategoryDisplayName = mainCategoryDisplayName;
+                    if (file.endsWith('.json')) {
+                        const setName = file.replace('.json', '');
+                        const parts = setName.split('_');
+                        let current = manifest;
+                        for (let i = 0; i < parts.length; i++) {
+                            const part = parts[i];
+                            if (i === parts.length - 1) {
+                                current[part] = {
+                                    displayName: part.charAt(0).toUpperCase() + part.slice(1),
+                                    path: `data/${path.basename(setsDir)}/${file}`
+                                };
+                            } else {
+                                if (!current[part]) {
+                                    current[part] = {
+                                        displayName: part.charAt(0).toUpperCase() + part.slice(1)
+                                    };
+                                }
+                                current = current[part];
+                            }
+                        }
                     }
-
-
-                    if (!newManifest[mainCategoryDisplayName]) {
-                        newManifest[mainCategoryDisplayName] = {
-                            displayName: mainCategoryDisplayName
-                        };
-                    }
-
-                    const finalKey = subCategoryKey || mainCategoryKey;
-                    newManifest[mainCategoryDisplayName][finalKey] = {
-                        displayName: subCategoryDisplayName,
-                        path: path.join('data', path.basename(setsDir), file).replace(/\\/g, '/')
-                    };
                 }
+                await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2));
             } catch (error) {
                 if (error.code !== 'ENOENT') {
-                    console.error(`Error reading sets directory ${setsDir}:`, error);
+                    console.error(`Fehler beim Generieren des Manifests für ${setsDir}:`, error);
                 }
             }
-            await fs.writeFile(manifestPath, JSON.stringify(newManifest, null, 2));
         };
 
-        // Generate manifests for both 'woerter' and 'saetze'
+        // Generate manifests for both 'woerter' and 'saetze' - this can remain as is,
+        // as it's a general maintenance task.
         await generateManifest(path.join(__dirname, 'data', 'sets'), path.join(__dirname, 'data', 'sets.json'));
         await generateManifest(path.join(__dirname, 'data', 'sets_saetze'), path.join(__dirname, 'data', 'sets_saetze.json'));
 
         // Helper function to update the items database for a given mode
-        const updateDatabaseForMode = async (mode) => {
-            const modeName = mode === 'saetze' ? 'sätze' : 'wörter';
-            const dbPath = path.join(__dirname, 'data', mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
+        const updateDatabaseForMode = async (modeToUpdate) => {
+            const modeName = modeToUpdate === 'saetze' ? 'sätze' : 'wörter';
+            const dbPath = path.join(__dirname, 'data', modeToUpdate === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
             const imagesBasePath = path.join(__dirname, 'data', modeName, 'images');
             const soundsBasePath = path.join(__dirname, 'data', modeName, 'sounds');
             
+            let database = {};
+            try {
+                // KORREKTUR: Bestehende Datenbank laden, anstatt sie zu überschreiben.
+                const dbContent = await fs.readFile(dbPath, 'utf8');
+                database = JSON.parse(dbContent);
+            } catch (e) {
+                if (e.code === 'ENOENT') {
+                    console.log(`Datenbank ${dbPath} nicht gefunden. Eine neue wird erstellt.`);
+                } else {
+                    throw e; // Andere Fehler weiterwerfen
+                }
+            }
+
             const getAllFiles = async (dirPath, fileList = []) => {
                 try {
                     const files = await fs.readdir(dirPath);
@@ -733,7 +789,10 @@ app.post('/api/sync-files', async (req, res) => {
                         const filePath = path.join(dirPath, file);
                         const stat = await fs.stat(filePath);
                         if (stat.isDirectory()) {
-                            await getAllFiles(filePath, fileList);
+                            // Wichtig: 'images_unsortiert' und 'sounds_unsortiert' überspringen
+                            if (path.basename(filePath) !== 'images_unsortiert' && path.basename(filePath) !== 'sounds_unsortiert') {
+                                await getAllFiles(filePath, fileList);
+                            }
                         } else if (!path.basename(file).startsWith('.')) {
                             fileList.push(filePath);
                         }
@@ -746,41 +805,40 @@ app.post('/api/sync-files', async (req, res) => {
 
             const imageFiles = await getAllFiles(imagesBasePath);
             const soundFiles = await getAllFiles(soundsBasePath);
-            const newDatabase = {};
 
             const processFile = (filePath, type, basePath) => {
                 const relPath = path.relative(__dirname, filePath).replace(/\\/g, '/');
                 const fileName = path.basename(filePath);
-                const id = fileName.substring(0, fileName.lastIndexOf('.')).toLowerCase().replace(/[^a-z0-9_]/g, '_');
+                // ID-Generierung verbessert, um Leerzeichen in Satz-Dateinamen korrekt zu behandeln
+                const id = fileName.substring(0, fileName.lastIndexOf('.')).toLowerCase().replace(/[^a-z0-9\s_]/g, '').replace(/\s+/g, '_');
                 if (!id) return;
 
-                if (!newDatabase[id]) {
-                    newDatabase[id] = {
+                if (!database[id]) {
+                    database[id] = {
                         name: id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
                         image: '', sound: '', folder: ''
                     };
                 }
-                newDatabase[id][type] = relPath;
+                database[id][type] = relPath;
 
                 const parentDir = path.dirname(filePath);
                 const relDir = path.relative(basePath, parentDir);
-                if (relDir && !newDatabase[id].folder) {
-                    newDatabase[id].folder = path.basename(relDir).toLowerCase();
+                if (relDir && !database[id].folder) {
+                    database[id].folder = path.basename(relDir).toLowerCase();
                 }
             };
 
             imageFiles.forEach(file => processFile(file, 'image', imagesBasePath));
             soundFiles.forEach(file => processFile(file, 'sound', soundsBasePath));
 
-            await fs.writeFile(dbPath, JSON.stringify(newDatabase, null, 2));
-            return Object.keys(newDatabase).length;
+            await fs.writeFile(dbPath, JSON.stringify(database, null, 2));
+            return Object.keys(database).length;
         };
 
-        // Update databases for both modes
-        const processedWoerter = await updateDatabaseForMode('woerter');
-        const processedSaetze = await updateDatabaseForMode('saetze');
+        // Update database only for the specified mode
+        const processedItems = await updateDatabaseForMode(mode);
 
-        res.json({ message: `Synchronisierung erfolgreich. ${processedWoerter} Wort-Einträge und ${processedSaetze} Satz-Einträge verarbeitet. Set-Konfigurationen aktualisiert.` });
+        res.json({ message: `Synchronisierung für Modus '${mode}' erfolgreich. ${processedItems} Einträge verarbeitet.` });
 
     } catch (error) {
         console.error(`Fehler bei der Synchronisierung:`, error);

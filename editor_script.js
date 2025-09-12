@@ -416,21 +416,17 @@ function showSaveStatus(success, message) {
  * Checks for unsorted files and displays a notification if any are found.
  */
 async function checkUnsortedFiles() {
-    // This feature is currently only for 'woerter' mode
-    if (currentMode !== 'woerter') {
-        notificationArea.innerHTML = '';
-        return;
-    }
     try {
-        const response = await fetch('/api/check-unsorted-files');
+        const response = await fetch(`/api/check-unsorted-files?mode=${currentMode}`);
         if (!response.ok) throw new Error('Prüfung auf unsortierte Dateien fehlgeschlagen.');
         const data = await response.json();
 
         notificationArea.innerHTML = ''; // Clear previous notifications
         if (data.count > 0) {
+            const fileType = currentMode === 'woerter' ? 'Wort-Dateien' : 'Satz-Dateien';
             const notificationLink = document.createElement('a');
             notificationLink.href = '#';
-            notificationLink.innerHTML = `✨ ${data.count} neue ${data.count === 1 ? 'Datei' : 'Dateien'} gefunden. Hier klicken zum Einsortieren.`;
+            notificationLink.innerHTML = `✨ ${data.count} neue ${fileType} gefunden. Hier klicken zum Einsortieren.`;
             
             // Add a tooltip to show the list of files
             const fileList = data.files.join('\n');
@@ -455,7 +451,7 @@ async function checkUnsortedFiles() {
 async function analyzeUnsortedFiles() {
     try {
         notificationArea.textContent = 'Analysiere unsortierte Dateien...';
-        const response = await fetch('/api/analyze-unsorted-files', { method: 'POST' });
+        const response = await fetch(`/api/analyze-unsorted-files?mode=${currentMode}`, { method: 'POST' });
         if (!response.ok) throw new Error('Serverfehler bei der Analyse.');
         
         const result = await response.json();
@@ -603,7 +599,7 @@ async function resolveAndReload(actions) {
 
         // New Step: Sync database to create entries for new files
         notificationArea.textContent = 'Synchronisiere Datenbank...';
-        const syncResponse = await fetch('/api/sync-files', { method: 'POST' });
+        const syncResponse = await fetch(`/api/sync-files?mode=${currentMode}`, { method: 'POST' });
         if (!syncResponse.ok) throw new Error('Serverfehler bei der Datenbanksynchronisierung.');
         const syncResult = await syncResponse.json();
         console.log('Sync result:', syncResult.message);
