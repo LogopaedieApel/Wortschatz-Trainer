@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- VARIABLEN ---
     let currentMode = null,
+        currentMaterialType = 'woerter', // 'woerter' oder 'saetze'
         availableItemSets = {}, 
-        masterItems = null;
+        masterItemsWoerter = null,
+        masterItemsSaetze = null,
+        masterItems = null; // Wird dynamisch gesetzt
         
     let currentItemSetData = [],
         currentShuffledItems = [],
@@ -46,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modalCloseButtons = document.querySelectorAll('.modal-close-button');
     const settingsTitle = document.getElementById('settings-title');
     
+    const materialSelect = document.getElementById('material-select');
     const categorySelect = document.getElementById('category-select');
     const listSelectionArea = document.getElementById('list-selection-area');
     const listSelectionContainer = document.getElementById('list-selection-container');
@@ -94,8 +98,37 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.remove('show'); }
     function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[array[i], array[j]] = [array[j], array[i]]; } return array; }
     function preloadAssets(items) { const promises = []; const loadedAssets = new Set(); items.forEach(item => { if (item.image && !loadedAssets.has(item.image)) { promises.push(new Promise((resolve) => { const img = new Image(); img.src = item.image + '?t=' + new Date().getTime(); img.onload = resolve; img.onerror = resolve; })); loadedAssets.add(item.image); } if (item.sound && !loadedAssets.has(item.sound)) { promises.push(fetch(item.sound + '?t=' + new Date().getTime()).catch(err => console.error('Preloading sound failed:', err))); loadedAssets.add(item.sound); } }); return Promise.all(promises); }
-    async function loadSetsManifest() { try { const response = await fetch('data/sets.json?t=' + new Date().getTime()); if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`); availableItemSets = await response.json(); categorySelect.innerHTML = '<option value="">Bitte wählen...</option>'; for (const key in availableItemSets) { const option = document.createElement('option'); option.value = key; option.textContent = availableItemSets[key].displayName; categorySelect.appendChild(option); } btnStartExercise.disabled = true; } catch (e) { console.error("Fehler beim Laden von sets.json:", e); categorySelect.innerHTML = '<option value="">Fehler beim Laden</option>'; btnStartExercise.disabled = true; } }
-    async function loadItemSet(path) { if (!path || !masterItems) return []; try { const response = await fetch(path + '?t=' + new Date().getTime()); if (!response.ok) throw new Error(`Set-Datei nicht gefunden: ${path}`); const itemIds = await response.json(); if (!Array.isArray(itemIds)) { console.error("Set-Datei ist kein Array von IDs:", path); return []; } return itemIds; } catch (e) { console.error(`Fehler beim Laden oder Verarbeiten des Sets ${path}:`, e); return []; } }
+    
+    async function loadSetsManifest() {
+        const setsFile = currentMaterialType === 'saetze' ? 'data/sets_saetze.json' : 'data/sets.json';
+        try {
+            const response = await fetch(`${setsFile}?t=${new Date().getTime()}`);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            availableItemSets = await response.json();
+            
+            // Reset and populate category dropdown
+            categorySelect.innerHTML = '<option value="">Bitte wählen...</option>';
+            for (const key in availableItemSets) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = availableItemSets[key].displayName;
+                categorySelect.appendChild(option);
+            }
+            
+            // Reset list selection
+            listSelectionContainer.innerHTML = '';
+            listSelectionArea.style.display = 'none';
+            btnAddList.classList.add('hidden');
+            
+            checkIfStartIsPossible();
+        } catch (e) {
+            console.error(`Fehler beim Laden von ${setsFile}:`, e);
+            categorySelect.innerHTML = '<option value="">Fehler beim Laden</option>';
+            btnStartExercise.disabled = true;
+        }
+    }
+
+    async function loadItemSet(path) { if (!path || !masterItems) return []; try { const response = await fetch(path + '?t=' + new Date().getTime()); if (!response.ok) throw new Error(`Set-Datei nicht gefunden: ${path}`); const data = await response.json(); if (data && Array.isArray(data.items)) { return data.items; } else if (Array.isArray(data)) { return data; } else { console.error("Set-Datei hat kein 'items'-Array:", path); return []; } } catch (e) { console.error(`Fehler beim Laden oder Verarbeiten des Sets ${path}:`, e); return []; } }
     function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { if(currentShuffledItems[i].type === 'end') continue; const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
     function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('active', index === currentItemIndex); }); }
     function playItemSound(item, delay = 0) { clearTimeout(soundTimeoutId); if (!item || !item.sound) { return; } const buttonToDisable = currentMode === 'quiz' ? quizSoundButton : soundButton; soundTimeoutId = setTimeout(() => { audioPlayer.pause(); audioPlayer.currentTime = 0; if (buttonToDisable) buttonToDisable.disabled = true; const enableButton = () => { if (buttonToDisable) buttonToDisable.disabled = false; audioPlayer.removeEventListener('ended', enableButton); audioPlayer.removeEventListener('error', enableButton); }; audioPlayer.addEventListener('canplay', () => audioPlayer.play().catch(e => console.error("Sound-Abspielfehler:", e)), { once: true }); audioPlayer.addEventListener('ended', enableButton, { once: true }); audioPlayer.addEventListener('error', enableButton, { once: true }); audioPlayer.src = item.sound + '?t=' + new Date().getTime(); }, delay * 1000); }
@@ -192,6 +225,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkIfStartIsPossible() { if (!btnStartExercise) return; const selectedLists = listSelectionContainer.querySelectorAll('select'); let atLeastOneSelected = false; selectedLists.forEach(select => { if (select.value) { atLeastOneSelected = true; } }); btnStartExercise.disabled = !atLeastOneSelected; }
     
     // --- EVENT LISTENERS ---
+
+    if (materialSelect) {
+        materialSelect.addEventListener('change', (e) => {
+            currentMaterialType = e.target.value;
+            masterItems = currentMaterialType === 'saetze' ? masterItemsSaetze : masterItemsWoerter;
+            loadSetsManifest();
+        });
+    }
 
     if (categorySelect) { categorySelect.addEventListener('change', () => { const selectedCategoryKey = categorySelect.value; listSelectionContainer.innerHTML = ''; if (selectedCategoryKey) { const categoryData = availableItemSets[selectedCategoryKey]; availableListsForCategory = flattenLists(categoryData); listSelectionArea.style.display = 'block'; btnAddList.classList.remove('hidden'); addListSelectionRow(); } else { listSelectionArea.style.display = 'none'; btnAddList.classList.add('hidden'); } checkIfStartIsPossible(); }); }
     if (btnAddList) btnAddList.addEventListener('click', addListSelectionRow);
@@ -310,6 +351,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (slidesWrapper) slidesWrapper.addEventListener('touchstart', touchStart, { passive: true });
 
     // --- INITIALISIERUNG ---
-    async function initializeApp() { populateDisplayDurationSelect(); populateSoundDelaySelect(); try { const response = await fetch('data/items_database.json?t=' + new Date().getTime()); if (!response.ok) throw new Error('Master-Item-Liste nicht gefunden'); masterItems = await response.json(); } catch (e) { console.error("KRITISCHER FEHLER: master_items.json konnte nicht geladen werden.", e); document.body.innerHTML = '<h1>Fehler</h1><p>Die Haupt-Datenbank der App (items_database.json) konnte nicht geladen werden.</p>'; return; } await loadSetsManifest(); showScreen('screen-mode-selection'); }
+    async function initializeApp() {
+        populateDisplayDurationSelect();
+        populateSoundDelaySelect();
+        try {
+            const [woerterResponse, saetzeResponse] = await Promise.all([
+                fetch('data/items_database.json?t=' + new Date().getTime()),
+                fetch('data/items_database_saetze.json?t=' + new Date().getTime())
+            ]);
+            if (!woerterResponse.ok) throw new Error('Master-Item-Liste (Wörter) nicht gefunden');
+            if (!saetzeResponse.ok) throw new Error('Master-Item-Liste (Sätze) nicht gefunden');
+            
+            masterItemsWoerter = await woerterResponse.json();
+            masterItemsSaetze = await saetzeResponse.json();
+            
+            // Standardmäßig mit Wörtern starten
+            masterItems = masterItemsWoerter;
+
+        } catch (e) {
+            console.error("KRITISCHER FEHLER: Datenbanken konnten nicht geladen werden.", e);
+            document.body.innerHTML = '<h1>Fehler</h1><p>Eine der Haupt-Datenbanken (Wörter oder Sätze) konnte nicht geladen werden.</p>';
+            return;
+        }
+        await loadSetsManifest();
+        showScreen('screen-mode-selection');
+    }
     initializeApp();
 });
