@@ -1,9 +1,12 @@
 {
-  "Artikulation": {
+  "artikulation": {
     "displayName": "Artikulation",
-    "reime_initial": {
-      "displayName": "Reime Initial",
-      "path": "data/sets_saetze/artikulation_reime_initial.json"
+    "reime": {
+      "displayName": "Reime",
+      "initial": {
+        "displayName": "Initial",
+        "path": "data/sets_saetze/artikulation_reime_initial.json"
+      }
     }
   }
 }

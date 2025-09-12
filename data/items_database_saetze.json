@@ -50,8 +50,12 @@
   "hase_auf_der_stra_e": {
     "name": "Hase Auf Der Stra E",
     "image": "data/sätze/images/Reime/Hase auf der Straße.jpeg",
-    "sound": "",
-    "folder": "reime"
+    "sound": ""
+  },
+  "hase_auf_stra_e": {
+    "name": "Hase Auf Stra E",
+    "image": "",
+    "sound": "data/sätze/sounds/Reime/Hase auf Straße.mp3"
   },
   "hasen_mit_blasen": {
     "name": "Hasen Mit Blasen",
@@ -75,6 +79,12 @@
     "name": "Kind Im Wind",
     "image": "data/sätze/images/Reime/Kind im Wind.jpeg",
     "sound": "data/sätze/sounds/Reime/Kind im Wind.mp3",
+    "folder": "reime"
+  },
+  "kroete_mit_troete": {
+    "name": "Kroete Mit Troete",
+    "image": "",
+    "sound": "data/sätze/sounds/Reime/Kroete mit Troete.mp3",
     "folder": "reime"
   },
   "kuh_im_schuh": {
@@ -125,16 +135,16 @@
     "sound": "data/sätze/sounds/Reime/Wal mit Schal.mp3",
     "folder": "reime"
   },
-  "hase_auf_stra_e": {
-    "name": "Hase Auf Stra E",
-    "image": "",
-    "sound": "data/sätze/sounds/Reime/Hase auf Straße.mp3",
+  "hase_auf_der_strae": {
+    "name": "Hase Auf Der Strae",
+    "image": "data/sätze/images/Reime/Hase auf der Straße.jpeg",
+    "sound": "",
     "folder": "reime"
   },
-  "kroete_mit_troete": {
-    "name": "Kroete Mit Troete",
+  "hase_auf_strae": {
+    "name": "Hase Auf Strae",
     "image": "",
-    "sound": "data/sätze/sounds/Reime/Kroete mit Troete.mp3",
+    "sound": "data/sätze/sounds/Reime/Hase auf Straße.mp3",
     "folder": "reime"
   }
 }
