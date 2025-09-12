@@ -67,9 +67,10 @@ class EditorApp {
                 <input type="text" id="search-input" placeholder="Einträge nach Namen filtern...">
             </div>
             <div class="controls">
-                <input type="text" id="new-set-path" placeholder="Hierarchie/Dateiname (z.B. tiere/bauernhof)">
-                <input type="text" id="new-set-displayname" placeholder="Anzeigename (z.B. Bauernhof)">
-                <button id="add-set-button">+ Neue Spalte hinzufügen</button>
+                <input type="text" id="new-set-path" placeholder="Hierarchie_mit_Unterstrich">
+                <input type="text" id="new-set-displayname" placeholder="Anzeigename (z.B. CH1 medial)">
+                <button id="add-set-button" disabled>+ Neue Spalte hinzufügen</button>
+                <span id="new-set-error" style="color: red; margin-left: 10px;"></span>
                 <span style="border-left: 1px solid #ccc; margin: 0 10px;"></span>
                 <button id="add-row-button">+ Neue Zeile hinzufügen</button>
                 <button id="show-archive-button">♻️ Gelöschte Dateien</button>
@@ -155,6 +156,27 @@ class EditorApp {
         // Event Delegation: Ein Listener für die gesamte App
         this.appElement.addEventListener('input', this.handleTableInput.bind(this));
         this.appElement.addEventListener('click', this.handleAppClick.bind(this));
+        this.appElement.addEventListener('keyup', this.handleValidation.bind(this));
+    }
+
+    handleValidation(event) {
+        if (event.target.matches('#new-set-path')) {
+            const input = event.target;
+            const errorSpan = this.appElement.querySelector('#new-set-error');
+            const addButton = this.appElement.querySelector('#add-set-button');
+            const isValid = /^[a-zA-Z0-9_]+$/.test(input.value);
+
+            if (input.value === '') {
+                errorSpan.textContent = '';
+                addButton.disabled = true;
+            } else if (isValid) {
+                errorSpan.textContent = '';
+                addButton.disabled = false;
+            } else {
+                errorSpan.textContent = "Nur Buchstaben, Zahlen und '_' erlaubt.";
+                addButton.disabled = true;
+            }
+        }
     }
 
     handleTableInput(event) {
@@ -192,6 +214,11 @@ class EditorApp {
             }
         }
 
+        // Klick auf den "Neue Spalte hinzufügen"-Button
+        if (target.matches('#add-set-button')) {
+            this.addNewSet();
+        }
+
         // Klick auf eine Checkbox in der Tabelle
         if (target.matches('input[type="checkbox"][data-path]')) {
             const row = target.closest('tr');
@@ -205,6 +232,34 @@ class EditorApp {
             
             this.setUnsavedChanges(true);
         }
+    }
+
+    addNewSet() {
+        const pathInput = this.appElement.querySelector('#new-set-path');
+        const nameInput = this.appElement.querySelector('#new-set-displayname');
+        const newPath = `sets/${pathInput.value}.json`;
+        const newName = nameInput.value || pathInput.value.split('_').pop();
+        const topCategory = pathInput.value.split('_')[0];
+
+        if (this.state.flatSets[newPath]) {
+            alert('Ein Set mit diesem Pfad existiert bereits.');
+            return;
+        }
+
+        // Füge das neue, leere Set zum State hinzu
+        this.state.flatSets[newPath] = {
+            displayName: newName,
+            topCategory: topCategory,
+            items: []
+        };
+
+        this.setUnsavedChanges(true);
+        this.render(); // Rendere die UI neu, um die neue Spalte anzuzeigen
+        
+        // Setze die Eingabefelder zurück
+        pathInput.value = '';
+        nameInput.value = '';
+        this.appElement.querySelector('#add-set-button').disabled = true;
     }
 
     setUnsavedChanges(isUnsaved) {

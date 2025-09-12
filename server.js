@@ -739,21 +739,23 @@ app.post('/api/sync-files', async (req, res) => {
                         let current = manifest;
                         for (let i = 0; i < parts.length; i++) {
                             const part = parts[i];
-                            // Wenn es nicht das letzte Teil ist, erstelle eine verschachtelte Struktur
+
+                            // KORREKTUR: Suche nach einem existierenden Schlüssel, ignoriere Groß-/Kleinschreibung
+                            const existingKey = Object.keys(current).find(k => k.toLowerCase() === part.toLowerCase());
+                            const keyToUse = existingKey || part; // Nimm den existierenden Schlüssel oder den neuen
+
                             if (i < parts.length - 1) {
-                                if (!current[part]) {
-                                    current[part] = {
+                                if (!current[keyToUse]) {
+                                    current[keyToUse] = {
                                         displayName: part.charAt(0).toUpperCase() + part.slice(1)
                                     };
                                 }
-                                // Füge ein 'children' Objekt hinzu, wenn es nicht existiert
-                                if (!current[part].children) {
-                                    current[part].children = {};
+                                if (!current[keyToUse].children) {
+                                    current[keyToUse].children = {};
                                 }
-                                current = current[part].children;
+                                current = current[keyToUse].children;
                             } else {
-                                // Das ist das letzte Teil, also der eigentliche Eintrag
-                                current[part] = {
+                                current[keyToUse] = {
                                     displayName: part.charAt(0).toUpperCase() + part.slice(1),
                                     path: `data/${path.basename(setsDir)}/${file}`
                                 };
