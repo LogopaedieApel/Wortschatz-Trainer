@@ -60,7 +60,7 @@ button:focus-visible, .clickable-card:focus-visible {
 
 button, .nav-arrow, .clickable-card { -webkit-tap-highlight-color: transparent; outline: none; }
 button:focus, .nav-arrow:focus, .clickable-card:focus { outline: none; box-shadow: none; }
-button:focus:not(:hover), .nav-arrow:focus:not(:hover), .clickable-card:focus:not(:hover) { /* Leer gelassen für Touch-App */ }
+
 
 .hamburger-menu { position: fixed; top: calc(env(safe-area-inset-top) + 20px); right: 20px; z-index: 1001; }
 .hamburger-icon { font-size: 2rem; cursor: pointer; background: var(--card-background); padding: 5px 10px; border-radius: var(--border-radius); user-select: none; }
@@ -214,3 +214,108 @@ input[type="range"] { width: 100%; }
     background-color: #6c757d; /* Eine neutrale Farbe für "Zurück" */
     max-width: 300px;
 }
+
+/* Stile aus dem alten Editor übernommen */
+
+/* Allgemeine Tabellen- und Steuerungselemente */
+body { font-family: sans-serif; margin: 20px; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 8px; text-align: left; background-color: white; }
+th { background-color: #f2f2f2; text-align: center; vertical-align: middle;}
+td input[type="text"] { width: 98%; box-sizing: border-box; }
+.controls { margin-bottom: 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+button { padding: 10px 15px; cursor: pointer; border: 1px solid #ccc; background-color: #f0f0f0; border-radius: 4px; }
+#new-set-controls { border-left: 2px solid #ccc; padding-left: 20px; }
+#status-message { font-weight: bold; }
+#search-input { padding: 10px; width: 250px; border: 1px solid #ccc; border-radius: 4px; }
+
+/* Tab-Buttons */
+.tab-button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
+/* Sticky Header und Spalten für die Tabelle */
+#editor-table thead .top-header-row th { position: sticky; top: 0; z-index: 2; }
+#editor-table thead .sub-header-row th { position: sticky; top: 40px; z-index: 2; }
+.sticky-col { position: sticky; left: 0; z-index: 1; }
+.sticky-col.col-2 { left: 150px; }
+#editor-table thead .sticky-col { z-index: 3; }
+
+/* Hervorhebung für ungespeicherte Änderungen */
+#save-button.unsaved { background-color: #007bff; color: white; border-color: #0056b3; font-weight: bold; }
+
+/* Löschen-Button */
+.delete-button { background: none; border: none; color: #cc0000; cursor: pointer; font-size: 1.1em; padding: 0 5px; border-radius: 4px; }
+.delete-button:hover { background-color: #ffdddd; }
+
+/* Schreibgeschützte Eingabefelder */
+input[readonly] {
+    background-color: #f5f5f5;
+    color: #555;
+    cursor: not-allowed;
+    border: 1px solid #ddd;
+}
+
+/* Stile für Modale (Konfliktlösung, Archiv) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none; /* Standardmäßig ausgeblendet */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 900px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.modal-header {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+.modal-footer {
+    margin-top: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 15px;
+    text-align: right;
+}
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Spezifische Stile für Konflikt- und Archiv-Modale */
+.conflict-item { display: grid; grid-template-columns: 2fr 1fr 1fr 200px; gap: 15px; padding: 10px; border-bottom: 1px solid #eee; align-items: center; }
+.conflict-item-header { font-weight: bold; }
+.conflict-item:last-child { border-bottom: none; }
+.conflict-details { font-size: 0.9em; }
+.conflict-details strong { display: block; margin-bottom: 5px; font-size: 1.1em; }
+.conflict-actions button { display: block; width: 100%; margin-bottom: 5px; }
+.conflict-actions button.selected { background-color: #007bff; color: white; border-color: #0056b3; }
+
+#archive-modal .modal-content { width: 90%; max-width: 800px; }
+#archive-list { max-height: 60vh; overflow-y: auto; }

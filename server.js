@@ -371,42 +371,48 @@ app.get('/api/scan-for-new-files', async (req, res) => {
 
 
 app.post('/api/save-all-data', async (req, res) => {
-    const { database, manifest, mode } = req.body;
+    const { database, flatSets, mode } = req.body;
+
+    if (!database || !flatSets || !mode) {
+        return res.status(400).json({ message: 'Ungültige Anfrage: Es fehlen database, flatSets oder mode.' });
+    }
+
     try {
-        let dbPathMode, setsManifestPathMode;
-        if (mode === 'saetze') {
-            dbPathMode = path.join(__dirname, 'data', 'items_database_saetze.json');
-            setsManifestPathMode = path.join(__dirname, 'data', 'sets_saetze.json');
-        } else { // Default to 'woerter'
+        // 1. Pfade basierend auf dem Modus bestimmen
+        let dbPathMode;
+        if (mode === 'woerter') {
             dbPathMode = path.join(__dirname, 'data', 'items_database.json');
-            setsManifestPathMode = path.join(__dirname, 'data', 'sets.json');
+        } else { // saetze
+            dbPathMode = path.join(__dirname, 'data', 'items_database_saetze.json');
         }
+
+        // 2. Die Haupt-Datenbank-Datei speichern
         await fs.writeFile(dbPathMode, JSON.stringify(database, null, 2));
-        const manifestToSave = JSON.parse(JSON.stringify(manifest));
 
-        const saveSetContent = async (node) => {
-            for (const key in node) {
-                const child = node[key];
-                if (child && child.path && Array.isArray(child.items)) {
-                    await fs.writeFile(path.join(__dirname, child.path), JSON.stringify(child.items, null, 2));
-                    delete child.items;
-                }
-                if (typeof child === 'object' && child !== null) {
-                     await saveSetContent(child);
-                }
-            }
-        };
-        
-        await saveSetContent(manifestToSave);
-        await fs.writeFile(setsManifestPathMode, JSON.stringify(manifestToSave, null, 2));
+        // 3. Die einzelnen Set-Dateien speichern
+        const allSetPaths = Object.keys(flatSets);
 
-        console.log("Daten erfolgreich gespeichert!");
-        res.json({ message: 'Alle Daten erfolgreich aktualisiert!' });
+        for (const setPath in flatSets) {
+            const setData = flatSets[setPath];
+            // FINALE KORREKTUR: Der setPath ist der relative Pfad aus dem Projekt-Root.
+            // Wir müssen ihn nur mit __dirname verbinden, um den absoluten Pfad zu erhalten.
+            const fullPath = path.join(__dirname, setPath);
+            
+            // Sicherstellen, dass das Verzeichnis existiert
+            await fs.mkdir(path.dirname(fullPath), { recursive: true });
+            
+            // Die Set-Datei schreiben. Es wird nur das `items`-Array gespeichert.
+            await fs.writeFile(fullPath, JSON.stringify(setData.items, null, 2));
+        }
+
+        res.json({ message: 'Alle Daten erfolgreich gespeichert.' });
+
     } catch (error) {
-        console.error("Fehler beim Speichern der Daten:", error);
-        res.status(500).json({ message: "Fehler beim Speichern der Dateien." });
+        console.error('Fehler beim Speichern der Daten:', error);
+        res.status(500).json({ message: 'Ein interner Serverfehler ist aufgetreten.' });
     }
 });
+
 
 app.post('/api/sort-unsorted-images', async (req, res) => {
     const unsortedDir = path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert');
@@ -733,18 +739,24 @@ app.post('/api/sync-files', async (req, res) => {
                         let current = manifest;
                         for (let i = 0; i < parts.length; i++) {
                             const part = parts[i];
-                            if (i === parts.length - 1) {
-                                current[part] = {
-                                    displayName: part.charAt(0).toUpperCase() + part.slice(1),
-                                    path: `data/${path.basename(setsDir)}/${file}`
-                                };
-                            } else {
+                            // Wenn es nicht das letzte Teil ist, erstelle eine verschachtelte Struktur
+                            if (i < parts.length - 1) {
                                 if (!current[part]) {
                                     current[part] = {
                                         displayName: part.charAt(0).toUpperCase() + part.slice(1)
                                     };
                                 }
-                                current = current[part];
+                                // Füge ein 'children' Objekt hinzu, wenn es nicht existiert
+                                if (!current[part].children) {
+                                    current[part].children = {};
+                                }
+                                current = current[part].children;
+                            } else {
+                                // Das ist das letzte Teil, also der eigentliche Eintrag
+                                current[part] = {
+                                    displayName: part.charAt(0).toUpperCase() + part.slice(1),
+                                    path: `data/${path.basename(setsDir)}/${file}`
+                                };
                             }
                         }
                     }
