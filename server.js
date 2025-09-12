@@ -221,7 +221,8 @@ app.get('/api/get-all-data', async (req, res) => {
                 if (child.path) {
                     const finalDisplayName = [...nameParts, child.displayName].join(' ');
                     try {
-                        const setContent = await fs.readFile(path.join(__dirname, child.path), 'utf8');
+                        const setFilePath = path.join(__dirname, child.path.replace(/\s/g, '_'));
+                        const setContent = await fs.readFile(setFilePath, 'utf8');
                         flatSets[child.path] = {
                             displayName: finalDisplayName,
                             topCategory: currentTopCategory,

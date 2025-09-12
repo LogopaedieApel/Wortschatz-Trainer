@@ -47,6 +47,11 @@ class EditorApp {
         this.render(); // UI mit den neuen Daten oder der Fehlermeldung neu rendern
     }
 
+    capitalize(str) {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
     render() {
         const { currentMode, statusMessage, isLoading, hasUnsavedChanges } = this.state;
 
@@ -77,12 +82,12 @@ class EditorApp {
             </div>
 
             <div id="table-wrapper" style="max-height: 70vh; overflow: auto;">
-                ${isLoading ? '<p>Lade Tabelle...</p>' : this.renderTable()}
+                ${isLoading ? '<p>Lade Tabelle...</p>' : this.renderTable(Object.values(this.state.flatSets))}
             </div>
         `;
     }
 
-    renderTable() {
+    renderTable(visibleSets) {
         const { database, flatSets } = this.state;
 
         // 1. Sets für die Spalten gruppieren und sortieren
@@ -109,7 +114,7 @@ class EditorApp {
                     <th rowspan="2">Bild</th>
                     <th rowspan="2">Ton</th>
                     <th rowspan="2">Aktionen</th>
-                    ${sortedTopCategories.map(topCategory => `<th colspan="${groupedSets[topCategory].length}">${topCategory}</th>`).join('')}
+                                        ${visibleSets.map(set => `<th>${this.capitalize(set.name)}</th>`).join('')}
                 </tr>
                 <tr class="sub-header-row">
                     ${sortedTopCategories.map(topCategory => 
