@@ -1,5 +1,5 @@
 {
-  "artikulation": {
+  "Artikulation": {
     "displayName": "Artikulation",
     "b": {
       "displayName": "B",
@@ -112,10 +112,7 @@
         "displayName": "Initial",
         "path": "data/sets/artikulation_w_initial.json"
       }
-    }
-  },
-  "Artikulation": {
-    "displayName": "Artikulation",
+    },
     "CH1 medial": {
       "displayName": "CH1 medial",
       "path": "data/sets/Artikulation_CH1 medial.json"

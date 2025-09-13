@@ -4,6 +4,31 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
+// Hilfsfunktionen für ID/Name-Normalisierung (Umlaute/ß korrekt behandeln)
+function transliterateGerman(str) {
+    if (!str) return '';
+    return str
+        .replace(/ä/g, 'ae').replace(/Ä/g, 'Ae')
+        .replace(/ö/g, 'oe').replace(/Ö/g, 'Oe')
+        .replace(/ü/g, 'ue').replace(/Ü/g, 'Ue')
+        .replace(/ß/g, 'ss');
+}
+function toAsciiIdFromBase(baseName) {
+    const t = transliterateGerman(baseName);
+    return t
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '_')   // Nicht-Alnum -> _
+        .replace(/^_+|_+$/g, '')       // Trim _
+        .replace(/_+/g, '_');          // Mehrfach-_ reduzieren
+}
+function displayNameFromBase(baseName) {
+    // Sichtbarer Name: Unicode beibehalten, _ und - als Leerzeichen, Whitespaces normalisieren
+    return (baseName || '')
+        .replace(/[_-]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
 // KORRIGIERT: Der Pfad zur Manifest-Datei wurde an die neue Struktur angepasst.
 const setsManifestPath = path.join(__dirname, 'data', 'sets.json'); 
 const dbPath = path.join(__dirname, 'data', 'items_database.json');
@@ -299,8 +324,11 @@ app.get('/api/scan-for-new-files', async (req, res) => {
 
         const foundAssets = {};
 
-        // Hilfsfunktion: Generiere eine ID aus dem Dateinamen
-        const makeId = (filename) => filename.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9]+/g, '_').toLowerCase();
+        // Hilfsfunktion: Generiere eine robuste ID aus dem Dateinamen (mit deutscher Transliteration)
+        const makeId = (filename) => {
+            const base = filename.replace(/\.[^.]+$/, '');
+            return toAsciiIdFromBase(base);
+        };
 
         // Bestimme Basis-Pfade für Sätze oder Wörter
         const isSaetze = mode === 'saetze';
@@ -310,8 +338,9 @@ app.get('/api/scan-for-new-files', async (req, res) => {
         // Bilddateien zuordnen
         for (const file of imageFiles) {
             const base = path.parse(file).name;
-            const id = makeId(base);
+            const id = makeId(path.basename(file));
             if (!foundAssets[id]) foundAssets[id] = {};
+            if (!foundAssets[id].baseName) foundAssets[id].baseName = base;
             let relPath = path.relative(__dirname, file).replace(/\\/g, '/');
             // Pfad ggf. anpassen
             if (!relPath.startsWith(imageBase)) {
@@ -325,8 +354,9 @@ app.get('/api/scan-for-new-files', async (req, res) => {
         // Sounddateien zuordnen
         for (const file of soundFiles) {
             const base = path.parse(file).name;
-            const id = makeId(base);
+            const id = makeId(path.basename(file));
             if (!foundAssets[id]) foundAssets[id] = {};
+            if (!foundAssets[id].baseName) foundAssets[id].baseName = base;
             let relPath = path.relative(__dirname, file).replace(/\\/g, '/');
             if (!relPath.startsWith(soundBase)) {
                 const parts = relPath.split('/');
@@ -340,7 +370,7 @@ app.get('/api/scan-for-new-files', async (req, res) => {
         // Ordner zuordnen (optional, z.B. Reime)
         for (const file of imageFiles.concat(soundFiles)) {
             const base = path.parse(file).name;
-            const id = makeId(base);
+            const id = makeId(path.basename(file));
             const folder = path.basename(path.dirname(file)).toLowerCase();
             if (!foundAssets[id].folder) foundAssets[id].folder = folder;
         }
@@ -352,7 +382,8 @@ app.get('/api/scan-for-new-files', async (req, res) => {
             const hasPrefixedId = existingIds.has(`item_${id}`);
             if (!hasNormalId && !hasPrefixedId) {
                 newItems[id] = {
-                    name: id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+                    // Sichtbarer Name aus Unicode-Basis ableiten (nicht aus der ID)
+                    name: displayNameFromBase(foundAssets[id].baseName || id),
                     image: foundAssets[id].image || '',
                     sound: foundAssets[id].sound || '',
                     folder: foundAssets[id].folder || ''
@@ -808,16 +839,12 @@ app.post('/api/sync-files', async (req, res) => {
 
             const processFile = (filePath, type, basePath) => {
                 const relPath = path.relative(__dirname, filePath).replace(/\\/g, '/');
-                const fileName = path.basename(filePath);
-                // ID-Generierung verbessert, um Leerzeichen in Satz-Dateinamen korrekt zu behandeln
-                const id = fileName.substring(0, fileName.lastIndexOf('.')).toLowerCase().replace(/[^a-z0-9\s_]/g, '').replace(/\s+/g, '_');
+                const base = path.parse(filePath).name;
+                const id = toAsciiIdFromBase(base);
                 if (!id) return;
 
                 if (!database[id]) {
-                    database[id] = {
-                        name: id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-                        image: '', sound: '', folder: ''
-                    };
+                    database[id] = { name: displayNameFromBase(base), image: '', sound: '', folder: '' };
                 }
                 database[id][type] = relPath;
 

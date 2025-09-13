@@ -203,21 +203,44 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupQuizRound() { if (currentItemIndex >= currentShuffledItems.length - 1) { exitCurrentExercise(); btnReshuffle.textContent = 'Neu mischen'; document.getElementById('exercise-end-message').textContent = "Alle Items bearbeitet."; showModal('exercise-end-modal'); return; } updateProgressDots(); correctQuizItem = currentShuffledItems[currentItemIndex]; const incorrectItems = shuffleArray(quizPool.filter(item => item.id !== correctQuizItem.id)).slice(0, 3); if (incorrectItems.length < 3) { console.error("Kritischer Fehler: Nicht genügend Items für eine Quiz-Runde gefunden."); document.getElementById('exercise-end-message').textContent = "Ein interner Fehler ist aufgetreten. Nicht genügend unterschiedliche Bilder für diese Runde vorhanden."; showModal('exercise-end-modal'); return; } const options = shuffleArray([correctQuizItem, ...incorrectItems]); const optionElements = quizOptionsContainer.querySelectorAll('.quiz-option'); optionElements.forEach((div, index) => { const item = options[index]; div.innerHTML = `<img src="${item.image}?t=${new Date().getTime()}" alt="Antwortmöglichkeit">`; div.dataset.itemId = item.id; div.className = 'quiz-option'; }); quizOptionsContainer.classList.remove('disabled'); playItemSound(correctQuizItem, 0.5); }
     function handleQuizAnswer(event) { const selectedOption = event.target.closest('.quiz-option'); if (!selectedOption || quizOptionsContainer.classList.contains('disabled')) return; quizOptionsContainer.classList.add('disabled'); const selectedItemId = selectedOption.dataset.itemId; const allOptions = quizOptionsContainer.querySelectorAll('.quiz-option'); allOptions.forEach(opt => { if (opt.dataset.itemId === correctQuizItem.id) { opt.classList.add('correct'); } else if (opt === selectedOption) { opt.classList.add('incorrect'); } else { opt.classList.add('faded'); } }); setTimeout(() => { currentItemIndex++; setupQuizRound(); }, 2000); }
     let availableListsForCategory = []; 
+    // Rekursive Variante: sammelt alle Blätter (Objekte mit 'path')
     function flattenLists(categoryData) {
         const lists = [];
-        for (const key in categoryData) {
-            if (key === 'displayName' || key === 'unterkategorieName') {
-                continue;
+
+        const buildLabel = (parts) => {
+            // Halte Labels kurz: nimm die letzten 2 Segmente, wenn es mehr sind
+            const maxDepth = 2;
+            const reduced = parts.length > maxDepth ? parts.slice(parts.length - maxDepth) : parts;
+            if (reduced.length === 0) return '';
+            if (reduced.length === 1) return reduced[0];
+            // Mehrere Teile: erster Teil unverändert, letzter Teil kleingeschrieben (z. B. "B initial")
+            const head = reduced.slice(0, reduced.length - 1).join(' ');
+            const tail = (reduced[reduced.length - 1] || '').toLowerCase();
+            return head ? `${head} ${tail}` : tail;
+        };
+
+        const traverse = (node, nameParts = []) => {
+            for (const key in node) {
+                if (key === 'displayName' || key === 'unterkategorieName') continue;
+                const child = node[key];
+                if (!child || typeof child !== 'object') continue;
+
+                if (child.path && child.displayName) {
+                    const parts = nameParts.length ? [...nameParts, child.displayName] : [child.displayName];
+                    const text = buildLabel(parts);
+                    lists.push({ text, value: child.path });
+                } else {
+                    // Nur kurze Ebenen (z. B. Buchstaben) in die Beschriftung aufnehmen
+                    const nextParts = (child.displayName && child.displayName.length <= 5)
+                        ? [...nameParts, child.displayName]
+                        : nameParts;
+                    traverse(child, nextParts);
+                }
             }
-            const item = categoryData[key];
-            if (item && item.path && item.displayName) {
-                lists.push({
-                    text: item.displayName,
-                    value: item.path
-                });
-            }
-        }
-        lists.sort((a, b) => a.text.localeCompare(b.text));
+        };
+
+        traverse(categoryData, []);
+        lists.sort((a, b) => a.text.localeCompare(b.text, 'de'));
         return lists; 
     }
     function populateListDropdown(selectElement) { selectElement.innerHTML = '<option value="">Liste auswählen...</option>'; availableListsForCategory.forEach(list => { const option = document.createElement('option'); option.value = list.value; option.textContent = list.text; selectElement.appendChild(option); }); }
