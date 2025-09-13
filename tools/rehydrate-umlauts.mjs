@@ -11,6 +11,10 @@ const projectRoot = path.resolve(__dirname, '..');
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
+// Allow selecting domain(s): woerter | saetze | all
+const modeArgIndex = args.indexOf('--mode');
+const modeArg = modeArgIndex !== -1 && args[modeArgIndex + 1] ? args[modeArgIndex + 1] : 'woerter';
+const MODES = modeArg === 'all' ? ['woerter', 'saetze'] : [modeArg];
 
 function toNFC(str) {
   try { return (str || '').normalize('NFC'); } catch { return str || ''; }
@@ -154,14 +158,14 @@ async function rehydrateMode(mode) {
 }
 
 (async function main() {
-  const modes = ['woerter']; // Fokus auf Wörter-Bilder/Sounds
+  const modes = MODES; // 'woerter' | 'saetze' | beide bei 'all'
   let totals = { renamed: 0, skipped: 0, updated: 0, missing: 0, conflicts: 0 };
   for (const m of modes) {
     const res = await rehydrateMode(m);
     Object.keys(totals).forEach(k => totals[k] += res[k]);
   }
   const tag = APPLY ? 'APPLY' : 'DRY';
-  console.log(`[${tag}] fertig:`, totals);
+  console.log(`[${tag}] fertig (${modes.join(', ')}):`, totals);
   if (!APPLY) {
     console.log('Zum Anwenden mit --apply erneut ausführen.');
   }
