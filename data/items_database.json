@@ -305,12 +305,6 @@
     "sound": "data/wörter/sounds/p/Paeckchen.mp3",
     "folder": "p"
   },
-  "pl_tzchen": {
-    "name": "Pl Tzchen",
-    "image": "data/wörter/images/p/Plätzchen.jpeg",
-    "sound": "",
-    "folder": "p"
-  },
   "rad": {
     "name": "Rad",
     "image": "data/wörter/images/r/Rad.jpg",
@@ -595,7 +589,7 @@
   },
   "plaetzchen": {
     "name": "Plaetzchen",
-    "image": "",
+    "image": "data/wörter/images/p/Plätzchen.jpeg",
     "sound": "data/wörter/sounds/p/Plaetzchen.mp3",
     "folder": "p"
   }
