@@ -3,7 +3,7 @@
     "displayName": "Phonologische Bewusstheit",
     "Reime": {
       "displayName": "Reime",
-      "path": "data/sets_saetze/artikulation_reime_initial.json"
+      "path": "data/sets_saetze/phonologische_bewusstheit_reime.json"
     }
   }
 }
