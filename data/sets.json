@@ -115,18 +115,18 @@
     },
     "CH1 medial": {
       "displayName": "CH1 medial",
-      "path": "data/sets/Artikulation_CH1 medial.json"
+      "path": "data/sets/artikulation_ch1_medial.json"
     },
     "SCH medial": {
       "displayName": "SCH medial",
-      "path": "data/sets/Artikulation_SCH medial.json"
+      "path": "data/sets/artikulation_sch_medial.json"
     }
   },
   "Wortschatz": {
     "displayName": "Wortschatz",
-    "Nahrnungsmittel": {
-      "displayName": "Nahrnungsmittel",
-      "path": "data/sets/Wortschatz_Nahrnungsmittel.json"
+    "Nahrungsmittel": {
+      "displayName": "Nahrungsmittel",
+      "path": "data/sets/wortschatz_nahrungsmittel.json"
     }
   }
 }
