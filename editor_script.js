@@ -19,6 +19,7 @@ const tabWoerter = document.getElementById('tab-woerter');
 const tabSaetze = document.getElementById('tab-saetze');
 const saveStatus = document.getElementById('save-status');
 const notificationArea = document.getElementById('notification-area');
+const runHealthcheckButton = document.getElementById('run-healthcheck-button');
 let debounceTimer; // Timer for debouncing save action
 
 function switchMode(mode) {
@@ -644,6 +645,32 @@ if (showArchiveButton) {
 if (archiveCloseButton) {
     archiveCloseButton.addEventListener('click', () => {
         archiveModal.style.display = 'none';
+    });
+}
+
+// Healthcheck-Button: Führt den Server-Healthcheck aus und zeigt ein kompaktes Ergebnis an
+if (runHealthcheckButton) {
+    runHealthcheckButton.addEventListener('click', async () => {
+        const prev = notificationArea.textContent;
+        notificationArea.textContent = 'Prüfe Daten…';
+        try {
+            const res = await fetch('/api/healthcheck');
+            if (!res.ok) throw new Error('Server-Antwort nicht OK');
+            const data = await res.json();
+            const w = data.woerter?.counts || { sets: 0, items: 0, missingIds: 0, missingSetFiles: 0 };
+            const s = data.saetze?.counts || { sets: 0, items: 0, missingIds: 0, missingSetFiles: 0 };
+            const ok = data.ok === true;
+            notificationArea.textContent = ok
+              ? `Healthcheck OK – Wörter: ${w.sets} Sets / ${w.items} Items, Sätze: ${s.sets} Sets / ${s.items} Items`
+              : `Healthcheck PROBLEME – fehlende IDs: W=${w.missingIds}, S=${s.missingIds}, fehlende Dateien: W=${w.missingSetFiles}, S=${s.missingSetFiles}`;
+            // Details bei Bedarf in der Konsole
+            if (!ok) {
+                console.warn('[Healthcheck Details]', data);
+            }
+        } catch (e) {
+            console.error('Healthcheck fehlgeschlagen:', e);
+            notificationArea.textContent = prev || 'Healthcheck fehlgeschlagen.';
+        }
     });
 }
 

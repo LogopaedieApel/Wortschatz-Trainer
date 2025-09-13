@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 // Hilfsfunktionen für ID/Name-Normalisierung (Umlaute/ß korrekt behandeln)
 function transliterateGerman(str) {
@@ -46,6 +46,82 @@ const soundsBasePaths = [
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(__dirname));
+
+// Helper: Validate a given mode ('woerter' | 'saetze') by checking manifest-set files and missing IDs
+async function validateModeIntegrity(mode) {
+    const isSaetze = mode === 'saetze';
+    const dbPathMode = path.join(__dirname, 'data', isSaetze ? 'items_database_saetze.json' : 'items_database.json');
+    const setsManifestPathMode = path.join(__dirname, 'data', isSaetze ? 'sets_saetze.json' : 'sets.json');
+
+    const result = {
+        ok: true,
+        mode,
+        databasePath: dbPathMode.replace(/\\/g, '/'),
+        manifestPath: setsManifestPathMode.replace(/\\/g, '/'),
+        counts: { sets: 0, items: 0, missingIds: 0, missingSetFiles: 0 },
+        sets: [] // { path, displayName, exists, itemsCount, missingIds[] }
+    };
+
+    let database = {};
+    let manifest = {};
+    try {
+        database = JSON.parse(await fs.readFile(dbPathMode, 'utf8'));
+    } catch (e) {
+        if (e.code !== 'ENOENT') throw e;
+        console.warn(`[HEALTHCHECK] Datenbank nicht gefunden: ${dbPathMode}`);
+    }
+    try {
+        manifest = JSON.parse(await fs.readFile(setsManifestPathMode, 'utf8'));
+    } catch (e) {
+        if (e.code !== 'ENOENT') throw e;
+        console.warn(`[HEALTHCHECK] Manifest nicht gefunden: ${setsManifestPathMode}`);
+    }
+
+    const dbKeys = new Set(Object.keys(database));
+
+    const findAndValidate = async (node, nameParts = []) => {
+        for (const key in node) {
+            const child = node[key];
+            if (!child || typeof child !== 'object') continue;
+            if (child.path) {
+                const displayName = [...nameParts, child.displayName].join(' ');
+                const setEntry = { path: child.path, displayName, exists: true, itemsCount: 0, missingIds: [] };
+                try {
+                    const setContent = await fs.readFile(path.join(__dirname, child.path), 'utf8');
+                    const rawItems = JSON.parse(setContent);
+                    if (Array.isArray(rawItems)) {
+                        setEntry.itemsCount = rawItems.length;
+                        for (const id of rawItems) {
+                            if (!dbKeys.has(id)) setEntry.missingIds.push(id);
+                        }
+                    } else {
+                        console.warn(`[HEALTHCHECK] Set-Datei enthält kein Array: ${child.path}`);
+                    }
+                } catch (e) {
+                    setEntry.exists = false;
+                    result.counts.missingSetFiles += 1;
+                    console.warn(`[HEALTHCHECK] Set-Datei fehlt oder ist unlesbar: ${child.path}`);
+                }
+                result.counts.sets += 1;
+                result.counts.items += setEntry.itemsCount;
+                result.counts.missingIds += setEntry.missingIds.length;
+                result.sets.push(setEntry);
+            } else {
+                const newNameParts = (child.displayName && child.displayName.length <= 5)
+                    ? [...nameParts, child.displayName]
+                    : nameParts;
+                await findAndValidate(child, newNameParts);
+            }
+        }
+    };
+
+    await findAndValidate(manifest);
+
+    if (result.counts.missingIds > 0 || result.counts.missingSetFiles > 0) {
+        result.ok = false;
+    }
+    return result;
+}
 
 // FINALE KORREKTUR: Route zum Archivieren von Einträgen
 app.post('/api/delete-item', async (req, res) => {
@@ -247,14 +323,24 @@ app.get('/api/get-all-data', async (req, res) => {
                     const finalDisplayName = [...nameParts, child.displayName].join(' ');
                     try {
                         const setContent = await fs.readFile(path.join(__dirname, child.path), 'utf8');
+                        // Lade rohe IDs (Array)
+                        const rawItems = JSON.parse(setContent);
+                        // Guard: fehlende IDs gegen die geladene DB prüfen
+                        const missingIds = Array.isArray(rawItems)
+                            ? rawItems.filter(id => !(id in database))
+                            : [];
+                        if (missingIds.length > 0) {
+                            console.warn(`Warnung: In Set ${child.path} fehlen ${missingIds.length} IDs in der Datenbank:`, missingIds.join(', '));
+                        }
                         flatSets[child.path] = {
                             displayName: finalDisplayName,
                             topCategory: currentTopCategory,
-                            items: JSON.parse(setContent)
+                            items: rawItems,
+                            missingIds
                         };
                     } catch (e) {
                         console.warn(`Warnung: Set-Datei ${child.path} nicht gefunden.`);
-                        flatSets[child.path] = { displayName: finalDisplayName, topCategory: currentTopCategory, items: [] };
+                        flatSets[child.path] = { displayName: finalDisplayName, topCategory: currentTopCategory, items: [], missingIds: [] };
                     }
                 } else {
                     const newNameParts = (child.displayName && child.displayName.length <= 5)
@@ -877,4 +963,36 @@ app.post('/api/sync-files', async (req, res) => {
 // Dieser Block startet den Server und sorgt dafür, dass er aktiv bleibt.
 app.listen(PORT, () => {
     console.log(`Server läuft und lauscht auf http://localhost:${PORT}`);
+});
+
+// Healthcheck-Endpoint: Validiert beide Modi und gibt eine kompakte Zusammenfassung zurück
+app.get('/api/healthcheck', async (req, res) => {
+    const detail = req.query.detail === '1' || req.query.detail === 'true';
+    try {
+        const [woerter, saetze] = await Promise.all([
+            validateModeIntegrity('woerter'),
+            validateModeIntegrity('saetze')
+        ]);
+        const ok = woerter.ok && saetze.ok;
+        const summary = {
+            ok,
+            timestamp: new Date().toISOString(),
+            woerter: {
+                ok: woerter.ok,
+                counts: woerter.counts
+            },
+            saetze: {
+                ok: saetze.ok,
+                counts: saetze.counts
+            }
+        };
+        if (detail) {
+            summary.woerter.details = woerter.sets;
+            summary.saetze.details = saetze.sets;
+        }
+        res.json(summary);
+    } catch (error) {
+        console.error('[HEALTHCHECK] Fehler:', error);
+        res.status(500).json({ ok: false, message: 'Healthcheck fehlgeschlagen.' });
+    }
 });
