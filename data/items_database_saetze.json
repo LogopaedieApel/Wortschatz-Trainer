@@ -47,15 +47,17 @@
     "sound": "data/sätze/sounds/Reime/Glas im Gras.mp3",
     "folder": "reime"
   },
-  "hase_auf_der_stra_e": {
-    "name": "Hase Auf Der Stra E",
+  "hase_auf_der_strasse": {
+    "name": "Hase Auf Der Straße",
     "image": "data/sätze/images/Reime/Hase auf der Straße.jpeg",
-    "sound": ""
+    "sound": "",
+    "folder": "reime"
   },
-  "hase_auf_stra_e": {
-    "name": "Hase Auf Stra E",
+  "hase_auf_strasse": {
+    "name": "Hase Auf Straße",
     "image": "",
-    "sound": "data/sätze/sounds/Reime/Hase auf Straße.mp3"
+    "sound": "data/sätze/sounds/Reime/Hase auf Straße.mp3",
+    "folder": "reime"
   },
   "hasen_mit_blasen": {
     "name": "Hasen Mit Blasen",
@@ -133,18 +135,6 @@
     "name": "Wal Mit Schal",
     "image": "data/sätze/images/Reime/Wal mit Schal.jpeg",
     "sound": "data/sätze/sounds/Reime/Wal mit Schal.mp3",
-    "folder": "reime"
-  },
-  "hase_auf_der_strae": {
-    "name": "Hase Auf Der Strae",
-    "image": "data/sätze/images/Reime/Hase auf der Straße.jpeg",
-    "sound": "",
-    "folder": "reime"
-  },
-  "hase_auf_strae": {
-    "name": "Hase Auf Strae",
-    "image": "",
-    "sound": "data/sätze/sounds/Reime/Hase auf Straße.mp3",
     "folder": "reime"
   }
 }
