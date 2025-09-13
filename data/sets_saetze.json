@@ -1,12 +1,9 @@
 {
-  "artikulation": {
-    "displayName": "Artikulation",
-    "reime": {
+  "Phonologische Bewusstheit": {
+    "displayName": "Phonologische Bewusstheit",
+    "Reime": {
       "displayName": "Reime",
-      "initial": {
-        "displayName": "Initial",
-        "path": "data/sets_saetze/artikulation_reime_initial.json"
-      }
+      "path": "data/sets_saetze/artikulation_reime_initial.json"
     }
   }
 }
