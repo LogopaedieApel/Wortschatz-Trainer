@@ -214,29 +214,49 @@ app.get('/api/get-all-data', async (req, res) => {
         const flatSets = {};
         
         const findAndLoadSets = async (node, nameParts = [], topCategory = '') => {
+            // Wenn der aktuelle Knoten ein Array ist, iteriere darüber
+            if (Array.isArray(node)) {
+                for (const item of node) {
+                    await findAndLoadSets(item, nameParts, topCategory);
+                }
+                return;
+            }
+
+            // Wenn der aktuelle Knoten ein Objekt ist
             for (const key in node) {
                 const child = node[key];
                 if (!child || typeof child !== 'object') continue;
-                const currentTopCategory = (node === manifest) ? child.displayName : topCategory;
+
+                // Die topCategory wird nur auf der obersten Ebene neu gesetzt.
+                // Ein guter Indikator für die oberste Ebene ist, dass der `key` direkt im `manifest`-Objekt ist.
+                const currentTopCategory = manifest[key] ? child.displayName : topCategory;
+
                 if (child.path) {
+                    // Wenn ein Pfad existiert, ist es ein Set.
                     const finalDisplayName = [...nameParts, child.displayName].join(' ');
                     try {
-                        const setFilePath = path.join(__dirname, child.path.replace(/\s/g, '_'));
+                        const setFilePath = path.join(__dirname, child.path);
                         const setContent = await fs.readFile(setFilePath, 'utf8');
+                        const items = JSON.parse(setContent);
+                        
+                        // Korrektur: Stelle sicher, dass `items` ein Array ist.
+                        // Manche .json-Dateien könnten ein Objekt mit einem 'items'-Array sein.
+                        const finalItems = Array.isArray(items) ? items : (items.items || []);
+
                         flatSets[child.path] = {
                             displayName: finalDisplayName,
                             topCategory: currentTopCategory,
-                            items: JSON.parse(setContent)
+                            items: finalItems
                         };
                     } catch (e) {
-                        console.warn(`Warnung: Set-Datei ${child.path} nicht gefunden.`);
+                        console.warn(`Warnung: Set-Datei ${child.path} nicht gefunden oder fehlerhaft.`);
                         flatSets[child.path] = { displayName: finalDisplayName, topCategory: currentTopCategory, items: [] };
                     }
-                } else {
-                    const newNameParts = (child.displayName && child.displayName.length <= 5)
-                        ? [...nameParts, child.displayName]
-                        : nameParts;
-                    await findAndLoadSets(child, newNameParts, currentTopCategory);
+                } else if (child.sub) {
+                    // Wenn es ein 'sub'-Array gibt, ist es eine Zwischenkategorie.
+                    // Füge den Anzeigenamen zum Pfad hinzu und steige tiefer.
+                    const newNameParts = child.displayName ? [...nameParts, child.displayName] : nameParts;
+                    await findAndLoadSets(child.sub, newNameParts, currentTopCategory);
                 }
             }
         };
