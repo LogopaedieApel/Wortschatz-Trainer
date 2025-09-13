@@ -90,6 +90,10 @@
       "initial": {
         "displayName": "Initial",
         "path": "data/sets/artikulation_sch_initial.json"
+      },
+      "medial": {
+        "displayName": "Medial",
+        "path": "data/sets/artikulation_sch_medial.json"
       }
     },
     "s": {
@@ -113,13 +117,12 @@
         "path": "data/sets/artikulation_w_initial.json"
       }
     },
-    "CH1 medial": {
-      "displayName": "CH1 medial",
-      "path": "data/sets/artikulation_ch1_medial.json"
-    },
-    "SCH medial": {
-      "displayName": "SCH medial",
-      "path": "data/sets/artikulation_sch_medial.json"
+    "ch1": {
+      "displayName": "CH1",
+      "medial": {
+        "displayName": "Medial",
+        "path": "data/sets/artikulation_ch1_medial.json"
+      }
     }
   },
   "Wortschatz": {
