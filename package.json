@@ -4,7 +4,14 @@
   "description": "Ein Editor zur Verwaltung der Wortschatz-Trainer Daten.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "analyze-assets": "node tools/analyze-assets.mjs",
+    "analyze-assets:json": "node tools/analyze-assets.mjs --format json",
+    "apply-assets:dry": "node tools/apply-assets.mjs",
+    "apply-assets": "node tools/apply-assets.mjs --apply",
+    "healthcheck": "node tools/healthcheck.mjs",
+    "rehydrate:dry": "node tools/rehydrate-umlauts.mjs",
+    "rehydrate:apply": "node tools/rehydrate-umlauts.mjs --apply"
   },
   "dependencies": {
     "express": "^4.18.2"

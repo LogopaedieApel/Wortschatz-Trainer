@@ -1,0 +1,8 @@
+In Zeile:1 Zeichen:2
++  | Out-String
++  ~
+Ein leeres Pipeelement ist nicht zulässig.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsError 
+   RecordException
+    + FullyQualifiedErrorId : EmptyPipeElement
+ 

@@ -20,6 +20,7 @@ const tabSaetze = document.getElementById('tab-saetze');
 const saveStatus = document.getElementById('save-status');
 const notificationArea = document.getElementById('notification-area');
 const runHealthcheckButton = document.getElementById('run-healthcheck-button');
+const autoFixToggle = document.getElementById('auto-fix-toggle');
 let debounceTimer; // Timer for debouncing save action
 
 function switchMode(mode) {
@@ -220,6 +221,310 @@ function renderTable() {
     filterTable();
 }
 
+// =====================
+// Validation Utilities
+// =====================
+
+function toNFC(str) {
+    try { return (str || '').normalize('NFC'); } catch { return str || ''; }
+}
+
+function fixSlashes(p) {
+    return (p || '').replace(/\\+/g, '/');
+}
+
+function lowerExt(p) {
+    if (!p) return '';
+    const idx = p.lastIndexOf('.');
+    if (idx === -1) return p;
+    return p.slice(0, idx) + p.slice(idx).toLowerCase();
+}
+
+function mapUmlautsToAscii(s) {
+    // Conservative ASCII mapping for IDs
+    return (s || '')
+        .normalize('NFKD')
+        .replace(/[äÄ]/g, 'ae')
+        .replace(/[öÖ]/g, 'oe')
+        .replace(/[üÜ]/g, 'ue')
+        .replace(/ß/g, 'ss')
+        .replace(/[^a-zA-Z0-9]+/g, '_')
+        .replace(/_+/g, '_')
+        .replace(/^_+|_+$/g, '')
+        .toLowerCase();
+}
+
+function normalizeIdCandidate(rawId, fallbackName) {
+    const base = rawId && rawId.trim() ? rawId : (fallbackName || '').trim();
+    return mapUmlautsToAscii(base);
+}
+
+function collapseWhitespace(s) {
+    return (s || '').replace(/\s+/g, ' ').trim();
+}
+
+function normalizeBaseNameFromName(name) {
+    // Preserve human-readable name, but ensure NFC + single spaces
+    const nfc = toNFC(name || '');
+    return collapseWhitespace(nfc);
+}
+
+// Rehydrate German umlauts for filenames: ae→ä, oe→ö, ue→ü (case-aware)
+function rehydrateUmlautsFromAscii(s) {
+    if (!s) return '';
+    // First handle uppercase variants
+    return s
+        .replace(/Ae/g, 'Ä')
+        .replace(/Oe/g, 'Ö')
+        .replace(/Ue/g, 'Ü')
+        // Then lowercase variants
+        .replace(/ae/g, 'ä')
+        .replace(/oe/g, 'ö')
+        .replace(/ue/g, 'ü');
+}
+
+function prettyBaseFromName(name) {
+    // Use display name, NFC, collapse whitespace, rehydrate umlauts
+    const base = normalizeBaseNameFromName(name || '');
+    return rehydrateUmlautsFromAscii(base);
+}
+
+function toTitleCaseSegment(seg) {
+    if (!seg) return '';
+    const s = String(seg);
+    return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+}
+
+function extractMidFolder(field, p) {
+    // Extract the mid folder between images|sounds and the filename
+    if (!p) return '';
+    const v = fixSlashes(p);
+    const parts = v.split('/');
+    const anchor = field === 'image' ? 'images' : 'sounds';
+    const idx = parts.findIndex(x => x === anchor);
+    if (idx !== -1 && parts.length > idx + 1) {
+        return parts[idx + 1] || '';
+    }
+    return '';
+}
+
+function expectedDirFor(field, id, name, currentPath) {
+    if (currentMode === 'saetze') {
+        const base = field === 'image' ? 'data/sätze/images' : 'data/sätze/sounds';
+        // Prefer existing mid-folder but normalize its casing, fallback to TitleCase('reime')
+        const mid = extractMidFolder(field, currentPath) || 'Reime';
+        return `${base}/${toTitleCaseSegment(mid)}`;
+    }
+    // Wörter: derive by first letter of ID
+    const base = field === 'image' ? 'data/wörter/images' : 'data/wörter/sounds';
+    const letter = (id || '').toString().charAt(0).toLowerCase() || '';
+    return letter ? `${base}/${letter}` : base;
+}
+
+function basenameFromId(id) {
+    // Strict ascii_lowercase_underscore format derived from ID
+    return mapUmlautsToAscii((id || '').trim());
+}
+
+function getAllowedPrefixesForField(field) {
+    // field: 'image' | 'sound'
+    if (currentMode === 'saetze') {
+        return field === 'image'
+            ? ['data/sätze/images/']
+            : ['data/sätze/sounds/'];
+    }
+    // default: woerter
+    return field === 'image'
+        ? ['data/wörter/images/']
+        : ['data/wörter/sounds/'];
+}
+
+function validatePath(field, value) {
+    // Returns { ok, fixed, reasons: [] }
+    let v = value || '';
+    const reasons = [];
+    if (!v) return { ok: true, fixed: v, reasons };
+    const original = v;
+    v = fixSlashes(v);
+    if (v !== original) reasons.push('Backslashes in Pfad durch / ersetzt');
+    const nfc = toNFC(v);
+    if (nfc !== v) {
+        v = nfc;
+        reasons.push('Unicode-Normalisierung (NFC) angewendet');
+    }
+    const lowered = lowerExt(v);
+    if (lowered !== v) {
+        v = lowered;
+        reasons.push('Dateiendung kleingeschrieben');
+    }
+    const prefixes = getAllowedPrefixesForField(field);
+    const hasPrefix = prefixes.some(p => v.startsWith(p));
+    if (!hasPrefix) {
+        reasons.push(`Pfad muss mit ${prefixes.join(' oder ')} beginnen`);
+    }
+    // Extension check
+    const extMatch = v.match(/\.([a-z0-9]+)$/);
+    const ext = extMatch ? extMatch[1] : '';
+    if (field === 'image') {
+        if (!['jpg', 'jpeg', 'png'].includes(ext)) {
+            reasons.push('Bild muss .jpg/.jpeg/.png sein');
+        }
+    } else if (field === 'sound') {
+        if (ext && ext !== 'mp3') {
+            reasons.push('Ton muss .mp3 sein');
+        }
+    }
+    return { ok: reasons.length === 0, fixed: v, reasons };
+}
+
+function showFieldIssue(input, reasons) {
+    if (!input) return;
+    if (reasons && reasons.length) {
+        input.style.borderColor = '#cc0000';
+        input.title = reasons.join('\n');
+    } else {
+        input.style.borderColor = '';
+        input.title = '';
+    }
+}
+
+function ensureUniqueId(id, taken) {
+    if (!taken.has(id)) return id;
+    let i = 2;
+    while (taken.has(`${id}_${i}`)) i++;
+    return `${id}_${i}`;
+}
+
+function preSaveGuardAndFix({ autoFix } = { autoFix: true }) {
+    const issues = [];
+    const rows = tableBody ? tableBody.querySelectorAll('tr') : [];
+    const takenIds = new Set();
+    // Prefill with existing readonly IDs to avoid collisions
+    rows.forEach(row => {
+        const idInput = row.querySelector('.id-input');
+        if (!idInput) return;
+        const idVal = (idInput.value || '').trim();
+        if (idVal && idInput.hasAttribute('readonly')) takenIds.add(idVal);
+    });
+
+    rows.forEach(row => {
+        const idInput = row.querySelector('.id-input');
+        const nameInput = row.querySelector('input[data-field="name"]');
+        const imageInput = row.querySelector('input[data-field="image"]');
+        const soundInput = row.querySelector('input[data-field="sound"]');
+        if (!idInput) return;
+
+        // ID checks
+        const originalId = (idInput.value || '').trim();
+        const readonly = idInput.hasAttribute('readonly');
+        let normalizedId = normalizeIdCandidate(originalId, nameInput ? nameInput.value : '');
+        if (!normalizedId) {
+            issues.push({ row, field: 'id', reasons: ['Leere ID ist nicht erlaubt'] });
+        }
+        if (normalizedId !== originalId) {
+            if (autoFix && !readonly) {
+                normalizedId = ensureUniqueId(normalizedId, takenIds);
+                idInput.value = normalizedId;
+                setUnsavedChanges(true);
+            } else {
+                issues.push({ row, field: 'id', reasons: ['ID entspricht nicht dem Format [a-z0-9_], bitte anpassen'] });
+            }
+        }
+        if (normalizedId) {
+            const uniqueId = takenIds.has(normalizedId) && !readonly
+                ? ensureUniqueId(normalizedId, takenIds)
+                : normalizedId;
+            if (uniqueId !== normalizedId) {
+                if (autoFix && !readonly) {
+                    idInput.value = uniqueId;
+                    setUnsavedChanges(true);
+                } else {
+                    issues.push({ row, field: 'id', reasons: ['ID ist nicht eindeutig'] });
+                }
+            }
+            takenIds.add(idInput.value.trim());
+        }
+
+        // Path checks
+        ['image', 'sound'].forEach(field => {
+            const inp = field === 'image' ? imageInput : soundInput;
+            if (!inp) return;
+            const val = inp.value || '';
+            if (!val) { showFieldIssue(inp, []); return; }
+
+            // First pass: generic path fixes (slashes, NFC, ext lowercase)
+            const baseCheck = validatePath(field, val);
+            let fixed = baseCheck.fixed;
+            let reasons = [...baseCheck.reasons];
+
+            // Stricter rules: directory and basename must match expected (basename derived from display name with umlauts)
+            const expectedDir = expectedDirFor(field, idInput.value.trim(), nameInput ? nameInput.value : '', val);
+            const expectedBase = prettyBaseFromName(nameInput ? nameInput.value : '');
+            const fixedNorm = fixSlashes(toNFC(fixed));
+            const parts = fixedNorm.split('/');
+            const filename = parts.pop() || '';
+            const dot = filename.lastIndexOf('.');
+            const basename = dot === -1 ? filename : filename.slice(0, dot);
+            let ext = dot === -1 ? '' : filename.slice(dot).toLowerCase();
+            // Choose desired extension (infer for images, default .jpg; sound .mp3)
+            let desiredExt = ext;
+            if (!desiredExt) {
+                if (field === 'sound') {
+                    desiredExt = '.mp3';
+                } else {
+                    const curId = idInput.value.trim();
+                    const prevPath = (database[curId] && database[curId].image) ? String(database[curId].image) : '';
+                    const prevExtMatch = prevPath.match(/\.[a-zA-Z0-9]+$/);
+                    const prevExt = prevExtMatch ? prevExtMatch[0].toLowerCase() : '';
+                    desiredExt = ['.jpg', '.jpeg', '.png'].includes(prevExt) ? prevExt : '.jpg';
+                }
+            }
+
+            // Rebuild fixed path from expectedDir + expectedBase + desiredExt
+            let desired = expectedDir + '/' + expectedBase + desiredExt;
+
+            if (fixedNorm !== desired) {
+                reasons.push('Pfadstruktur und Dateiname an erwartetes Muster angepasst');
+                fixed = desired;
+            }
+
+            // Validate again including prefix checks
+            const finalCheck = validatePath(field, fixed);
+            if (!finalCheck.ok) {
+                if (autoFix) {
+                    inp.value = finalCheck.fixed;
+                    setUnsavedChanges(true);
+                    showFieldIssue(inp, []);
+                } else {
+                    showFieldIssue(inp, finalCheck.reasons.length ? finalCheck.reasons : reasons);
+                    issues.push({ row, field, reasons: finalCheck.reasons.length ? finalCheck.reasons : reasons });
+                }
+            } else {
+                if (autoFix && inp.value !== finalCheck.fixed) {
+                    inp.value = finalCheck.fixed;
+                    setUnsavedChanges(true);
+                }
+                showFieldIssue(inp, []);
+            }
+        });
+    });
+
+    // Surface issues summary, if any
+    if (issues.length) {
+        const previews = issues.slice(0, 3).map(i => `• ${i.field.toUpperCase()}: ${i.reasons[0] || 'Ungültig'}`).join('  ');
+        if (notificationArea) {
+            notificationArea.textContent = `Validierung: ${issues.length} Problem(e). ${previews}${issues.length > 3 ? ' …' : ''}`;
+        }
+    } else {
+        // Clear notice only if it was a validation message (best-effort)
+        if (notificationArea && /Validierung:/.test(notificationArea.textContent)) {
+            notificationArea.textContent = '';
+        }
+    }
+
+    return { issues };
+}
+
 /**
  * Reads the current state from the HTML table and updates the JavaScript objects.
  */
@@ -365,6 +670,12 @@ function debouncedSave() {
 // Statusanzeige nach Speichern
 async function saveData() {
     try {
+        const autoFix = autoFixToggle ? !!autoFixToggle.checked : true;
+        const guard = preSaveGuardAndFix({ autoFix });
+        if (guard.issues.length && !autoFix) {
+            showSaveStatus(false, 'Ungültige Eingaben – bitte korrigieren.');
+            return;
+        }
         readTableIntoState();
         const updateManifestWithFlatData = (node) => {
             for (const key in node) {
@@ -396,6 +707,81 @@ async function saveData() {
         showSaveStatus(false, error.message);
         console.error('Fehler beim Speichern:', error);
     }
+}
+
+// Live validation on blur/change for inputs inside the table
+if (tableBody) {
+    tableBody.addEventListener('blur', (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLInputElement)) return;
+        if (target.classList.contains('id-input')) {
+            const autoFix = autoFixToggle ? !!autoFixToggle.checked : true;
+            preSaveGuardAndFix({ autoFix });
+        }
+        const field = target.dataset && target.dataset.field;
+        if (field === 'image' || field === 'sound') {
+            const autoFix = autoFixToggle ? !!autoFixToggle.checked : true;
+            const row = target.closest('tr');
+            const idInput = row ? row.querySelector('.id-input') : null;
+            const nameInput = row ? row.querySelector('input[data-field="name"]') : null;
+            const currentVal = target.value || '';
+            // Run the same strict logic as in preSaveGuardAndFix for a single field
+            const baseCheck = validatePath(field, currentVal);
+            let fixed = baseCheck.fixed;
+            let reasons = [...baseCheck.reasons];
+            const expectedDir = expectedDirFor(field, idInput ? idInput.value.trim() : '', nameInput ? nameInput.value : '', currentVal);
+            const expectedBase = prettyBaseFromName(nameInput ? nameInput.value : '');
+            const fixedNorm = fixSlashes(toNFC(fixed));
+            const parts = fixedNorm.split('/');
+            const filename = parts.pop() || '';
+            const dot = filename.lastIndexOf('.');
+            const ext0 = dot === -1 ? '' : filename.slice(dot).toLowerCase();
+            let desiredExt = ext0;
+            if (!desiredExt) {
+                if (field === 'sound') {
+                    desiredExt = '.mp3';
+                } else {
+                    const curId = idInput ? idInput.value.trim() : '';
+                    const prevPath = (database[curId] && database[curId].image) ? String(database[curId].image) : '';
+                    const prevExtMatch = prevPath.match(/\.[a-zA-Z0-9]+$/);
+                    const prevExt = prevExtMatch ? prevExtMatch[0].toLowerCase() : '';
+                    desiredExt = ['.jpg', '.jpeg', '.png'].includes(prevExt) ? prevExt : '.jpg';
+                }
+            }
+            const desired = expectedDir + '/' + expectedBase + desiredExt;
+            const finalCheck = validatePath(field, desired);
+            if (autoFix) {
+                const origParts = fixSlashes(toNFC(currentVal)).split('/');
+                const origFile = origParts.pop() || '';
+                const origDot = origFile.lastIndexOf('.');
+                const origBase = origDot === -1 ? origFile : origFile.slice(0, origDot);
+                const origDir = origParts.join('/');
+
+                target.value = finalCheck.fixed;
+                showFieldIssue(target, []);
+
+                const changed = finalCheck.fixed !== currentVal;
+                if (changed) {
+                    const msgs = [];
+                    if (origDir && origDir !== expectedDir) msgs.push('Zielordner angepasst');
+                    if (origBase && origBase !== expectedBase) msgs.push('Dateiname aus Anzeigename gesetzt');
+                    if (!ext0) msgs.push(`Endung ergänzt (${desiredExt})`);
+                    baseCheck.reasons.forEach(r => {
+                        if (r.includes('Backslashes')) msgs.push('Backslashes → /');
+                        else if (r.includes('Unicode-Normalisierung')) msgs.push('Unicode (NFC)');
+                        else if (r.includes('Dateiendung kleingeschrieben')) msgs.push('Endung kleingeschrieben');
+                    });
+                    if (msgs.length === 0) msgs.push('Pfad korrigiert');
+                    showFixBubble(target, msgs);
+                }
+
+                setUnsavedChanges(true);
+                debouncedSave();
+            } else {
+                showFieldIssue(target, finalCheck.ok ? [] : finalCheck.reasons);
+            }
+        }
+    }, true);
 }
 
 /**
@@ -804,4 +1190,52 @@ if (tableBody) {
             }
         }
     });
+}
+
+// Brief inline info bubble near the input to explain applied auto-fixes
+function showFixBubble(input, messages, { timeout = 1800 } = {}) {
+    if (!input || !messages || messages.length === 0) return;
+    // Remove existing bubble for this input if present
+    if (input._fixBubble && input._fixBubble.remove) {
+        try { input._fixBubble.remove(); } catch {}
+        input._fixBubble = null;
+    }
+    const bubble = document.createElement('div');
+    bubble.className = 'fix-bubble';
+    bubble.style.position = 'absolute';
+    bubble.style.zIndex = 2000;
+    bubble.style.background = '#fff8dc';
+    bubble.style.border = '1px solid #e0c97f';
+    bubble.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+    bubble.style.padding = '6px 8px';
+    bubble.style.borderRadius = '6px';
+    bubble.style.fontSize = '12px';
+    bubble.style.color = '#333';
+    bubble.style.maxWidth = '320px';
+    bubble.style.opacity = '0';
+    bubble.style.transition = 'opacity 180ms ease';
+    bubble.innerHTML = `<strong>Auto-Fix:</strong> ${messages.join(' · ')}`;
+
+    document.body.appendChild(bubble);
+    const rect = input.getBoundingClientRect();
+    const top = window.scrollY + rect.top - bubble.offsetHeight - 8;
+    const left = window.scrollX + rect.left + Math.max(0, rect.width - 260);
+    bubble.style.top = `${Math.max(0, top)}px`;
+    bubble.style.left = `${left}px`;
+
+    // Fade in
+    requestAnimationFrame(() => {
+        bubble.style.opacity = '1';
+    });
+
+    // Auto-remove
+    const removeBubble = () => {
+        bubble.style.opacity = '0';
+        setTimeout(() => {
+            try { bubble.remove(); } catch {}
+            if (input._fixBubble === bubble) input._fixBubble = null;
+        }, 220);
+    };
+    input._fixBubble = bubble;
+    setTimeout(removeBubble, timeout);
 }
