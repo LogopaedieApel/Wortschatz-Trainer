@@ -3,6 +3,126 @@ const fs = require('fs').promises;
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
+const READ_ONLY = (() => {
+    const v = String(process.env.EDITOR_READONLY || '').trim().toLowerCase();
+    return v === '1' || v === 'true' || v === 'yes';
+})();
+
+function guardWrite(req, res, next) {
+    if (READ_ONLY) {
+        return res.status(423).json({ ok: false, message: 'Server ist im Nur-Lese-Modus (EDITOR_READONLY). Schreiben ist blockiert.' });
+    }
+    next();
+}
+
+// === Infrastruktur: Backups, Atomics, Audit, Locking, deterministische JSON-Order ===
+const BACKUP_ROOT = path.join(__dirname, '_backup');
+const AUDIT_LOG_DIR = path.join(__dirname, '_audit');
+const AUDIT_LOG_FILE = path.join(AUDIT_LOG_DIR, 'editor-changes.log');
+const LOCK_DIR = path.join(__dirname, '_locks');
+
+async function ensureDir(dir) { try { await fs.mkdir(dir, { recursive: true }); } catch {} }
+function nowIsoCompact() { return new Date().toISOString().replace(/[:.]/g, '').replace('Z','Z'); }
+function relFromRoot(p) { return path.relative(__dirname, p).replace(/\\/g, '/'); }
+
+function sortKeysDeep(value) {
+    if (Array.isArray(value)) return value.map(sortKeysDeep);
+    if (value && typeof value === 'object') {
+        // Bevorzugte Reihenfolge für Item-Objekte
+        const preferred = ['name','image','sound','folder'];
+        const keys = Object.keys(value);
+        const isItemShape = keys.every(k => preferred.includes(k));
+        const out = {};
+        if (isItemShape) {
+            preferred.forEach(k => { if (k in value) out[k] = sortKeysDeep(value[k]); });
+            return out;
+        }
+        keys.sort((a,b)=>a.localeCompare(b));
+        keys.forEach(k => out[k] = sortKeysDeep(value[k]));
+        return out;
+    }
+    return value;
+}
+
+function stableStringify(data, space = 2) {
+    const sorted = sortKeysDeep(data);
+    return JSON.stringify(sorted, null, space);
+}
+
+async function auditLog(entry) {
+    try {
+        await ensureDir(AUDIT_LOG_DIR);
+        const line = JSON.stringify({ ts: new Date().toISOString(), ...entry }) + '\n';
+        await fs.appendFile(AUDIT_LOG_FILE, line, 'utf8');
+    } catch (e) {
+        console.warn('[AUDIT] Schreibfehler:', e.message);
+    }
+}
+
+async function backupExisting(filePath, stamp) {
+    try {
+        const content = await fs.readFile(filePath);
+        const rel = relFromRoot(filePath);
+        const dest = path.join(BACKUP_ROOT, stamp, rel);
+        await ensureDir(path.dirname(dest));
+        await fs.writeFile(dest, content);
+        return dest;
+    } catch (e) {
+        if (e.code !== 'ENOENT') throw e; // Wenn Datei nicht existiert, kein Backup nötig
+        return null;
+    }
+}
+
+async function writeJsonAtomic(filePath, data, { stamp, backup = true, auditOp = 'write-json', context = {} } = {}) {
+    const dir = path.dirname(filePath);
+    await ensureDir(dir);
+    const ts = stamp || nowIsoCompact();
+    let backupPath = null;
+    if (backup) {
+        backupPath = await backupExisting(filePath, ts);
+    }
+    const tmp = filePath + '.tmp-' + Math.random().toString(36).slice(2);
+    const payload = stableStringify(data, 2);
+    await fs.writeFile(tmp, payload, 'utf8');
+    await fs.rename(tmp, filePath);
+    // Post-Write Selfcheck: Einmal einlesen
+    try { JSON.parse(await fs.readFile(filePath, 'utf8')); } catch (e) {
+        throw new Error(`Post-Write-Validierung fehlgeschlagen für ${relFromRoot(filePath)}: ${e.message}`);
+    }
+    await auditLog({ op: auditOp, file: relFromRoot(filePath), backup: backupPath ? relFromRoot(backupPath) : null, ...context });
+}
+
+async function acquireLock(name = 'editor') {
+    await ensureDir(LOCK_DIR);
+    const lockFile = path.join(LOCK_DIR, `${name}.lock`);
+    try {
+        const content = JSON.stringify({ pid: process.pid, ts: new Date().toISOString() });
+        const handle = await require('fs').promises.open(lockFile, 'wx'); // exklusiv
+        await handle.writeFile(content, 'utf8');
+        await handle.close();
+        return { name, lockFile };
+    } catch (e) {
+        throw new Error(`Lock '${name}' belegt. Bitte später erneut versuchen.`);
+    }
+}
+
+async function releaseLock(lock) {
+    if (!lock) return;
+    try { await fs.unlink(lock.lockFile); } catch {}
+}
+
+// Listet alle Set-Dateien für den Modus auf
+async function listSetFilesForMode(mode) {
+    const setsDir = path.join(__dirname, 'data', mode === 'saetze' ? 'sets_saetze' : 'sets');
+    let files = [];
+    try {
+        const entries = await fs.readdir(setsDir);
+        files = entries.filter(f => f.endsWith('.json')).map(f => path.join(setsDir, f));
+    } catch (e) {
+        if (e.code !== 'ENOENT') throw e;
+    }
+    return files;
+}
 
 // Hilfsfunktionen für ID/Name-Normalisierung (Umlaute/ß korrekt behandeln)
 function transliterateGerman(str) {
@@ -124,13 +244,15 @@ async function validateModeIntegrity(mode) {
 }
 
 // FINALE KORREKTUR: Route zum Archivieren von Einträgen
-app.post('/api/delete-item', async (req, res) => {
+app.post('/api/delete-item', guardWrite, async (req, res) => {
     const { id, mode } = req.body;
     if (!id || !mode) {
         return res.status(400).json({ message: 'ID und Modus sind erforderlich.' });
     }
 
     try {
+        const lock = await acquireLock('editor');
+        const stamp = nowIsoCompact();
         // 1. Pfade basierend auf dem Modus bestimmen
         let dbPathMode, setsDirMode;
         if (mode === 'woerter') {
@@ -173,7 +295,7 @@ app.post('/api/delete-item', async (req, res) => {
 
         // 5. Eintrag aus der Datenbank entfernen und speichern
         delete database[id];
-        await fs.writeFile(dbPathMode, JSON.stringify(database, null, 2));
+    await writeJsonAtomic(dbPathMode, database, { stamp, backup: true, auditOp: 'delete-item:db', context: { id, mode } });
 
         // 6. Eintrag aus allen Set-Dateien entfernen
         const setFiles = await fs.readdir(setsDirMode);
@@ -181,15 +303,16 @@ app.post('/api/delete-item', async (req, res) => {
             if (file.endsWith('.json')) {
                 const setPath = path.join(setsDirMode, file);
                 const setData = JSON.parse(await fs.readFile(setPath, 'utf8'));
-                
-                // HIER IST DIE WICHTIGE KORREKTUR:
-                // Prüfen, ob setData.items existiert und ein Array ist
-                if (Array.isArray(setData.items)) {
-                    const index = setData.items.indexOf(id);
+
+                // Set-Dateien sind Arrays von IDs. Entferne die ID direkt aus dem Array.
+                if (Array.isArray(setData)) {
+                    const index = setData.indexOf(id);
                     if (index > -1) {
-                        setData.items.splice(index, 1);
-                        await fs.writeFile(setPath, JSON.stringify(setData, null, 2));
+                        setData.splice(index, 1);
+                        await writeJsonAtomic(setPath, setData, { stamp, backup: true, auditOp: 'delete-item:set', context: { id, mode, set: relFromRoot(setPath) } });
                     }
+                } else {
+                    console.warn(`[DELETE] Set-Datei hat unerwartetes Format (kein Array): ${setPath}`);
                 }
             }
         }
@@ -199,6 +322,8 @@ app.post('/api/delete-item', async (req, res) => {
     } catch (error) {
         console.error(`Fehler beim Löschen des Eintrags ${id}:`, error);
         res.status(500).json({ message: 'Ein interner Serverfehler ist aufgetreten.' });
+    } finally {
+        try { await releaseLock({ lockFile: path.join(LOCK_DIR, 'editor.lock') }); } catch {}
     }
 });
 
@@ -243,7 +368,7 @@ app.get('/api/get-archived-files', async (req, res) => {
 });
 
 // NEU: API-Route zum Verwalten von Archiv-Aktionen
-app.post('/api/manage-archive', async (req, res) => {
+app.post('/api/manage-archive', guardWrite, async (req, res) => {
     const { action, files } = req.body;
     if (!action || !Array.isArray(files)) {
         return res.status(400).json({ message: 'Ungültige Anfrage.' });
@@ -487,9 +612,12 @@ app.get('/api/scan-for-new-files', async (req, res) => {
 });
 
 
-app.post('/api/save-all-data', async (req, res) => {
+app.post('/api/save-all-data', guardWrite, async (req, res) => {
     const { database, manifest, mode } = req.body;
+    let lock;
+    const stamp = nowIsoCompact();
     try {
+        lock = await acquireLock('editor');
         let dbPathMode, setsManifestPathMode;
         if (mode === 'saetze') {
             dbPathMode = path.join(__dirname, 'data', 'items_database_saetze.json');
@@ -498,14 +626,14 @@ app.post('/api/save-all-data', async (req, res) => {
             dbPathMode = path.join(__dirname, 'data', 'items_database.json');
             setsManifestPathMode = path.join(__dirname, 'data', 'sets.json');
         }
-        await fs.writeFile(dbPathMode, JSON.stringify(database, null, 2));
+        await writeJsonAtomic(dbPathMode, database, { stamp, backup: true, auditOp: 'save-all-data:db', context: { mode } });
         const manifestToSave = JSON.parse(JSON.stringify(manifest));
 
         const saveSetContent = async (node) => {
             for (const key in node) {
                 const child = node[key];
                 if (child && child.path && Array.isArray(child.items)) {
-                    await fs.writeFile(path.join(__dirname, child.path), JSON.stringify(child.items, null, 2));
+                    await writeJsonAtomic(path.join(__dirname, child.path), child.items, { stamp, backup: true, auditOp: 'save-all-data:set', context: { path: child.path, mode } });
                     delete child.items;
                 }
                 if (typeof child === 'object' && child !== null) {
@@ -515,17 +643,19 @@ app.post('/api/save-all-data', async (req, res) => {
         };
         
         await saveSetContent(manifestToSave);
-        await fs.writeFile(setsManifestPathMode, JSON.stringify(manifestToSave, null, 2));
+        await writeJsonAtomic(setsManifestPathMode, manifestToSave, { stamp, backup: true, auditOp: 'save-all-data:manifest', context: { mode } });
 
         console.log("Daten erfolgreich gespeichert!");
         res.json({ message: 'Alle Daten erfolgreich aktualisiert!' });
     } catch (error) {
         console.error("Fehler beim Speichern der Daten:", error);
         res.status(500).json({ message: "Fehler beim Speichern der Dateien." });
+    } finally {
+        await releaseLock(lock);
     }
 });
 
-app.post('/api/sort-unsorted-images', async (req, res) => {
+app.post('/api/sort-unsorted-images', guardWrite, async (req, res) => {
     const unsortedDir = path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert');
     const baseDir = path.join(__dirname, 'data', 'wörter', 'images');
     try {
@@ -558,13 +688,13 @@ app.post('/api/sort-unsorted-images', async (req, res) => {
 
 // This endpoint is obsolete and will be replaced by the new analysis and resolution flow;
 /*
-app.post('/api/sort-unsorted-files', async (req, res) => {
+app.post('/api/sort-unsorted-files', guardWrite, async (req, res) => {
     // ... old code ...
 });
 */
 
 // New endpoint to analyze unsorted files and detect conflicts
-app.post('/api/analyze-unsorted-files', async (req, res) => {
+app.post('/api/analyze-unsorted-files', guardWrite, async (req, res) => {
     const mode = req.query.mode || 'woerter';
     const onlyType = (req.query.type === 'images' || req.query.type === 'sounds') ? req.query.type : null;
 
@@ -658,7 +788,7 @@ app.post('/api/analyze-unsorted-files', async (req, res) => {
 });
 
 // New endpoint to resolve conflicts based on user decisions
-app.post('/api/resolve-conflicts', async (req, res) => {
+app.post('/api/resolve-conflicts', guardWrite, async (req, res) => {
     const { actions } = req.body; // Expect an array of actions
     let movedCount = 0;
     let deletedCount = 0;
@@ -691,6 +821,7 @@ app.post('/api/resolve-conflicts', async (req, res) => {
                     deletedCount++;
                     break;
             }
+            await auditLog({ op: 'resolve-conflict', type: action.type, source: path.relative(__dirname, sourcePath).replace(/\\/g,'/'), target: targetPath ? path.relative(__dirname, targetPath).replace(/\\/g,'/') : null });
         } catch (e) {
             console.error(`[RESOLVE] ERROR: Failed to perform action for ${action.fileName}:`, e);
             errors.push({ fileName: action.fileName, message: e.message });
@@ -705,7 +836,7 @@ app.post('/api/resolve-conflicts', async (req, res) => {
     });
 });
 
-app.post('/api/sort-unsorted-sounds', async (req, res) => {
+app.post('/api/sort-unsorted-sounds', guardWrite, async (req, res) => {
     const unsortedDir = path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert');
     const baseDir = path.join(__dirname, 'data', 'wörter', 'sounds');
     try {
@@ -849,7 +980,138 @@ app.get('/api/check-unsorted-files', async (req, res) => {
     res.json({ count: filesList.length, files: filesList });
 });
 
-app.post('/api/sync-files', async (req, res) => {
+// Liefert fehlende Assets (leere Pfade und nicht vorhandene Dateien) für den Editor
+app.get('/api/missing-assets', async (req, res) => {
+    try {
+        const mode = req.query.mode === 'saetze' ? 'saetze' : 'woerter';
+        const dbPathMode = path.join(__dirname, 'data', mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
+        let database = {};
+        try {
+            const content = await fs.readFile(dbPathMode, 'utf8');
+            database = JSON.parse(content);
+        } catch (e) {
+            if (e.code !== 'ENOENT') throw e;
+        }
+        const items = [];
+        for (const [id, item] of Object.entries(database)) {
+            const name = (item && item.name) ? String(item.name) : id;
+            for (const kind of ['image', 'sound']) {
+                const p = item && item[kind] ? String(item[kind]) : '';
+                if (!p) {
+                    items.push({ id, name, kind, reason: 'empty_path' });
+                    continue;
+                }
+                const abs = path.join(__dirname, p);
+                try {
+                    await fs.access(abs);
+                } catch {
+                    items.push({ id, name, kind, reason: 'file_missing', path: p });
+                }
+            }
+        }
+        res.json({ items });
+    } catch (err) {
+        console.error('[MISSING-ASSETS] Fehler:', err);
+        res.status(500).json({ message: 'Fehler beim Ermitteln fehlender Assets.' });
+    }
+});
+
+// Preflight/Dry-Run-Validator für Editor-Änderungen
+app.post('/api/editor/validate-change', async (req, res) => {
+    try {
+        const { type, mode } = req.body || {};
+        if (!type || !mode) return res.status(400).json({ ok: false, message: 'Erforderlich: type, mode' });
+        if (type !== 'id-rename') {
+            return res.status(400).json({ ok: false, message: `Änderungstyp '${type}' wird derzeit nicht unterstützt.` });
+        }
+        const { oldId, newId } = req.body;
+        if (!oldId || !newId) return res.status(400).json({ ok: false, message: 'Erforderlich: oldId, newId' });
+
+        const normalized = toAsciiIdFromBase(newId);
+        const idIssues = [];
+        if (normalized !== newId) idIssues.push(`Neue ID wird normalisiert zu '${normalized}' (ASCII/Slug-Regel).`);
+
+        const dbPath = path.join(__dirname, 'data', mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
+        let db = {};
+        try { db = JSON.parse(await fs.readFile(dbPath, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+        const issues = [];
+        if (!db[oldId]) issues.push(`Alte ID '${oldId}' existiert nicht.`);
+        if (db[normalized]) issues.push(`Neue ID '${normalized}' existiert bereits in der Datenbank.`);
+
+        const setFiles = await listSetFilesForMode(mode);
+        const setDiffs = [];
+        for (const file of setFiles) {
+            try {
+                const arr = JSON.parse(await fs.readFile(file, 'utf8'));
+                if (!Array.isArray(arr)) {
+                    issues.push(`Set-Datei ist kein Array: ${relFromRoot(file)}`);
+                    continue;
+                }
+                const occurrences = arr.filter(x => x === oldId).length;
+                const hasNew = arr.includes(normalized);
+                if (occurrences > 0 || hasNew) {
+                    setDiffs.push({
+                        path: relFromRoot(file),
+                        occurrences,
+                        note: hasNew ? 'Neue ID bereits enthalten (doppelte Einträge würden dedupliziert).' : '—'
+                    });
+                }
+            } catch (e) {
+                issues.push(`Set-Datei unlesbar: ${relFromRoot(file)} (${e.code || e.message})`);
+            }
+        }
+
+        const ok = issues.length === 0;
+        return res.json({
+            ok,
+            diffs: {
+                database: { willMoveKey: ok, from: oldId, to: normalized },
+                sets: setDiffs
+            },
+            warnings: idIssues,
+            issues
+        });
+    } catch (err) {
+        console.error('[VALIDATE-CHANGE] Fehler:', err);
+        return res.status(500).json({ ok: false, message: 'Interner Fehler bei der Validierung.' });
+    }
+});
+
+// Anzeigenamen eines Items sicher aktualisieren (nur 'name' Feld)
+app.patch('/api/editor/item/display-name', guardWrite, async (req, res) => {
+    const { mode, id, newDisplayName, options } = req.body || {};
+    if (!mode || !id || typeof newDisplayName !== 'string') {
+        return res.status(400).json({ ok: false, message: 'Erforderlich: mode, id, newDisplayName' });
+    }
+    const isSaetze = mode === 'saetze';
+    const dbPath = path.join(__dirname, 'data', isSaetze ? 'items_database_saetze.json' : 'items_database.json');
+    let lock;
+    const stamp = nowIsoCompact();
+    try {
+        lock = await acquireLock('editor');
+        let db = {};
+        try {
+            db = JSON.parse(await fs.readFile(dbPath, 'utf8'));
+        } catch (e) {
+            if (e.code !== 'ENOENT') throw e;
+        }
+        if (!db[id]) {
+            return res.status(404).json({ ok: false, message: `ID '${id}' nicht gefunden` });
+        }
+        // Whitespace- und NFC-Normalisierung (keine Auto-Kapitalisierung)
+        const normalized = String(newDisplayName).replace(/\s+/g, ' ').trim();
+        db[id].name = normalized;
+        await writeJsonAtomic(dbPath, db, { stamp, backup: true, auditOp: 'patch-display-name', context: { mode, id } });
+        return res.json({ ok: true, changedFields: ['name'], warnings: [] });
+    } catch (err) {
+        console.error('[PATCH display-name] Fehler:', err);
+        return res.status(500).json({ ok: false, message: 'Interner Fehler beim Aktualisieren des Anzeigenamens' });
+    } finally {
+        await releaseLock(lock);
+    }
+});
+
+app.post('/api/sync-files', guardWrite, async (req, res) => {
     const mode = req.query.mode || 'woerter';
 
     try {
@@ -959,7 +1221,7 @@ app.post('/api/sync-files', async (req, res) => {
             imageFiles.forEach(file => processFile(file, 'image', imagesBasePath));
             soundFiles.forEach(file => processFile(file, 'sound', soundsBasePath));
 
-            await fs.writeFile(dbPath, JSON.stringify(database, null, 2));
+            await writeJsonAtomic(dbPath, database, { backup: true, auditOp: 'sync-files:db', context: { mode: modeToUpdate } });
             return Object.keys(database).length;
         };
 
@@ -974,6 +1236,81 @@ app.post('/api/sync-files', async (req, res) => {
     }
 });
 
+// ID-Umbenennen: verschiebt DB-Key und propagiert in allen Set-Dateien (Array-IDs)
+app.post('/api/editor/item/id-rename', guardWrite, async (req, res) => {
+    const { mode, oldId, newId, dryRun = true } = req.body || {};
+    if (!mode || !oldId || !newId) {
+        return res.status(400).json({ ok: false, message: 'Erforderlich: mode, oldId, newId' });
+    }
+    const normalized = toAsciiIdFromBase(newId);
+    if (normalized !== newId) {
+        return res.status(400).json({ ok: false, message: `Neue ID muss ASCII/Slug sein. Vorschlag: '${normalized}'` });
+    }
+
+    const dbPath = path.join(__dirname, 'data', mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
+    let db = {};
+    try { db = JSON.parse(await fs.readFile(dbPath, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+    if (!db[oldId]) return res.status(404).json({ ok: false, message: `Alte ID '${oldId}' nicht gefunden.` });
+    if (db[normalized]) return res.status(409).json({ ok: false, message: `Neue ID '${normalized}' existiert bereits.` });
+
+    const setFiles = await listSetFilesForMode(mode);
+    const setPlans = [];
+    for (const file of setFiles) {
+        try {
+            const arr = JSON.parse(await fs.readFile(file, 'utf8'));
+            if (!Array.isArray(arr)) {
+                return res.status(500).json({ ok: false, message: `Set-Datei kein Array: ${relFromRoot(file)}` });
+            }
+            const occurrences = arr.filter(x => x === oldId).length;
+            const hasNew = arr.includes(normalized);
+            if (occurrences > 0 || hasNew) {
+                setPlans.push({ file, occurrences, hasNew });
+            }
+        } catch (e) {
+            return res.status(500).json({ ok: false, message: `Set-Datei unlesbar: ${relFromRoot(file)} (${e.code || e.message})` });
+        }
+    }
+
+    const diffs = {
+        database: { from: oldId, to: normalized },
+        sets: setPlans.map(p => ({ path: relFromRoot(p.file), occurrences: p.occurrences, note: p.hasNew ? 'Neue ID bereits enthalten (Deduplizierung nötig).' : '—' }))
+    };
+
+    if (dryRun) {
+        return res.json({ ok: true, dryRun: true, updatedSets: setPlans.map(p => relFromRoot(p.file)), diffs });
+    }
+
+    let lock;
+    const stamp = nowIsoCompact();
+    try {
+        lock = await acquireLock('editor');
+        // DB-Key verschieben
+        const item = db[oldId];
+        delete db[oldId];
+        db[normalized] = item;
+        await writeJsonAtomic(dbPath, db, { stamp, backup: true, auditOp: 'id-rename:db', context: { mode, from: oldId, to: normalized } });
+
+        // Sets aktualisieren mit Deduplizierung
+        for (const plan of setPlans) {
+            const file = plan.file;
+            const arr = JSON.parse(await fs.readFile(file, 'utf8'));
+            const seen = new Set();
+            const out = [];
+            for (const id of arr) {
+                const mapped = (id === oldId) ? normalized : id;
+                if (!seen.has(mapped)) { seen.add(mapped); out.push(mapped); }
+            }
+            await writeJsonAtomic(file, out, { stamp, backup: true, auditOp: 'id-rename:set', context: { mode, set: relFromRoot(file), from: oldId, to: normalized } });
+        }
+
+        return res.json({ ok: true, dryRun: false, updatedSets: setPlans.map(p => relFromRoot(p.file)), diffs });
+    } catch (err) {
+        console.error('[ID-RENAME] Fehler:', err);
+        return res.status(500).json({ ok: false, message: 'Interner Fehler beim ID-Umbenennen.' });
+    } finally {
+        await releaseLock(lock);
+    }
+});
 // === KORREKTUR HINZUGEFÜGT ===
 // Dieser Block startet den Server und sorgt dafür, dass er aktiv bleibt.
 app.listen(PORT, () => {
@@ -1049,4 +1386,9 @@ app.get('/api/missing-assets', async (req, res) => {
         console.error('[MISSING-ASSETS] Fehler:', error);
         res.status(500).json({ ok: false, message: 'Fehler beim Ermitteln der fehlenden Assets.' });
     }
+});
+
+// Read-only status endpoint
+app.get('/api/editor/config', (req, res) => {
+    res.json({ readOnly: READ_ONLY, port: PORT });
 });

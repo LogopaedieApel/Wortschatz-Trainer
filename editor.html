@@ -138,6 +138,9 @@
         <p id="status-message" style="display: inline-block; margin-left: 10px;"></p>
         <div id="notification-area" style="margin-left: 20px; font-weight: bold;"></div>
     </div>
+    <div id="read-only-banner" style="display:none; background:#fff3cd; color:#856404; border:1px solid #ffeeba; padding:8px 12px; border-radius:6px; margin-bottom: 12px;">
+        Hinweis: Der Server läuft im Nur-Lese-Modus. Speichern/Ändern ist vorübergehend deaktiviert.
+    </div>
     <div class="controls">
         <input type="text" id="search-input" placeholder="Einträge nach Namen filtern...">
     </div>
@@ -209,6 +212,30 @@
             </div>
             <div id="missing-assets-list" style="max-height: 60vh; overflow-y: auto;">
                 <!-- Wird per JS eingefüllt -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: ID umbenennen -->
+    <div id="id-rename-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-button" id="id-rename-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h2>ID umbenennen</h2>
+            <div style="margin: 6px 0 12px; font-size: 0.95em; color:#444;">
+                Alte ID: <code id="id-rename-old-id" style="background:#f7f7f7; padding:2px 4px; border-radius:4px;">—</code>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap: wrap; margin-bottom: 10px;">
+                <input type="text" id="id-rename-new-id" placeholder="Neue ID (ascii_lowercase_underscore)" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius: 4px;">
+                <button id="id-rename-validate">Prüfen</button>
+                <button id="id-rename-apply" disabled>Übernehmen</button>
+            </div>
+            <div id="id-rename-warnings" style="margin: 8px 0; color:#8a6d3b;"></div>
+            <div id="id-rename-issues" style="margin: 8px 0; color:#b94a48;"></div>
+            <div id="id-rename-diffs" style="margin-top: 12px;">
+                <!-- Preview wird per JS eingefügt -->
+            </div>
+            <div class="modal-footer" style="text-align:right;">
+                <button id="id-rename-cancel">Abbrechen</button>
             </div>
         </div>
     </div>

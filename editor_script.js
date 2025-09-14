@@ -31,6 +31,93 @@ const missingAssetsSearch = document.getElementById('missing-assets-search');
 const filterEmptyPaths = document.getElementById('filter-empty-paths');
 const filterMissingFiles = document.getElementById('filter-missing-files');
 let debounceTimer; // Timer for debouncing save action
+let serverReadOnly = false; // server-side read-only flag
+
+async function fetchEditorConfig() {
+    try {
+        const res = await fetch('/api/editor/config');
+        if (!res.ok) return;
+        const cfg = await res.json();
+        serverReadOnly = !!cfg.readOnly;
+        const banner = document.getElementById('read-only-banner');
+        if (banner) banner.style.display = serverReadOnly ? 'block' : 'none';
+        // Disable buttons that would result in writes
+        const writeButtons = [
+            document.getElementById('add-set-button'),
+            document.getElementById('add-row-button'),
+            document.getElementById('show-archive-button'),
+            document.getElementById('import-new-sounds-button')
+        ].filter(Boolean);
+        writeButtons.forEach(btn => btn.disabled = serverReadOnly);
+    } catch (e) {}
+}
+
+// ID Rename modal elements
+const idRenameModal = document.getElementById('id-rename-modal');
+const idRenameClose = document.getElementById('id-rename-close');
+const idRenameOldId = document.getElementById('id-rename-old-id');
+const idRenameNewId = document.getElementById('id-rename-new-id');
+const idRenameValidateBtn = document.getElementById('id-rename-validate');
+const idRenameApplyBtn = document.getElementById('id-rename-apply');
+const idRenameCancelBtn = document.getElementById('id-rename-cancel');
+const idRenameWarnings = document.getElementById('id-rename-warnings');
+const idRenameIssues = document.getElementById('id-rename-issues');
+const idRenameDiffs = document.getElementById('id-rename-diffs');
+
+function openIdRenameModal(oldId, suggestedNewId = '') {
+    if (!idRenameModal) return;
+    idRenameOldId.textContent = oldId;
+    idRenameNewId.value = suggestedNewId || oldId;
+    idRenameWarnings.innerHTML = '';
+    idRenameIssues.innerHTML = '';
+    idRenameDiffs.innerHTML = '';
+    idRenameApplyBtn.disabled = true;
+    idRenameModal.style.display = 'flex';
+    setTimeout(() => { try { idRenameNewId.focus(); idRenameNewId.select(); } catch {} }, 50);
+}
+
+function closeIdRenameModal() {
+    if (!idRenameModal) return;
+    idRenameModal.style.display = 'none';
+}
+
+function renderIdRenamePreview(result) {
+    // result: { ok, diffs: {database:{from,to}, sets:[{path,occurrences,note}]}, warnings, issues }
+    idRenameWarnings.innerHTML = '';
+    idRenameIssues.innerHTML = '';
+    idRenameDiffs.innerHTML = '';
+    if (Array.isArray(result.warnings) && result.warnings.length) {
+        const ul = document.createElement('ul');
+        result.warnings.forEach(w => { const li = document.createElement('li'); li.textContent = w; ul.appendChild(li); });
+        idRenameWarnings.innerHTML = '<strong>Hinweise:</strong>';
+        idRenameWarnings.appendChild(ul);
+    }
+    if (Array.isArray(result.issues) && result.issues.length) {
+        const ul = document.createElement('ul');
+        result.issues.forEach(w => { const li = document.createElement('li'); li.textContent = w; ul.appendChild(li); });
+        idRenameIssues.innerHTML = '<strong>Probleme:</strong>';
+        idRenameIssues.appendChild(ul);
+    }
+    const d = result.diffs || {};
+    const db = d.database || {};
+    const sets = Array.isArray(d.sets) ? d.sets : [];
+    const wrap = document.createElement('div');
+        const dbLine = document.createElement('div');
+        dbLine.innerHTML = `<strong>Database:</strong> ${db.from || '—'} → ${db.to || '—'}`;
+    wrap.appendChild(dbLine);
+    const setsTitle = document.createElement('div');
+    setsTitle.style.marginTop = '8px';
+    setsTitle.innerHTML = `<strong>Sets:</strong> ${sets.length} Datei(en)`;
+    wrap.appendChild(setsTitle);
+    const list = document.createElement('ul');
+    sets.forEach(s => {
+        const li = document.createElement('li');
+        li.textContent = `${s.path} – Vorkommen: ${s.occurrences}${s.note ? ` (${s.note})` : ''}`;
+        list.appendChild(li);
+    });
+    wrap.appendChild(list);
+    idRenameDiffs.appendChild(wrap);
+}
 
 function switchMode(mode) {
     if (mode !== 'woerter' && mode !== 'saetze') return;
@@ -196,7 +283,11 @@ function renderTable() {
             <td class="sticky-col col-2"><input type="text" value="${item.name || ''}" data-field="name"></td>
             <td><input type="text" value="${getImagePathForItem(id, item)}" data-field="image"></td>
             <td><input type="text" value="${item.sound || ''}" data-field="sound"></td>
-            <td style="text-align: center;"><button class="delete-button" title="Dieses Wort löschen">❌</button></td>
+          <td style="text-align: center; white-space: nowrap;">
+              <button class="save-name-button" title="Nur Anzeigename speichern">&#128190;</button>
+              <button class="rename-id-button" title="ID umbenennen">&#128393;</button>
+              <button class="delete-button" title="Dieses Wort löschen">&#10060;</button>
+          </td>
         `;
 
         // Create a checkbox cell for each category column
@@ -660,7 +751,7 @@ addSetButton.addEventListener('click', addNewSet);
 function debouncedSave() {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
-        if (hasUnsavedChanges) {
+        if (hasUnsavedChanges && !serverReadOnly) {
             saveData();
         }
     }, 1500); // Wait 1.5 seconds after the last change
@@ -683,6 +774,10 @@ function debouncedSave() {
 // Statusanzeige nach Speichern
 async function saveData() {
     try {
+        if (serverReadOnly) {
+            showSaveStatus(false, 'Nur-Lese-Modus aktiv – Speichern deaktiviert.');
+            return;
+        }
         const autoFix = autoFixToggle ? !!autoFixToggle.checked : true;
         const guard = preSaveGuardAndFix({ autoFix });
         if (guard.issues.length && !autoFix) {
@@ -1016,7 +1111,7 @@ async function resolveAndReload(actions) {
 
 // Initial data load when the page is ready
 document.addEventListener('DOMContentLoaded', () => {
-    switchMode('woerter');
+    fetchEditorConfig().finally(() => switchMode('woerter'));
 });
 
 // NEU: Logik für das Archiv-Modal
@@ -1044,6 +1139,58 @@ if (showArchiveButton) {
 if (archiveCloseButton) {
     archiveCloseButton.addEventListener('click', () => {
         archiveModal.style.display = 'none';
+    });
+}
+
+// ID Rename modal controls
+if (idRenameClose) idRenameClose.addEventListener('click', closeIdRenameModal);
+if (idRenameCancelBtn) idRenameCancelBtn.addEventListener('click', closeIdRenameModal);
+if (idRenameModal) {
+    idRenameModal.addEventListener('click', (e) => { if (e.target === idRenameModal) closeIdRenameModal(); });
+}
+async function validateIdRename() {
+    try {
+        idRenameApplyBtn.disabled = true;
+        idRenameWarnings.innerHTML = '';
+        idRenameIssues.innerHTML = '';
+        idRenameDiffs.innerHTML = 'Prüfe…';
+        const body = { type: 'id-rename', mode: currentMode, oldId: idRenameOldId.textContent, newId: (idRenameNewId.value||'').trim() };
+        const resp = await fetch('/api/editor/validate-change', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        const json = await resp.json().catch(()=>({ ok:false, message:'Ungültige Antwort' }));
+        if (!resp.ok) throw new Error(json.message || 'Serverfehler');
+        renderIdRenamePreview(json);
+        idRenameApplyBtn.disabled = json.ok !== true;
+    } catch (e) {
+        idRenameDiffs.innerHTML = '';
+        idRenameIssues.innerHTML = `Fehler bei der Prüfung: ${e.message}`;
+        idRenameApplyBtn.disabled = true;
+    }
+}
+if (idRenameValidateBtn) idRenameValidateBtn.addEventListener('click', validateIdRename);
+if (idRenameNewId) idRenameNewId.addEventListener('keyup', (e) => { if (e.key === 'Enter') validateIdRename(); });
+
+if (idRenameApplyBtn) {
+    idRenameApplyBtn.addEventListener('click', async () => {
+        try {
+            idRenameApplyBtn.disabled = true;
+            const oldId = idRenameOldId.textContent;
+            const newId = (idRenameNewId.value||'').trim();
+            const resp = await fetch('/api/editor/item/id-rename', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: currentMode, oldId, newId, dryRun: false }) });
+            const json = await resp.json().catch(()=>({ ok:false, message:'Ungültige Antwort' }));
+            if (!resp.ok || json.ok === false) throw new Error(json.message || 'Serverfehler beim Übernehmen');
+            // Update local state and table: simplest is to reload from server
+            closeIdRenameModal();
+            const prevScroll = { x: window.scrollX, y: window.scrollY };
+            statusMessage.textContent = `ID geändert: ${oldId} → ${newId}`;
+            await loadData(true);
+            window.scrollTo(prevScroll.x, prevScroll.y);
+            // highlight the new row
+            jumpToItemRow(newId);
+        } catch (e) {
+            console.error(e);
+            idRenameIssues.innerHTML = `Fehler beim Übernehmen: ${e.message}`;
+            idRenameApplyBtn.disabled = false;
+        }
     });
 }
 
@@ -1272,7 +1419,47 @@ function setUnsavedChanges(state) {
 // Event listener for delete buttons using event delegation
 if (tableBody) {
     tableBody.addEventListener('click', async (event) => {
+        // Nur Anzeigename speichern (ohne Pfade/Sets zu ändern)
+        if (event.target.classList.contains('save-name-button')) {
+            if (serverReadOnly) { statusMessage.textContent = 'Nur-Lese-Modus: Speichern deaktiviert.'; return; }
+            const row = event.target.closest('tr');
+            if (!row) return;
+            const id = row.dataset.id;
+            const nameInput = row.querySelector('input[data-field="name"]');
+            const newName = nameInput ? String(nameInput.value) : '';
+            if (!id) return;
+            if (!newName.trim()) { alert('Anzeigename darf nicht leer sein.'); return; }
+            try {
+                statusMessage.textContent = `Speichere Anzeigename für "${id}"...`;
+                const resp = await fetch('/api/editor/item/display-name', {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mode: currentMode, id, newDisplayName: newName, options: { normalizeWhitespace: true } })
+                });
+                const resJson = await resp.json().catch(() => ({}));
+                if (!resp.ok || resJson.ok === false) throw new Error(resJson.message || 'Serverfehler');
+                // Lokalen State aktualisieren
+                if (database[id]) database[id].name = newName.trim().replace(/\s+/g, ' ');
+                statusMessage.textContent = 'Anzeigename gespeichert.';
+                setUnsavedChanges(false);
+            } catch (e) {
+                console.error(e);
+                statusMessage.textContent = `Fehler beim Speichern des Anzeigenamens: ${e.message}`;
+                alert(`Fehler: ${e.message}`);
+            }
+            return;
+        }
+        // ID umbenennen (Wizard öffnen)
+        if (event.target.classList.contains('rename-id-button')) {
+            if (serverReadOnly) { statusMessage.textContent = 'Nur-Lese-Modus: Änderungen deaktiviert.'; return; }
+            const row = event.target.closest('tr');
+            if (!row) return;
+            const id = row.dataset.id;
+            openIdRenameModal(id, id);
+            return;
+        }
         if (event.target.classList.contains('delete-button')) {
+            if (serverReadOnly) { statusMessage.textContent = 'Nur-Lese-Modus: Löschen deaktiviert.'; return; }
             const row = event.target.closest('tr');
             if (!row) return;
             const id = row.dataset.id;
