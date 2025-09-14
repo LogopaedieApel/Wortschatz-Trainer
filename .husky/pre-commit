@@ -1,5 +1,3 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-# Block commits if asset paths in JSON don't exactly match git-tracked files (case + umlauts)
+# Cross-platform pre-commit: validate JSON asset paths (case + umlauts)
 npm run check-case-consistency
