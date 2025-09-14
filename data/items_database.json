@@ -216,7 +216,7 @@
     "folder": "k"
   },
   "leicht": {
-    "name": "Leicht",
+    "name": "leicht",
     "image": "data/wörter/images/l/leicht.jpg",
     "sound": "data/wörter/sounds/l/leicht.mp3",
     "folder": "l"
