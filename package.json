@@ -19,7 +19,9 @@
     "check-missing-assets": "node tools/check-missing-assets.mjs",
     "check-missing-assets:json": "node tools/check-missing-assets.mjs --format json",
     "update-names:dry": "node tools/update-names-umlauts.mjs",
-    "update-names:apply": "node tools/update-names-umlauts.mjs --apply"
+    "update-names:apply": "node tools/update-names-umlauts.mjs --apply",
+    "check-case-consistency": "node tools/check-case-consistency.mjs",
+    "enforce-filename-case": "node tools/enforce-filename-case.mjs"
   },
   "dependencies": {
     "express": "^4.18.2"
