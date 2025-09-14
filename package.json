@@ -22,12 +22,12 @@
     "update-names:apply": "node tools/update-names-umlauts.mjs --apply",
     "check-case-consistency": "node tools/check-case-consistency.mjs",
     "enforce-filename-case": "node tools/enforce-filename-case.mjs",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "express": "^4.18.2"
   },
   "devDependencies": {
-    "husky": "^9.0.11"
+    "husky": "^9.1.7"
   }
 }

@@ -1,7 +1,5 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-npm run check-case-consistency || {
-  echo "\nAbbruch: Dateiname(n) stimmen nicht exakt mit JSON überein." >&2
-  exit 1
-}
+# Block commits if asset paths in JSON don't exactly match git-tracked files (case + umlauts)
+npm run check-case-consistency
