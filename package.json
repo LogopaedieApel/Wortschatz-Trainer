@@ -11,7 +11,15 @@
     "apply-assets": "node tools/apply-assets.mjs --apply",
     "healthcheck": "node tools/healthcheck.mjs",
     "rehydrate:dry": "node tools/rehydrate-umlauts.mjs",
-    "rehydrate:apply": "node tools/rehydrate-umlauts.mjs --apply"
+    "rehydrate:apply": "node tools/rehydrate-umlauts.mjs --apply",
+    "fill-empty-paths": "node tools/fill-empty-paths.mjs",
+    "fill-empty-paths:woerter": "node tools/fill-empty-paths.mjs --mode woerter",
+    "fill-empty-paths:saetze": "node tools/fill-empty-paths.mjs --mode saetze",
+    "fill-empty-paths:saetze:loose": "node tools/fill-empty-paths.mjs --mode saetze --loose",
+    "check-missing-assets": "node tools/check-missing-assets.mjs",
+    "check-missing-assets:json": "node tools/check-missing-assets.mjs --format json",
+    "update-names:dry": "node tools/update-names-umlauts.mjs",
+    "update-names:apply": "node tools/update-names-umlauts.mjs --apply"
   },
   "dependencies": {
     "express": "^4.18.2"

@@ -149,6 +149,8 @@
         <button id="add-row-button">+ Neue Zeile hinzufügen</button>
         <button id="show-archive-button">♻️ Gelöschte Dateien</button>
         <button id="run-healthcheck-button">🩺 Daten prüfen</button>
+    <button id="show-missing-assets-button">🔎 Fehlende Assets</button>
+    <button id="import-new-sounds-button">🎙️ Neue Sounds einsortieren</button>
         <label style="margin-left: 12px;">
             <input type="checkbox" id="auto-fix-toggle" checked>
             Auto-Fixes beim Speichern
@@ -190,6 +192,23 @@
             <h2>Archivierte Dateien</h2>
             <div id="archive-list" style="max-height: 60vh; overflow-y: auto;">
                 <!-- Inhalt wird per JavaScript eingefügt -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Missing Assets -->
+    <div id="missing-assets-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-button" id="missing-assets-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h2>Fehlende Assets</h2>
+            <div id="missing-assets-summary" style="margin: 10px 0; font-weight: bold;"></div>
+            <div style="margin-bottom: 10px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <label><input type="checkbox" id="filter-empty-paths" checked> Nur leere Pfade</label>
+                <label><input type="checkbox" id="filter-missing-files" checked> Nur fehlende Dateien</label>
+                <input type="text" id="missing-assets-search" placeholder="Suche (ID/Name/Pfad)" style="flex:1; padding: 6px 8px;">
+            </div>
+            <div id="missing-assets-list" style="max-height: 60vh; overflow-y: auto;">
+                <!-- Wird per JS eingefüllt -->
             </div>
         </div>
     </div>

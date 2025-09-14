@@ -47,15 +47,9 @@
     "sound": "data/sätze/sounds/Reime/Glas Im Gras.mp3",
     "folder": "reime"
   },
-  "hase_auf_der_strasse": {
-    "name": "Hase Auf Der Straße",
-    "image": "data/sätze/images/Reime/Hase Auf Der Straße.jpeg",
-    "sound": "",
-    "folder": "reime"
-  },
   "hase_auf_strasse": {
     "name": "Hase Auf Straße",
-    "image": "",
+    "image": "data/sätze/images/Reime/Hase Auf Straße.jpeg",
     "sound": "data/sätze/sounds/Reime/Hase Auf Straße.mp3",
     "folder": "reime"
   },
@@ -84,7 +78,7 @@
     "folder": "reime"
   },
   "kroete_mit_troete": {
-    "name": "Kroete Mit Troete",
+    "name": "Kröte Mit Tröte",
     "image": "",
     "sound": "data/sätze/sounds/Reime/Kröte Mit Tröte.mp3",
     "folder": "reime"

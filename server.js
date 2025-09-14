@@ -566,6 +566,7 @@ app.post('/api/sort-unsorted-files', async (req, res) => {
 // New endpoint to analyze unsorted files and detect conflicts
 app.post('/api/analyze-unsorted-files', async (req, res) => {
     const mode = req.query.mode || 'woerter';
+    const onlyType = (req.query.type === 'images' || req.query.type === 'sounds') ? req.query.type : null;
 
     const dirs = {
         woerter: {
@@ -600,7 +601,8 @@ app.post('/api/analyze-unsorted-files', async (req, res) => {
     const conflicts = [];
 
     try {
-        for (const type of ['images', 'sounds']) {
+        const typesToProcess = onlyType ? [onlyType] : ['images', 'sounds'];
+        for (const type of typesToProcess) {
             const unsortedDir = unsortedDirs[type];
             const baseDir = baseDirs[type];
             
@@ -615,8 +617,16 @@ app.post('/api/analyze-unsorted-files', async (req, res) => {
             for (const file of files) {
                 if (file.startsWith('.')) continue;
 
-                const firstChar = file.charAt(0).toLowerCase();
-                const targetDir = path.join(baseDir, firstChar);
+                // Zielordner bestimmen
+                let targetDir;
+                if (mode === 'saetze') {
+                    // Sätze: keine Buchstaben-Unterordner, ggf. thematische Unterordner in Zukunft
+                    targetDir = baseDir;
+                } else {
+                    // Wörter: nach Anfangsbuchstabe einsortieren
+                    const firstChar = file.charAt(0).toLowerCase();
+                    targetDir = path.join(baseDir, firstChar);
+                }
                 const sourcePath = path.join(unsortedDir, file);
                 const targetPath = path.join(targetDir, file);
 
@@ -801,6 +811,7 @@ app.post('/api/sort-unsorted-files', async (req, res) => {
 
 app.get('/api/check-unsorted-files', async (req, res) => {
     const mode = req.query.mode || 'woerter'; // Default to 'woerter' if no mode is specified
+    const onlyType = (req.query.type === 'images' || req.query.type === 'sounds') ? req.query.type : null;
 
     const unsortedDirs = {
         woerter: {
@@ -820,14 +831,18 @@ app.get('/api/check-unsorted-files', async (req, res) => {
 
     let filesList = [];
     try {
-        const imageFiles = await fs.readdir(dirsToCheck.images);
-        filesList = filesList.concat(imageFiles.filter(f => !f.startsWith('.')));
+        if (!onlyType || onlyType === 'images') {
+            const imageFiles = await fs.readdir(dirsToCheck.images);
+            filesList = filesList.concat(imageFiles.filter(f => !f.startsWith('.')));
+        }
     } catch (e) {
         if (e.code !== 'ENOENT') console.error(`Fehler beim Lesen des Bild-Verzeichnisses für Modus '${mode}':`, e);
     }
     try {
-        const soundFiles = await fs.readdir(dirsToCheck.sounds);
-        filesList = filesList.concat(soundFiles.filter(f => !f.startsWith('.')));
+        if (!onlyType || onlyType === 'sounds') {
+            const soundFiles = await fs.readdir(dirsToCheck.sounds);
+            filesList = filesList.concat(soundFiles.filter(f => !f.startsWith('.')));
+        }
     } catch (e) {
         if (e.code !== 'ENOENT') console.error(`Fehler beim Lesen des Sound-Verzeichnisses für Modus '${mode}':`, e);
     }
@@ -994,5 +1009,44 @@ app.get('/api/healthcheck', async (req, res) => {
     } catch (error) {
         console.error('[HEALTHCHECK] Fehler:', error);
         res.status(500).json({ ok: false, message: 'Healthcheck fehlgeschlagen.' });
+    }
+});
+
+// Endpoint: Report missing assets (empty paths or non-existing files) for current mode
+app.get('/api/missing-assets', async (req, res) => {
+    const mode = req.query.mode === 'saetze' ? 'saetze' : 'woerter';
+    try {
+        const dbPathMode = path.join(__dirname, 'data', mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
+        let database = {};
+        try {
+            const dbContent = await fs.readFile(dbPathMode, 'utf8');
+            database = JSON.parse(dbContent);
+        } catch (e) {
+            if (e.code !== 'ENOENT') throw e;
+        }
+
+        const items = [];
+        for (const [id, item] of Object.entries(database)) {
+            for (const kind of ['image', 'sound']) {
+                const raw = (item && item[kind]) ? String(item[kind]) : '';
+                const val = raw.replace(/\\+/g, '/');
+                const name = item && item.name ? item.name : id;
+                if (!val.trim()) {
+                    items.push({ id, name, kind, path: '', reason: 'empty_path' });
+                    continue;
+                }
+                const abs = path.resolve(__dirname, val);
+                try {
+                    await fs.access(abs);
+                } catch {
+                    items.push({ id, name, kind, path: val, reason: 'file_missing' });
+                }
+            }
+        }
+
+        res.json({ ok: true, mode, count: items.length, items });
+    } catch (error) {
+        console.error('[MISSING-ASSETS] Fehler:', error);
+        res.status(500).json({ ok: false, message: 'Fehler beim Ermitteln der fehlenden Assets.' });
     }
 });

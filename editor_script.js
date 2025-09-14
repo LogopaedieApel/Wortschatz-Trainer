@@ -21,6 +21,15 @@ const saveStatus = document.getElementById('save-status');
 const notificationArea = document.getElementById('notification-area');
 const runHealthcheckButton = document.getElementById('run-healthcheck-button');
 const autoFixToggle = document.getElementById('auto-fix-toggle');
+const importNewSoundsButton = document.getElementById('import-new-sounds-button');
+const showMissingAssetsButton = document.getElementById('show-missing-assets-button');
+const missingAssetsModal = document.getElementById('missing-assets-modal');
+const missingAssetsClose = document.getElementById('missing-assets-close');
+const missingAssetsSummary = document.getElementById('missing-assets-summary');
+const missingAssetsList = document.getElementById('missing-assets-list');
+const missingAssetsSearch = document.getElementById('missing-assets-search');
+const filterEmptyPaths = document.getElementById('filter-empty-paths');
+const filterMissingFiles = document.getElementById('filter-missing-files');
 let debounceTimer; // Timer for debouncing save action
 
 function switchMode(mode) {
@@ -296,14 +305,18 @@ function toTitleCaseSegment(seg) {
 }
 
 function extractMidFolder(field, p) {
-    // Extract the mid folder between images|sounds and the filename
+    // Extract the first directory segment between images|sounds and the filename (if present)
     if (!p) return '';
     const v = fixSlashes(p);
     const parts = v.split('/');
     const anchor = field === 'image' ? 'images' : 'sounds';
     const idx = parts.findIndex(x => x === anchor);
-    if (idx !== -1 && parts.length > idx + 1) {
-        return parts[idx + 1] || '';
+    if (idx !== -1) {
+        const after = parts.slice(idx + 1);
+        // We expect at least [<midFolder>, <filename>]
+        if (after.length >= 2) {
+            return after[0] || '';
+        }
     }
     return '';
 }
@@ -311,9 +324,9 @@ function extractMidFolder(field, p) {
 function expectedDirFor(field, id, name, currentPath) {
     if (currentMode === 'saetze') {
         const base = field === 'image' ? 'data/sätze/images' : 'data/sätze/sounds';
-        // Prefer existing mid-folder but normalize its casing, fallback to TitleCase('reime')
-        const mid = extractMidFolder(field, currentPath) || 'Reime';
-        return `${base}/${toTitleCaseSegment(mid)}`;
+        // Prefer existing mid-folder (normalized casing); otherwise use the base directory (no default subfolder)
+        const mid = extractMidFolder(field, currentPath);
+        return mid ? `${base}/${toTitleCaseSegment(mid)}` : base;
     }
     // Wörter: derive by first letter of ID
     const base = field === 'image' ? 'data/wörter/images' : 'data/wörter/sounds';
@@ -804,7 +817,7 @@ function showSaveStatus(success, message) {
  */
 async function checkUnsortedFiles() {
     try {
-        const response = await fetch(`/api/check-unsorted-files?mode=${currentMode}`);
+    const response = await fetch(`/api/check-unsorted-files?mode=${currentMode}`);
         if (!response.ok) throw new Error('Prüfung auf unsortierte Dateien fehlgeschlagen.');
         const data = await response.json();
 
@@ -1069,6 +1082,117 @@ if (archiveModal) {
     });
 }
 
+// Missing Assets UI
+let missingAssetsData = [];
+async function fetchMissingAssets() {
+    const res = await fetch(`/api/missing-assets?mode=${currentMode}`);
+    if (!res.ok) throw new Error('Fehler beim Laden der fehlenden Assets');
+    const data = await res.json();
+    missingAssetsData = data.items || [];
+    renderMissingAssets();
+}
+
+function renderMissingAssets() {
+    if (!missingAssetsList) return;
+    const q = (missingAssetsSearch?.value || '').toLowerCase();
+    const wantEmpty = filterEmptyPaths ? !!filterEmptyPaths.checked : true;
+    const wantMissing = filterMissingFiles ? !!filterMissingFiles.checked : true;
+    const filtered = missingAssetsData.filter(x => {
+        if (x.reason === 'empty_path' && !wantEmpty) return false;
+        if (x.reason === 'file_missing' && !wantMissing) return false;
+        const hay = `${x.id} ${x.name} ${x.path || ''}`.toLowerCase();
+        return hay.includes(q);
+    });
+    missingAssetsSummary.textContent = `${filtered.length} Einträge (gesamt ${missingAssetsData.length})`;
+    const group = (arr) => {
+        const byId = new Map();
+        for (const it of arr) {
+            if (!byId.has(it.id)) byId.set(it.id, { id: it.id, name: it.name, entries: [] });
+            byId.get(it.id).entries.push(it);
+        }
+        return [...byId.values()].sort((a,b)=>a.id.localeCompare(b.id));
+    };
+    const grouped = group(filtered);
+    const container = document.createElement('div');
+    grouped.forEach(g => {
+        const div = document.createElement('div');
+        div.style.borderBottom = '1px solid #eee';
+        div.style.padding = '8px 4px';
+        const title = document.createElement('div');
+        title.innerHTML = `<strong style="cursor:pointer; text-decoration: underline;">${g.name}</strong> <code style=\"background:#f7f7f7; padding:2px 4px; border-radius:4px;\">${g.id}</code>`;
+        title.addEventListener('click', () => jumpToItemRow(g.id));
+        div.appendChild(title);
+        g.entries.forEach(e => {
+            const row = document.createElement('div');
+            row.style.display = 'grid';
+            row.style.gridTemplateColumns = '90px 1fr';
+            row.style.gap = '8px';
+            row.style.alignItems = 'center';
+            row.style.cursor = 'pointer';
+            const label = document.createElement('span');
+            label.textContent = `${e.kind} · ${e.reason === 'empty_path' ? 'leer' : 'fehlt'}`;
+            const pathEl = document.createElement('span');
+            pathEl.textContent = e.path || '—';
+            pathEl.style.fontFamily = 'monospace';
+            row.appendChild(label);
+            row.appendChild(pathEl);
+            row.addEventListener('click', () => jumpToItemRow(g.id));
+            div.appendChild(row);
+        });
+        container.appendChild(div);
+    });
+    missingAssetsList.innerHTML = '';
+    missingAssetsList.appendChild(container);
+}
+
+if (showMissingAssetsButton) {
+    showMissingAssetsButton.addEventListener('click', async () => {
+        if (!missingAssetsModal) return;
+        missingAssetsSummary.textContent = '';
+        missingAssetsList.innerHTML = 'Lade…';
+        missingAssetsModal.style.display = 'flex';
+        try {
+            await fetchMissingAssets();
+        } catch (e) {
+            console.error(e);
+            missingAssetsList.innerHTML = 'Fehler beim Laden.';
+        }
+    });
+}
+if (missingAssetsClose && missingAssetsModal) {
+    missingAssetsClose.addEventListener('click', () => {
+        missingAssetsModal.style.display = 'none';
+    });
+    missingAssetsModal.addEventListener('click', (e) => {
+        if (e.target === missingAssetsModal) missingAssetsModal.style.display = 'none';
+    });
+}
+if (missingAssetsSearch) missingAssetsSearch.addEventListener('input', renderMissingAssets);
+if (filterEmptyPaths) filterEmptyPaths.addEventListener('change', renderMissingAssets);
+if (filterMissingFiles) filterMissingFiles.addEventListener('change', renderMissingAssets);
+
+function jumpToItemRow(id) {
+    try {
+        // Schließe das Modal
+        if (missingAssetsModal) missingAssetsModal.style.display = 'none';
+        // Suchfilter leeren, damit Zeile sichtbar ist
+        if (searchInput) { searchInput.value = ''; filterTable(); }
+        // Zeile finden
+        const row = tableBody ? tableBody.querySelector(`tr[data-id="${id}"]`) : null;
+        if (!row) {
+            if (notificationArea) notificationArea.textContent = `Eintrag ${id} nicht in der aktuellen Ansicht gefunden.`;
+            return;
+        }
+        // Scrollen und hervorheben
+        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const originalBg = row.style.backgroundColor;
+        row.style.backgroundColor = '#fff8dc'; // cornsilk
+        setTimeout(() => { row.style.backgroundColor = originalBg || ''; }, 1600);
+    } catch (e) {
+        console.error('Navigation fehlgeschlagen:', e);
+    }
+}
+
 
 function renderArchiveList(items) {
     archiveList.innerHTML = '';
@@ -1238,4 +1362,55 @@ function showFixBubble(input, messages, { timeout = 1800 } = {}) {
     };
     input._fixBubble = bubble;
     setTimeout(removeBubble, timeout);
+}
+
+// Dedicated sound import flow
+async function checkUnsortedSounds() {
+    try {
+        const response = await fetch(`/api/check-unsorted-files?mode=${currentMode}&type=sounds`);
+        if (!response.ok) throw new Error('Prüfung auf unsortierte Sounds fehlgeschlagen.');
+        const data = await response.json();
+        return data;
+    } catch (e) {
+        console.error(e);
+        return { count: 0, files: [] };
+    }
+}
+
+async function analyzeUnsortedSounds() {
+    try {
+        notificationArea.textContent = 'Analysiere unsortierte Sounds...';
+        const response = await fetch(`/api/analyze-unsorted-files?mode=${currentMode}&type=sounds`, { method: 'POST' });
+        if (!response.ok) throw new Error('Serverfehler bei der Analyse (Sounds).');
+        const result = await response.json();
+        const { movableFiles, conflicts } = result;
+        if (conflicts.length === 0 && movableFiles.length === 0) {
+            notificationArea.textContent = 'Keine unsortierten Sounds gefunden.';
+            setTimeout(() => { if (notificationArea.textContent === 'Keine unsortierten Sounds gefunden.') notificationArea.innerHTML = ''; }, 2500);
+            return;
+        }
+        if (conflicts.length > 0) {
+            displayConflictModal(movableFiles, conflicts);
+        } else {
+            const actions = movableFiles.map(f => ({ type: 'move', sourcePath: f.sourcePath, targetPath: f.targetPath, fileName: f.fileName }));
+            await resolveAndReload(actions);
+        }
+    } catch (e) {
+        console.error('Fehler beim Analysieren der Sounds:', e);
+        notificationArea.textContent = 'Fehler bei der Analyse der Sounds.';
+    }
+}
+
+if (importNewSoundsButton) {
+    importNewSoundsButton.addEventListener('click', async () => {
+        // Schnellcheck, ob sich das Klicken lohnt
+        const quick = await checkUnsortedSounds();
+        if (!quick || quick.count === 0) {
+            notificationArea.textContent = 'Keine unsortierten Sounds gefunden.';
+            setTimeout(() => { if (notificationArea.textContent === 'Keine unsortierten Sounds gefunden.') notificationArea.innerHTML = ''; }, 2500);
+            return;
+        }
+        // Direkt Analyse starten
+        await analyzeUnsortedSounds();
+    });
 }
