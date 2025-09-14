@@ -49,6 +49,27 @@ async function fetchEditorConfig() {
             document.getElementById('import-new-sounds-button')
         ].filter(Boolean);
         writeButtons.forEach(btn => btn.disabled = serverReadOnly);
+
+        // Update status badge
+        const dot = document.getElementById('server-status-dot');
+        const txt = document.getElementById('server-status-text');
+        const badge = document.getElementById('server-status-badge');
+        const port = cfg.port || 3000;
+        if (dot && txt && badge) {
+            if (serverReadOnly) {
+                dot.style.background = '#ffc107'; // amber
+                txt.textContent = `RO @${port}`;
+                badge.style.background = '#fff3cd';
+                badge.style.borderColor = '#ffeeba';
+                badge.style.color = '#856404';
+            } else {
+                dot.style.background = '#28a745'; // green
+                txt.textContent = `RW @${port}`;
+                badge.style.background = '#f7f7f7';
+                badge.style.borderColor = '#ddd';
+                badge.style.color = '#333';
+            }
+        }
     } catch (e) {}
 }
 
