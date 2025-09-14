@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
 # Cross-platform pre-commit: validate JSON asset paths (case + umlauts)
-npm run check-case-consistency
+# Call Node directly (avoid npm under sh on Windows)
+command -v node >/dev/null 2>&1 || { echo "husky: node is required for pre-commit"; exit 127; }
+node tools/check-case-consistency.mjs
