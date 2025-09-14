@@ -1,80 +1,80 @@
 {
   "boot_auf_brot": {
     "name": "Boot Auf Brot",
-    "image": "data/sätze/images/Reime/Boot Auf Brot.jpeg",
-    "sound": "data/sätze/sounds/Reime/Boot Auf Brot.mp3",
+    "image": "data/sätze/images/Reime/Boot auf Brot.jpeg",
+    "sound": "data/sätze/sounds/Reime/Boot auf Brot.mp3",
     "folder": "reime"
   },
   "dino_im_kino": {
     "name": "Dino Im Kino",
-    "image": "data/sätze/images/Reime/Dino Im Kino.jpeg",
-    "sound": "data/sätze/sounds/Reime/Dino Im Kino.mp3",
+    "image": "data/sätze/images/Reime/Dino im Kino.jpeg",
+    "sound": "data/sätze/sounds/Reime/Dino im Kino.mp3",
     "folder": "reime"
   },
   "drachen_lachen": {
     "name": "Drachen Lachen",
-    "image": "data/sätze/images/Reime/Drachen Lachen.jpeg",
-    "sound": "data/sätze/sounds/Reime/Drachen Lachen.mp3",
+    "image": "data/sätze/images/Reime/Drachen lachen.jpeg",
+    "sound": "data/sätze/sounds/Reime/Drachen lachen.mp3",
     "folder": "reime"
   },
   "fisch_auf_tisch": {
     "name": "Fisch Auf Tisch",
-    "image": "data/sätze/images/Reime/Fisch Auf Tisch.jpeg",
-    "sound": "data/sätze/sounds/Reime/Fisch Auf Tisch.mp3",
+    "image": "data/sätze/images/Reime/Fisch auf Tisch.jpeg",
+    "sound": "data/sätze/sounds/Reime/Fisch auf Tisch.mp3",
     "folder": "reime"
   },
   "flaschen_in_taschen": {
     "name": "Flaschen In Taschen",
-    "image": "data/sätze/images/Reime/Flaschen In Taschen.jpeg",
-    "sound": "data/sätze/sounds/Reime/Flaschen In Taschen.mp3",
+    "image": "data/sätze/images/Reime/Flaschen in Taschen.jpeg",
+    "sound": "data/sätze/sounds/Reime/Flaschen in Taschen.mp3",
     "folder": "reime"
   },
   "gabel_im_schnabel": {
     "name": "Gabel Im Schnabel",
-    "image": "data/sätze/images/Reime/Gabel Im Schnabel.jpeg",
-    "sound": "data/sätze/sounds/Reime/Gabel Im Schnabel.mp3",
+    "image": "data/sätze/images/Reime/Gabel im Schnabel.jpeg",
+    "sound": "data/sätze/sounds/Reime/Gabel im Schnabel.mp3",
     "folder": "reime"
   },
   "gespenster_am_fenster": {
     "name": "Gespenster Am Fenster",
-    "image": "data/sätze/images/Reime/Gespenster Am Fenster.jpg",
-    "sound": "data/sätze/sounds/Reime/Gespenster Am Fenster.mp3",
+    "image": "data/sätze/images/Reime/Gespenster am Fenster.jpg",
+    "sound": "data/sätze/sounds/Reime/Gespenster am Fenster.mp3",
     "folder": "reime"
   },
   "glas_im_gras": {
     "name": "Glas Im Gras",
-    "image": "data/sätze/images/Reime/Glas Im Gras.jpg",
-    "sound": "data/sätze/sounds/Reime/Glas Im Gras.mp3",
+    "image": "data/sätze/images/Reime/Glas im Gras.jpg",
+    "sound": "data/sätze/sounds/Reime/Glas im Gras.mp3",
     "folder": "reime"
   },
   "hase_auf_strasse": {
     "name": "Hase Auf Straße",
     "image": "data/sätze/images/Reime/Hase Auf Straße.jpeg",
-    "sound": "data/sätze/sounds/Reime/Hase Auf Straße.mp3",
+    "sound": "data/sätze/sounds/Reime/Hase auf Straße.mp3",
     "folder": "reime"
   },
   "hasen_mit_blasen": {
     "name": "Hasen Mit Blasen",
-    "image": "data/sätze/images/Reime/Hasen Mit Blasen.jpeg",
-    "sound": "data/sätze/sounds/Reime/Hasen Mit Blasen.mp3",
+    "image": "data/sätze/images/Reime/Hasen mit Blasen.jpeg",
+    "sound": "data/sätze/sounds/Reime/Hasen mit Blasen.mp3",
     "folder": "reime"
   },
   "hose_mit_rose": {
     "name": "Hose Mit Rose",
-    "image": "data/sätze/images/Reime/Hose Mit Rose.jpeg",
-    "sound": "data/sätze/sounds/Reime/Hose Mit Rose.mp3",
+    "image": "data/sätze/images/Reime/Hose mit Rose.jpeg",
+    "sound": "data/sätze/sounds/Reime/Hose mit Rose.mp3",
     "folder": "reime"
   },
   "katzen_kratzen": {
     "name": "Katzen Kratzen",
-    "image": "data/sätze/images/Reime/Katzen Kratzen.jpeg",
-    "sound": "data/sätze/sounds/Reime/Katzen Kratzen.mp3",
+    "image": "data/sätze/images/Reime/Katzen kratzen.jpeg",
+    "sound": "data/sätze/sounds/Reime/Katzen kratzen.mp3",
     "folder": "reime"
   },
   "kind_im_wind": {
     "name": "Kind Im Wind",
-    "image": "data/sätze/images/Reime/Kind Im Wind.jpeg",
-    "sound": "data/sätze/sounds/Reime/Kind Im Wind.mp3",
+    "image": "data/sätze/images/Reime/Kind im Wind.jpeg",
+    "sound": "data/sätze/sounds/Reime/Kind im Wind.mp3",
     "folder": "reime"
   },
   "kroete_mit_troete": {
@@ -85,50 +85,50 @@
   },
   "kuh_im_schuh": {
     "name": "Kuh Im Schuh",
-    "image": "data/sätze/images/Reime/Kuh Im Schuh.jpeg",
-    "sound": "data/sätze/sounds/Reime/Kuh Im Schuh.mp3",
+    "image": "data/sätze/images/Reime/Kuh im Schuh.jpeg",
+    "sound": "data/sätze/sounds/Reime/Kuh im Schuh.mp3",
     "folder": "reime"
   },
   "maus_im_haus": {
     "name": "Maus Im Haus",
-    "image": "data/sätze/images/Reime/Maus Im Haus.jpeg",
-    "sound": "data/sätze/sounds/Reime/Maus Im Haus.mp3",
+    "image": "data/sätze/images/Reime/Maus im Haus.jpeg",
+    "sound": "data/sätze/sounds/Reime/Maus im Haus.mp3",
     "folder": "reime"
   },
   "papagei_mit_ei": {
     "name": "Papagei Mit Ei",
-    "image": "data/sätze/images/Reime/Papagei Mit Ei.jpeg",
-    "sound": "data/sätze/sounds/Reime/Papagei Mit Ei.mp3",
+    "image": "data/sätze/images/Reime/Papagei mit Ei.jpeg",
+    "sound": "data/sätze/sounds/Reime/Papagei mit Ei.mp3",
     "folder": "reime"
   },
   "reh_im_schnee": {
     "name": "Reh Im Schnee",
-    "image": "data/sätze/images/Reime/Reh Im Schnee.jpeg",
-    "sound": "data/sätze/sounds/Reime/Reh Im Schnee.mp3",
+    "image": "data/sätze/images/Reime/Reh im Schnee.jpeg",
+    "sound": "data/sätze/sounds/Reime/Reh im Schnee.mp3",
     "folder": "reime"
   },
   "stuhl_am_pool": {
     "name": "Stuhl Am Pool",
-    "image": "data/sätze/images/Reime/Stuhl Am Pool.jpeg",
-    "sound": "data/sätze/sounds/Reime/Stuhl Am Pool.mp3",
+    "image": "data/sätze/images/Reime/Stuhl am Pool.jpeg",
+    "sound": "data/sätze/sounds/Reime/Stuhl am Pool.mp3",
     "folder": "reime"
   },
   "topf_auf_kopf": {
     "name": "Topf Auf Kopf",
-    "image": "data/sätze/images/Reime/Topf Auf Kopf.jpeg",
-    "sound": "data/sätze/sounds/Reime/Topf Auf Kopf.mp3",
+    "image": "data/sätze/images/Reime/Topf auf Kopf.jpeg",
+    "sound": "data/sätze/sounds/Reime/Topf auf Kopf.mp3",
     "folder": "reime"
   },
   "tuch_auf_buch": {
     "name": "Tuch Auf Buch",
-    "image": "data/sätze/images/Reime/Tuch Auf Buch.jpeg",
-    "sound": "data/sätze/sounds/Reime/Tuch Auf Buch.mp3",
+    "image": "data/sätze/images/Reime/Tuch auf Buch.jpeg",
+    "sound": "data/sätze/sounds/Reime/Tuch auf Buch.mp3",
     "folder": "reime"
   },
   "wal_mit_schal": {
     "name": "Wal Mit Schal",
-    "image": "data/sätze/images/Reime/Wal Mit Schal.jpeg",
-    "sound": "data/sätze/sounds/Reime/Wal Mit Schal.mp3",
+    "image": "data/sätze/images/Reime/Wal mit Schal.jpeg",
+    "sound": "data/sätze/sounds/Reime/Wal mit Schal.mp3",
     "folder": "reime"
   }
 }
