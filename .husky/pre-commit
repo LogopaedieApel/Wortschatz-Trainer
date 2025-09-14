@@ -1,0 +1,7 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npm run check-case-consistency || {
+  echo "\nAbbruch: Dateiname(n) stimmen nicht exakt mit JSON überein." >&2
+  exit 1
+}
