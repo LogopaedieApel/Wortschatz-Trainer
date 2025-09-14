@@ -97,13 +97,37 @@ document.addEventListener('DOMContentLoaded', () => {
     function showModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.add('show'); }
     function closeModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.remove('show'); }
     function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[array[i], array[j]] = [array[j], array[i]]; } return array; }
-    function toAbsUrl(p) { try { if (!p) return ''; if (/^https?:\/\//i.test(p)) return p; return p.startsWith('/') ? p : '/' + p.replace(/\\+/g, '/'); } catch { return p || ''; } }
+    // Ermittelt den Basis-Pfad der App (z. B. '' lokal oder '/Wortschatz-Trainer' auf GitHub Pages)
+    function getBasePath() {
+        try {
+            const baseEl = document.querySelector('base');
+            if (baseEl && baseEl.href) {
+                const u = new URL(baseEl.href, window.location.href);
+                return u.pathname.replace(/\/$/, '');
+            }
+            const p = window.location.pathname || '/';
+            if (p.endsWith('/')) return p.replace(/\/$/, '');
+            const idx = p.lastIndexOf('/');
+            return idx >= 0 ? p.substring(0, idx) : '';
+        } catch {
+            return '';
+        }
+    }
+    const __BASE_PATH__ = getBasePath();
+    function toAbsUrl(p) {
+        try {
+            if (!p) return '';
+            if (/^https?:\/\//i.test(p)) return p;
+            const cleaned = String(p).replace(/^\/+/, '').replace(/\\+/g, '/');
+            return (__BASE_PATH__ ? __BASE_PATH__ : '') + '/' + cleaned;
+        } catch { return p || ''; }
+    }
     function preloadAssets(items) { const promises = []; const loadedAssets = new Set(); items.forEach(item => { if (item.image && !loadedAssets.has(item.image)) { promises.push(new Promise((resolve) => { const img = new Image(); img.src = toAbsUrl(item.image) + '?t=' + new Date().getTime(); img.onload = resolve; img.onerror = resolve; })); loadedAssets.add(item.image); } if (item.sound && !loadedAssets.has(item.sound)) { promises.push(fetch(toAbsUrl(item.sound) + '?t=' + new Date().getTime()).catch(err => console.error('Preloading sound failed:', err))); loadedAssets.add(item.sound); } }); return Promise.all(promises); }
     
     async function loadSetsManifest() {
-        const setsFile = currentMaterialType === 'saetze' ? '/data/sets_saetze.json' : '/data/sets.json';
+        const setsFile = currentMaterialType === 'saetze' ? 'data/sets_saetze.json' : 'data/sets.json';
         try {
-            const response = await fetch(`${setsFile}?t=${new Date().getTime()}`);
+            const response = await fetch(`${toAbsUrl(setsFile)}?t=${new Date().getTime()}`);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             availableItemSets = await response.json();
             
@@ -380,8 +404,8 @@ document.addEventListener('DOMContentLoaded', () => {
         populateSoundDelaySelect();
         try {
             const [woerterResponse, saetzeResponse] = await Promise.all([
-                fetch('/data/items_database.json?t=' + new Date().getTime()),
-                fetch('/data/items_database_saetze.json?t=' + new Date().getTime())
+                fetch(toAbsUrl('data/items_database.json') + '?t=' + new Date().getTime()),
+                fetch(toAbsUrl('data/items_database_saetze.json') + '?t=' + new Date().getTime())
             ]);
             if (!woerterResponse.ok) throw new Error('Master-Item-Liste (Wörter) nicht gefunden');
             if (!saetzeResponse.ok) throw new Error('Master-Item-Liste (Sätze) nicht gefunden');
