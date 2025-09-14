@@ -1235,8 +1235,25 @@ async function loadHelpDocs() {
         helpDocs = Array.isArray(data.docs) ? data.docs : [];
         renderHelpList();
     } catch (e) {
+        // Fallback: Versuche Standarddatei direkt zu laden, um dennoch eine Hilfe anzuzeigen
+        try {
+            const res2 = await fetch('/api/help/doc?file=editor-hilfe.md');
+            if (res2.ok) {
+                const data2 = await res2.json();
+                const t = titleFromMarkdown(data2.content) || 'editor-hilfe.md';
+                helpDocs = [{ file: 'editor-hilfe.md', title: t }];
+                renderHelpList();
+                // Zeige einen dezenten Hinweis statt einer Fehlermeldung
+                const li = document.createElement('li');
+                li.style.color = '#666';
+                li.style.padding = '6px 8px';
+                li.textContent = 'Hinweis: Die vollständige Hilfe-Liste konnte nicht geladen werden.';
+                helpDocsList && helpDocsList.appendChild(li);
+                return;
+            }
+        } catch {}
         helpDocs = [];
-        if (helpDocsList) helpDocsList.innerHTML = `<li style="color:#b94a48;">Fehler: ${e.message}</li>`;
+        if (helpDocsList) helpDocsList.innerHTML = `<li style=\"color:#b94a48;\">Fehler: ${e.message}</li>`;
     }
 }
 
