@@ -85,6 +85,55 @@ const idRenameWarnings = document.getElementById('id-rename-warnings');
 const idRenameIssues = document.getElementById('id-rename-issues');
 const idRenameDiffs = document.getElementById('id-rename-diffs');
 
+// Edit Name modal elements
+const editNameModal = document.getElementById('edit-name-modal');
+const editNameClose = document.getElementById('edit-name-close');
+const editNameId = document.getElementById('edit-name-id');
+const editNameInput = document.getElementById('edit-name-input');
+const editNameSave = document.getElementById('edit-name-save');
+const editNameCancel = document.getElementById('edit-name-cancel');
+const editNameMessage = document.getElementById('edit-name-message');
+const editNamePreview = document.getElementById('edit-name-preview');
+const editNameUndo = document.getElementById('edit-name-undo');
+const editNameRedo = document.getElementById('edit-name-redo');
+const lastNameChange = new Map(); // id -> previousName
+const nameHistoryCache = new Map(); // key `${mode}:${id}` -> { entries:[], cursor }
+
+function getHistKey(mode, id) { return `${mode}:${id}`; }
+async function fetchNameHistory(mode, id) {
+    try {
+        const res = await fetch(`/api/editor/name-history?mode=${encodeURIComponent(mode)}&id=${encodeURIComponent(id)}`);
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (data && data.ok) {
+            nameHistoryCache.set(getHistKey(mode, id), { entries: Array.isArray(data.entries) ? data.entries : [], cursor: typeof data.cursor === 'number' ? data.cursor : -1 });
+            return nameHistoryCache.get(getHistKey(mode, id));
+        }
+    } catch {}
+    return null;
+}
+function getCachedHistory(mode, id) { return nameHistoryCache.get(getHistKey(mode, id)); }
+function updateNameHistoryButtons(mode, id) {
+    const hist = getCachedHistory(mode, id);
+    const canUndo = hist && typeof hist.cursor === 'number' && hist.cursor > 0;
+    const canRedo = hist && typeof hist.cursor === 'number' && hist.entries && hist.cursor < hist.entries.length - 1;
+    if (editNameUndo) editNameUndo.disabled = !canUndo || serverReadOnly;
+    if (editNameRedo) editNameRedo.disabled = !canRedo || serverReadOnly;
+}
+
+async function openEditNameModal(id, currentName) {
+    if (!editNameModal) return;
+    editNameId.textContent = id;
+    editNameInput.value = currentName || '';
+    editNameMessage.textContent = '';
+    if (editNamePreview) editNamePreview.textContent = currentName ? `Wird gespeichert als: ${currentName}` : '';
+    editNameModal.style.display = 'flex';
+    setTimeout(() => { try { editNameInput.focus(); editNameInput.select(); } catch {} }, 50);
+    await fetchNameHistory(currentMode, id);
+    updateNameHistoryButtons(currentMode, id);
+}
+function closeEditNameModal() { if (editNameModal) editNameModal.style.display = 'none'; }
+
 function openIdRenameModal(oldId, suggestedNewId = '') {
     if (!idRenameModal) return;
     idRenameOldId.textContent = oldId;
@@ -301,11 +350,11 @@ function renderTable() {
 
         row.innerHTML = `
             <td class="sticky-col"><input type="text" value="${id}" class="id-input" style="width: 120px;" ${readonlyAttr} ${readonlyTitle}></td>
-            <td class="sticky-col col-2"><input type="text" value="${item.name || ''}" data-field="name"></td>
+            <td class="sticky-col col-2"><input type="text" value="${item.name || ''}" data-field="name" readonly title="Name über 'Namen bearbeiten' ändern"></td>
             <td><input type="text" value="${getImagePathForItem(id, item)}" data-field="image"></td>
             <td><input type="text" value="${item.sound || ''}" data-field="sound"></td>
           <td style="text-align: center; white-space: nowrap;">
-              <button class="save-name-button" title="Nur Anzeigename speichern">&#128190;</button>
+                 <button class="edit-name-button" title="Name bearbeiten">Namen bearbeiten</button>
               <button class="rename-id-button" title="ID umbenennen">&#128393;</button>
               <button class="delete-button" title="Dieses Wort löschen">&#10060;</button>
           </td>
@@ -1440,34 +1489,14 @@ function setUnsavedChanges(state) {
 // Event listener for delete buttons using event delegation
 if (tableBody) {
     tableBody.addEventListener('click', async (event) => {
-        // Nur Anzeigename speichern (ohne Pfade/Sets zu ändern)
-        if (event.target.classList.contains('save-name-button')) {
-            if (serverReadOnly) { statusMessage.textContent = 'Nur-Lese-Modus: Speichern deaktiviert.'; return; }
+        // Namen bearbeiten (Modal öffnen)
+        if (event.target.classList.contains('edit-name-button')) {
             const row = event.target.closest('tr');
             if (!row) return;
             const id = row.dataset.id;
             const nameInput = row.querySelector('input[data-field="name"]');
-            const newName = nameInput ? String(nameInput.value) : '';
-            if (!id) return;
-            if (!newName.trim()) { alert('Anzeigename darf nicht leer sein.'); return; }
-            try {
-                statusMessage.textContent = `Speichere Anzeigename für "${id}"...`;
-                const resp = await fetch('/api/editor/item/display-name', {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ mode: currentMode, id, newDisplayName: newName, options: { normalizeWhitespace: true } })
-                });
-                const resJson = await resp.json().catch(() => ({}));
-                if (!resp.ok || resJson.ok === false) throw new Error(resJson.message || 'Serverfehler');
-                // Lokalen State aktualisieren
-                if (database[id]) database[id].name = newName.trim().replace(/\s+/g, ' ');
-                statusMessage.textContent = 'Anzeigename gespeichert.';
-                setUnsavedChanges(false);
-            } catch (e) {
-                console.error(e);
-                statusMessage.textContent = `Fehler beim Speichern des Anzeigenamens: ${e.message}`;
-                alert(`Fehler: ${e.message}`);
-            }
+            const currentName = nameInput ? String(nameInput.value) : '';
+            openEditNameModal(id, currentName);
             return;
         }
         // ID umbenennen (Wizard öffnen)
@@ -1620,5 +1649,120 @@ if (importNewSoundsButton) {
         }
         // Direkt Analyse starten
         await analyzeUnsortedSounds();
+    });
+}
+
+// Edit-Name modal controls
+if (editNameClose) editNameClose.addEventListener('click', closeEditNameModal);
+if (editNameCancel) editNameCancel.addEventListener('click', closeEditNameModal);
+if (editNameModal) {
+    editNameModal.addEventListener('click', (e) => { if (e.target === editNameModal) closeEditNameModal(); });
+}
+if (editNameSave) {
+    editNameSave.addEventListener('click', async () => {
+        if (serverReadOnly) { editNameMessage.textContent = 'Nur-Lese-Modus: Speichern deaktiviert.'; return; }
+        const id = editNameId.textContent;
+        const newName = (editNameInput.value || '').trim().replace(/\s+/g, ' ');
+        if (!newName) { editNameMessage.textContent = 'Anzeigename darf nicht leer sein.'; return; }
+        try {
+            editNameSave.disabled = true;
+            editNameMessage.textContent = 'Speichere…';
+            const prevName = (database[id] && database[id].name) ? String(database[id].name) : '';
+            const resp = await fetch('/api/editor/item/display-name', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mode: currentMode, id, newDisplayName: newName, options: { normalizeWhitespace: true } })
+            });
+            const json = await resp.json().catch(()=>({ ok:false, message:'Ungültige Antwort' }));
+            if (!resp.ok || json.ok === false) throw new Error(json.message || 'Serverfehler');
+            // Update local state + UI row value
+            if (database[id]) database[id].name = newName;
+            const row = tableBody ? tableBody.querySelector(`tr[data-id="${id}"]`) : null;
+            if (row) {
+                const nameInput = row.querySelector('input[data-field="name"]');
+                if (nameInput) nameInput.value = newName;
+            }
+            if (prevName && prevName !== newName) {
+                lastNameChange.set(id, prevName);
+            }
+            statusMessage.textContent = 'Anzeigename gespeichert.';
+            setUnsavedChanges(false);
+            await fetchNameHistory(currentMode, id);
+            updateNameHistoryButtons(currentMode, id);
+            // nicht schließen, damit Undo/Redo direkt möglich ist
+        } catch (e) {
+            console.error(e);
+            editNameMessage.textContent = `Fehler: ${e.message}`;
+        } finally {
+            editNameSave.disabled = false;
+        }
+    });
+}
+
+// Live preview while typing
+if (editNameInput) {
+    editNameInput.addEventListener('input', () => {
+        const v = (editNameInput.value || '').trim().replace(/\s+/g, ' ');
+        if (editNamePreview) editNamePreview.textContent = v ? `Wird gespeichert als: ${v}` : '';
+    });
+}
+
+// Undo via Server
+if (editNameUndo) {
+    editNameUndo.addEventListener('click', async () => {
+        if (serverReadOnly) { editNameMessage.textContent = 'Nur-Lese-Modus: Speichern deaktiviert.'; return; }
+        const id = editNameId.textContent;
+        try {
+            editNameUndo.disabled = true;
+            editNameMessage.textContent = 'Rückgängig…';
+            const resp = await fetch('/api/editor/name-undo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: currentMode, id }) });
+            const json = await resp.json().catch(()=>({ ok:false, message:'Ungültige Antwort' }));
+            if (!resp.ok || json.ok === false) throw new Error(json.message || 'Serverfehler');
+            const name = json.name || '';
+            if (database[id]) database[id].name = name;
+            const row = tableBody ? tableBody.querySelector(`tr[data-id="${id}"]`) : null;
+            if (row) {
+                const nameInput = row.querySelector('input[data-field="name"]');
+                if (nameInput) nameInput.value = name;
+            }
+            editNameInput.value = name;
+            if (editNamePreview) editNamePreview.textContent = name ? `Wird gespeichert als: ${name}` : '';
+            await fetchNameHistory(currentMode, id);
+            updateNameHistoryButtons(currentMode, id);
+            statusMessage.textContent = 'Rückgängig ausgeführt.';
+        } catch (e) {
+            console.error(e);
+            editNameMessage.textContent = `Fehler: ${e.message}`;
+        } finally { editNameUndo.disabled = false; }
+    });
+}
+
+// Redo via Server
+if (editNameRedo) {
+    editNameRedo.addEventListener('click', async () => {
+        if (serverReadOnly) { editNameMessage.textContent = 'Nur-Lese-Modus: Speichern deaktiviert.'; return; }
+        const id = editNameId.textContent;
+        try {
+            editNameRedo.disabled = true;
+            editNameMessage.textContent = 'Wiederholen…';
+            const resp = await fetch('/api/editor/name-redo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: currentMode, id }) });
+            const json = await resp.json().catch(()=>({ ok:false, message:'Ungültige Antwort' }));
+            if (!resp.ok || json.ok === false) throw new Error(json.message || 'Serverfehler');
+            const name = json.name || '';
+            if (database[id]) database[id].name = name;
+            const row = tableBody ? tableBody.querySelector(`tr[data-id="${id}"]`) : null;
+            if (row) {
+                const nameInput = row.querySelector('input[data-field="name"]');
+                if (nameInput) nameInput.value = name;
+            }
+            editNameInput.value = name;
+            if (editNamePreview) editNamePreview.textContent = name ? `Wird gespeichert als: ${name}` : '';
+            await fetchNameHistory(currentMode, id);
+            updateNameHistoryButtons(currentMode, id);
+            statusMessage.textContent = 'Wiederholen ausgeführt.';
+        } catch (e) {
+            console.error(e);
+            editNameMessage.textContent = `Fehler: ${e.message}`;
+        } finally { editNameRedo.disabled = false; }
     });
 }

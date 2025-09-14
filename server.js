@@ -3,13 +3,17 @@ const fs = require('fs').promises;
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
-const READ_ONLY = (() => {
+function isReadOnly() {
     const v = String(process.env.EDITOR_READONLY || '').trim().toLowerCase();
+    return v === '1' || v === 'true' || v === 'yes';
+}
+const DISABLE_BACKUPS = (() => {
+    const v = String(process.env.DISABLE_BACKUPS || '').trim().toLowerCase();
     return v === '1' || v === 'true' || v === 'yes';
 })();
 
 function guardWrite(req, res, next) {
-    if (READ_ONLY) {
+    if (isReadOnly()) {
         return res.status(423).json({ ok: false, message: 'Server ist im Nur-Lese-Modus (EDITOR_READONLY). Schreiben ist blockiert.' });
     }
     next();
@@ -20,6 +24,20 @@ const BACKUP_ROOT = path.join(__dirname, '_backup');
 const AUDIT_LOG_DIR = path.join(__dirname, '_audit');
 const AUDIT_LOG_FILE = path.join(AUDIT_LOG_DIR, 'editor-changes.log');
 const LOCK_DIR = path.join(__dirname, '_locks');
+const STATE_DIR = process.env.STATE_DIR ? path.resolve(process.env.STATE_DIR) : path.join(__dirname, '_state');
+const NAME_HISTORY_FILE = path.join(STATE_DIR, 'name-history.json');
+const DATA_DIR = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : path.join(__dirname, 'data');
+const dataPath = (...segs) => path.join(DATA_DIR, ...segs);
+// Helper: Auflösung von in JSON gespeicherten Pfaden wie 'data/…' relativ zu DATA_DIR
+function absFromDataRel(p) {
+    if (!p) return p;
+    const norm = String(p).replace(/\\+/g, '/');
+    if (norm.startsWith('data/')) {
+        return path.join(DATA_DIR, norm.slice('data/'.length));
+    }
+    // Fallback: relative zum Projektordner
+    return path.join(__dirname, norm);
+}
 
 async function ensureDir(dir) { try { await fs.mkdir(dir, { recursive: true }); } catch {} }
 function nowIsoCompact() { return new Date().toISOString().replace(/[:.]/g, '').replace('Z','Z'); }
@@ -74,6 +92,7 @@ async function backupExisting(filePath, stamp) {
 }
 
 async function writeJsonAtomic(filePath, data, { stamp, backup = true, auditOp = 'write-json', context = {} } = {}) {
+    if (DISABLE_BACKUPS) backup = false;
     const dir = path.dirname(filePath);
     await ensureDir(dir);
     const ts = stamp || nowIsoCompact();
@@ -90,6 +109,85 @@ async function writeJsonAtomic(filePath, data, { stamp, backup = true, auditOp =
         throw new Error(`Post-Write-Validierung fehlgeschlagen für ${relFromRoot(filePath)}: ${e.message}`);
     }
     await auditLog({ op: auditOp, file: relFromRoot(filePath), backup: backupPath ? relFromRoot(backupPath) : null, ...context });
+}
+
+// === AJV Schema-Validierung ===
+const Ajv = require('ajv');
+const ajv = new Ajv({ allErrors: true, strict: false });
+
+// Schema: Datenbank (Items)
+const itemSchema = {
+    type: 'object',
+    additionalProperties: false,
+    required: ['name','folder'],
+    properties: {
+        name: { type: 'string' },
+        image: { type: 'string' },
+        sound: { type: 'string' },
+        folder: { type: 'string' }
+    }
+};
+const dbSchema = {
+    type: 'object',
+    additionalProperties: {
+        type: 'object',
+        ...itemSchema
+    }
+};
+// Schema: Name-History
+const historyEntrySchema = {
+    type: 'object',
+    required: ['ts','value'],
+    additionalProperties: true,
+    properties: {
+        ts: { type: 'string' },
+        value: { type: 'string' },
+        prev: { type: 'string' },
+        base: { type: 'boolean' }
+    }
+};
+const historyNodeSchema = {
+    type: 'object',
+    required: ['entries','cursor'],
+    additionalProperties: false,
+    properties: {
+        entries: { type: 'array', items: historyEntrySchema },
+        cursor: { type: 'integer' }
+    }
+};
+const nameHistorySchema = {
+    type: 'object',
+    additionalProperties: false,
+    required: ['woerter','saetze'],
+    properties: {
+        woerter: {
+            type: 'object',
+            additionalProperties: historyNodeSchema
+        },
+        saetze: {
+            type: 'object',
+            additionalProperties: historyNodeSchema
+        }
+    }
+};
+
+const validateDb = ajv.compile(dbSchema);
+const validateNameHistorySchema = ajv.compile(nameHistorySchema);
+
+function ajvErrorsToMessage(errors) {
+    if (!errors) return 'Unbekannter Validierungsfehler';
+    return errors.map(e => `${e.instancePath || '(root)'} ${e.message}`).join('; ');
+}
+
+async function writeDbValidated(dbPath, data, options) {
+    const ok = validateDb(data);
+    if (!ok) throw new Error(`Schemafehler (DB): ${ajvErrorsToMessage(validateDb.errors)}`);
+    await writeJsonAtomic(dbPath, data, options);
+    // Post-Write Schema-Check
+    const txt = await fs.readFile(dbPath, 'utf8');
+    const parsed = JSON.parse(txt);
+    const ok2 = validateDb(parsed);
+    if (!ok2) throw new Error(`Post-Write Schemafehler (DB): ${ajvErrorsToMessage(validateDb.errors)}`);
 }
 
 async function acquireLock(name = 'editor') {
@@ -111,9 +209,34 @@ async function releaseLock(lock) {
     try { await fs.unlink(lock.lockFile); } catch {}
 }
 
+// Name-History Laden/Speichern
+async function readNameHistory() {
+    try {
+        const txt = await fs.readFile(NAME_HISTORY_FILE, 'utf8');
+        const data = JSON.parse(txt);
+        if (!data.woerter) data.woerter = {};
+        if (!data.saetze) data.saetze = {};
+        return data;
+    } catch (e) {
+        if (e.code === 'ENOENT') return { woerter: {}, saetze: {} };
+        throw e;
+    }
+}
+async function writeNameHistory(hist, { stamp } = {}) {
+    await ensureDir(STATE_DIR);
+    await writeJsonAtomic(NAME_HISTORY_FILE, hist, { stamp, backup: true, auditOp: 'name-history:write' });
+}
+function getHistNode(hist, mode, id) {
+    const root = hist[mode] || (hist[mode] = {});
+    if (!root[id]) root[id] = { entries: [], cursor: -1 };
+    if (!Array.isArray(root[id].entries)) root[id].entries = [];
+    if (typeof root[id].cursor !== 'number') root[id].cursor = root[id].entries.length - 1;
+    return root[id];
+}
+
 // Listet alle Set-Dateien für den Modus auf
 async function listSetFilesForMode(mode) {
-    const setsDir = path.join(__dirname, 'data', mode === 'saetze' ? 'sets_saetze' : 'sets');
+    const setsDir = dataPath(mode === 'saetze' ? 'sets_saetze' : 'sets');
     let files = [];
     try {
         const entries = await fs.readdir(setsDir);
@@ -150,17 +273,17 @@ function displayNameFromBase(baseName) {
 }
 
 // KORRIGIERT: Der Pfad zur Manifest-Datei wurde an die neue Struktur angepasst.
-const setsManifestPath = path.join(__dirname, 'data', 'sets.json'); 
-const dbPath = path.join(__dirname, 'data', 'items_database.json');
+const setsManifestPath = dataPath('sets.json'); 
+const dbPath = dataPath('items_database.json');
+// Basispfade werden über DATA_DIR abgeleitet
 const imagesBasePaths = [
-    // path.join(__dirname, 'data', 'images'),
-    path.join(__dirname, 'data', 'wörter', 'images'),
-    path.join(__dirname, 'data', 'sätze', 'images')
+    dataPath('wörter', 'images'),
+    dataPath('sätze', 'images')
 ];
 const soundsBasePaths = [
-    path.join(__dirname, 'data', 'sounds'),
-    path.join(__dirname, 'data', 'wörter', 'sounds'),
-    path.join(__dirname, 'data', 'sätze', 'sounds')
+    dataPath('sounds'),
+    dataPath('wörter', 'sounds'),
+    dataPath('sätze', 'sounds')
 ];
 
 
@@ -170,8 +293,8 @@ app.use(express.static(__dirname));
 // Helper: Validate a given mode ('woerter' | 'saetze') by checking manifest-set files and missing IDs
 async function validateModeIntegrity(mode) {
     const isSaetze = mode === 'saetze';
-    const dbPathMode = path.join(__dirname, 'data', isSaetze ? 'items_database_saetze.json' : 'items_database.json');
-    const setsManifestPathMode = path.join(__dirname, 'data', isSaetze ? 'sets_saetze.json' : 'sets.json');
+    const dbPathMode = dataPath(isSaetze ? 'items_database_saetze.json' : 'items_database.json');
+    const setsManifestPathMode = dataPath(isSaetze ? 'sets_saetze.json' : 'sets.json');
 
     const result = {
         ok: true,
@@ -256,13 +379,13 @@ app.post('/api/delete-item', guardWrite, async (req, res) => {
         // 1. Pfade basierend auf dem Modus bestimmen
         let dbPathMode, setsDirMode;
         if (mode === 'woerter') {
-            dbPathMode = path.join(__dirname, 'data', 'items_database.json');
-            setsDirMode = path.join(__dirname, 'data', 'sets');
+            dbPathMode = dataPath('items_database.json');
+            setsDirMode = dataPath('sets');
         } else { // saetze
-            dbPathMode = path.join(__dirname, 'data', 'items_database_saetze.json');
-            setsDirMode = path.join(__dirname, 'data', 'sets_saetze');
+            dbPathMode = dataPath('items_database_saetze.json');
+            setsDirMode = dataPath('sets_saetze');
         }
-        const archiveDir = path.join(__dirname, '_deleted_files', new Date().toISOString().split('T')[0]);
+    const archiveDir = path.join(STATE_DIR, '_deleted_files', new Date().toISOString().split('T')[0]);
 
         // 2. Datenbank laden und Eintrag finden
         let database = {};
@@ -277,8 +400,8 @@ app.post('/api/delete-item', guardWrite, async (req, res) => {
 
         // 3. Dateien zum Verschieben identifizieren und Archiv-Ordner erstellen
         const filesToMove = [];
-        if (itemToDelete.image && itemToDelete.image.trim() !== '') filesToMove.push(path.join(__dirname, itemToDelete.image));
-        if (itemToDelete.sound && itemToDelete.sound.trim() !== '') filesToMove.push(path.join(__dirname, itemToDelete.sound));
+    if (itemToDelete.image && itemToDelete.image.trim() !== '') filesToMove.push(absFromDataRel(itemToDelete.image));
+    if (itemToDelete.sound && itemToDelete.sound.trim() !== '') filesToMove.push(absFromDataRel(itemToDelete.sound));
         
         if (filesToMove.length > 0) {
             await fs.mkdir(archiveDir, { recursive: true });
@@ -298,23 +421,27 @@ app.post('/api/delete-item', guardWrite, async (req, res) => {
     await writeJsonAtomic(dbPathMode, database, { stamp, backup: true, auditOp: 'delete-item:db', context: { id, mode } });
 
         // 6. Eintrag aus allen Set-Dateien entfernen
-        const setFiles = await fs.readdir(setsDirMode);
-        for (const file of setFiles) {
-            if (file.endsWith('.json')) {
-                const setPath = path.join(setsDirMode, file);
-                const setData = JSON.parse(await fs.readFile(setPath, 'utf8'));
+        try {
+            const setFiles = await fs.readdir(setsDirMode);
+            for (const file of setFiles) {
+                if (file.endsWith('.json')) {
+                    const setPath = path.join(setsDirMode, file);
+                    const setData = JSON.parse(await fs.readFile(setPath, 'utf8'));
 
-                // Set-Dateien sind Arrays von IDs. Entferne die ID direkt aus dem Array.
-                if (Array.isArray(setData)) {
-                    const index = setData.indexOf(id);
-                    if (index > -1) {
-                        setData.splice(index, 1);
-                        await writeJsonAtomic(setPath, setData, { stamp, backup: true, auditOp: 'delete-item:set', context: { id, mode, set: relFromRoot(setPath) } });
+                    // Set-Dateien sind Arrays von IDs. Entferne die ID direkt aus dem Array.
+                    if (Array.isArray(setData)) {
+                        const index = setData.indexOf(id);
+                        if (index > -1) {
+                            setData.splice(index, 1);
+                            await writeJsonAtomic(setPath, setData, { stamp, backup: true, auditOp: 'delete-item:set', context: { id, mode, set: relFromRoot(setPath) } });
+                        }
+                    } else {
+                        console.warn(`[DELETE] Set-Datei hat unerwartetes Format (kein Array): ${setPath}`);
                     }
-                } else {
-                    console.warn(`[DELETE] Set-Datei hat unerwartetes Format (kein Array): ${setPath}`);
                 }
             }
+        } catch (e) {
+            if (e.code !== 'ENOENT') throw e; // Wenn es kein Sets-Ordner gibt, ignorieren.
         }
 
         res.json({ message: `Eintrag '${id}' wurde erfolgreich gelöscht und die Dateien wurden archiviert.` });
@@ -329,7 +456,7 @@ app.post('/api/delete-item', guardWrite, async (req, res) => {
 
 // NEU: API-Route zum Abrufen der archivierten Dateien
 app.get('/api/get-archived-files', async (req, res) => {
-    const archiveBaseDir = path.join(__dirname, '_deleted_files');
+    const archiveBaseDir = path.join(STATE_DIR, '_deleted_files');
     const archivedItems = {};
 
     try {
@@ -353,6 +480,7 @@ app.get('/api/get-archived-files', async (req, res) => {
                 }
                 archivedItems[id].files.push({
                     name: file,
+                    // Der Frontend-Path zeigt weiterhin relativ vom STATE_DIR aus
                     path: path.join('_deleted_files', dateFolder, file).replace(/\\/g, '/')
                 });
             }
@@ -376,18 +504,23 @@ app.post('/api/manage-archive', guardWrite, async (req, res) => {
 
     const unsortedDirs = {
         woerter: {
-            images: path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert'),
-            sounds: path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert')
+            images: dataPath('wörter', 'images', 'images_unsortiert'),
+            sounds: dataPath('wörter', 'sounds', 'sounds_unsortiert')
         },
         saetze: {
-            images: path.join(__dirname, 'data', 'sätze', 'images', 'images_unsortiert'),
-            sounds: path.join(__dirname, 'data', 'sätze', 'sounds', 'sounds_unsortiert')
+            images: dataPath('sätze', 'images', 'images_unsortiert'),
+            sounds: dataPath('sätze', 'sounds', 'sounds_unsortiert')
         }
     };
 
     try {
         for (const file of files) {
-            const sourcePath = path.join(__dirname, file.path);
+            let sourcePath;
+            if (file.path && file.path.replace(/\\+/g,'/').startsWith('_deleted_files/')) {
+                sourcePath = path.join(STATE_DIR, file.path);
+            } else {
+                sourcePath = path.join(__dirname, file.path);
+            }
 
             if (action === 'restore') {
                 // Heuristik: Dateinamen mit Leerzeichen sind Sätze, andere sind Wörter.
@@ -422,13 +555,13 @@ app.get('/api/get-all-data', async (req, res) => {
     try {
         // Mode auslesen: 'woerter' oder 'saetze'
         const mode = req.query.mode === 'saetze' ? 'saetze' : 'woerter';
-        let dbPathMode, setsManifestPathMode;
+    let dbPathMode, setsManifestPathMode;
         if (mode === 'woerter') {
-            dbPathMode = path.join(__dirname, 'data', 'items_database.json');
-            setsManifestPathMode = path.join(__dirname, 'data', 'sets.json');
+            dbPathMode = dataPath('items_database.json');
+            setsManifestPathMode = dataPath('sets.json');
         } else {
-            dbPathMode = path.join(__dirname, 'data', 'items_database_saetze.json');
-            setsManifestPathMode = path.join(__dirname, 'data', 'sets_saetze.json');
+            dbPathMode = dataPath('items_database_saetze.json');
+            setsManifestPathMode = dataPath('sets_saetze.json');
         }
 
         const dbContent = await fs.readFile(dbPathMode, 'utf8');
@@ -447,7 +580,7 @@ app.get('/api/get-all-data', async (req, res) => {
                 if (child.path) {
                     const finalDisplayName = [...nameParts, child.displayName].join(' ');
                     try {
-                        const setContent = await fs.readFile(path.join(__dirname, child.path), 'utf8');
+                        const setContent = await fs.readFile(absFromDataRel(child.path), 'utf8');
                         // Lade rohe IDs (Array)
                         const rawItems = JSON.parse(setContent);
                         // Guard: fehlende IDs gegen die geladene DB prüfen
@@ -493,13 +626,13 @@ app.get('/api/scan-for-new-files', async (req, res) => {
         let imagesBasePathsMode;
         let soundsBasePathsMode;
         if (mode === 'woerter') {
-            dbPathMode = path.join(__dirname, 'data', 'items_database.json');
-            imagesBasePathsMode = [path.join(__dirname, 'data', 'wörter', 'images')];
-            soundsBasePathsMode = [path.join(__dirname, 'data', 'wörter', 'sounds')];
+            dbPathMode = dataPath('items_database.json');
+            imagesBasePathsMode = [dataPath('wörter', 'images')];
+            soundsBasePathsMode = [dataPath('wörter', 'sounds')];
         } else {
-            dbPathMode = path.join(__dirname, 'data', 'items_database_saetze.json');
-            imagesBasePathsMode = [path.join(__dirname, 'data', 'sätze', 'images')];
-            soundsBasePathsMode = [path.join(__dirname, 'data', 'sätze', 'sounds')];
+            dbPathMode = dataPath('items_database_saetze.json');
+            imagesBasePathsMode = [dataPath('sätze', 'images')];
+            soundsBasePathsMode = [dataPath('sätze', 'sounds')];
         }
         const dbContent = await fs.readFile(dbPathMode, 'utf8');
         const database = JSON.parse(dbContent);
@@ -620,11 +753,11 @@ app.post('/api/save-all-data', guardWrite, async (req, res) => {
         lock = await acquireLock('editor');
         let dbPathMode, setsManifestPathMode;
         if (mode === 'saetze') {
-            dbPathMode = path.join(__dirname, 'data', 'items_database_saetze.json');
-            setsManifestPathMode = path.join(__dirname, 'data', 'sets_saetze.json');
+            dbPathMode = dataPath('items_database_saetze.json');
+            setsManifestPathMode = dataPath('sets_saetze.json');
         } else { // Default to 'woerter'
-            dbPathMode = path.join(__dirname, 'data', 'items_database.json');
-            setsManifestPathMode = path.join(__dirname, 'data', 'sets.json');
+            dbPathMode = dataPath('items_database.json');
+            setsManifestPathMode = dataPath('sets.json');
         }
         await writeJsonAtomic(dbPathMode, database, { stamp, backup: true, auditOp: 'save-all-data:db', context: { mode } });
         const manifestToSave = JSON.parse(JSON.stringify(manifest));
@@ -633,7 +766,7 @@ app.post('/api/save-all-data', guardWrite, async (req, res) => {
             for (const key in node) {
                 const child = node[key];
                 if (child && child.path && Array.isArray(child.items)) {
-                    await writeJsonAtomic(path.join(__dirname, child.path), child.items, { stamp, backup: true, auditOp: 'save-all-data:set', context: { path: child.path, mode } });
+                    await writeJsonAtomic(absFromDataRel(child.path), child.items, { stamp, backup: true, auditOp: 'save-all-data:set', context: { path: child.path, mode } });
                     delete child.items;
                 }
                 if (typeof child === 'object' && child !== null) {
@@ -700,16 +833,16 @@ app.post('/api/analyze-unsorted-files', guardWrite, async (req, res) => {
 
     const dirs = {
         woerter: {
-            unsortedImages: path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert'),
-            unsortedSounds: path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert'),
-            baseImages: path.join(__dirname, 'data', 'wörter', 'images'),
-            baseSounds: path.join(__dirname, 'data', 'wörter', 'sounds')
+            unsortedImages: dataPath('wörter', 'images', 'images_unsortiert'),
+            unsortedSounds: dataPath('wörter', 'sounds', 'sounds_unsortiert'),
+            baseImages: dataPath('wörter', 'images'),
+            baseSounds: dataPath('wörter', 'sounds')
         },
         saetze: {
-            unsortedImages: path.join(__dirname, 'data', 'sätze', 'images', 'images_unsortiert'),
-            unsortedSounds: path.join(__dirname, 'data', 'sätze', 'sounds', 'sounds_unsortiert'),
-            baseImages: path.join(__dirname, 'data', 'sätze', 'images'),
-            baseSounds: path.join(__dirname, 'data', 'sätze', 'sounds')
+            unsortedImages: dataPath('sätze', 'images', 'images_unsortiert'),
+            unsortedSounds: dataPath('sätze', 'sounds', 'sounds_unsortiert'),
+            baseImages: dataPath('sätze', 'images'),
+            baseSounds: dataPath('sätze', 'sounds')
         }
     };
 
@@ -837,8 +970,8 @@ app.post('/api/resolve-conflicts', guardWrite, async (req, res) => {
 });
 
 app.post('/api/sort-unsorted-sounds', guardWrite, async (req, res) => {
-    const unsortedDir = path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert');
-    const baseDir = path.join(__dirname, 'data', 'wörter', 'sounds');
+    const unsortedDir = dataPath('wörter', 'sounds', 'sounds_unsortiert');
+    const baseDir = dataPath('wörter', 'sounds');
     try {
         const files = await fs.readdir(unsortedDir);
         const moved = [];
@@ -867,14 +1000,14 @@ app.post('/api/sort-unsorted-sounds', guardWrite, async (req, res) => {
     }
 });
 
-app.post('/api/sort-unsorted-files', async (req, res) => {
+app.post('/api/sort-unsorteds-files', async (req, res) => {
     const unsortedDirs = {
-        images: path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert'),
-        sounds: path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert')
+        images: dataPath('wörter', 'images', 'images_unsortiert'),
+        sounds: dataPath('wörter', 'sounds', 'sounds_unsortiert')
     };
     const baseDirs = {
-        images: path.join(__dirname, 'data', 'wörter', 'images'),
-        sounds: path.join(__dirname, 'data', 'wörter', 'sounds')
+        images: dataPath('wörter', 'images'),
+        sounds: dataPath('wörter', 'sounds')
     };
 
     let totalMoved = 0;
@@ -946,12 +1079,12 @@ app.get('/api/check-unsorted-files', async (req, res) => {
 
     const unsortedDirs = {
         woerter: {
-            images: path.join(__dirname, 'data', 'wörter', 'images', 'images_unsortiert'),
-            sounds: path.join(__dirname, 'data', 'wörter', 'sounds', 'sounds_unsortiert')
+            images: dataPath('wörter', 'images', 'images_unsortiert'),
+            sounds: dataPath('wörter', 'sounds', 'sounds_unsortiert')
         },
         saetze: {
-            images: path.join(__dirname, 'data', 'sätze', 'images', 'images_unsortiert'),
-            sounds: path.join(__dirname, 'data', 'sätze', 'sounds', 'sounds_unsortiert')
+            images: dataPath('sätze', 'images', 'images_unsortiert'),
+            sounds: dataPath('sätze', 'sounds', 'sounds_unsortiert')
         }
     };
 
@@ -984,7 +1117,7 @@ app.get('/api/check-unsorted-files', async (req, res) => {
 app.get('/api/missing-assets', async (req, res) => {
     try {
         const mode = req.query.mode === 'saetze' ? 'saetze' : 'woerter';
-        const dbPathMode = path.join(__dirname, 'data', mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
+    const dbPathMode = dataPath(mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
         let database = {};
         try {
             const content = await fs.readFile(dbPathMode, 'utf8');
@@ -1031,7 +1164,7 @@ app.post('/api/editor/validate-change', async (req, res) => {
         const idIssues = [];
         if (normalized !== newId) idIssues.push(`Neue ID wird normalisiert zu '${normalized}' (ASCII/Slug-Regel).`);
 
-        const dbPath = path.join(__dirname, 'data', mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
+    const dbPath = dataPath(mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
         let db = {};
         try { db = JSON.parse(await fs.readFile(dbPath, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
         const issues = [];
@@ -1084,7 +1217,7 @@ app.patch('/api/editor/item/display-name', guardWrite, async (req, res) => {
         return res.status(400).json({ ok: false, message: 'Erforderlich: mode, id, newDisplayName' });
     }
     const isSaetze = mode === 'saetze';
-    const dbPath = path.join(__dirname, 'data', isSaetze ? 'items_database_saetze.json' : 'items_database.json');
+    const dbPath = dataPath(isSaetze ? 'items_database_saetze.json' : 'items_database.json');
     let lock;
     const stamp = nowIsoCompact();
     try {
@@ -1100,8 +1233,37 @@ app.patch('/api/editor/item/display-name', guardWrite, async (req, res) => {
         }
         // Whitespace- und NFC-Normalisierung (keine Auto-Kapitalisierung)
         const normalized = String(newDisplayName).replace(/\s+/g, ' ').trim();
+        const prevName = (db[id] && typeof db[id].name === 'string') ? db[id].name : '';
         db[id].name = normalized;
-        await writeJsonAtomic(dbPath, db, { stamp, backup: true, auditOp: 'patch-display-name', context: { mode, id } });
+        await writeDbValidated(dbPath, db, { stamp, backup: true, auditOp: 'patch-display-name', context: { mode, id } });
+
+        // Name-History aktualisieren
+        try {
+            const hist = await readNameHistory();
+            const node = getHistNode(hist, isSaetze ? 'saetze' : 'woerter', id);
+            // Wenn neuer Name identisch zum aktuellen Cursor-Zustand wäre, nicht doppeln
+            const curEntry = node.entries[node.cursor];
+            if (!curEntry || curEntry.value !== normalized) {
+                // Truncate Redo-Zweig, wenn Cursor nicht am Ende steht
+                if (node.cursor < node.entries.length - 1) {
+                    node.entries = node.entries.slice(0, node.cursor + 1);
+                }
+                // Beim ersten Eintrag: ursprünglichen Namen als Basis speichern, damit Undo möglich ist
+                if (node.entries.length === 0) {
+                    node.entries.push({ ts: new Date().toISOString(), value: prevName, base: true });
+                    node.cursor = node.entries.length - 1;
+                }
+                node.entries.push({ ts: new Date().toISOString(), value: normalized, prev: prevName });
+                node.cursor = node.entries.length - 1;
+                // Validate name-history before and after write
+                if (!validateNameHistorySchema(hist)) throw new Error(`Schemafehler (History): ${ajvErrorsToMessage(validateNameHistorySchema.errors)}`);
+                await writeNameHistory(hist, { stamp });
+                const reread = await readNameHistory();
+                if (!validateNameHistorySchema(reread)) throw new Error(`Post-Write Schemafehler (History): ${ajvErrorsToMessage(validateNameHistorySchema.errors)}`);
+            }
+        } catch (e) {
+            console.warn('[NAME-HISTORY] Update fehlgeschlagen:', e.message);
+        }
         return res.json({ ok: true, changedFields: ['name'], warnings: [] });
     } catch (err) {
         console.error('[PATCH display-name] Fehler:', err);
@@ -1109,6 +1271,76 @@ app.patch('/api/editor/item/display-name', guardWrite, async (req, res) => {
     } finally {
         await releaseLock(lock);
     }
+});
+
+// Name-History abfragen
+app.get('/api/editor/name-history', async (req, res) => {
+    try {
+        const mode = req.query.mode;
+        const id = req.query.id;
+        if (!mode || !id) return res.status(400).json({ ok: false, message: 'mode und id erforderlich' });
+        const hist = await readNameHistory();
+        const node = ((hist[mode] || {})[id]) || { entries: [], cursor: -1 };
+        res.json({ ok: true, entries: node.entries || [], cursor: typeof node.cursor === 'number' ? node.cursor : -1 });
+    } catch (e) {
+        console.error('[NAME-HISTORY get] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    }
+});
+
+// Undo letzten Namen (cursor - 1) -> setzt Name in DB auf den Entry an neuer Cursor-Position
+app.post('/api/editor/name-undo', guardWrite, async (req, res) => {
+    const { mode, id } = req.body || {};
+    if (!mode || !id) return res.status(400).json({ ok: false, message: 'mode und id erforderlich' });
+    const isSaetze = mode === 'saetze';
+    const dbPath = dataPath(isSaetze ? 'items_database_saetze.json' : 'items_database.json');
+    let lock; const stamp = nowIsoCompact();
+    try {
+        lock = await acquireLock('editor');
+        const hist = await readNameHistory();
+        const node = getHistNode(hist, isSaetze ? 'saetze' : 'woerter', id);
+        if (node.cursor <= 0) return res.status(409).json({ ok: false, message: 'Kein Undo möglich' });
+        node.cursor -= 1;
+        const target = node.entries[node.cursor];
+        // Update DB
+        let db = {}; try { db = JSON.parse(await fs.readFile(dbPath, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+        if (!db[id]) return res.status(404).json({ ok: false, message: `ID '${id}' nicht gefunden` });
+        db[id].name = target ? target.value : '';
+    await writeDbValidated(dbPath, db, { stamp, backup: true, auditOp: 'name-undo', context: { mode, id } });
+    if (!validateNameHistorySchema(hist)) throw new Error(`Schemafehler (History): ${ajvErrorsToMessage(validateNameHistorySchema.errors)}`);
+    await writeNameHistory(hist, { stamp });
+        res.json({ ok: true, name: db[id].name, cursor: node.cursor });
+    } catch (e) {
+        console.error('[NAME-UNDO] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    } finally { await releaseLock(lock); }
+});
+
+// Redo nächsten Namen (cursor + 1)
+app.post('/api/editor/name-redo', guardWrite, async (req, res) => {
+    const { mode, id } = req.body || {};
+    if (!mode || !id) return res.status(400).json({ ok: false, message: 'mode und id erforderlich' });
+    const isSaetze = mode === 'saetze';
+    const dbPath = dataPath(isSaetze ? 'items_database_saetze.json' : 'items_database.json');
+    let lock; const stamp = nowIsoCompact();
+    try {
+        lock = await acquireLock('editor');
+        const hist = await readNameHistory();
+        const node = getHistNode(hist, isSaetze ? 'saetze' : 'woerter', id);
+        if (node.cursor >= node.entries.length - 1) return res.status(409).json({ ok: false, message: 'Kein Redo möglich' });
+        node.cursor += 1;
+        const target = node.entries[node.cursor];
+        let db = {}; try { db = JSON.parse(await fs.readFile(dbPath, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+        if (!db[id]) return res.status(404).json({ ok: false, message: `ID '${id}' nicht gefunden` });
+        db[id].name = target ? target.value : '';
+    await writeDbValidated(dbPath, db, { stamp, backup: true, auditOp: 'name-redo', context: { mode, id } });
+    if (!validateNameHistorySchema(hist)) throw new Error(`Schemafehler (History): ${ajvErrorsToMessage(validateNameHistorySchema.errors)}`);
+    await writeNameHistory(hist, { stamp });
+        res.json({ ok: true, name: db[id].name, cursor: node.cursor });
+    } catch (e) {
+        console.error('[NAME-REDO] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    } finally { await releaseLock(lock); }
 });
 
 app.post('/api/sync-files', guardWrite, async (req, res) => {
@@ -1153,15 +1385,15 @@ app.post('/api/sync-files', guardWrite, async (req, res) => {
 
         // Generate manifests for both 'woerter' and 'saetze' - this can remain as is,
         // as it's a general maintenance task.
-        await generateManifest(path.join(__dirname, 'data', 'sets'), path.join(__dirname, 'data', 'sets.json'));
-        await generateManifest(path.join(__dirname, 'data', 'sets_saetze'), path.join(__dirname, 'data', 'sets_saetze.json'));
+    await generateManifest(dataPath('sets'), dataPath('sets.json'));
+    await generateManifest(dataPath('sets_saetze'), dataPath('sets_saetze.json'));
 
         // Helper function to update the items database for a given mode
         const updateDatabaseForMode = async (modeToUpdate) => {
             const modeName = modeToUpdate === 'saetze' ? 'sätze' : 'wörter';
-            const dbPath = path.join(__dirname, 'data', modeToUpdate === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
-            const imagesBasePath = path.join(__dirname, 'data', modeName, 'images');
-            const soundsBasePath = path.join(__dirname, 'data', modeName, 'sounds');
+            const dbPath = dataPath(modeToUpdate === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
+            const imagesBasePath = dataPath(modeName, 'images');
+            const soundsBasePath = dataPath(modeName, 'sounds');
             
             let database = {};
             try {
@@ -1247,7 +1479,7 @@ app.post('/api/editor/item/id-rename', guardWrite, async (req, res) => {
         return res.status(400).json({ ok: false, message: `Neue ID muss ASCII/Slug sein. Vorschlag: '${normalized}'` });
     }
 
-    const dbPath = path.join(__dirname, 'data', mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
+    const dbPath = dataPath(mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
     let db = {};
     try { db = JSON.parse(await fs.readFile(dbPath, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
     if (!db[oldId]) return res.status(404).json({ ok: false, message: `Alte ID '${oldId}' nicht gefunden.` });
@@ -1288,7 +1520,7 @@ app.post('/api/editor/item/id-rename', guardWrite, async (req, res) => {
         const item = db[oldId];
         delete db[oldId];
         db[normalized] = item;
-        await writeJsonAtomic(dbPath, db, { stamp, backup: true, auditOp: 'id-rename:db', context: { mode, from: oldId, to: normalized } });
+    await writeDbValidated(dbPath, db, { stamp, backup: true, auditOp: 'id-rename:db', context: { mode, from: oldId, to: normalized } });
 
         // Sets aktualisieren mit Deduplizierung
         for (const plan of setPlans) {
@@ -1313,9 +1545,14 @@ app.post('/api/editor/item/id-rename', guardWrite, async (req, res) => {
 });
 // === KORREKTUR HINZUGEFÜGT ===
 // Dieser Block startet den Server und sorgt dafür, dass er aktiv bleibt.
-app.listen(PORT, () => {
-    console.log(`Server läuft und lauscht auf http://localhost:${PORT}`);
-});
+let serverInstance = null;
+if (require.main === module) {
+    serverInstance = app.listen(PORT, () => {
+        console.log(`Server läuft und lauscht auf http://localhost:${PORT}`);
+    });
+}
+
+module.exports = serverInstance || app;
 
 // Healthcheck-Endpoint: Validiert beide Modi und gibt eine kompakte Zusammenfassung zurück
 app.get('/api/healthcheck', async (req, res) => {
@@ -1390,5 +1627,5 @@ app.get('/api/missing-assets', async (req, res) => {
 
 // Read-only status endpoint
 app.get('/api/editor/config', (req, res) => {
-    res.json({ readOnly: READ_ONLY, port: PORT });
+    res.json({ readOnly: isReadOnly(), port: PORT });
 });

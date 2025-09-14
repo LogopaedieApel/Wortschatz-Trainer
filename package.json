@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "start:ro": "set EDITOR_READONLY=1&& set PORT=3001&& node server.js",
+    "start:test": "set PORT=3100&& node server.js",
     "analyze-assets": "node tools/analyze-assets.mjs",
     "analyze-assets:json": "node tools/analyze-assets.mjs --format json",
     "apply-assets:dry": "node tools/apply-assets.mjs",
@@ -23,12 +24,21 @@
     "update-names:apply": "node tools/update-names-umlauts.mjs --apply",
     "check-case-consistency": "node tools/check-case-consistency.mjs",
     "enforce-filename-case": "node tools/enforce-filename-case.mjs",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "jest --runInBand",
+    "test:watch": "jest --watchAll",
+    "test:smoke": "playwright test",
+    "snapshot": "node tools/snapshot-data.mjs",
+    "restore": "node tools/restore-snapshot.mjs"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "ajv": "^8.17.1"
   },
   "devDependencies": {
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4",
+    "@playwright/test": "^1.46.0"
   }
 }

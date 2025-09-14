@@ -109,6 +109,29 @@ Dieser Leitfaden dokumentiert die Ziele, Regeln, Tools und Arbeitsabläufe, dami
 - Keine doppelten/conflicting Zielpfade im Audit
 - Editor muss Auto-Fixes korrekt anzeigen und anwenden
 
+## Release-Checklist (ausführlich)
+
+1) Vorbereitung
+  - Node-Version prüfen (>=16, empfohlen 18 LTS): `node -v`
+  - Abhängigkeiten aktuell: `npm ci`
+2) Snapshot erstellen (Recovery-Sicherheit)
+  - `npm run snapshot -- --label pre-release`
+  - Pfad notieren, ggf. separat sichern
+3) Tests (lokal)
+  - `npm test`
+4) Healthcheck (lokal)
+  - `npm run healthcheck` → muss `ok=true` liefern
+  - Bei Fehlern: Details im Output prüfen (fehlende Dateien, ungültige Sets/IDs)
+5) Editor-Spotchecks
+  - `npm start` (oder `npm run start:ro` für Nur-Lese)
+  - Flows: ID-Umbenennen (Dry-Run + Apply), Anzeigename-Undo/Redo, Sets anlegen/speichern, Archiv wiederherstellen
+6) Pull Request
+  - CI muss grün (Tests + Healthcheck)
+  - Review-Kommentare abarbeiten
+7) Release/Deployment
+  - Nach Go-Live: Smoke-Test der Editor-Flows
+  - Bei Problemen: Restore letzten Snapshot (`npm run restore -- --snapshot latest --yes`)
+
 ## Repository-Hinweise
 - Hauptdateien: `data/items_database.json`, `data/items_database_saetze.json`, `data/sets.json`, `data/sets_saetze.json`
 - Frontend: `editor.html`, `editor_script.js`
