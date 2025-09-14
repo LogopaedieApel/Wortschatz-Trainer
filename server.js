@@ -286,6 +286,85 @@ const soundsBasePaths = [
     dataPath('sätze', 'sounds')
 ];
 
+// === Hilfe/Docs (read-only) ===
+const DOCS_DIR = path.join(__dirname, 'docs');
+
+function isPathInside(parent, child) {
+    const rel = path.relative(parent, child);
+    // allow equal path (rel === '') and ensure not traversing upwards
+    return !rel.startsWith('..') && !path.isAbsolute(rel);
+}
+
+// List available Markdown docs under /docs
+app.get('/api/help/docs', async (req, res) => {
+    try {
+        let entries;
+        try {
+            // Try modern API returning Dirent objects
+            entries = await fs.readdir(DOCS_DIR, { withFileTypes: true });
+        } catch (e) {
+            if (e.code === 'ENOENT') {
+                // No docs folder yet – return empty list without error
+                return res.json({ ok: true, docs: [] });
+            }
+            // Fallback for older Node versions where withFileTypes may not be supported
+            try {
+                entries = (await fs.readdir(DOCS_DIR)).map(name => ({ name, isFile: () => true }));
+            } catch (e2) {
+                if (e2.code === 'ENOENT') return res.json({ ok: true, docs: [] });
+                throw e2;
+            }
+        }
+
+        const files = entries
+            .filter(e => (e.isFile ? e.isFile() : true) && e.name && e.name.toLowerCase().endsWith('.md') && !e.name.startsWith('.'))
+            .map(e => e.name);
+
+        // Extract title = first markdown heading if possible
+        const out = [];
+        for (const file of files) {
+            const abs = path.join(DOCS_DIR, file);
+            let title = file;
+            try {
+                const txt = await fs.readFile(abs, 'utf8');
+                const m = txt.match(/^\s*#\s+(.+)$/m);
+                if (m) title = m[1].trim();
+            } catch {}
+            out.push({ file, title });
+        }
+        // Prefer an editor help as first item if present
+        out.sort((a, b) => {
+            const pa = a.file.toLowerCase().includes('editor');
+            const pb = b.file.toLowerCase().includes('editor');
+            if (pa !== pb) return pa ? -1 : 1;
+            return a.title.localeCompare(b.title, 'de');
+        });
+        res.json({ ok: true, docs: out });
+    } catch (e) {
+        // Last-resort: do not fail the UI, return an empty list
+        res.json({ ok: true, docs: [], message: 'Dokumentenliste derzeit nicht verfügbar' });
+    }
+});
+
+// Get the raw content of a specific markdown doc (read-only)
+app.get('/api/help/doc', async (req, res) => {
+    try {
+        const file = String(req.query.file || '').replace(/\\+/g, '/');
+        if (!file || /\0/.test(file) || file.includes('..')) {
+            return res.status(400).json({ ok: false, message: 'Ungültiger Dateiname' });
+        }
+        const abs = path.join(DOCS_DIR, file);
+        if (!isPathInside(DOCS_DIR, abs)) {
+            return res.status(400).json({ ok: false, message: 'Pfad außerhalb von docs nicht erlaubt' });
+        }
+        const txt = await fs.readFile(abs, 'utf8');
+        res.json({ ok: true, file, content: txt });
+    } catch (e) {
+        if (e.code === 'ENOENT') return res.status(404).json({ ok: false, message: 'Dokument nicht gefunden' });
+        res.status(500).json({ ok: false, message: e.message });
+    }
+});
+
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(__dirname));

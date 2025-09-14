@@ -33,6 +33,17 @@ const filterMissingFiles = document.getElementById('filter-missing-files');
 let debounceTimer; // Timer for debouncing save action
 let serverReadOnly = false; // server-side read-only flag
 
+// Help modal elements
+const helpModal = document.getElementById('help-modal');
+const openHelpButton = document.getElementById('open-help-button');
+const helpClose = document.getElementById('help-close');
+const helpDocsList = document.getElementById('help-docs-list');
+const helpSearch = document.getElementById('help-search');
+const helpView = document.getElementById('help-view');
+const helpViewTitle = document.getElementById('help-view-title');
+let helpDocs = [];
+let activeHelpFile = '';
+
 async function fetchEditorConfig() {
     try {
         const res = await fetch('/api/editor/config');
@@ -1182,7 +1193,204 @@ async function resolveAndReload(actions) {
 // Initial data load when the page is ready
 document.addEventListener('DOMContentLoaded', () => {
     fetchEditorConfig().finally(() => switchMode('woerter'));
+    setupHelp();
 });
+
+function setupHelp() {
+    if (!openHelpButton || !helpModal) return;
+    openHelpButton.addEventListener('click', async () => {
+        await loadHelpDocs();
+        showHelpModal(true);
+        if (helpDocs.length) {
+            openHelpDoc(helpDocs[0].file);
+        }
+    });
+    if (helpClose) helpClose.addEventListener('click', () => showHelpModal(false));
+    helpModal.addEventListener('click', (e) => { if (e.target === helpModal) showHelpModal(false); });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && helpModal && helpModal.style.display === 'flex') showHelpModal(false);
+        if (e.key === '?' && helpModal && helpModal.style.display !== 'flex') {
+            e.preventDefault();
+            openHelpButton && openHelpButton.click();
+        }
+    });
+    if (helpSearch) helpSearch.addEventListener('input', renderHelpList);
+}
+
+function showHelpModal(visible) {
+    helpModal.style.display = visible ? 'flex' : 'none';
+}
+
+async function loadHelpDocs() {
+    try {
+        const res = await fetch('/api/help/docs');
+        if (!res.ok) {
+            let msg = 'Hilfe-Liste konnte nicht geladen werden';
+            if (res.status === 404) {
+                msg += ' (Hinweis: Server läuft evtl. noch ohne Hilfe-API. Bitte Server neu starten.)';
+            }
+            throw new Error(msg);
+        }
+        const data = await res.json();
+        helpDocs = Array.isArray(data.docs) ? data.docs : [];
+        renderHelpList();
+    } catch (e) {
+        helpDocs = [];
+        if (helpDocsList) helpDocsList.innerHTML = `<li style="color:#b94a48;">Fehler: ${e.message}</li>`;
+    }
+}
+
+function renderHelpList() {
+    if (!helpDocsList) return;
+    const q = (helpSearch && helpSearch.value ? helpSearch.value : '').toLowerCase();
+    helpDocsList.innerHTML = '';
+    const docs = helpDocs.filter(d => !q || d.title.toLowerCase().includes(q) || d.file.toLowerCase().includes(q));
+    if (docs.length === 0) {
+        const li = document.createElement('li');
+        li.style.color = '#666';
+        li.style.padding = '6px 8px';
+        li.textContent = 'Keine Hilfedateien gefunden. Lege Markdown-Dateien im Ordner docs/ an.';
+        helpDocsList.appendChild(li);
+        return;
+    }
+    docs.forEach(d => {
+        const li = document.createElement('li');
+        li.style.margin = '4px 0';
+        const a = document.createElement('a');
+        a.href = '#';
+        a.textContent = d.title || d.file;
+        a.style.display = 'block';
+        a.style.padding = '6px 8px';
+        a.style.borderRadius = '4px';
+        if (d.file === activeHelpFile) {
+            a.style.background = '#eef6ff';
+            a.style.fontWeight = 'bold';
+        }
+        a.addEventListener('click', (e) => { e.preventDefault(); openHelpDoc(d.file); });
+        li.appendChild(a);
+        helpDocsList.appendChild(li);
+    });
+}
+
+async function openHelpDoc(file) {
+    try {
+        const res = await fetch(`/api/help/doc?file=${encodeURIComponent(file)}`);
+        if (!res.ok) throw new Error('Dokument konnte nicht geladen werden');
+        const data = await res.json();
+        activeHelpFile = data.file;
+        if (helpViewTitle) helpViewTitle.textContent = titleFromMarkdown(data.content) || data.file;
+        if (helpView) {
+            const html = renderMarkdownToHtml(data.content);
+            // Auto-TOC generieren (H1–H3)
+            const tmp = document.createElement('div');
+            tmp.innerHTML = html;
+            const headings = [...tmp.querySelectorAll('h1,h2,h3')];
+            if (headings.length >= 2) {
+                const toc = document.createElement('div');
+                toc.style.border = '1px solid #e5e7eb';
+                toc.style.background = '#f8fafc';
+                toc.style.padding = '10px 12px';
+                toc.style.borderRadius = '6px';
+                toc.style.margin = '6px 0 14px 0';
+                toc.innerHTML = '<div style="font-weight:bold;margin-bottom:6px;">Inhalt</div>';
+                const ul = document.createElement('ul');
+                ul.style.listStyle = 'none';
+                ul.style.paddingLeft = '0';
+                headings.forEach(h => {
+                    const id = h.getAttribute('data-md-id') || '';
+                    const li = document.createElement('li');
+                    const level = h.tagName === 'H1' ? 0 : (h.tagName === 'H2' ? 1 : 2);
+                    li.style.marginLeft = `${level * 14}px`;
+                    const a = document.createElement('a');
+                    a.href = `#${id}`;
+                    a.textContent = h.textContent || '';
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const target = tmp.querySelector(`[data-md-id="${CSS.escape(id)}"]`);
+                        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                    li.appendChild(a);
+                    ul.appendChild(li);
+                });
+                toc.appendChild(ul);
+                tmp.prepend(toc);
+            }
+            helpView.innerHTML = tmp.innerHTML;
+        }
+        renderHelpList();
+        // In-Page Anker unterstützen
+        helpView.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                const id = a.getAttribute('href').slice(1);
+                const el = helpView.querySelector(`[data-md-id="${CSS.escape(id)}"]`);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    } catch (e) {
+        if (helpView) helpView.innerHTML = `<div style="color:#b94a48;">Fehler: ${e.message}</div>`;
+    }
+}
+
+function titleFromMarkdown(md) {
+    const m = (md || '').match(/^\s*#\s+(.+)$/m);
+    return m ? m[1].trim() : '';
+}
+
+// Minimaler Markdown-Renderer (sicher, kein HTML aus MD erlaubt)
+function renderMarkdownToHtml(md) {
+    const esc = (s) => String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    const lines = (md || '').split(/\r?\n/);
+    let html = '';
+    let inList = false;
+    const flushList = () => { if (inList) { html += '</ul>'; inList = false; } };
+    for (const raw of lines) {
+        const line = raw.trimEnd();
+        if (!line.trim()) { flushList(); html += '<br>';
+            continue; }
+        const h = line.match(/^(#{1,3})\s+(.+)$/); // #, ##, ###
+        if (h) {
+            flushList();
+            const level = h[1].length;
+            const text = esc(h[2]);
+            const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            html += `<h${level} data-md-id="${id}">${text}</h${level}>`;
+            continue;
+        }
+        const li = line.match(/^[-*+]\s+(.+)$/);
+        if (li) {
+            if (!inList) { html += '<ul>'; inList = true; }
+            html += `<li>${inlineMd(esc(li[1]))}</li>`;
+            continue;
+        }
+        flushList();
+        html += `<p>${inlineMd(esc(line))}</p>`;
+    }
+    flushList();
+    return html;
+}
+
+function inlineMd(t) {
+    // Bold **text**
+    t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    // Italic _text_
+    t = t.replace(/_(.+?)_/g, '<em>$1</em>');
+    // Inline code `x`
+    t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
+    // Links [text](url)
+    t = t.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, a, b) => {
+        if (b.startsWith('#')) {
+            const id = b.slice(1).toLowerCase().replace(/[^a-z0-9-]+/g, '-');
+            return `<a href="#${id}">${a}</a>`;
+        }
+        const safe = b.replace(/"/g, '%22');
+        return `<a href="${safe}" target="_blank" rel="noopener noreferrer">${a}</a>`;
+    });
+    return t;
+}
 
 // NEU: Logik für das Archiv-Modal
 const archiveModal = document.getElementById('archive-modal');

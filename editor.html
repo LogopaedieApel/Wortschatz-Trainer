@@ -159,6 +159,7 @@
         <button id="run-healthcheck-button">🩺 Daten prüfen</button>
     <button id="show-missing-assets-button">🔎 Fehlende Assets</button>
     <button id="import-new-sounds-button">🎙️ Neue Sounds einsortieren</button>
+        <button id="open-help-button">❓ Hilfe</button>
         <label style="margin-left: 12px;">
             <input type="checkbox" id="auto-fix-toggle" checked>
             Auto-Fixes beim Speichern
@@ -200,6 +201,29 @@
             <h2>Archivierte Dateien</h2>
             <div id="archive-list" style="max-height: 60vh; overflow-y: auto;">
                 <!-- Inhalt wird per JavaScript eingefügt -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Hilfe/Docs Modal -->
+    <div id="help-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 1000px; width: 92%; display:flex; gap:16px;">
+            <div style="flex: 0 0 260px; border-right: 1px solid #eee; padding-right: 12px; max-height:70vh; overflow:auto;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <strong>Hilfe</strong>
+                    <span id="help-close" class="close-button" title="Schließen" style="margin-left:auto; float:none;">&times;</span>
+                </div>
+                <input id="help-search" type="text" placeholder="Suchen..." style="width:100%; padding:6px 8px; border:1px solid #ccc; border-radius:4px;">
+                <ul id="help-docs-list" style="list-style:none; padding:0; margin:8px 0 0 0;"></ul>
+                <div style="margin-top:12px; font-size:12px; color:#666;">
+                    Hinweis: Die Dateien liegen im Ordner <code>docs/</code> und können hier in VS Code bearbeitet werden.
+                </div>
+            </div>
+            <div style="flex:1; max-height:70vh; overflow:auto;">
+                <div id="help-view-title" style="font-weight:bold; font-size: 1.2em; margin-bottom: 6px;"></div>
+                <div id="help-view" style="line-height:1.5;">
+                    <!-- gerenderter Markdown-Inhalt -->
+                </div>
             </div>
         </div>
     </div>

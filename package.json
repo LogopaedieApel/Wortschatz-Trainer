@@ -27,7 +27,7 @@
     "prepare": "husky",
     "test": "jest --runInBand",
     "test:watch": "jest --watchAll",
-    "test:smoke": "playwright test",
+    "test:smoke": "npx playwright test",
     "snapshot": "node tools/snapshot-data.mjs",
     "restore": "node tools/restore-snapshot.mjs"
   },
