@@ -286,6 +286,105 @@ const soundsBasePaths = [
     dataPath('sätze', 'sounds')
 ];
 
+// === Helper für Datei-Umbenennungen anhand des Anzeigenamens ===
+function extractMidFolderFor(field, p) {
+    // field: 'image' | 'sound'
+    if (!p) return '';
+    const norm = String(p).replace(/\\+/g, '/');
+    const parts = norm.split('/');
+    const anchor = field === 'image' ? 'images' : 'sounds';
+    const idx = parts.findIndex(x => x === anchor);
+    if (idx !== -1) {
+        const after = parts.slice(idx + 1);
+        if (after.length >= 2) return after[0] || '';
+    }
+    return '';
+}
+
+function toTitleCaseSegment(seg) {
+    if (!seg) return '';
+    const s = String(seg);
+    return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+}
+
+function expectedDirForField(field, mode, id, currentPath) {
+    // field: 'image' | 'sound'; mode: 'woerter' | 'saetze'
+    if (mode === 'saetze') {
+        const base = field === 'image' ? 'data/sätze/images' : 'data/sätze/sounds';
+        const mid = extractMidFolderFor(field, currentPath);
+        return mid ? `${base}/${toTitleCaseSegment(mid)}` : base;
+    }
+    // Wörter: nach Anfangsbuchstabe der ID
+    const base = field === 'image' ? 'data/wörter/images' : 'data/wörter/sounds';
+    const letter = (id || '').toString().charAt(0).toLowerCase();
+    return letter ? `${base}/${letter}` : base;
+}
+
+function normalizeWhitespaceUnicode(name) {
+    return String(name || '').replace(/\s+/g, ' ').trim();
+}
+
+function prettyBaseFromDisplayName(name) {
+    // Bewahre Unicode (inkl. Umlaute), normalisiere Leerzeichen
+    return normalizeWhitespaceUnicode(name || '');
+}
+
+function ensureForwardSlashes(p) {
+    return String(p || '').replace(/\\+/g, '/');
+}
+
+async function ensureUniqueTargetPath(targetAbs) {
+    // Falls Zieldatei existiert, füge Suffixe wie " (2)" ein
+    const fsp = require('fs').promises;
+    const path = require('path');
+    const dir = path.dirname(targetAbs);
+    const ext = path.extname(targetAbs);
+    const base = path.basename(targetAbs, ext);
+    let candidate = targetAbs;
+    let i = 2;
+    while (true) {
+        try {
+            await fsp.access(candidate);
+            // existiert -> neuen Kandidaten
+            candidate = path.join(dir, `${base} (${i})${ext}`);
+            i++;
+        } catch {
+            return candidate;
+        }
+    }
+}
+
+async function renameAssetIfNeeded(oldRelPath, desiredRelPath) {
+    // Gibt den tatsächlich verwendeten relativen Zielpfad zurück (mit evtl. Suffix)
+    if (!oldRelPath || !desiredRelPath) return desiredRelPath || oldRelPath || '';
+    const fsSync = require('fs');
+    const fsp = require('fs').promises;
+    const path = require('path');
+    const oldAbs = absFromDataRel(oldRelPath);
+    const desiredAbs = absFromDataRel(desiredRelPath);
+    try {
+        await fsp.access(oldAbs);
+    } catch {
+        // alte Datei existiert nicht -> nichts verschieben
+        return desiredRelPath;
+    }
+    // Wenn Pfade identisch sind (unter Beachtung von Slashes), nichts tun
+    const same = ensureForwardSlashes(path.relative('/', oldAbs)) === ensureForwardSlashes(path.relative('/', desiredAbs));
+    if (same) return desiredRelPath;
+    // Zielordner erstellen
+    await ensureDir(path.dirname(desiredAbs));
+    let finalAbs = desiredAbs;
+    try {
+        await fsp.access(desiredAbs);
+        // Ziel existiert -> eindeutigen Pfad finden
+        finalAbs = await ensureUniqueTargetPath(desiredAbs);
+    } catch {
+        // Ziel existiert noch nicht -> ok
+    }
+    await fsp.rename(oldAbs, finalAbs);
+    return ensureForwardSlashes(path.relative(__dirname, finalAbs));
+}
+
 // === Hilfe/Docs (read-only) ===
 const DOCS_DIR = path.join(__dirname, 'docs');
 
@@ -1310,9 +1409,48 @@ app.patch('/api/editor/item/display-name', guardWrite, async (req, res) => {
         if (!db[id]) {
             return res.status(404).json({ ok: false, message: `ID '${id}' nicht gefunden` });
         }
+        // Vorbedingung: Beide Dateien müssen existieren
+        const curImage = db[id] && db[id].image ? String(db[id].image) : '';
+        const curSound = db[id] && db[id].sound ? String(db[id].sound) : '';
+        const requireBoth = true;
+        const imageExists = !!curImage && await fs.access(absFromDataRel(curImage)).then(()=>true).catch(()=>false);
+        const soundExists = !!curSound && await fs.access(absFromDataRel(curSound)).then(()=>true).catch(()=>false);
+        if (requireBoth && (!imageExists || !soundExists)) {
+            return res.status(409).json({ ok: false, message: 'Namen können nur geändert werden, wenn Bild- und Tondatei vorhanden sind.' , details: { imageExists, soundExists }});
+        }
         // Whitespace- und NFC-Normalisierung (keine Auto-Kapitalisierung)
         const normalized = String(newDisplayName).replace(/\s+/g, ' ').trim();
         const prevName = (db[id] && typeof db[id].name === 'string') ? db[id].name : '';
+        // Geplante Zielpfade aus neuem Namen berechnen
+        const desiredBase = prettyBaseFromDisplayName(normalized);
+        // Bild: Endung beibehalten, fallback .jpg
+        let imageDesired = curImage;
+        if (curImage) {
+            const imgDir = expectedDirForField('image', isSaetze ? 'saetze' : 'woerter', id, curImage);
+            const curExtMatch = String(curImage).match(/\.[a-zA-Z0-9]+$/);
+            const ext = curExtMatch ? curExtMatch[0].toLowerCase() : '.jpg';
+            imageDesired = `${imgDir}/${desiredBase}${ext}`;
+        }
+        // Sound: .mp3
+        let soundDesired = curSound;
+        if (curSound) {
+            const sndDir = expectedDirForField('sound', isSaetze ? 'saetze' : 'woerter', id, curSound);
+            const sndExtMatch = String(curSound).match(/\.[a-zA-Z0-9]+$/);
+            const ext = sndExtMatch ? sndExtMatch[0].toLowerCase() : '.mp3';
+            soundDesired = `${sndDir}/${desiredBase}${ext}`;
+        }
+
+        // Dateien ggf. verschieben/umbenennen
+        if (curImage) {
+            const finalRel = await renameAssetIfNeeded(curImage, imageDesired);
+            if (finalRel) db[id].image = ensureForwardSlashes(finalRel);
+        }
+        if (curSound) {
+            const finalRel = await renameAssetIfNeeded(curSound, soundDesired);
+            if (finalRel) db[id].sound = ensureForwardSlashes(finalRel);
+        }
+
+        // Namen setzen
         db[id].name = normalized;
         await writeDbValidated(dbPath, db, { stamp, backup: true, auditOp: 'patch-display-name', context: { mode, id } });
 
@@ -1384,7 +1522,33 @@ app.post('/api/editor/name-undo', guardWrite, async (req, res) => {
         // Update DB
         let db = {}; try { db = JSON.parse(await fs.readFile(dbPath, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
         if (!db[id]) return res.status(404).json({ ok: false, message: `ID '${id}' nicht gefunden` });
-        db[id].name = target ? target.value : '';
+        // Vorbedingung: Beide Dateien müssen existieren
+        const curImage = db[id] && db[id].image ? String(db[id].image) : '';
+        const curSound = db[id] && db[id].sound ? String(db[id].sound) : '';
+        const imageExists = !!curImage && await fs.access(absFromDataRel(curImage)).then(()=>true).catch(()=>false);
+        const soundExists = !!curSound && await fs.access(absFromDataRel(curSound)).then(()=>true).catch(()=>false);
+        if (!imageExists || !soundExists) {
+            return res.status(409).json({ ok: false, message: 'Undo nur möglich, wenn Bild- und Tondatei vorhanden sind.', details: { imageExists, soundExists } });
+        }
+        const newName = target ? target.value : '';
+        const desiredBase = prettyBaseFromDisplayName(newName);
+        if (curImage) {
+            const imgDir = expectedDirForField('image', isSaetze ? 'saetze' : 'woerter', id, curImage);
+            const extMatch = String(curImage).match(/\.[a-zA-Z0-9]+$/);
+            const ext = extMatch ? extMatch[0].toLowerCase() : '.jpg';
+            const desired = `${imgDir}/${desiredBase}${ext}`;
+            const finalRel = await renameAssetIfNeeded(curImage, desired);
+            if (finalRel) db[id].image = ensureForwardSlashes(finalRel);
+        }
+        if (curSound) {
+            const sndDir = expectedDirForField('sound', isSaetze ? 'saetze' : 'woerter', id, curSound);
+            const extMatch = String(curSound).match(/\.[a-zA-Z0-9]+$/);
+            const ext = extMatch ? extMatch[0].toLowerCase() : '.mp3';
+            const desired = `${sndDir}/${desiredBase}${ext}`;
+            const finalRel = await renameAssetIfNeeded(curSound, desired);
+            if (finalRel) db[id].sound = ensureForwardSlashes(finalRel);
+        }
+        db[id].name = newName;
     await writeDbValidated(dbPath, db, { stamp, backup: true, auditOp: 'name-undo', context: { mode, id } });
     if (!validateNameHistorySchema(hist)) throw new Error(`Schemafehler (History): ${ajvErrorsToMessage(validateNameHistorySchema.errors)}`);
     await writeNameHistory(hist, { stamp });
@@ -1411,7 +1575,33 @@ app.post('/api/editor/name-redo', guardWrite, async (req, res) => {
         const target = node.entries[node.cursor];
         let db = {}; try { db = JSON.parse(await fs.readFile(dbPath, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
         if (!db[id]) return res.status(404).json({ ok: false, message: `ID '${id}' nicht gefunden` });
-        db[id].name = target ? target.value : '';
+        // Vorbedingung: Beide Dateien müssen existieren
+        const curImage = db[id] && db[id].image ? String(db[id].image) : '';
+        const curSound = db[id] && db[id].sound ? String(db[id].sound) : '';
+        const imageExists = !!curImage && await fs.access(absFromDataRel(curImage)).then(()=>true).catch(()=>false);
+        const soundExists = !!curSound && await fs.access(absFromDataRel(curSound)).then(()=>true).catch(()=>false);
+        if (!imageExists || !soundExists) {
+            return res.status(409).json({ ok: false, message: 'Redo nur möglich, wenn Bild- und Tondatei vorhanden sind.', details: { imageExists, soundExists } });
+        }
+        const newName = target ? target.value : '';
+        const desiredBase = prettyBaseFromDisplayName(newName);
+        if (curImage) {
+            const imgDir = expectedDirForField('image', isSaetze ? 'saetze' : 'woerter', id, curImage);
+            const extMatch = String(curImage).match(/\.[a-zA-Z0-9]+$/);
+            const ext = extMatch ? extMatch[0].toLowerCase() : '.jpg';
+            const desired = `${imgDir}/${desiredBase}${ext}`;
+            const finalRel = await renameAssetIfNeeded(curImage, desired);
+            if (finalRel) db[id].image = ensureForwardSlashes(finalRel);
+        }
+        if (curSound) {
+            const sndDir = expectedDirForField('sound', isSaetze ? 'saetze' : 'woerter', id, curSound);
+            const extMatch = String(curSound).match(/\.[a-zA-Z0-9]+$/);
+            const ext = extMatch ? extMatch[0].toLowerCase() : '.mp3';
+            const desired = `${sndDir}/${desiredBase}${ext}`;
+            const finalRel = await renameAssetIfNeeded(curSound, desired);
+            if (finalRel) db[id].sound = ensureForwardSlashes(finalRel);
+        }
+        db[id].name = newName;
     await writeDbValidated(dbPath, db, { stamp, backup: true, auditOp: 'name-redo', context: { mode, id } });
     if (!validateNameHistorySchema(hist)) throw new Error(`Schemafehler (History): ${ajvErrorsToMessage(validateNameHistorySchema.errors)}`);
     await writeNameHistory(hist, { stamp });
@@ -1420,6 +1610,27 @@ app.post('/api/editor/name-redo', guardWrite, async (req, res) => {
         console.error('[NAME-REDO] Fehler:', e);
         res.status(500).json({ ok: false, message: 'Interner Fehler' });
     } finally { await releaseLock(lock); }
+});
+
+// Prüft, ob für ein Item beide Assets existieren
+app.get('/api/editor/item/assets-exist', async (req, res) => {
+    try {
+        const mode = req.query.mode === 'saetze' ? 'saetze' : 'woerter';
+        const id = String(req.query.id || '').trim();
+        if (!id) return res.status(400).json({ ok: false, message: 'id erforderlich' });
+        const dbPathMode = dataPath(mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
+        let db = {};
+        try { db = JSON.parse(await fs.readFile(dbPathMode, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+        if (!db[id]) return res.status(404).json({ ok: false, message: `ID '${id}' nicht gefunden` });
+        const img = db[id].image || '';
+        const snd = db[id].sound || '';
+        const imageExists = !!img && await fs.access(absFromDataRel(img)).then(()=>true).catch(()=>false);
+        const soundExists = !!snd && await fs.access(absFromDataRel(snd)).then(()=>true).catch(()=>false);
+        res.json({ ok: true, imageExists, soundExists });
+    } catch (e) {
+        console.error('[ASSETS-EXIST] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    }
 });
 
 app.post('/api/sync-files', guardWrite, async (req, res) => {

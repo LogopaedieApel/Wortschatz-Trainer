@@ -142,6 +142,26 @@ async function openEditNameModal(id, currentName) {
     setTimeout(() => { try { editNameInput.focus(); editNameInput.select(); } catch {} }, 50);
     await fetchNameHistory(currentMode, id);
     updateNameHistoryButtons(currentMode, id);
+    // Prüfe, ob Bild- und Tondatei existieren, sonst sperren wir Aktionen
+    try {
+        const res = await fetch(`/api/editor/item/assets-exist?mode=${encodeURIComponent(currentMode)}&id=${encodeURIComponent(id)}`);
+        const data = await res.json().catch(() => ({ ok:false }));
+        const ok = res.ok && data && data.ok === true;
+        const imageExists = !!data.imageExists;
+        const soundExists = !!data.soundExists;
+        const allExist = ok && imageExists && soundExists;
+        const msgParts = [];
+        if (!imageExists) msgParts.push('Bilddatei fehlt');
+        if (!soundExists) msgParts.push('Tondatei fehlt');
+        if (!allExist) {
+            editNameMessage.textContent = `Hinweis: ${msgParts.join(' und ')}. Name kann erst geändert werden, wenn beide Dateien vorhanden sind.`;
+        } else {
+            if (editNameMessage.textContent.startsWith('Hinweis:')) editNameMessage.textContent = '';
+        }
+        if (editNameSave) editNameSave.disabled = !allExist || serverReadOnly;
+        if (editNameUndo) editNameUndo.disabled = !allExist || serverReadOnly;
+        if (editNameRedo) editNameRedo.disabled = !allExist || serverReadOnly;
+    } catch {}
 }
 function closeEditNameModal() { if (editNameModal) editNameModal.style.display = 'none'; }
 
@@ -1899,7 +1919,11 @@ if (editNameSave) {
                 body: JSON.stringify({ mode: currentMode, id, newDisplayName: newName, options: { normalizeWhitespace: true } })
             });
             const json = await resp.json().catch(()=>({ ok:false, message:'Ungültige Antwort' }));
-            if (!resp.ok || json.ok === false) throw new Error(json.message || 'Serverfehler');
+            if (!resp.ok || json.ok === false) {
+                const msg = json && json.message ? json.message : 'Serverfehler';
+                editNameMessage.textContent = `Fehler: ${msg}`;
+                return;
+            }
             // Update local state + UI row value
             if (database[id]) database[id].name = newName;
             const row = tableBody ? tableBody.querySelector(`tr[data-id="${id}"]`) : null;
@@ -1942,7 +1966,10 @@ if (editNameUndo) {
             editNameMessage.textContent = 'Rückgängig…';
             const resp = await fetch('/api/editor/name-undo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: currentMode, id }) });
             const json = await resp.json().catch(()=>({ ok:false, message:'Ungültige Antwort' }));
-            if (!resp.ok || json.ok === false) throw new Error(json.message || 'Serverfehler');
+            if (!resp.ok || json.ok === false) {
+                editNameMessage.textContent = `Fehler: ${json.message || 'Serverfehler'}`;
+                return;
+            }
             const name = json.name || '';
             if (database[id]) database[id].name = name;
             const row = tableBody ? tableBody.querySelector(`tr[data-id="${id}"]`) : null;
@@ -1972,7 +1999,10 @@ if (editNameRedo) {
             editNameMessage.textContent = 'Wiederholen…';
             const resp = await fetch('/api/editor/name-redo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode: currentMode, id }) });
             const json = await resp.json().catch(()=>({ ok:false, message:'Ungültige Antwort' }));
-            if (!resp.ok || json.ok === false) throw new Error(json.message || 'Serverfehler');
+            if (!resp.ok || json.ok === false) {
+                editNameMessage.textContent = `Fehler: ${json.message || 'Serverfehler'}`;
+                return;
+            }
             const name = json.name || '';
             if (database[id]) database[id].name = name;
             const row = tableBody ? tableBody.querySelector(`tr[data-id="${id}"]`) : null;
