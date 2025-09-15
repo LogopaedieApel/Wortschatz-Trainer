@@ -11,9 +11,30 @@ const tableBody = document.querySelector('#editor-table tbody');
 const saveButton = document.getElementById('save-button');
 const addRowButton = document.getElementById('add-row-button');
 const statusMessage = document.getElementById('status-message');
-const newSetPathInput = document.getElementById('new-set-path');
-const newSetDisplayNameInput = document.getElementById('new-set-displayname');
 const addSetButton = document.getElementById('add-set-button');
+// Modal controls for adding a new set
+const addSetModal = document.getElementById('add-set-modal');
+const addSetClose = document.getElementById('add-set-close');
+const addSetCancel = document.getElementById('add-set-cancel');
+const addSetCreate = document.getElementById('add-set-create');
+const addSetPreview = document.getElementById('add-set-preview');
+const addSetMessage = document.getElementById('add-set-message');
+const addSetAreaSelect = document.getElementById('add-set-area-select');
+const addSetAreaNewBtn = document.getElementById('add-set-area-new');
+const addSetSub1Row = document.getElementById('add-set-sub1-row');
+const addSetSub1Input = document.getElementById('add-set-sub1-input');
+const addSetSub1List = document.getElementById('add-set-sub1-list');
+const addSetSub1Label = document.getElementById('add-set-sub1-label');
+const addSetLeafInput = document.getElementById('add-set-leaf-input');
+const addSetLeafLabel = document.getElementById('add-set-leaf-label');
+
+// New Area dialog
+const newAreaModal = document.getElementById('new-area-modal');
+const newAreaClose = document.getElementById('new-area-close');
+const newAreaCancel = document.getElementById('new-area-cancel');
+const newAreaAdd = document.getElementById('new-area-add');
+const newAreaName = document.getElementById('new-area-name');
+const newAreaMessage = document.getElementById('new-area-message');
 const searchInput = document.getElementById('search-input');
 const tabWoerter = document.getElementById('tab-woerter');
 const tabSaetze = document.getElementById('tab-saetze');
@@ -789,40 +810,7 @@ async function loadData(isReload = false) {
 
 
 
-/**
- * Adds a new set (column) to the editor.
- */
-function addNewSet() {
-    const pathParts = newSetPathInput.value.trim().split('/').filter(p => p);
-    const displayName = newSetDisplayNameInput.value.trim();
-    if (pathParts.length === 0 || !displayName) {
-        alert("Bitte Hierarchie/Dateiname und Anzeigename ausfüllen.");
-        return;
-    }
-    readTableIntoState();
-    const newFileName = pathParts.join('_') + '.json';
-    const setsFolder = currentMode === 'saetze' ? 'sets_saetze' : 'sets';
-    const newPath = `data/${setsFolder}/${newFileName}`;
-    if (flatSets[newPath]) {
-         alert('Ein Set mit diesem Pfad existiert bereits.');
-        return;
-    }
-    flatSets[newPath] = { displayName: displayName, items: [], topCategory: pathParts[0] };
-    let currentLevel = manifest;
-    for(let i = 0; i < pathParts.length - 1; i++) {
-        const part = pathParts[i];
-        if (!currentLevel[part] || typeof currentLevel[part] !== 'object' || Array.isArray(currentLevel[part])) {
-             currentLevel[part] = { displayName: part.charAt(0).toUpperCase() + part.slice(1) };
-        }
-        currentLevel = currentLevel[part];
-    }
-    const finalKey = pathParts[pathParts.length - 1];
-    currentLevel[finalKey] = { displayName: displayName, path: newPath };
-    newSetPathInput.value = '';
-    newSetDisplayNameInput.value = '';
-    renderTable();
-    setUnsavedChanges(true);
-}
+// Inline add function removed; modal flow below handles creating sets
 
 /**
  * Gibt den Bildpfad für ein Item zurück.
@@ -846,7 +834,246 @@ addRowButton.addEventListener('click', () => {
     setUnsavedChanges(true);
 });
 
-addSetButton.addEventListener('click', addNewSet);
+// Replace inline add with modal UX
+if (addSetButton) {
+    addSetButton.addEventListener('click', () => {
+        if (!addSetModal) return;
+        if (addSetMessage) { addSetMessage.textContent = ''; addSetMessage.style.color = '#555'; }
+        // Populate Bereich dropdown from manifest
+        populateAreaSelect();
+        // Clear sub1 and leaf
+        if (addSetSub1Input) addSetSub1Input.value = '';
+        if (addSetLeafInput) addSetLeafInput.value = '';
+        updateDepthAndUI();
+        updateAddSetPreview();
+        addSetModal.style.display = 'flex';
+        setTimeout(() => { try { addSetAreaSelect?.focus(); } catch {} }, 50);
+    });
+}
+
+function closeAddSetModal() { if (addSetModal) addSetModal.style.display = 'none'; }
+if (addSetClose) addSetClose.addEventListener('click', closeAddSetModal);
+if (addSetCancel) addSetCancel.addEventListener('click', closeAddSetModal);
+if (addSetModal) addSetModal.addEventListener('click', (e) => { if (e.target === addSetModal) closeAddSetModal(); });
+
+function mapToId(s) { return mapUmlautsToAscii((s || '').trim()).toLowerCase(); }
+function setsFolderForMode() { return currentMode === 'saetze' ? 'sets_saetze' : 'sets'; }
+function pathFromSegments(areaId, sub1Id, leafId) {
+    const parts = [areaId];
+    if (sub1Id) parts.push(sub1Id);
+    parts.push(leafId);
+    return `data/${setsFolderForMode()}/${parts.join('_')}.json`;
+}
+
+// Label mapping (cosmetic only)
+function labelFor(areaName, kind) {
+    const lc = (areaName || '').toLowerCase();
+    if (kind === 'sub1') {
+        if (lc === 'artikulation') return 'Laut (optional)';
+        return 'Untergruppe';
+    }
+    if (kind === 'leaf') {
+        if (lc === 'artikulation') return 'Name der Liste';
+        return 'Name der Liste';
+    }
+    return '';
+}
+
+function areaDepth(areaName) {
+    // Determine dominant depth from manifest
+    const node = manifest && manifest[areaName];
+    if (!node || typeof node !== 'object') return 1; // new area default depth = 1
+    // If any direct child has a 'path', it's depth 1
+    for (const k of Object.keys(node)) {
+        if (k === 'displayName') continue;
+        const v = node[k];
+        if (v && typeof v === 'object' && v.path) return 1;
+    }
+    // If any child is an object whose child has a 'path', depth 2
+    for (const k of Object.keys(node)) {
+        if (k === 'displayName') continue;
+        const v = node[k];
+        if (v && typeof v === 'object') {
+            for (const kk of Object.keys(v)) {
+                const vv = v[kk];
+                if (vv && typeof vv === 'object' && vv.path) return 2;
+            }
+        }
+    }
+    return 1;
+}
+
+function listSubgroups(areaName) {
+    const out = [];
+    const node = manifest && manifest[areaName];
+    if (!node || typeof node !== 'object') return out;
+    for (const k of Object.keys(node)) {
+        if (k === 'displayName') continue;
+        const v = node[k];
+        if (v && typeof v === 'object' && !v.path) out.push(k);
+    }
+    return out.sort((a,b)=>a.localeCompare(b));
+}
+
+function populateAreaSelect() {
+    if (!addSetAreaSelect) return;
+    addSetAreaSelect.innerHTML = '';
+    const areas = Object.keys(manifest || {}).sort((a,b)=>a.localeCompare(b));
+    // Prepend placeholder
+    const ph = document.createElement('option'); ph.value=''; ph.textContent='— Bereich wählen —';
+    addSetAreaSelect.appendChild(ph);
+    areas.forEach(a => {
+        const opt = document.createElement('option');
+        opt.value = a;
+        const dn = (manifest[a] && manifest[a].displayName) ? manifest[a].displayName : a;
+        opt.textContent = dn;
+        addSetAreaSelect.appendChild(opt);
+    });
+}
+
+function updateDepthAndUI() {
+    const areaName = addSetAreaSelect ? addSetAreaSelect.value : '';
+    const depth = areaDepth(areaName);
+    const wantSub = depth === 2;
+    if (addSetSub1Row) addSetSub1Row.style.display = wantSub ? 'flex' : 'none';
+    if (addSetSub1Label) addSetSub1Label.textContent = labelFor(areaName, 'sub1');
+    if (addSetLeafLabel) addSetLeafLabel.textContent = labelFor(areaName, 'leaf');
+    if (wantSub && addSetSub1List) {
+        const subs = listSubgroups(areaName);
+        addSetSub1List.innerHTML = '';
+        subs.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s;
+            addSetSub1List.appendChild(opt);
+        });
+    }
+}
+
+function updateAddSetPreview() {
+    if (!addSetPreview) return;
+    const areaName = addSetAreaSelect ? addSetAreaSelect.value.trim() : '';
+    const depth = areaDepth(areaName);
+    const sub1 = depth === 2 ? (addSetSub1Input?.value || '').trim() : '';
+    const leaf = (addSetLeafInput?.value || '').trim();
+    let valid = !!areaName && !!leaf && (depth === 1 || (!!sub1));
+    let target = '';
+    if (valid) {
+        const areaId = mapToId(areaName);
+        const sub1Id = depth === 2 ? mapToId(sub1) : '';
+        const leafId = mapToId(leaf);
+        valid = !!areaId && !!leafId && (depth === 1 || !!sub1Id);
+        if (valid) target = pathFromSegments(areaId, sub1Id, leafId);
+    }
+    addSetPreview.textContent = valid && target ? `Wird erstellt als: ${target}` : '';
+    if (addSetCreate) addSetCreate.disabled = !valid;
+}
+if (addSetAreaSelect) addSetAreaSelect.addEventListener('change', () => { updateDepthAndUI(); updateAddSetPreview(); });
+if (addSetSub1Input) addSetSub1Input.addEventListener('input', updateAddSetPreview);
+if (addSetLeafInput) addSetLeafInput.addEventListener('input', updateAddSetPreview);
+
+// New Area modal logic
+function closeNewAreaModal() { if (newAreaModal) newAreaModal.style.display = 'none'; }
+if (addSetAreaNewBtn) addSetAreaNewBtn.addEventListener('click', () => {
+    if (!newAreaModal) return;
+    if (newAreaMessage) { newAreaMessage.textContent=''; newAreaMessage.style.color='#555'; }
+    if (newAreaName) newAreaName.value = '';
+    newAreaModal.style.display = 'flex';
+    setTimeout(()=>{ try { newAreaName?.focus(); } catch{} }, 50);
+});
+if (newAreaClose) newAreaClose.addEventListener('click', closeNewAreaModal);
+if (newAreaCancel) newAreaCancel.addEventListener('click', closeNewAreaModal);
+if (newAreaModal) newAreaModal.addEventListener('click', (e)=>{ if (e.target === newAreaModal) closeNewAreaModal(); });
+if (newAreaAdd) newAreaAdd.addEventListener('click', () => {
+    try {
+        const name = (newAreaName?.value || '').trim();
+        if (!name) { if (newAreaMessage) { newAreaMessage.style.color='#b94a48'; newAreaMessage.textContent='Bitte einen Bereichsnamen eingeben.'; } return; }
+        // Duplicate check against existing areas (case-insensitive normalized)
+        const wantedId = mapToId(name);
+        const exists = Object.keys(manifest||{}).some(k => mapToId(k) === wantedId);
+        if (exists) { if (newAreaMessage) { newAreaMessage.style.color='#b94a48'; newAreaMessage.textContent='Bereich existiert bereits.'; } return; }
+        // Add new area in-memory (depth default 1)
+        manifest[name] = { displayName: name };
+        populateAreaSelect();
+        addSetAreaSelect.value = name;
+        closeNewAreaModal();
+        updateDepthAndUI();
+        updateAddSetPreview();
+    } catch (e) {
+        if (newAreaMessage) { newAreaMessage.style.color='#b94a48'; newAreaMessage.textContent = `Fehler: ${e.message}`; }
+    }
+});
+async function createSetFromModal() {
+    try {
+        if (serverReadOnly) {
+            if (addSetMessage) addSetMessage.textContent = 'Nur-Lese-Modus: Erstellen deaktiviert.';
+            return;
+        }
+        if (addSetMessage) { addSetMessage.style.color = '#b94a48'; addSetMessage.textContent = ''; }
+
+        const areaName = addSetAreaSelect ? (addSetAreaSelect.value || '').trim() : '';
+        const leafName = (addSetLeafInput?.value || '').trim();
+        if (!areaName || !leafName) {
+            if (addSetMessage) { addSetMessage.style.color = '#b94a48'; addSetMessage.textContent = 'Bitte Bereich und Namen der Liste ausfüllen.'; }
+            return;
+        }
+        const depth = areaDepth(areaName);
+        const sub1Name = depth === 2 ? (addSetSub1Input?.value || '').trim() : '';
+        if (depth === 2 && !sub1Name) {
+            if (addSetMessage) { addSetMessage.style.color = '#b94a48'; addSetMessage.textContent = 'Bitte Untergruppe angeben.'; }
+            return;
+        }
+
+        const areaId = mapToId(areaName);
+        const sub1Id = depth === 2 ? mapToId(sub1Name) : '';
+        const leafId = mapToId(leafName);
+        if (!areaId || !leafId || (depth === 2 && !sub1Id)) {
+            if (addSetMessage) { addSetMessage.style.color = '#b94a48'; addSetMessage.textContent = 'Bitte gültige Werte eingeben.'; }
+            return;
+        }
+        const newPath = pathFromSegments(areaId, sub1Id, leafId);
+
+        // Ensure manifest structure and check for duplicates
+        if (!manifest[areaName] || typeof manifest[areaName] !== 'object' || Array.isArray(manifest[areaName])) {
+            manifest[areaName] = { displayName: areaName };
+        } else if (!manifest[areaName].displayName) {
+            manifest[areaName].displayName = areaName;
+        }
+        if (depth === 1) {
+            if (manifest[areaName][leafName] && manifest[areaName][leafName].path) {
+                if (addSetMessage) { addSetMessage.style.color = '#b94a48'; addSetMessage.textContent = 'Diese Liste existiert bereits.'; }
+                return;
+            }
+            manifest[areaName][leafName] = { displayName: leafName, path: newPath };
+        } else {
+            if (!manifest[areaName][sub1Name] || typeof manifest[areaName][sub1Name] !== 'object' || Array.isArray(manifest[areaName][sub1Name])) {
+                const disp = sub1Name.charAt(0).toUpperCase() + sub1Name.slice(1);
+                manifest[areaName][sub1Name] = { displayName: disp };
+            } else if (!manifest[areaName][sub1Name].displayName) {
+                manifest[areaName][sub1Name].displayName = sub1Name.charAt(0).toUpperCase() + sub1Name.slice(1);
+            }
+            if (manifest[areaName][sub1Name][leafName] && manifest[areaName][sub1Name][leafName].path) {
+                if (addSetMessage) { addSetMessage.style.color = '#b94a48'; addSetMessage.textContent = 'Diese Liste existiert bereits.'; }
+                return;
+            }
+            manifest[areaName][sub1Name][leafName] = { displayName: leafName, path: newPath };
+        }
+
+        // Update local flatSets for immediate UI grouping
+        readTableIntoState();
+        const topCategory = (manifest[areaName] && manifest[areaName].displayName) ? manifest[areaName].displayName : areaName;
+        flatSets[newPath] = { displayName: leafName, items: [], topCategory };
+
+        setUnsavedChanges(true);
+        await saveData();
+    if (addSetMessage) { addSetMessage.style.color = '#2e7d32'; addSetMessage.textContent = '✓ Spalte erstellt.'; }
+    // UX: Nur den Listennamen leeren, Bereich/Untergruppe bleiben für schnelle Folgeeinträge
+    if (addSetLeafInput) addSetLeafInput.value = '';
+    updateAddSetPreview();
+    } catch (e) {
+        if (addSetMessage) { addSetMessage.style.color = '#b94a48'; addSetMessage.textContent = `Fehler: ${e.message}`; }
+    }
+}
+if (addSetCreate) addSetCreate.addEventListener('click', createSetFromModal);
 
 // Debounced save function
 function debouncedSave() {
@@ -1935,13 +2162,21 @@ if (editNameSave) {
                 lastNameChange.set(id, prevName);
             }
             statusMessage.textContent = 'Anzeigename gespeichert.';
+            // Erfolgsmeldung im Modal anzeigen (grün) und Hängenbleiben verhindern
+            if (editNameMessage) {
+                editNameMessage.style.color = '#2e7d32';
+                editNameMessage.textContent = '✓ Anzeigename gespeichert.';
+            }
             setUnsavedChanges(false);
             await fetchNameHistory(currentMode, id);
             updateNameHistoryButtons(currentMode, id);
             // nicht schließen, damit Undo/Redo direkt möglich ist
         } catch (e) {
             console.error(e);
-            editNameMessage.textContent = `Fehler: ${e.message}`;
+            if (editNameMessage) {
+                editNameMessage.style.color = '#b94a48';
+                editNameMessage.textContent = `Fehler: ${e.message}`;
+            }
         } finally {
             editNameSave.disabled = false;
         }
@@ -1982,9 +2217,16 @@ if (editNameUndo) {
             await fetchNameHistory(currentMode, id);
             updateNameHistoryButtons(currentMode, id);
             statusMessage.textContent = 'Rückgängig ausgeführt.';
+            if (editNameMessage) {
+                editNameMessage.style.color = '#2e7d32';
+                editNameMessage.textContent = '✓ Rückgängig ausgeführt.';
+            }
         } catch (e) {
             console.error(e);
-            editNameMessage.textContent = `Fehler: ${e.message}`;
+            if (editNameMessage) {
+                editNameMessage.style.color = '#b94a48';
+                editNameMessage.textContent = `Fehler: ${e.message}`;
+            }
         } finally { editNameUndo.disabled = false; }
     });
 }
@@ -2015,9 +2257,16 @@ if (editNameRedo) {
             await fetchNameHistory(currentMode, id);
             updateNameHistoryButtons(currentMode, id);
             statusMessage.textContent = 'Wiederholen ausgeführt.';
+            if (editNameMessage) {
+                editNameMessage.style.color = '#2e7d32';
+                editNameMessage.textContent = '✓ Wiederholen ausgeführt.';
+            }
         } catch (e) {
             console.error(e);
-            editNameMessage.textContent = `Fehler: ${e.message}`;
+            if (editNameMessage) {
+                editNameMessage.style.color = '#b94a48';
+                editNameMessage.textContent = `Fehler: ${e.message}`;
+            }
         } finally { editNameRedo.disabled = false; }
     });
 }

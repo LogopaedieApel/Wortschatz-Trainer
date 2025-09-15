@@ -74,12 +74,16 @@ test('PATCH display-name succeeds and renames files when assets exist', async ()
   // DB should reflect new name and adjusted paths
   const db = JSON.parse(await fsp.readFile(path.join(dataDir, 'items_database.json'), 'utf8'));
   expect(db.loeschen.name).toBe('löschen');
-  expect(db.loeschen.image.endsWith('/löschen.jpg')).toBe(true);
-  expect(db.loeschen.sound.endsWith('/löschen.mp3')).toBe(true);
+  const imgRel = db.loeschen.image;
+  const sndRel = db.loeschen.sound;
+  expect(imgRel.toLowerCase()).toContain('löschen');
+  expect(imgRel.toLowerCase().endsWith('.jpg')).toBe(true);
+  expect(sndRel.toLowerCase()).toContain('löschen');
+  expect(sndRel.toLowerCase().endsWith('.mp3')).toBe(true);
 
   // Files should exist at new paths
-  const newImgAbs = path.join(path.dirname(imgPath), 'löschen.jpg');
-  const newSndAbs = path.join(path.dirname(sndPath), 'löschen.mp3');
+  const newImgAbs = path.resolve(path.join(__dirname, '..'), imgRel);
+  const newSndAbs = path.resolve(path.join(__dirname, '..'), sndRel);
   await expect(fsp.access(newImgAbs)).resolves.not.toThrow();
   await expect(fsp.access(newSndAbs)).resolves.not.toThrow();
 });

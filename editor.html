@@ -150,8 +150,6 @@
         <input type="text" id="search-input" placeholder="Einträge nach Namen filtern...">
     </div>
     <div class="controls">
-        <input type="text" id="new-set-path" placeholder="Hierarchie/Dateiname (z.B. tiere/bauernhof)">
-        <input type="text" id="new-set-displayname" placeholder="Anzeigename (z.B. Bauernhof)">
         <button id="add-set-button">+ Neue Spalte hinzufügen</button>
         <span style="border-left: 1px solid #ccc; margin: 0 10px;"></span>
         <button id="add-row-button">+ Neue Zeile hinzufügen</button>
@@ -286,7 +284,54 @@
             <div id="edit-name-preview" style="margin-top:6px; color:#666; font-size: 0.9em;"></div>
             <div id="edit-name-message" style="margin-top: 8px; color:#555;"></div>
             <div class="modal-footer" style="text-align:right;">
-                <button id="edit-name-cancel">Abbrechen</button>
+                <button id="edit-name-cancel">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Neue Spalte hinzufügen -->
+    <div id="add-set-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-button" id="add-set-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h2>Neue Liste hinzufügen</h2>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-bottom: 10px;">
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <label for="add-set-area-select" style="min-width:120px;">Bereich</label>
+                    <select id="add-set-area-select" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;"></select>
+                    <button id="add-set-area-new">Neuer Bereich…</button>
+                </div>
+                <div id="add-set-sub1-row" style="display:none; align-items:center; gap:8px; flex-wrap:wrap;">
+                    <label for="add-set-sub1-input" id="add-set-sub1-label" style="min-width:120px;">Untergruppe</label>
+                    <input type="text" id="add-set-sub1-input" list="add-set-sub1-list" placeholder="Untergruppe" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;">
+                    <datalist id="add-set-sub1-list"></datalist>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <label for="add-set-leaf-input" id="add-set-leaf-label" style="min-width:120px;">Name der Liste</label>
+                    <input type="text" id="add-set-leaf-input" placeholder="z. B. Tiere oder A Initial" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius: 4px;">
+                    <button id="add-set-create">Erstellen</button>
+                </div>
+            </div>
+            <div id="add-set-preview" style="margin-top:6px; color:#666; font-size: 0.9em;"></div>
+            <div id="add-set-message" style="margin-top: 8px; color:#555;"></div>
+            <div class="modal-footer" style="text-align:right;">
+                <button id="add-set-cancel">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Neuer Bereich anlegen -->
+    <div id="new-area-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width:520px;">
+            <span class="close-button" id="new-area-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h3>Neuen Bereich anlegen</h3>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <label for="new-area-name" style="min-width:120px;">Bereichsname</label>
+                <input type="text" id="new-area-name" placeholder="z. B. Grammatik" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;">
+                <button id="new-area-add">Hinzufügen</button>
+            </div>
+            <div id="new-area-message" style="margin-top:8px; color:#555;"></div>
+            <div class="modal-footer" style="text-align:right;">
+                <button id="new-area-cancel">Abbrechen</button>
             </div>
         </div>
     </div>

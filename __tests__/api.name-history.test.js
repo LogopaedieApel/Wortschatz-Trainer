@@ -16,8 +16,8 @@ beforeAll(async () => {
   stateDir = path.join(tmpDir, 'state');
   fs.mkdirSync(dataDir, { recursive: true });
   fs.mkdirSync(stateDir, { recursive: true });
-  // Seed minimal database
-  const db = { becher: { name: 'Becher', image: '', sound: '', folder: 'b' } };
+  // Seed database with valid asset paths
+  const db = { becher: { name: 'Becher', image: 'data/wörter/images/b/Becher.jpg', sound: 'data/wörter/sounds/b/Becher.mp3', folder: 'b' } };
   await fsp.writeFile(path.join(dataDir, 'items_database.json'), JSON.stringify(db, null, 2));
   await fsp.writeFile(path.join(dataDir, 'sets.json'), JSON.stringify({}, null, 2));
 
@@ -29,6 +29,11 @@ beforeAll(async () => {
   app = require('../server'); // exports app when not run as main (serverInstance||app)
   server = app.listen(0);
   agent = request.agent(server);
+  // Create the required asset files so PATCH display-name passes precondition
+  await fsp.mkdir(path.join(dataDir, 'wörter', 'images', 'b'), { recursive: true });
+  await fsp.mkdir(path.join(dataDir, 'wörter', 'sounds', 'b'), { recursive: true });
+  await fsp.writeFile(path.join(dataDir, 'wörter', 'images', 'b', 'Becher.jpg'), 'x');
+  await fsp.writeFile(path.join(dataDir, 'wörter', 'sounds', 'b', 'Becher.mp3'), 'x');
 });
 
 afterAll(async () => {
