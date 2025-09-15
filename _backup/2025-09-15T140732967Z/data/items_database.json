@@ -1,8 +1,8 @@
 {
   "becher": {
-    "name": "Becher",
-    "image": "data/wörter/images/b/Becher.jpg",
-    "sound": "data/wörter/sounds/b/Becher.mp3",
+    "name": "becher",
+    "image": "data/wörter/images/b/becher.jpg",
+    "sound": "data/wörter/sounds/b/becher.mp3",
     "folder": "b"
   },
   "betonmischer": {

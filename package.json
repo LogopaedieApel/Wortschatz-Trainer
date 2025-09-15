@@ -29,7 +29,10 @@
     "test:watch": "jest --watchAll",
     "test:smoke": "npx playwright test",
     "snapshot": "node tools/snapshot-data.mjs",
-    "restore": "node tools/restore-snapshot.mjs"
+    "restore": "node tools/restore-snapshot.mjs",
+    "changelog": "node tools/generate-changelog.mjs",
+    "help-index": "node tools/generate-help-index.mjs",
+    "docs:update": "node tools/generate-changelog.mjs && node tools/generate-help-index.mjs"
   },
   "dependencies": {
     "express": "^4.18.2",

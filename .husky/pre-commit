@@ -3,3 +3,17 @@
 # Call Node directly (avoid npm under sh on Windows)
 command -v node >/dev/null 2>&1 || { echo "husky: node is required for pre-commit"; exit 127; }
 node tools/check-case-consistency.mjs
+
+# Generate CHANGELOG and stage it so the commit always contains an up-to-date log
+echo "husky: Generiere CHANGELOG..."
+node tools/generate-changelog.mjs || { echo "husky: Changelog-Generierung fehlgeschlagen"; exit 1; }
+if [ -f docs/CHANGELOG.md ]; then
+	git add docs/CHANGELOG.md
+fi
+
+# Generate help-index and stage it as well
+echo "husky: Generiere Hilfe-Index..."
+node tools/generate-help-index.mjs || { echo "husky: Hilfe-Index-Generierung fehlgeschlagen"; exit 1; }
+if [ -f docs/help-index.md ]; then
+	git add docs/help-index.md
+fi

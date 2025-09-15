@@ -64,6 +64,8 @@ const helpView = document.getElementById('help-view');
 const helpViewTitle = document.getElementById('help-view-title');
 let helpDocs = [];
 let activeHelpFile = '';
+const helpIndexStatus = document.getElementById('help-index-status');
+let helpIndexStatusTimer = null;
 
 async function fetchEditorConfig() {
     try {
@@ -1466,6 +1468,16 @@ function setupHelp() {
 
 function showHelpModal(visible) {
     helpModal.style.display = visible ? 'flex' : 'none';
+    try {
+        if (visible) {
+            // Sofort aktualisieren und danach im Intervall (60s)
+            updateHelpIndexStatus().catch(()=>{});
+            if (helpIndexStatusTimer) clearInterval(helpIndexStatusTimer);
+            helpIndexStatusTimer = setInterval(() => updateHelpIndexStatus().catch(()=>{}), 60000);
+        } else {
+            if (helpIndexStatusTimer) { clearInterval(helpIndexStatusTimer); helpIndexStatusTimer = null; }
+        }
+    } catch {}
 }
 
 async function loadHelpDocs() {
@@ -1481,6 +1493,8 @@ async function loadHelpDocs() {
         const data = await res.json();
         helpDocs = Array.isArray(data.docs) ? data.docs : [];
         renderHelpList();
+        // Zusätzlich: Status "Index aktualisiert vor X …" unten in der Sidebar aktualisieren
+        updateHelpIndexStatus().catch(()=>{});
     } catch (e) {
         // Fallback: Versuche Standarddatei direkt zu laden, um dennoch eine Hilfe anzuzeigen
         try {
@@ -1548,6 +1562,29 @@ async function openHelpDoc(file) {
             // Auto-TOC generieren (H1–H3)
             const tmp = document.createElement('div');
             tmp.innerHTML = html;
+            // "Zuletzt aktualisiert"-Kachel für den Hilfe-Index hervorheben
+            if ((data.file || '').toLowerCase() === 'help-index.md') {
+                const info = document.createElement('div');
+                info.style.display = 'flex';
+                info.style.alignItems = 'center';
+                info.style.gap = '10px';
+                info.style.border = '1px solid #e5e7eb';
+                info.style.background = '#f0f7ff';
+                info.style.padding = '10px 12px';
+                info.style.borderRadius = '6px';
+                info.style.margin = '6px 0 12px 0';
+                const dot = document.createElement('span');
+                dot.style.width = '8px';
+                dot.style.height = '8px';
+                dot.style.borderRadius = '50%';
+                dot.style.background = '#3182ce';
+                const label = document.createElement('div');
+                const ts = data.lastModified ? new Date(data.lastModified).toLocaleString() : 'unbekannt';
+                label.innerHTML = `<strong>Zuletzt aktualisiert:</strong> ${ts}`;
+                info.appendChild(dot);
+                info.appendChild(label);
+                tmp.prepend(info);
+            }
             const headings = [...tmp.querySelectorAll('h1,h2,h3')];
             if (headings.length >= 2) {
                 const toc = document.createElement('div');
@@ -2147,7 +2184,12 @@ if (editNameSave) {
             });
             const json = await resp.json().catch(()=>({ ok:false, message:'Ungültige Antwort' }));
             if (!resp.ok || json.ok === false) {
-                const msg = json && json.message ? json.message : 'Serverfehler';
+                let msg = json && json.message ? json.message : 'Serverfehler';
+                // Spezielle Behandlung: 423 Locked (Datei in Benutzung)
+                if (resp.status === 423) {
+                    msg = 'Die Datei ist derzeit in Benutzung oder gesperrt. Bitte Wiedergabe/Viewer schließen und erneut versuchen.';
+                }
+                editNameMessage.style.color = '#b94a48';
                 editNameMessage.textContent = `Fehler: ${msg}`;
                 return;
             }
@@ -2165,7 +2207,8 @@ if (editNameSave) {
             // Erfolgsmeldung im Modal anzeigen (grün) und Hängenbleiben verhindern
             if (editNameMessage) {
                 editNameMessage.style.color = '#2e7d32';
-                editNameMessage.textContent = '✓ Anzeigename gespeichert.';
+                // Hinweis: Windows Explorer zeigt Case-Änderungen oft erst nach Refresh
+                editNameMessage.textContent = '✓ Anzeigename gespeichert. Hinweis: Im Windows-Dateimanager ggf. F5 drücken, damit die neue Groß-/Kleinschreibung sichtbar wird.';
             }
             setUnsavedChanges(false);
             await fetchNameHistory(currentMode, id);
@@ -2269,4 +2312,45 @@ if (editNameRedo) {
             }
         } finally { editNameRedo.disabled = false; }
     });
+}
+
+function formatRelativeTime(date) {
+    try {
+        const d = typeof date === 'string' ? new Date(date) : date;
+        const diffMs = Date.now() - d.getTime();
+        if (!isFinite(diffMs)) throw new Error();
+        const sec = Math.round(diffMs / 1000);
+        if (sec < 60) return `vor ${sec} Sek.`;
+        const min = Math.round(sec / 60);
+        if (min < 60) return `vor ${min} Min.`;
+        const h = Math.round(min / 60);
+        if (h < 24) return `vor ${h} Std.`;
+        const dDays = Math.round(h / 24);
+        return `vor ${dDays} Tag(en)`;
+    } catch {
+        return '';
+    }
+}
+
+async function updateHelpIndexStatus() {
+    if (!helpIndexStatus) return;
+    try {
+        const res = await fetch('/api/help/doc?file=help-index.md');
+        if (!res.ok) { helpIndexStatus.style.display = 'none'; return; }
+        const data = await res.json();
+        const ts = data.lastModified ? new Date(data.lastModified) : null;
+        const rel = ts ? formatRelativeTime(ts) : '';
+        const abs = ts ? ts.toLocaleString() : '';
+        if (rel) {
+            helpIndexStatus.innerHTML = `Index aktualisiert ${rel} <span style="color:#999">(${abs})</span>`;
+            helpIndexStatus.style.display = 'block';
+        } else if (abs) {
+            helpIndexStatus.textContent = `Index zuletzt aktualisiert: ${abs}`;
+            helpIndexStatus.style.display = 'block';
+        } else {
+            helpIndexStatus.style.display = 'none';
+        }
+    } catch {
+        helpIndexStatus.style.display = 'none';
+    }
 }

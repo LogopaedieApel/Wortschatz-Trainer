@@ -109,6 +109,30 @@ Dieser Leitfaden dokumentiert die Ziele, Regeln, Tools und Arbeitsabläufe, dami
 - Keine doppelten/conflicting Zielpfade im Audit
 - Editor muss Auto-Fixes korrekt anzeigen und anwenden
 
+## Dokumentations-Automatisierung & Standards
+
+- CHANGELOG (`docs/CHANGELOG.md`)
+  - Menschlich lesbarer Änderungsverlauf. Wird aus Audit- und Namenshistorie generiert.
+  - Generierung: `npm run changelog`
+- Editor-Hilfe (`docs/editor-hilfe.md`)
+  - Benutzerorientierte Kurzdoku für den Editor. Manuell pflegen, wenn sich UI/Flows ändern.
+- Hilfe-Index (generiert, `docs/help-index.md`)
+  - Wird automatisch erzeugt. Bitte nicht manuell bearbeiten.
+  - Enthält eine Liste aller Hilfedateien und einen Auszug aus dem Changelog.
+
+Automatisierung bei Commits:
+- Der Pre-Commit-Hook erzeugt `docs/CHANGELOG.md` und `docs/help-index.md` und staged beide.
+
+Manuell aktualisieren (optional):
+- Nur Changelog: `npm run changelog`
+- Nur Hilfe-Index: `npm run help-index`
+- Beides: `npm run docs:update`
+
+Leitlinien ohne Überschneidung:
+- `CHANGELOG.md`: Was passiert ist (Chronik, automatisch).
+- `editor-hilfe.md`: Wie Anwender:innen den Editor nutzen (manuell).
+- `CONTRIBUTING.md`: Wie am Projekt gearbeitet wird (dieses Dokument, manuell).
+
 ## Release-Checklist (ausführlich)
 
 1) Vorbereitung

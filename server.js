@@ -357,7 +357,6 @@ async function ensureUniqueTargetPath(targetAbs) {
 async function renameAssetIfNeeded(oldRelPath, desiredRelPath) {
     // Gibt den tatsächlich verwendeten relativen Zielpfad zurück (mit evtl. Suffix)
     if (!oldRelPath || !desiredRelPath) return desiredRelPath || oldRelPath || '';
-    const fsSync = require('fs');
     const fsp = require('fs').promises;
     const path = require('path');
     const oldAbs = absFromDataRel(oldRelPath);
@@ -368,11 +367,37 @@ async function renameAssetIfNeeded(oldRelPath, desiredRelPath) {
         // alte Datei existiert nicht -> nichts verschieben
         return desiredRelPath;
     }
-    // Wenn Pfade identisch sind (unter Beachtung von Slashes), nichts tun
-    const same = ensureForwardSlashes(path.relative('/', oldAbs)) === ensureForwardSlashes(path.relative('/', desiredAbs));
-    if (same) return desiredRelPath;
-    // Zielordner erstellen
+    const oldNorm = ensureForwardSlashes(oldAbs);
+    const newNorm = ensureForwardSlashes(desiredAbs);
+    // Exakt gleich (inkl. Case) -> nichts tun
+    if (oldNorm === newNorm) return desiredRelPath;
+    // Case-only Unterschied? (pfadgleich ignorierend der Groß-/Kleinschreibung)
+    const caseOnly = oldNorm.toLowerCase() === newNorm.toLowerCase();
+    // Zielordner erstellen (idempotent)
     await ensureDir(path.dirname(desiredAbs));
+
+    if (caseOnly) {
+        // Zweistufiges Umbenennen: alt -> temp -> ziel (robust auf Windows/case-insensitive FS)
+        const dir = path.dirname(oldAbs);
+        const ext = path.extname(oldAbs);
+        const base = path.basename(oldAbs, ext);
+        // Zeitstempel, um Kollisionen zu vermeiden
+        const ts = Date.now();
+        const tempAbs = path.join(dir, `${base}.__case__${ts}${ext}`);
+        // Schritt 1: nach Temp-Namen
+        await fsp.rename(oldAbs, tempAbs);
+        try {
+            // Schritt 2: Temp -> gewünschter Zielname (mit neuer Groß-/Kleinschreibung)
+            await fsp.rename(tempAbs, desiredAbs);
+        } catch (e) {
+            // Rollback versuchen, falls Schritt 2 scheitert
+            try { await fsp.rename(tempAbs, oldAbs); } catch {}
+            throw e;
+        }
+        return ensureForwardSlashes(path.relative(__dirname, desiredAbs));
+    }
+
+    // Nicht case-only: Standardverhalten mit Konfliktauflösung
     let finalAbs = desiredAbs;
     try {
         await fsp.access(desiredAbs);
@@ -431,11 +456,13 @@ app.get('/api/help/docs', async (req, res) => {
             } catch {}
             out.push({ file, title });
         }
-        // Prefer an editor help as first item if present
+        // Prefer an auto-generated help index if present, then editor help
         out.sort((a, b) => {
-            const pa = a.file.toLowerCase().includes('editor');
-            const pb = b.file.toLowerCase().includes('editor');
-            if (pa !== pb) return pa ? -1 : 1;
+            const fa = a.file.toLowerCase();
+            const fb = b.file.toLowerCase();
+            const pri = (f) => f.includes('help-index') ? 0 : (f.includes('editor') ? 1 : 2);
+            const pa = pri(fa) - pri(fb);
+            if (pa !== 0) return pa;
             return a.title.localeCompare(b.title, 'de');
         });
         res.json({ ok: true, docs: out });
@@ -456,8 +483,12 @@ app.get('/api/help/doc', async (req, res) => {
         if (!isPathInside(DOCS_DIR, abs)) {
             return res.status(400).json({ ok: false, message: 'Pfad außerhalb von docs nicht erlaubt' });
         }
-        const txt = await fs.readFile(abs, 'utf8');
-        res.json({ ok: true, file, content: txt });
+        const [txt, stat] = await Promise.all([
+            fs.readFile(abs, 'utf8'),
+            fs.stat(abs).catch(() => null)
+        ]);
+        const lastModified = stat && stat.mtime ? stat.mtime.toISOString() : null;
+        res.json({ ok: true, file, content: txt, lastModified });
     } catch (e) {
         if (e.code === 'ENOENT') return res.status(404).json({ ok: false, message: 'Dokument nicht gefunden' });
         res.status(500).json({ ok: false, message: e.message });
@@ -1452,6 +1483,33 @@ app.patch('/api/editor/item/display-name', guardWrite, async (req, res) => {
 
         // Namen setzen
         db[id].name = normalized;
+
+        // Rückwärtskompatibilität: fehlende 'folder'-Felder ergänzen, damit Schema-Validierung nicht scheitert
+        const ensureFolder = (k, item) => {
+            if (typeof item.folder === 'string') return; // bereits vorhanden
+            if (isSaetze) {
+                // Versuche Unterordner aus Pfaden zu extrahieren; ansonsten erste ID-Letter oder leer
+                const pick = (p) => {
+                    const s = (p || '').replace(/\\+/g, '/');
+                    const m = s.match(/data\/sätze\/(images|sounds)\/([^\/]+)/i);
+                    return m ? m[2].toLowerCase() : '';
+                };
+                item.folder = pick(item.image) || pick(item.sound) || (k ? String(k).charAt(0).toLowerCase() : '');
+            } else {
+                // Wörter: Ordner ist in der Regel der erste Buchstabe
+                const pick = (p) => {
+                    const s = (p || '').replace(/\\+/g, '/');
+                    const m = s.match(/data\/wörter\/(images|sounds)\/([^\/]+)/i);
+                    return m ? m[2].toLowerCase() : '';
+                };
+                item.folder = pick(item.image) || pick(item.sound) || (k ? String(k).charAt(0).toLowerCase() : '');
+            }
+            if (typeof item.folder !== 'string') item.folder = '';
+        };
+        for (const [k, v] of Object.entries(db)) {
+            if (v && typeof v === 'object') ensureFolder(k, v);
+        }
+
         await writeDbValidated(dbPath, db, { stamp, backup: true, auditOp: 'patch-display-name', context: { mode, id } });
 
         // Name-History aktualisieren
@@ -1483,6 +1541,12 @@ app.patch('/api/editor/item/display-name', guardWrite, async (req, res) => {
         }
         return res.json({ ok: true, changedFields: ['name'], warnings: [] });
     } catch (err) {
+        // Spezifische Fehler besser kommunizieren (z. B. Datei in Benutzung)
+        const code = err && (err.code || err.errno);
+        if (code === 'EBUSY' || code === 'EPERM' || code === 'EACCES') {
+            console.warn('[PATCH display-name] Datei in Benutzung/kein Zugriff:', code, err && err.message);
+            return res.status(423).json({ ok: false, message: 'Die Datei ist derzeit in Benutzung oder gesperrt. Bitte Wiedergabe/Viewer schließen und erneut versuchen.' });
+        }
         console.error('[PATCH display-name] Fehler:', err);
         return res.status(500).json({ ok: false, message: 'Interner Fehler beim Aktualisieren des Anzeigenamens' });
     } finally {

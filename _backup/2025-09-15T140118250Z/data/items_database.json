@@ -61,7 +61,7 @@
   },
   "feuerloescher": {
     "name": "Feuerlöscher",
-    "image": "data/wörter/images/f/Feürlöscher.jpg",
+    "image": "data/wörter/images/f/Feuerlöscher.jpg",
     "sound": "",
     "folder": "f"
   },
@@ -140,8 +140,7 @@
   "haenchen": {
     "name": "Hähnchen",
     "image": "data/wörter/images/h/Hähnchen.jpg",
-    "sound": "data/wörter/sounds/h/Hähnchen.mp3",
-    "folder": "h"
+    "sound": "data/wörter/sounds/h/Hähnchen.mp3"
   },
   "handschuhe": {
     "name": "Handschuhe",
@@ -169,8 +168,8 @@
   },
   "ich": {
     "name": "Ich",
-    "image": "data/wörter/images/i/Ich.jpg",
-    "sound": "data/wörter/sounds/i/Ich.mp3",
+    "image": "data/wörter/images/i/ich.jpg",
+    "sound": "data/wörter/sounds/i/ich.mp3",
     "folder": "i"
   },
   "kaninchen": {
@@ -302,13 +301,12 @@
   "neues_item_1757930523521": {
     "name": "Neues Wort",
     "image": "",
-    "sound": "",
-    "folder": "n"
+    "sound": ""
   },
   "orange": {
     "name": "Orange",
-    "image": "data/wörter/images/o/Orange.jpg",
-    "sound": "data/wörter/sounds/o/Orange.mp3",
+    "image": "data/wörter/images/o/orange.jpg",
+    "sound": "data/wörter/sounds/o/orange.mp3",
     "folder": "o"
   },
   "paeckchen": {
@@ -355,14 +353,14 @@
   },
   "rechnen": {
     "name": "Rechnen",
-    "image": "data/wörter/images/r/Rechnen.jpg",
-    "sound": "data/wörter/sounds/r/Rechnen.mp3",
+    "image": "data/wörter/images/r/rechnen.jpg",
+    "sound": "data/wörter/sounds/r/rechnen.mp3",
     "folder": "r"
   },
   "rechts": {
     "name": "Rechts",
-    "image": "data/wörter/images/r/Rechts.jpeg",
-    "sound": "data/wörter/sounds/r/Rechts.mp3",
+    "image": "data/wörter/images/r/rechts.jpeg",
+    "sound": "data/wörter/sounds/r/rechts.mp3",
     "folder": "r"
   },
   "regen": {
@@ -378,9 +376,9 @@
     "folder": "r"
   },
   "reich": {
-    "name": "reich",
-    "image": "data/wörter/images/r/reich.jpg",
-    "sound": "data/wörter/sounds/r/reich.mp3",
+    "name": "Reich",
+    "image": "data/wörter/images/r/Reich.jpg",
+    "sound": "data/wörter/sounds/r/Reich.mp3",
     "folder": "r"
   },
   "reifen": {
@@ -397,20 +395,20 @@
   },
   "rennen": {
     "name": "Rennen",
-    "image": "data/wörter/images/r/Rennen.jpg",
+    "image": "data/wörter/images/r/rennen.jpg",
     "sound": "",
     "folder": "r"
   },
   "richtig": {
     "name": "Richtig",
-    "image": "data/wörter/images/r/Richtig.jpg",
-    "sound": "data/wörter/sounds/r/Richtig.mp3",
+    "image": "data/wörter/images/r/richtig.jpg",
+    "sound": "data/wörter/sounds/r/richtig.mp3",
     "folder": "r"
   },
   "riechen": {
     "name": "Riechen",
-    "image": "data/wörter/images/r/Riechen.jpg",
-    "sound": "data/wörter/sounds/r/Riechen.mp3",
+    "image": "data/wörter/images/r/riechen.jpg",
+    "sound": "data/wörter/sounds/r/riechen.mp3",
     "folder": "r"
   },
   "rock": {
@@ -427,7 +425,7 @@
   },
   "rot": {
     "name": "Rot",
-    "image": "data/wörter/images/r/Rot.jpg",
+    "image": "data/wörter/images/r/rot.jpg",
     "sound": "",
     "folder": "r"
   },
@@ -451,57 +449,57 @@
   },
   "schal": {
     "name": "Schal",
-    "image": "data/wörter/images/s/Schal.jpg",
-    "sound": "data/wörter/sounds/s/Schal.mp3",
-    "folder": "s"
+    "image": "data/wörter/images/sch/Schal.jpg",
+    "sound": "data/wörter/sounds/sch/Schal.mp3",
+    "folder": "sch"
   },
   "schatten": {
     "name": "Schatten",
-    "image": "data/wörter/images/s/Schatten.jpg",
-    "sound": "data/wörter/sounds/s/Schatten.mp3",
-    "folder": "s"
+    "image": "data/wörter/images/sch/Schatten.jpg",
+    "sound": "data/wörter/sounds/sch/Schatten.mp3",
+    "folder": "sch"
   },
   "schaukel": {
     "name": "Schaukel",
-    "image": "data/wörter/images/s/Schaukel.jpg",
-    "sound": "data/wörter/sounds/s/Schaukel.mp3",
-    "folder": "s"
+    "image": "data/wörter/images/sch/Schaukel.jpg",
+    "sound": "data/wörter/sounds/sch/Schaukel.mp3",
+    "folder": "sch"
   },
   "schere": {
     "name": "Schere",
-    "image": "data/wörter/images/s/Schere.jpg",
-    "sound": "data/wörter/sounds/s/Schere.mp3",
-    "folder": "s"
+    "image": "data/wörter/images/sch/Schere.jpg",
+    "sound": "data/wörter/sounds/sch/Schere.mp3",
+    "folder": "sch"
   },
   "schiene": {
     "name": "Schiene",
-    "image": "data/wörter/images/s/Schiene.jpg",
-    "sound": "data/wörter/sounds/s/Schiene.mp3",
-    "folder": "s"
+    "image": "data/wörter/images/sch/Schiene.jpg",
+    "sound": "data/wörter/sounds/sch/Schiene.mp3",
+    "folder": "sch"
   },
   "schiff": {
     "name": "Schiff",
-    "image": "data/wörter/images/s/Schiff.jpg",
-    "sound": "data/wörter/sounds/s/Schiff.mp3",
-    "folder": "s"
+    "image": "data/wörter/images/sch/Schiff.jpg",
+    "sound": "data/wörter/sounds/sch/Schiff.mp3",
+    "folder": "sch"
   },
   "schokolade": {
     "name": "Schokolade",
-    "image": "data/wörter/images/s/Schokolade.jpg",
-    "sound": "data/wörter/sounds/s/Schokolade.mp3",
-    "folder": "s"
+    "image": "data/wörter/images/sch/Schokolade.jpg",
+    "sound": "data/wörter/sounds/sch/Schokolade.mp3",
+    "folder": "sch"
   },
   "schuh": {
     "name": "Schuh",
-    "image": "data/wörter/images/s/Schuh.jpg",
-    "sound": "data/wörter/sounds/s/Schuh.mp3",
-    "folder": "s"
+    "image": "data/wörter/images/sch/Schuh.jpg",
+    "sound": "data/wörter/sounds/sch/Schuh.mp3",
+    "folder": "sch"
   },
   "schule": {
     "name": "Schule",
-    "image": "data/wörter/images/s/Schule.jpg",
-    "sound": "data/wörter/sounds/s/Schule.mp3",
-    "folder": "s"
+    "image": "data/wörter/images/sch/Schule.jpg",
+    "sound": "data/wörter/sounds/sch/Schule.mp3",
+    "folder": "sch"
   },
   "seepferdchen": {
     "name": "Seepferdchen",
@@ -517,13 +515,13 @@
   },
   "stechen": {
     "name": "Stechen",
-    "image": "data/wörter/images/s/Stechen.jpeg",
+    "image": "data/wörter/images/s/stechen.jpeg",
     "sound": "",
     "folder": "s"
   },
   "streicheln": {
     "name": "Streicheln",
-    "image": "data/wörter/images/s/Streicheln.jpeg",
+    "image": "data/wörter/images/s/streicheln.jpeg",
     "sound": "",
     "folder": "s"
   },
@@ -583,9 +581,9 @@
   },
   "vogelscheuche": {
     "name": "Vogelscheuche",
-    "image": "data/wörter/images/v/Vogelscheuche.jpeg",
-    "sound": "data/wörter/sounds/v/Vogelscheuche.mp3",
-    "folder": "v"
+    "image": "data/wörter/images/w/Vogelscheuche.jpeg",
+    "sound": "data/wörter/sounds/w/Vogelscheuche.mp3",
+    "folder": "w"
   },
   "waesche": {
     "name": "Wäsche",
