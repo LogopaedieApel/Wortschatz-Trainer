@@ -5,6 +5,7 @@ Willkommen im integrierten Hilfe-Bereich. Diese Seite liegt als Markdown-Datei u
 ## Inhalt
 
 - Was ist der Editor?
+- Ablagelogik & Ordnungsregeln
 - Wichtige Schutzmechanismen
 - Häufige Aufgaben (How-Tos)
 - Tests & Healthcheck
@@ -20,6 +21,25 @@ Der Wortschatz-Editor ist ein Werkzeug zum Pflegen der Datenbanken und Sets für
 - Undo/Redo für Anzeigenamen
 - Import- und Einsortier-Flows für neue Dateien
 
+## Ablagelogik & Ordnungsregeln
+
+Damit alles stabil und widerspruchsfrei bleibt, gelten für die Ordnerstruktur folgende, einfache Regeln:
+
+- Wörter (Bilder & Sounds)
+	- Ordner: `data/wörter/images/<buchstabe>/` und `data/wörter/sounds/<buchstabe>/`.
+	- <buchstabe> ist immer der ERSTE Buchstabe der ID. Beispiel: ID „schaf“ → Ordner „s“ (nicht „sch“).
+	- Phonetische Gruppierungen (z. B. „sch“) existieren ausschließlich als Filter/Ansicht im Editor – NICHT als Ordner auf der Festplatte.
+	- Dateinamen leiten sich aus der ID ab (ASCII/umlautfrei: ä→ae, ö→oe, ü→ue, ß→ss), Dateiendungen klein geschrieben (z. B. `.jpg`, `.mp3`).
+
+- Sätze (Bilder & Sounds)
+	- Behalten ihren Mittel-Ordner (z. B. `data/sätze/images/Reime/...`), also keine Vereinheitlichung auf den ersten Buchstaben.
+
+- Warum diese Regeln?
+	- Einfach und robust, funktioniert gut auf Windows/macOS (case-insensitive Dateisysteme), identische Logik in Server & Editor, von Healthcheck geprüft.
+	- Reine Groß-/Kleinschreibungs-Änderungen von Dateien passieren unter Windows automatisch in zwei Schritten, um Konflikte zu vermeiden.
+
+Hinweis: Details für Mitwirkende findest du zusätzlich in `docs/CONTRIBUTING.md`.
+
 ## Schutzmechanismen
 
 - Nur-Lese-Modus: Schreibende Aktionen sind blockiert, UI zeigt einen gelben Hinweis.
@@ -32,7 +52,7 @@ Der Wortschatz-Editor ist ein Werkzeug zum Pflegen der Datenbanken und Sets für
 - Namen bearbeiten: Button „Namen bearbeiten“, Vorschau prüfen, speichern. Änderungen sind rückgängig machbar.
 - ID umbenennen: Stiftsymbol klicken → Vorschau/Diffs prüfen → Übernehmen.
 - Neue Spalte (Set) anlegen: Hierarchie und Anzeigename eingeben → „+ Neue Spalte hinzufügen“
-- Unsrotierte Dateien einsortieren: Benachrichtigung anklicken → Konflikte lösen → Sync läuft automatisch.
+- Unsortierte Dateien einsortieren: Benachrichtigung anklicken → Konflikte lösen → Sync läuft automatisch.
 - Gelöschte Dateien wiederherstellen: Dialog „Gelöschte Dateien“ öffnen und Datei(en) zurückspielen.
 
 ## Tests & Healthcheck
