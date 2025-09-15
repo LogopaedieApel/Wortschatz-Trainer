@@ -24,6 +24,8 @@
     "update-names:apply": "node tools/update-names-umlauts.mjs --apply",
     "check-case-consistency": "node tools/check-case-consistency.mjs",
     "enforce-filename-case": "node tools/enforce-filename-case.mjs",
+  "repair-missing-assets:dry": "node tools/repair-missing-assets.mjs",
+  "repair-missing-assets": "node tools/repair-missing-assets.mjs --apply",
     "prepare": "husky",
     "test": "jest --runInBand",
     "test:watch": "jest --watchAll",
@@ -32,7 +34,11 @@
     "restore": "node tools/restore-snapshot.mjs",
     "changelog": "node tools/generate-changelog.mjs",
     "help-index": "node tools/generate-help-index.mjs",
-    "docs:update": "node tools/generate-changelog.mjs && node tools/generate-help-index.mjs"
+    "docs:update": "node tools/generate-changelog.mjs && node tools/generate-help-index.mjs",
+    "fix:sch-folders": "node tools/fix-woerter-subfolders.mjs",
+    "fix:sch-folders:apply": "node tools/fix-woerter-subfolders.mjs --apply",
+    "fix:woerter:first-letter": "node tools/fix-woerter-first-letter.mjs",
+    "fix:woerter:first-letter:apply": "node tools/fix-woerter-first-letter.mjs --apply"
   },
   "dependencies": {
     "express": "^4.18.2",

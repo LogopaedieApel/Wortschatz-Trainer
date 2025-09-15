@@ -61,7 +61,7 @@
   },
   "feuerloescher": {
     "name": "Feuerlöscher",
-    "image": "data/wörter/images/f/Feürlöscher.jpg",
+    "image": "data/wörter/images/f/Feuerlöscher.jpg",
     "sound": "",
     "folder": "f"
   },
@@ -132,12 +132,6 @@
     "folder": "g"
   },
   "haehnchen": {
-    "name": "Hähnchen",
-    "image": "data/wörter/images/h/Hähnchen.jpg",
-    "sound": "data/wörter/sounds/h/Hähnchen.mp3",
-    "folder": "h"
-  },
-  "haenchen": {
     "name": "Hähnchen",
     "image": "data/wörter/images/h/Hähnchen.jpg",
     "sound": "data/wörter/sounds/h/Hähnchen.mp3",
@@ -378,9 +372,9 @@
     "folder": "r"
   },
   "reich": {
-    "name": "reich",
-    "image": "data/wörter/images/r/reich.jpg",
-    "sound": "data/wörter/sounds/r/reich.mp3",
+    "name": "Reich",
+    "image": "data/wörter/images/r/Reich.jpg",
+    "sound": "data/wörter/sounds/r/Reich.mp3",
     "folder": "r"
   },
   "reifen": {

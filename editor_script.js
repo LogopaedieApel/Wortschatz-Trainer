@@ -508,9 +508,12 @@ function rehydrateUmlautsFromAscii(s) {
 }
 
 function prettyBaseFromName(name) {
-    // Use display name, NFC, collapse whitespace, rehydrate umlauts
+    // Use display name, NFC, collapse whitespace.
+    // Only rehydrate ae/oe/ue→ä/ö/ü when there are NO existing umlauts in the name.
+    // This avoids turning legit sequences like "Feuer" into "Feür".
     const base = normalizeBaseNameFromName(name || '');
-    return rehydrateUmlautsFromAscii(base);
+    const hasUmlauts = /[äöüÄÖÜ]/.test(base);
+    return hasUmlauts ? base : rehydrateUmlautsFromAscii(base);
 }
 
 function toTitleCaseSegment(seg) {
@@ -543,10 +546,11 @@ function expectedDirFor(field, id, name, currentPath) {
         const mid = extractMidFolder(field, currentPath);
         return mid ? `${base}/${toTitleCaseSegment(mid)}` : base;
     }
-    // Wörter: derive by first letter of ID
+    // Wörter: strict first-letter grouping based on ID (lowercase). Ignore existing mid-folder and remove special cases
     const base = field === 'image' ? 'data/wörter/images' : 'data/wörter/sounds';
-    const letter = (id || '').toString().charAt(0).toLowerCase() || '';
-    return letter ? `${base}/${letter}` : base;
+    const idLower = (id || '').toString().toLowerCase();
+    const first = idLower.charAt(0);
+    return first ? `${base}/${first}` : base;
 }
 
 function basenameFromId(id) {

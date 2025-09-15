@@ -314,10 +314,12 @@ function expectedDirForField(field, mode, id, currentPath) {
         const mid = extractMidFolderFor(field, currentPath);
         return mid ? `${base}/${toTitleCaseSegment(mid)}` : base;
     }
-    // Wörter: nach Anfangsbuchstabe der ID
+    // Wörter: Strikte Erstbuchstaben-Gruppierung (immer nach erstem Buchstaben der ID, lowercase)
+    // Ignoriere vorhandenen Zwischenordner und entferne Sonderfälle wie 'sch'.
     const base = field === 'image' ? 'data/wörter/images' : 'data/wörter/sounds';
-    const letter = (id || '').toString().charAt(0).toLowerCase();
-    return letter ? `${base}/${letter}` : base;
+    const idLower = String(id || '').toLowerCase();
+    const first = idLower.charAt(0);
+    return first ? `${base}/${first}` : base;
 }
 
 function normalizeWhitespaceUnicode(name) {
@@ -1874,7 +1876,31 @@ app.post('/api/editor/item/id-rename', guardWrite, async (req, res) => {
         const item = db[oldId];
         delete db[oldId];
         db[normalized] = item;
-    await writeDbValidated(dbPath, db, { stamp, backup: true, auditOp: 'id-rename:db', context: { mode, from: oldId, to: normalized } });
+        // Rückwärtskompatibilität: fehlende 'folder'-Felder ergänzen (analog Patch-Display-Name), damit Schema-Validierung nicht scheitert
+        const isSaetze = mode === 'saetze';
+        const ensureFolder = (k, it) => {
+            if (!it || typeof it !== 'object') return;
+            if (typeof it.folder === 'string') return; // bereits vorhanden
+            if (isSaetze) {
+                const pick = (p) => {
+                    const s = (p || '').replace(/\\+/g, '/');
+                    const m = s.match(/data\/sätze\/(images|sounds)\/([^\/]+)/i);
+                    return m ? m[2].toLowerCase() : '';
+                };
+                it.folder = pick(it.image) || pick(it.sound) || (k ? String(k).charAt(0).toLowerCase() : '');
+            } else {
+                const pick = (p) => {
+                    const s = (p || '').replace(/\\+/g, '/');
+                    const m = s.match(/data\/wörter\/(images|sounds)\/([^\/]+)/i);
+                    return m ? m[2].toLowerCase() : '';
+                };
+                it.folder = pick(it.image) || pick(it.sound) || (k ? String(k).charAt(0).toLowerCase() : '');
+            }
+            if (typeof it.folder !== 'string') it.folder = '';
+        };
+        for (const [k, v] of Object.entries(db)) ensureFolder(k, v);
+
+        await writeDbValidated(dbPath, db, { stamp, backup: true, auditOp: 'id-rename:db', context: { mode, from: oldId, to: normalized } });
 
         // Sets aktualisieren mit Deduplizierung
         for (const plan of setPlans) {

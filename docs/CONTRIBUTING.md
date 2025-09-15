@@ -12,7 +12,7 @@ Dieser Leitfaden dokumentiert die Ziele, Regeln, Tools und Arbeitsabläufe, dami
 - Wörter (Domain „woerter“)
   - Dateiname = Anzeigename (mit echten Umlauten: ä, ö, ü), Unicode NFC
   - Endung kleingeschrieben: .jpg/.jpeg/.png für Bilder, .mp3 für Sounds
-  - Ablagepfad nach `item.folder` (z. B. `data/wörter/images/sch/…` bzw. `…/sounds/sch/…`)
+  - Ablagepfad strikt nach erstem Buchstaben der ID: `data/wörter/images/<buchstabe>/…` bzw. `…/sounds/<buchstabe>/…` (z. B. `b`, `s`, `x`). Phonetische Gruppierung (z. B. „sch“) erfolgt ausschließlich im Editor über Spalten/Filter – nicht in der Ordnerstruktur.
 - Sätze (Domain „saetze“)
   - Dateiname = Anzeigename (mit echten Umlauten), Unicode NFC
   - Endung kleingeschrieben (wie oben)
