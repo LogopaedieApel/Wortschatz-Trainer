@@ -3,6 +3,11 @@ const fs = require('fs').promises;
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
+// Test-Logger-Guard: Unterdrückt Logs im Testmodus
+const IS_TEST = String(process.env.NODE_ENV || '').toLowerCase() === 'test';
+function logInfo(...args) {
+    if (!IS_TEST) console.log(...args);
+}
 function isReadOnly() {
     const v = String(process.env.EDITOR_READONLY || '').trim().toLowerCase();
     return v === '1' || v === 'true' || v === 'yes';
@@ -946,7 +951,7 @@ app.get('/api/scan-for-new-files', async (req, res) => {
             }
         }
 
-        console.log(`${Object.keys(newItems).length} neue Items gefunden.`);
+    logInfo(`${Object.keys(newItems).length} neue Items gefunden.`);
         res.json({ newItems });
 
     } catch (error) {
@@ -989,7 +994,7 @@ app.post('/api/save-all-data', guardWrite, async (req, res) => {
         await saveSetContent(manifestToSave);
         await writeJsonAtomic(setsManifestPathMode, manifestToSave, { stamp, backup: true, auditOp: 'save-all-data:manifest', context: { mode } });
 
-        console.log("Daten erfolgreich gespeichert!");
+    logInfo("Daten erfolgreich gespeichert!");
         res.json({ message: 'Alle Daten erfolgreich aktualisiert!' });
     } catch (error) {
         console.error("Fehler beim Speichern der Daten:", error);
@@ -1234,7 +1239,7 @@ app.post('/api/sort-unsorteds-files', async (req, res) => {
                 files = await fs.readdir(unsortedDir);
             } catch (e) {
                 if (e.code === 'ENOENT') {
-                    console.log(`[SORT] INFO: Unsorted directory not found, skipping: ${unsortedDir}`);
+                    logInfo(`[SORT] INFO: Unsorted directory not found, skipping: ${unsortedDir}`);
                     continue;
                 }
                 throw e;
@@ -1247,26 +1252,26 @@ app.post('/api/sort-unsorteds-files', async (req, res) => {
                 const sourcePath = path.join(unsortedDir, file);
                 const targetPath = path.join(targetDir, file);
 
-                console.log(`[SORT] Processing: ${file}`);
-                console.log(`[SORT]   Source: ${sourcePath}`);
-                console.log(`[SORT]   Target: ${targetPath}`);
+                logInfo(`[SORT] Processing: ${file}`);
+                logInfo(`[SORT]   Source: ${sourcePath}`);
+                logInfo(`[SORT]   Target: ${targetPath}`);
 
                 await fs.mkdir(targetDir, { recursive: true });
 
                 try {
                     await fs.access(targetPath);
                     // Wenn fs.access erfolgreich ist, existiert die Datei bereits.
-                    console.log(`[SORT]   SKIPPING: Target file already exists.`);
+                    logInfo(`[SORT]   SKIPPING: Target file already exists.`);
                 } catch {
                     // Wenn fs.access fehlschlägt, existiert die Datei nicht, also kopieren und dann löschen.
                     try {
-                        console.log(`[SORT]   COPYING: Attempting to copy file...`);
+                        logInfo(`[SORT]   COPYING: Attempting to copy file...`);
                         await fs.copyFile(sourcePath, targetPath);
-                        console.log(`[SORT]   SUCCESS: File copied.`);
+                        logInfo(`[SORT]   SUCCESS: File copied.`);
                         
-                        console.log(`[SORT]   DELETING: Attempting to delete original file...`);
+                        logInfo(`[SORT]   DELETING: Attempting to delete original file...`);
                         await fs.unlink(sourcePath);
-                        console.log(`[SORT]   SUCCESS: Original file deleted.`);
+                        logInfo(`[SORT]   SUCCESS: Original file deleted.`);
 
                         movedFiles.push(file);
                         totalMoved++;
@@ -1276,7 +1281,7 @@ app.post('/api/sort-unsorteds-files', async (req, res) => {
                 }
             }
         }
-        console.log(`[SORT] FINISHED: Moved ${totalMoved} files in total.`);
+    logInfo(`[SORT] FINISHED: Moved ${totalMoved} files in total.`);
         res.json({ moved: movedFiles, count: totalMoved });
     } catch (error) {
         console.error('Fehler beim Einsortieren der Dateien:', error);
@@ -1797,7 +1802,7 @@ app.post('/api/sync-files', guardWrite, async (req, res) => {
                 database = JSON.parse(dbContent);
             } catch (e) {
                 if (e.code === 'ENOENT') {
-                    console.log(`Datenbank ${dbPath} nicht gefunden. Eine neue wird erstellt.`);
+                    logInfo(`Datenbank ${dbPath} nicht gefunden. Eine neue wird erstellt.`);
                 } else {
                     throw e; // Andere Fehler weiterwerfen
                 }
@@ -2001,7 +2006,7 @@ app.post('/api/editor/item/id-rename', guardWrite, async (req, res) => {
 let serverInstance = null;
 if (require.main === module) {
     serverInstance = app.listen(PORT, () => {
-        console.log(`Server läuft und lauscht auf http://localhost:${PORT}`);
+        logInfo(`Server läuft und lauscht auf http://localhost:${PORT}`);
     });
 }
 

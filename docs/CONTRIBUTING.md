@@ -199,6 +199,12 @@ Leitlinien ohne Überschneidung:
   - Nach Go-Live: Smoke-Test der Editor-Flows
   - Bei Problemen: Restore letzten Snapshot (`npm run restore -- --snapshot latest --yes`)
 
+  ### Test-Logging (Jest)
+
+  - Während der Jest-Tests sind `console.log` und `console.info` standardmäßig stummgeschaltet (siehe `jest.setup.js`).
+  - `console.warn` ist lokal ebenfalls stumm; in CI bleibt `warn` sichtbar. `console.error` bleibt immer sichtbar.
+  - Serverseitige Info-Logs laufen über `logInfo(...)` und sind im Testmodus (`NODE_ENV=test`) unterdrückt.
+
 ## Repository-Hinweise
 - Hauptdateien: `data/items_database.json`, `data/items_database_saetze.json`, `data/sets.json`, `data/sets_saetze.json`
 - Frontend: `editor.html`, `editor_script.js`
