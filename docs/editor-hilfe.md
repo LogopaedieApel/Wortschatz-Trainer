@@ -39,6 +39,11 @@ Damit alles stabil und widerspruchsfrei bleibt, gelten für die Ordnerstruktur f
 	- Einfach und robust, funktioniert gut auf Windows/macOS (case-insensitive Dateisysteme), identische Logik in Server & Editor, von Healthcheck geprüft.
 	- Reine Groß-/Kleinschreibungs-Änderungen von Dateien passieren unter Windows automatisch in zwei Schritten, um Konflikte zu vermeiden.
 
+Hinweis zur Benennung von Set-Dateien (für die Manifest-Anzeige):
+- Unterstrich `_` trennt Ebenen, Bindestrich `-` trennt Wörter innerhalb einer Ebene.
+- Beispiel: `phonologische-bewusstheit_reime.json` → „Phonologische Bewusstheit“ → „Reime“.
+- Spezialfälle sind in `data/sets_manifest.rules.json` hinterlegt (z. B. Merges oder Anzeige-Overrides).
+
 Hinweis zu Namen vs. IDs/Dateien:
 - Anzeigenamen (im Editor) bleiben menschenlesbar und dürfen groß geschrieben sein („Ich“, „Orange“, …).
 - IDs und daraus abgeleitete Dateinamen/Pfade sind normiert (klein/ASCII). Dadurch bleiben Links stabil und GitHub-kompatibel.
@@ -59,6 +64,24 @@ Hinweis: Details für Mitwirkende findest du zusätzlich in `docs/CONTRIBUTING.m
 - Neue Spalte (Set) anlegen: Hierarchie und Anzeigename eingeben → „+ Neue Spalte hinzufügen“
 - Unsortierte Dateien einsortieren: Benachrichtigung anklicken → Konflikte lösen → Sync läuft automatisch.
 - Gelöschte Dateien wiederherstellen: Dialog „Gelöschte Dateien“ öffnen und Datei(en) zurückspielen.
+
+### Set-Dateinamen migrieren
+
+Wenn bestehende Set-Dateien auf die neue Konvention gebracht werden sollen (Unterstrich `_` trennt Ebenen, Bindestrich `-` trennt Wörter innerhalb einer Ebene), nutze das Migrations-Tool.
+
+Empfohlen: Zuerst eine Vorschau ausführen und Konflikte auflösen.
+
+```
+npm run migrate-sets:dry
+```
+
+Wenn keine Konflikte mehr gemeldet werden, anwenden:
+
+```
+npm run migrate-sets
+```
+
+Nach der Migration werden die Manifestdateien automatisch aktualisiert.
 
 ## Tests & Healthcheck
 

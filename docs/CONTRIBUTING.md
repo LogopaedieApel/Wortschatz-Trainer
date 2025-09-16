@@ -21,6 +21,23 @@ Dieser Leitfaden dokumentiert die Ziele, Regeln, Tools und Arbeitsabläufe, dami
   - IDs bleiben ASCII-klein_mit_unterstrich
   - Sets referenzieren IDs als String-Liste (oder `{ items: [...] }`)
 
+### Konvention für Set-Dateien (Manifeste)
+
+- Zweck: Aus Dateinamen werden Ebenen und lesbare Anzeigenamen im Manifest (`data/sets*.json`) generiert.
+- Regeln:
+  - Unterstrich `_` trennt Hierarchie-Ebenen.
+  - Bindestrich `-` trennt Wörter innerhalb einer Ebene.
+  - Anzeigename je Ebene: Wörter kapitalisieren und mit Leerzeichen verbinden.
+  - Beispiel: `phonologische-bewusstheit_reime.json` → Ebene 1: „Phonologische Bewusstheit“, Ebene 2: „Reime“
+  - Beispiel: `wortschatz-nahrungsmittel_getraenke-kalt.json` → „Wortschatz Nahrungsmittel“ → „Getränke Kalt“
+- Ausnahmen/Spezialfälle
+  - Regeln-Datei: `data/sets_manifest.rules.json`
+    - `mergeFirstLevelSequences`: Sequenzen, die am Anfang zu einem zusammengesetzten Begriff gemerged werden sollen (z. B. `["phonologische","bewusstheit"]`).
+    - `displayOverrides`: Anzeigenamen-Overrides für Tokens (z. B. `"hsu": "Heimat- und Sachunterricht"`).
+  - Aktuell konfiguriert: Nur der Merge „phonologische“ + „bewusstheit“.
+  - Pfade zu Set-Dateien bleiben wie benannt; die Anzeige ergibt sich aus der Konvention/Regeln.
+  - Healthcheck weist bei Bedarf auf verbesserte Schreibweisen (Vorschläge) hin.
+
 ## Frontend (Editor)
 - `editor_script.js`
   - Live-Validierung der Pfade/Dateinamen
@@ -92,6 +109,32 @@ Dieser Leitfaden dokumentiert die Ziele, Regeln, Tools und Arbeitsabläufe, dami
   - `npm run healthcheck`
 5) Editor testen
   - `npm start` und im Editor Pfad-/Umlaut-Logik prüfen
+
+### Set-Dateinamen migrieren (Unterstrich→Ebenen, Bindestrich→Wörter)
+
+Mit dem Tool `tools/migrate-set-filenames.mjs` lassen sich bestehende Set-Dateien auf die neue Konvention bringen. Der Ablauf ist zweistufig (erst Vorschau, dann Anwenden):
+
+1) Vorschau (Dry-Run)
+
+```bash
+npm run migrate-sets:dry
+```
+
+2) Anwenden (nur wenn keine Konflikte gemeldet werden)
+
+```bash
+npm run migrate-sets
+```
+
+Hinweise:
+- Konflikte werden im Dry-Run als `[KONFLIKT]` markiert; der Apply-Lauf bricht bei Konflikten ab, ohne Änderungen vorzunehmen.
+- Nach dem Umbenennen werden `data/sets.json` und `data/sets_saetze.json` automatisch neu generiert, sodass die neuen Pfade korrekt eingetragen sind.
+- Optional: Nur Wörter/Sätze migrieren
+
+```bash
+node tools/migrate-set-filenames.mjs --mode woerter
+node tools/migrate-set-filenames.mjs --mode saetze
+```
 
 ## Erweiterung auf Sätze
 - Der Code ist darauf vorbereitet, auch `data/sätze/...` zu unterstützen (Unterordner bleibt erhalten). Bei Bedarf:

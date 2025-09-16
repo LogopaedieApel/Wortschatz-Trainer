@@ -27,6 +27,8 @@
   "fix:case": "node tools/fix-db-path-case.mjs --apply",
   "repair-missing-assets:dry": "node tools/repair-missing-assets.mjs",
   "repair-missing-assets": "node tools/repair-missing-assets.mjs --apply",
+  "migrate-sets:dry": "node tools/migrate-set-filenames.mjs",
+  "migrate-sets": "node tools/migrate-set-filenames.mjs --apply",
     "prepare": "husky",
     "test": "jest --runInBand",
     "test:watch": "jest --watchAll",

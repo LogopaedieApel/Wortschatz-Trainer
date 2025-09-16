@@ -1705,33 +1705,72 @@ app.post('/api/sync-files', guardWrite, async (req, res) => {
     try {
         // Helper function to generate a manifest file from a directory of set files
         const generateManifest = async (setsDir, manifestPath) => {
+            const rulesPath = dataPath('sets_manifest.rules.json');
+            const readRules = async () => {
+                try {
+                    const raw = await fs.readFile(rulesPath, 'utf8');
+                    const parsed = JSON.parse(raw);
+                    return {
+                        mergeFirstLevelSequences: Array.isArray(parsed.mergeFirstLevelSequences) ? parsed.mergeFirstLevelSequences : [],
+                        displayOverrides: parsed.displayOverrides && typeof parsed.displayOverrides === 'object' ? parsed.displayOverrides : {}
+                    };
+                } catch (e) {
+                    if (e.code !== 'ENOENT') console.warn('[Manifest-Rules] Fehler beim Lesen:', e.message);
+                    return { mergeFirstLevelSequences: [], displayOverrides: {} };
+                }
+            };
+            const { mergeFirstLevelSequences, displayOverrides } = await readRules();
+            const humanizeLevelToken = (token) => {
+                const override = displayOverrides[token];
+                if (typeof override === 'string' && override.trim()) return override;
+                return String(token || '')
+                    .split('-')
+                    .filter(Boolean)
+                    .map(s => s.charAt(0).toUpperCase() + s.slice(1))
+                    .join(' ');
+            };
+            const applyMerges = (parts) => {
+                // Nur am Anfang (erste Ebene) mergen
+                for (const seq of mergeFirstLevelSequences) {
+                    if (!Array.isArray(seq) || seq.length < 2) continue;
+                    const L = seq.length;
+                    const head = parts.slice(0, L);
+                    let match = true;
+                    for (let i = 0; i < L; i++) {
+                        if (head[i] !== seq[i]) { match = false; break; }
+                    }
+                    if (match) {
+                        const merged = [seq.join('-'), ...parts.slice(L)];
+                        return merged;
+                    }
+                }
+                return parts;
+            };
             try {
                 const files = await fs.readdir(setsDir);
                 const manifest = {};
                 for (const file of files) {
-                    if (file.endsWith('.json')) {
-                        const setName = file.replace('.json', '');
-                        const parts = setName.split('_');
-                        let current = manifest;
-                        for (let i = 0; i < parts.length; i++) {
-                            const part = parts[i];
-                            if (i === parts.length - 1) {
-                                current[part] = {
-                                    displayName: part.charAt(0).toUpperCase() + part.slice(1),
-                                    path: `data/${path.basename(setsDir)}/${file}`
-                                };
-                            } else {
-                                if (!current[part]) {
-                                    current[part] = {
-                                        displayName: part.charAt(0).toUpperCase() + part.slice(1)
-                                    };
-                                }
-                                current = current[part];
+                    if (!file.endsWith('.json')) continue;
+                    const setName = file.replace(/\.json$/i, '');
+                    let parts = setName.split('_');
+                    parts = applyMerges(parts);
+                    let current = manifest;
+                    for (let i = 0; i < parts.length; i++) {
+                        const part = parts[i]; // part kann Bindestriche enthalten
+                        if (i === parts.length - 1) {
+                            current[part] = {
+                                displayName: humanizeLevelToken(part),
+                                path: `data/${path.basename(setsDir)}/${file}`
+                            };
+                        } else {
+                            if (!current[part]) {
+                                current[part] = { displayName: humanizeLevelToken(part) };
                             }
+                            current = current[part];
                         }
                     }
                 }
-                await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2));
+                await writeJsonAtomic(manifestPath, manifest, { backup: true, auditOp: 'sync-files:manifest', context: { dir: relFromRoot(setsDir), merges: mergeFirstLevelSequences, overrides: Object.keys(displayOverrides || {}) } });
             } catch (error) {
                 if (error.code !== 'ENOENT') {
                     console.error(`Fehler beim Generieren des Manifests für ${setsDir}:`, error);
@@ -2074,6 +2113,7 @@ app.get('/api/healthcheck', async (req, res) => {
         let files = null;
         let cases = null;
         let names = null;
+        let naming = null;
         if (wantFull) {
             const [filesW, filesS, nameMismW, nameMismS] = await Promise.all([
                 collectDbFileIssues('woerter'),
@@ -2081,6 +2121,40 @@ app.get('/api/healthcheck', async (req, res) => {
                 collectNameFileMismatches('woerter'),
                 collectNameFileMismatches('saetze')
             ]);
+            // Naming-Warnungen aus Sets-Dateien ableiten (Heuristik): Wenn eine erste Ebene mehrere Tokens ohne '-' enthält,
+            // aber durch Regeln theoretisch zusammengehören könnte, Hinweis geben.
+            const rulesPath = dataPath('sets_manifest.rules.json');
+            let mergeSeqs = [];
+            try {
+                const raw = await fs.readFile(rulesPath, 'utf8');
+                const parsed = JSON.parse(raw);
+                if (Array.isArray(parsed.mergeFirstLevelSequences)) mergeSeqs = parsed.mergeFirstLevelSequences;
+            } catch {}
+            const setsDirSaetze = dataPath('sets_saetze');
+            const setsDirWoerter = dataPath('sets');
+            const warn = [];
+            const scanDir = async (dir, mode) => {
+                try {
+                    const files = await fs.readdir(dir);
+                    for (const f of files) {
+                        if (!f.endsWith('.json')) continue;
+                        const base = f.replace(/\.json$/i, '');
+                        const parts = base.split('_');
+                        for (const seq of mergeSeqs) {
+                            if (!Array.isArray(seq) || seq.length < 2) continue;
+                            const head = parts.slice(0, seq.length);
+                            let match = true;
+                            for (let i = 0; i < seq.length; i++) { if (head[i] !== seq[i]) { match = false; break; } }
+                            if (match) {
+                                const suggestion = `${seq.join('-')}${parts.length > seq.length ? '_' + parts.slice(seq.length).join('_') : ''}`;
+                                if (base !== suggestion) warn.push({ mode, file: `data/${path.basename(dir)}/${f}`, suggest: suggestion });
+                            }
+                        }
+                    }
+                } catch {}
+            };
+            await Promise.all([scanDir(setsDirSaetze, 'saetze'), scanDir(setsDirWoerter, 'woerter')]);
+            naming = { warnings: warn };
             const missW = filesW.missing;
             const caseW = filesW.caseMismatches;
             const missS = filesS.missing;
@@ -2094,6 +2168,7 @@ app.get('/api/healthcheck', async (req, res) => {
             names = { woerter_namefile: nameMismW.length, saetze_namefile: nameMismS.length };
             baseSummary.woerter.nameFile = { mismatches: nameMismW };
             baseSummary.saetze.nameFile = { mismatches: nameMismS };
+            baseSummary.naming = naming;
         }
 
         const ok = woerter.ok && saetze.ok
@@ -2107,6 +2182,7 @@ app.get('/api/healthcheck', async (req, res) => {
             ...(files ? { files } : {}),
             ...(cases ? { case: cases } : {}),
             ...(names ? { nameFile: names } : {}),
+            ...(naming ? { naming } : {}),
             woerter: baseSummary.woerter,
             saetze: baseSummary.saetze
         };

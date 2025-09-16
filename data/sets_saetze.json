@@ -1,12 +1,9 @@
 {
-  "phonologische": {
-    "displayName": "Phonologische",
-    "bewusstheit": {
-      "displayName": "Bewusstheit",
-      "reime": {
-        "displayName": "Reime",
-        "path": "data/sets_saetze/phonologische_bewusstheit_reime.json"
-      }
+  "phonologische-bewusstheit": {
+    "displayName": "Phonologische Bewusstheit",
+    "reime": {
+      "displayName": "Reime",
+      "path": "data/sets_saetze/phonologische-bewusstheit_reime.json"
     }
   }
 }
