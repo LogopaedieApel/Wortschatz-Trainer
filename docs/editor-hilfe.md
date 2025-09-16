@@ -30,6 +30,7 @@ Damit alles stabil und widerspruchsfrei bleibt, gelten für die Ordnerstruktur f
 	- <buchstabe> ist immer der ERSTE Buchstabe der ID. Beispiel: ID „schaf“ → Ordner „s“ (nicht „sch“).
 	- Phonetische Gruppierungen (z. B. „sch“) existieren ausschließlich als Filter/Ansicht im Editor – NICHT als Ordner auf der Festplatte.
 	- Dateinamen leiten sich aus der ID ab (ASCII/umlautfrei: ä→ae, ö→oe, ü→ue, ß→ss), Dateiendungen klein geschrieben (z. B. `.jpg`, `.mp3`).
+	- Groß-/Kleinschreibung: Dateien und Pfade werden konsistent klein geführt; GitHub Pages ist case-sensitiv.
 
 - Sätze (Bilder & Sounds)
 	- Behalten ihren Mittel-Ordner (z. B. `data/sätze/images/Reime/...`), also keine Vereinheitlichung auf den ersten Buchstaben.
@@ -37,6 +38,10 @@ Damit alles stabil und widerspruchsfrei bleibt, gelten für die Ordnerstruktur f
 - Warum diese Regeln?
 	- Einfach und robust, funktioniert gut auf Windows/macOS (case-insensitive Dateisysteme), identische Logik in Server & Editor, von Healthcheck geprüft.
 	- Reine Groß-/Kleinschreibungs-Änderungen von Dateien passieren unter Windows automatisch in zwei Schritten, um Konflikte zu vermeiden.
+
+Hinweis zu Namen vs. IDs/Dateien:
+- Anzeigenamen (im Editor) bleiben menschenlesbar und dürfen groß geschrieben sein („Ich“, „Orange“, …).
+- IDs und daraus abgeleitete Dateinamen/Pfade sind normiert (klein/ASCII). Dadurch bleiben Links stabil und GitHub-kompatibel.
 
 Hinweis: Details für Mitwirkende findest du zusätzlich in `docs/CONTRIBUTING.md`.
 
@@ -64,6 +69,17 @@ npm test
 ```
 
 - Healthcheck im Editor: Button „Daten prüfen“ → Ergebnis im UI. Backend-API: `/api/healthcheck`.
+	- Der Healthcheck fasst drei Prüfungen zusammen: Sets-Integrität (fehlende IDs/Dateien), fehlende Dateien (DB→FS), und Case-Mismatches (Pfad vs. Git-Index).
+	- Option „Fix Case vor Prüfung“: korrigiert vorab Pfade in `items_database*.json` auf die exakten Git-Namen (empfohlen bei Windows, GitHub Pages ist case-sensitiv).
+
+Strenge Case-Prüfung und Auto-Fix (Konsole):
+
+```
+npm run check-case-consistency
+npm run fix:case
+npm run healthcheck -- --fix-case
+- Hinweis: Nach reinen Groß-/Kleinschreibungs-Änderungen zeigt der Windows Explorer die neue Schreibweise ggf. erst nach Aktualisieren (F5).
+```
 
 ## Troubleshooting
 

@@ -162,9 +162,9 @@
     "folder": "h"
   },
   "ich": {
-    "name": "ich",
-    "image": "data/wörter/images/i/ich.jpg",
-    "sound": "data/wörter/sounds/i/ich.mp3",
+    "name": "Ich",
+    "image": "data/wörter/images/i/Ich.jpg",
+    "sound": "data/wörter/sounds/i/Ich.mp3",
     "folder": "i"
   },
   "kaninchen": {
@@ -301,8 +301,8 @@
   },
   "orange": {
     "name": "Orange",
-    "image": "data/wörter/images/o/orange.jpg",
-    "sound": "data/wörter/sounds/o/orange.mp3",
+    "image": "data/wörter/images/o/Orange.jpg",
+    "sound": "data/wörter/sounds/o/Orange.mp3",
     "folder": "o"
   },
   "paeckchen": {
@@ -348,15 +348,15 @@
     "folder": "r"
   },
   "rechnen": {
-    "name": "rechnen",
-    "image": "data/wörter/images/r/rechnen.jpg",
-    "sound": "data/wörter/sounds/r/rechnen.mp3",
+    "name": "Rechnen",
+    "image": "data/wörter/images/r/Rechnen.jpg",
+    "sound": "data/wörter/sounds/r/Rechnen.mp3",
     "folder": "r"
   },
   "rechts": {
     "name": "Rechts",
-    "image": "data/wörter/images/r/rechts.jpeg",
-    "sound": "data/wörter/sounds/r/rechts.mp3",
+    "image": "data/wörter/images/r/Rechts.jpeg",
+    "sound": "data/wörter/sounds/r/Rechts.mp3",
     "folder": "r"
   },
   "regen": {
@@ -373,8 +373,8 @@
   },
   "reich": {
     "name": "Reich",
-    "image": "data/wörter/images/r/reich.jpg",
-    "sound": "data/wörter/sounds/r/reich.mp3",
+    "image": "data/wörter/images/r/Reich.jpg",
+    "sound": "data/wörter/sounds/r/Reich.mp3",
     "folder": "r"
   },
   "reifen": {
@@ -391,20 +391,20 @@
   },
   "rennen": {
     "name": "Rennen",
-    "image": "data/wörter/images/r/rennen.jpg",
+    "image": "data/wörter/images/r/Rennen.jpg",
     "sound": "",
     "folder": "r"
   },
   "richtig": {
     "name": "Richtig",
-    "image": "data/wörter/images/r/richtig.jpg",
-    "sound": "data/wörter/sounds/r/richtig.mp3",
+    "image": "data/wörter/images/r/Richtig.jpg",
+    "sound": "data/wörter/sounds/r/Richtig.mp3",
     "folder": "r"
   },
   "riechen": {
     "name": "Riechen",
-    "image": "data/wörter/images/r/riechen.jpg",
-    "sound": "data/wörter/sounds/r/riechen.mp3",
+    "image": "data/wörter/images/r/Riechen.jpg",
+    "sound": "data/wörter/sounds/r/Riechen.mp3",
     "folder": "r"
   },
   "rock": {
@@ -421,7 +421,7 @@
   },
   "rot": {
     "name": "Rot",
-    "image": "data/wörter/images/r/rot.jpg",
+    "image": "data/wörter/images/r/Rot.jpg",
     "sound": "",
     "folder": "r"
   },

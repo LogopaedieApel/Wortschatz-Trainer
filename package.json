@@ -24,6 +24,7 @@
     "update-names:apply": "node tools/update-names-umlauts.mjs --apply",
     "check-case-consistency": "node tools/check-case-consistency.mjs",
     "enforce-filename-case": "node tools/enforce-filename-case.mjs",
+  "fix:case": "node tools/fix-db-path-case.mjs --apply",
   "repair-missing-assets:dry": "node tools/repair-missing-assets.mjs",
   "repair-missing-assets": "node tools/repair-missing-assets.mjs --apply",
     "prepare": "husky",

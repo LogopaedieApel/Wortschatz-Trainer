@@ -41,6 +41,7 @@ const tabSaetze = document.getElementById('tab-saetze');
 const saveStatus = document.getElementById('save-status');
 const notificationArea = document.getElementById('notification-area');
 const runHealthcheckButton = document.getElementById('run-healthcheck-button');
+const healthcheckFixCaseToggle = document.getElementById('healthcheck-fix-case-toggle');
 const autoFixToggle = document.getElementById('auto-fix-toggle');
 const importNewSoundsButton = document.getElementById('import-new-sounds-button');
 const showMissingAssetsButton = document.getElementById('show-missing-assets-button');
@@ -1777,21 +1778,31 @@ if (idRenameApplyBtn) {
     });
 }
 
-// Healthcheck-Button: Führt den Server-Healthcheck aus und zeigt ein kompaktes Ergebnis an
+// Healthcheck-Button: Führt den Server-Healthcheck (voll) aus und zeigt ein kompaktes Ergebnis an
 if (runHealthcheckButton) {
     runHealthcheckButton.addEventListener('click', async () => {
         const prev = notificationArea.textContent;
         notificationArea.textContent = 'Prüfe Daten…';
         try {
-            const res = await fetch('/api/healthcheck');
+            // Versuche erweiterten Healthcheck (full=1), optional mit fixCase
+            const fixCase = healthcheckFixCaseToggle ? (healthcheckFixCaseToggle.checked ? '&fixCase=1' : '') : '';
+            let res = await fetch(`/api/healthcheck?full=1${fixCase}`);
+            if (res.status === 400 || res.status === 404) {
+                res = await fetch('/api/healthcheck');
+            }
             if (!res.ok) throw new Error('Server-Antwort nicht OK');
             const data = await res.json();
             const w = data.woerter?.counts || { sets: 0, items: 0, missingIds: 0, missingSetFiles: 0 };
             const s = data.saetze?.counts || { sets: 0, items: 0, missingIds: 0, missingSetFiles: 0 };
+            const filesW = data.files?.woerter_missing ?? data.woerter?.files?.missing?.length ?? 0;
+            const filesS = data.files?.saetze_missing ?? data.saetze?.files?.missing?.length ?? 0;
+            const caseW = data.case?.woerter_mismatches ?? data.woerter?.case?.mismatches?.length ?? 0;
+            const caseS = data.case?.saetze_mismatches ?? data.saetze?.case?.mismatches?.length ?? 0;
             const ok = data.ok === true;
-            notificationArea.textContent = ok
-              ? `Healthcheck OK – Wörter: ${w.sets} Sets / ${w.items} Items, Sätze: ${s.sets} Sets / ${s.items} Items`
-              : `Healthcheck PROBLEME – fehlende IDs: W=${w.missingIds}, S=${s.missingIds}, fehlende Dateien: W=${w.missingSetFiles}, S=${s.missingSetFiles}`;
+                        const fixNote = (healthcheckFixCaseToggle && healthcheckFixCaseToggle.checked) ? ' (mit Case-Fix)' : '';
+                        notificationArea.textContent = ok
+                            ? `Healthcheck OK${fixNote} – Sets: W ${w.sets}/${w.items}, S ${s.sets}/${s.items} · Dateien fehlen: W ${filesW}, S ${filesS} · Case: W ${caseW}, S ${caseS}`
+                            : `Healthcheck PROBLEME${fixNote} – fehlende IDs: W=${w.missingIds}, S=${s.missingIds} · fehlende Dateien: W=${filesW}, S=${filesS} · Case: W=${caseW}, S=${caseS}`;
             // Details bei Bedarf in der Konsole
             if (!ok) {
                 console.warn('[Healthcheck Details]', data);

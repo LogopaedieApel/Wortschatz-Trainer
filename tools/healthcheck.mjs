@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from 'fs/promises';
 import fssync from 'fs';
+import { execSync } from 'node:child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -9,6 +10,7 @@ const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..');
 const args = process.argv.slice(2);
 const format = args.includes('--format') ? args[args.indexOf('--format') + 1] : 'table';
+const fixCase = args.includes('--fix-case');
 
 const DB = {
   woerter: 'data/items_database.json',
@@ -51,6 +53,50 @@ async function checkFiles(dbRel) {
   return missing;
 }
 
+function listGitFiles(prefix) {
+  // All files tracked by git under prefix, with correct case as in the repository
+  const out = execSync(`git -c core.quotepath=false ls-files ${prefix}`, { encoding: 'utf8' });
+  return out.split(/\r?\n/).filter(Boolean);
+}
+
+function buildCaseIndex(files) {
+  const map = new Map();
+  for (const f of files) {
+    const n1 = f.normalize('NFC').toLowerCase();
+    const n2 = f.normalize('NFD').toLowerCase();
+    if (!map.has(n1)) map.set(n1, f);
+    if (!map.has(n2)) map.set(n2, f);
+  }
+  return map;
+}
+
+async function checkCaseMismatches(dbRel) {
+  const gitFiles = listGitFiles('data');
+  const caseIndex = buildCaseIndex(gitFiles);
+  const db = await readJSON(dbRel);
+  const mismatches = [];
+  const missing = [];
+  const norm = (p) => p.replace(/\\/g,'/');
+  for (const [id, it] of Object.entries(db)) {
+    for (const kind of ['image', 'sound']) {
+      const p = it[kind];
+      if (!p) continue;
+      const pp = norm(p);
+      if (!gitFiles.includes(pp)) {
+        const keyNFC = pp.normalize('NFC').toLowerCase();
+        const keyNFD = pp.normalize('NFD').toLowerCase();
+        const candidate = caseIndex.get(keyNFC) || caseIndex.get(keyNFD);
+        if (candidate) {
+          mismatches.push({ id, kind, json: toPosix(pp), repo: toPosix(candidate) });
+        } else {
+          missing.push({ id, kind, path: toPosix(pp) });
+        }
+      }
+    }
+  }
+  return { mismatches, missing };
+}
+
 async function checkSets(manifestRel, domain) {
   const manifest = await readJSON(manifestRel);
   const setPaths = collectSetPaths(manifest);
@@ -88,14 +134,32 @@ async function checkSets(manifestRel, domain) {
 
 (async () => {
   try {
+    // Optional: vorab Case-Fixer anwenden, damit nachfolgende Checks konsistente Ergebnisse liefern
+    if (fixCase) {
+      try {
+        const out = execSync('node tools/fix-db-path-case.mjs --apply', { encoding: 'utf8' });
+        if (format !== 'json') {
+          console.log('[healthcheck] --fix-case ausgeführt:');
+          console.log(out.trim());
+        }
+      } catch (e) {
+        console.warn('[healthcheck] --fix-case Fehler:', e.message);
+      }
+    }
     const filesWoerter = await checkFiles(DB.woerter);
     const filesSaetze = await checkFiles(DB.saetze);
+    const caseWoerter = await checkCaseMismatches(DB.woerter);
+    const caseSaetze = await checkCaseMismatches(DB.saetze);
     const setsWoerter = await checkSets(MANIFEST.woerter, 'woerter');
     const setsSaetze = await checkSets(MANIFEST.saetze, 'saetze');
     const summary = {
       files: {
         woerter_missing: filesWoerter.length,
         saetze_missing: filesSaetze.length,
+      },
+      case: {
+        woerter_mismatches: caseWoerter.mismatches.length,
+        saetze_mismatches: caseSaetze.mismatches.length,
       },
       sets: {
         woerter_invalid_format: setsWoerter.invalidFormat.length,
@@ -105,6 +169,8 @@ async function checkSets(manifestRel, domain) {
       },
       ok: filesWoerter.length === 0
         && filesSaetze.length === 0
+        && caseWoerter.mismatches.length === 0
+        && caseSaetze.mismatches.length === 0
         && setsWoerter.invalidFormat.length === 0
         && setsSaetze.invalidFormat.length === 0
         && setsWoerter.missingIds.length === 0
@@ -119,6 +185,10 @@ async function checkSets(manifestRel, domain) {
             woerter: filesWoerter,
             saetze: filesSaetze,
           },
+          case: {
+            woerter: caseWoerter,
+            saetze: caseSaetze,
+          },
           sets: {
             woerter: setsWoerter,
             saetze: setsSaetze,
@@ -128,10 +198,13 @@ async function checkSets(manifestRel, domain) {
     } else {
       console.log(`Healthcheck: ok=${summary.ok ? 'true' : 'false'}`);
       console.log(`- Dateien fehlen: woerter=${summary.files.woerter_missing}, saetze=${summary.files.saetze_missing}`);
+      console.log(`- Case-Mismatches: woerter=${summary.case.woerter_mismatches}, saetze=${summary.case.saetze_mismatches}`);
       console.log(`- Sets: invalid_format (woerter=${summary.sets.woerter_invalid_format}, saetze=${summary.sets.saetze_invalid_format}), missing_ids (woerter=${summary.sets.woerter_missing_ids}, saetze=${summary.sets.saetze_missing_ids})`);
       const sample = (arr) => arr.slice(0, 10);
       if (filesWoerter.length) console.log('Beispiele fehlende Dateien (woerter):', sample(filesWoerter));
       if (filesSaetze.length) console.log('Beispiele fehlende Dateien (saetze):', sample(filesSaetze));
+      if (caseWoerter.mismatches.length) console.log('Beispiele Case-Mismatches (woerter):', sample(caseWoerter.mismatches));
+      if (caseSaetze.mismatches.length) console.log('Beispiele Case-Mismatches (saetze):', sample(caseSaetze.mismatches));
       if (setsWoerter.invalidFormat.length) console.log('Beispiele ungültige Sets (woerter):', sample(setsWoerter.invalidFormat));
       if (setsSaetze.invalidFormat.length) console.log('Beispiele ungültige Sets (saetze):', sample(setsSaetze.invalidFormat));
       if (setsWoerter.missingIds.length) console.log('Beispiele fehlende IDs (woerter):', sample(setsWoerter.missingIds));

@@ -1876,6 +1876,40 @@ app.post('/api/editor/item/id-rename', guardWrite, async (req, res) => {
         const item = db[oldId];
         delete db[oldId];
         db[normalized] = item;
+
+        // Nachziehen der Asset-Pfade: Für 'woerter' erwartet die Ordnerlogik den ersten Buchstaben der (neuen) ID
+        // Dateinamen bleiben aus dem Anzeigenamen abgeleitet, Endungen bleiben erhalten (.jpg/.jpeg/.png bzw. .mp3)
+    const isSaetzeRename = mode === 'saetze';
+    const nameForBase = (item && typeof item.name === 'string') ? item.name : normalized;
+        const desiredBase = prettyBaseFromDisplayName(nameForBase);
+        // Bild
+        const curImage = item && item.image ? String(item.image) : '';
+        if (curImage) {
+            const imgDir = expectedDirForField('image', isSaetzeRename ? 'saetze' : 'woerter', normalized, curImage);
+            const extMatch = curImage.match(/\.[a-zA-Z0-9]+$/);
+            const ext = extMatch ? extMatch[0].toLowerCase() : '.jpg';
+            const desired = `${imgDir}/${desiredBase}${ext}`;
+            try {
+                const finalRel = await renameAssetIfNeeded(curImage, desired);
+                if (finalRel) db[normalized].image = ensureForwardSlashes(finalRel);
+            } catch (e) {
+                console.warn('[ID-RENAME] Bild konnte nicht verschoben werden:', e.message);
+            }
+        }
+        // Ton
+        const curSound = item && item.sound ? String(item.sound) : '';
+        if (curSound) {
+            const sndDir = expectedDirForField('sound', isSaetzeRename ? 'saetze' : 'woerter', normalized, curSound);
+            const extMatch = curSound.match(/\.[a-zA-Z0-9]+$/);
+            const ext = extMatch ? extMatch[0].toLowerCase() : '.mp3';
+            const desired = `${sndDir}/${desiredBase}${ext}`;
+            try {
+                const finalRel = await renameAssetIfNeeded(curSound, desired);
+                if (finalRel) db[normalized].sound = ensureForwardSlashes(finalRel);
+            } catch (e) {
+                console.warn('[ID-RENAME] Ton konnte nicht verschoben werden:', e.message);
+            }
+        }
         // Rückwärtskompatibilität: fehlende 'folder'-Felder ergänzen (analog Patch-Display-Name), damit Schema-Validierung nicht scheitert
         const isSaetze = mode === 'saetze';
         const ensureFolder = (k, it) => {
@@ -1902,7 +1936,7 @@ app.post('/api/editor/item/id-rename', guardWrite, async (req, res) => {
 
         await writeDbValidated(dbPath, db, { stamp, backup: true, auditOp: 'id-rename:db', context: { mode, from: oldId, to: normalized } });
 
-        // Sets aktualisieren mit Deduplizierung
+    // Sets aktualisieren mit Deduplizierung
         for (const plan of setPlans) {
             const file = plan.file;
             const arr = JSON.parse(await fs.readFile(file, 'utf8'));
@@ -1935,25 +1969,107 @@ if (require.main === module) {
 module.exports = serverInstance || app;
 
 // Healthcheck-Endpoint: Validiert beide Modi und gibt eine kompakte Zusammenfassung zurück
+// Zusätzliche Helper für erweiterten Healthcheck (Dateien + Case)
+const { execSync } = require('child_process');
+function listGitFiles(prefix) {
+    try {
+        const out = execSync(`git -c core.quotepath=false ls-files ${prefix}`, { encoding: 'utf8' });
+        return out.split(/\r?\n/).filter(Boolean);
+    } catch (e) {
+        // Fallback: leere Liste, wenn git nicht verfügbar ist
+        return [];
+    }
+}
+function buildCaseIndex(files) {
+    const map = new Map();
+    for (const f of files) {
+        const n1 = f.normalize('NFC').toLowerCase();
+        const n2 = f.normalize('NFD').toLowerCase();
+        if (!map.has(n1)) map.set(n1, f);
+        if (!map.has(n2)) map.set(n2, f);
+    }
+    return map;
+}
+async function collectDbFileIssues(mode) {
+    // Liefert { missing: [{id,kind,path}], caseMismatches: [{id,kind,json,repo}] }
+    const isSaetze = mode === 'saetze';
+    const dbFile = dataPath(isSaetze ? 'items_database_saetze.json' : 'items_database.json');
+    let db = {};
+    try { db = JSON.parse(await fs.readFile(dbFile, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+    const gitFiles = listGitFiles('data');
+    const caseIndex = buildCaseIndex(gitFiles);
+    const norm = (p) => String(p || '').replace(/\\+/g, '/');
+    const missing = [];
+    const caseMismatches = [];
+    for (const [id, item] of Object.entries(db)) {
+        for (const kind of ['image','sound']) {
+            const p = item && item[kind] ? norm(item[kind]) : '';
+            if (!p) continue;
+            // Dateifehlermeldung, wenn Datei nicht existiert
+            const abs = path.join(__dirname, p);
+            try { await fs.access(abs); } catch { missing.push({ id, kind, path: p }); }
+            // Case-Check gegen git Index (nur sinnvoll, wenn git-Dateiliste verfügbar)
+            if (gitFiles.length && !gitFiles.includes(p)) {
+                const keyNFC = p.normalize('NFC').toLowerCase();
+                const keyNFD = p.normalize('NFD').toLowerCase();
+                const candidate = caseIndex.get(keyNFC) || caseIndex.get(keyNFD);
+                if (candidate) caseMismatches.push({ id, kind, json: p, repo: candidate });
+            }
+        }
+    }
+    return { missing, caseMismatches };
+}
+
 app.get('/api/healthcheck', async (req, res) => {
     const detail = req.query.detail === '1' || req.query.detail === 'true';
+    const wantFull = req.query.full === '1' || req.query.full === 'true';
+    const wantFixCase = req.query.fixCase === '1' || req.query.fixCase === 'true';
     try {
+        // Optional: vorab Case-Fix auf DB-Pfade anwenden
+        if (wantFull && wantFixCase) {
+            try {
+                execSync('node tools/fix-db-path-case.mjs --apply', { encoding: 'utf8' });
+            } catch (e) {
+                console.warn('[healthcheck] fix-case Fehler:', e.message);
+            }
+        }
         const [woerter, saetze] = await Promise.all([
             validateModeIntegrity('woerter'),
             validateModeIntegrity('saetze')
         ]);
-        const ok = woerter.ok && saetze.ok;
+
+        // Standard-Zusammenfassung (Sets-Integrität)
+        const baseSummary = {
+            woerter: { ok: woerter.ok, counts: woerter.counts },
+            saetze: { ok: saetze.ok, counts: saetze.counts }
+        };
+
+        let files = null;
+        let cases = null;
+        if (wantFull) {
+            const [{ missing: missW, caseMismatches: caseW }, { missing: missS, caseMismatches: caseS }] = await Promise.all([
+                collectDbFileIssues('woerter'),
+                collectDbFileIssues('saetze')
+            ]);
+            files = { woerter_missing: missW.length, saetze_missing: missS.length };
+            cases = { woerter_mismatches: caseW.length, saetze_mismatches: caseS.length };
+            baseSummary.woerter.files = { missing: missW };
+            baseSummary.saetze.files = { missing: missS };
+            baseSummary.woerter.case = { mismatches: caseW };
+            baseSummary.saetze.case = { mismatches: caseS };
+        }
+
+        const ok = woerter.ok && saetze.ok
+            && (!files || (files.woerter_missing === 0 && files.saetze_missing === 0))
+            && (!cases || (cases.woerter_mismatches === 0 && cases.saetze_mismatches === 0));
+
         const summary = {
             ok,
             timestamp: new Date().toISOString(),
-            woerter: {
-                ok: woerter.ok,
-                counts: woerter.counts
-            },
-            saetze: {
-                ok: saetze.ok,
-                counts: saetze.counts
-            }
+            ...(files ? { files } : {}),
+            ...(cases ? { case: cases } : {}),
+            woerter: baseSummary.woerter,
+            saetze: baseSummary.saetze
         };
         if (detail) {
             summary.woerter.details = woerter.sets;

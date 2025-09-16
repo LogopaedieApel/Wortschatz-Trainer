@@ -47,7 +47,7 @@
       ]
     },
     "ich": {
-      "cursor": 3,
+      "cursor": 2,
       "entries": [
         {
           "base": true,
@@ -63,11 +63,6 @@
           "prev": "ich",
           "ts": "2025-09-16T07:15:10.606Z",
           "value": "Ich"
-        },
-        {
-          "prev": "Ich",
-          "ts": "2025-09-16T07:15:30.798Z",
-          "value": "ich"
         }
       ]
     },

@@ -162,9 +162,9 @@
     "folder": "h"
   },
   "ich": {
-    "name": "ich",
-    "image": "data/wörter/images/i/ich.jpg",
-    "sound": "data/wörter/sounds/i/ich.mp3",
+    "name": "Ich",
+    "image": "data/wörter/images/i/Ich.jpg",
+    "sound": "data/wörter/sounds/i/Ich.mp3",
     "folder": "i"
   },
   "kaninchen": {
