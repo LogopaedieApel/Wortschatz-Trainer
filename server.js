@@ -2020,6 +2020,33 @@ async function collectDbFileIssues(mode) {
     return { missing, caseMismatches };
 }
 
+// Prüft Name-zu-Dateiname-Konsistenz: Basename aus Anzeigename vs. Basename der Datei
+function basenameWithoutExt(p) {
+    if (!p) return '';
+    const s = String(p).replace(/\\+/g, '/');
+    const base = s.split('/').pop() || '';
+    return base.replace(/\.[^.]+$/, '');
+}
+async function collectNameFileMismatches(mode) {
+    const isSaetze = mode === 'saetze';
+    const dbFile = dataPath(isSaetze ? 'items_database_saetze.json' : 'items_database.json');
+    let db = {};
+    try { db = JSON.parse(await fs.readFile(dbFile, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+    const out = [];
+    for (const [id, item] of Object.entries(db)) {
+        const nameBase = prettyBaseFromDisplayName(item && item.name ? item.name : '');
+        for (const kind of ['image','sound']) {
+            const p = item && item[kind] ? String(item[kind]) : '';
+            if (!p) continue; // Nur prüfen, wenn ein Pfad vorhanden ist
+            const fileBase = basenameWithoutExt(p);
+            if (fileBase !== nameBase) {
+                out.push({ id, kind, nameBase, fileBase, path: ensureForwardSlashes(p) });
+            }
+        }
+    }
+    return out;
+}
+
 app.get('/api/healthcheck', async (req, res) => {
     const detail = req.query.detail === '1' || req.query.detail === 'true';
     const wantFull = req.query.full === '1' || req.query.full === 'true';
@@ -2046,28 +2073,40 @@ app.get('/api/healthcheck', async (req, res) => {
 
         let files = null;
         let cases = null;
+        let names = null;
         if (wantFull) {
-            const [{ missing: missW, caseMismatches: caseW }, { missing: missS, caseMismatches: caseS }] = await Promise.all([
+            const [filesW, filesS, nameMismW, nameMismS] = await Promise.all([
                 collectDbFileIssues('woerter'),
-                collectDbFileIssues('saetze')
+                collectDbFileIssues('saetze'),
+                collectNameFileMismatches('woerter'),
+                collectNameFileMismatches('saetze')
             ]);
+            const missW = filesW.missing;
+            const caseW = filesW.caseMismatches;
+            const missS = filesS.missing;
+            const caseS = filesS.caseMismatches;
             files = { woerter_missing: missW.length, saetze_missing: missS.length };
             cases = { woerter_mismatches: caseW.length, saetze_mismatches: caseS.length };
             baseSummary.woerter.files = { missing: missW };
             baseSummary.saetze.files = { missing: missS };
             baseSummary.woerter.case = { mismatches: caseW };
             baseSummary.saetze.case = { mismatches: caseS };
+            names = { woerter_namefile: nameMismW.length, saetze_namefile: nameMismS.length };
+            baseSummary.woerter.nameFile = { mismatches: nameMismW };
+            baseSummary.saetze.nameFile = { mismatches: nameMismS };
         }
 
         const ok = woerter.ok && saetze.ok
             && (!files || (files.woerter_missing === 0 && files.saetze_missing === 0))
-            && (!cases || (cases.woerter_mismatches === 0 && cases.saetze_mismatches === 0));
+            && (!cases || (cases.woerter_mismatches === 0 && cases.saetze_mismatches === 0))
+            && (!names || (names.woerter_namefile === 0 && names.saetze_namefile === 0));
 
         const summary = {
             ok,
             timestamp: new Date().toISOString(),
             ...(files ? { files } : {}),
             ...(cases ? { case: cases } : {}),
+            ...(names ? { nameFile: names } : {}),
             woerter: baseSummary.woerter,
             saetze: baseSummary.saetze
         };
@@ -2079,6 +2118,105 @@ app.get('/api/healthcheck', async (req, res) => {
     } catch (error) {
         console.error('[HEALTHCHECK] Fehler:', error);
         res.status(500).json({ ok: false, message: 'Healthcheck fehlgeschlagen.' });
+    }
+});
+
+// Konflikte Name vs. Dateiname auflösen
+// Body: { mode, actions: [ { id, strategy: 'useDisplay'|'useFile', fields?: ['image','sound'] } ] }
+app.post('/api/resolve-name-file-conflicts', guardWrite, async (req, res) => {
+    const { mode, actions } = req.body || {};
+    if (mode !== 'woerter' && mode !== 'saetze') return res.status(400).json({ ok: false, message: 'Ungültiger Modus' });
+    if (!Array.isArray(actions) || actions.length === 0) return res.status(400).json({ ok: false, message: 'actions erforderlich' });
+    const isSaetze = mode === 'saetze';
+    const dbPathMode = dataPath(isSaetze ? 'items_database_saetze.json' : 'items_database.json');
+    let lock; const stamp = nowIsoCompact();
+    try {
+        lock = await acquireLock('editor');
+        let db = {}; try { db = JSON.parse(await fs.readFile(dbPathMode, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+
+        const results = [];
+
+        const ensureFolder = (k, it) => {
+            if (!it || typeof it !== 'object') return;
+            if (typeof it.folder === 'string') return;
+            if (isSaetze) {
+                const pick = (p) => {
+                    const s = (p || '').replace(/\\+/g, '/');
+                    const m = s.match(/data\/sätze\/(images|sounds)\/([^\/]+)/i);
+                    return m ? m[2].toLowerCase() : '';
+                };
+                it.folder = pick(it.image) || pick(it.sound) || (k ? String(k).charAt(0).toLowerCase() : '');
+            } else {
+                const pick = (p) => {
+                    const s = (p || '').replace(/\\+/g, '/');
+                    const m = s.match(/data\/wörter\/(images|sounds)\/([^\/]+)/i);
+                    return m ? m[2].toLowerCase() : '';
+                };
+                it.folder = pick(it.image) || pick(it.sound) || (k ? String(k).charAt(0).toLowerCase() : '');
+            }
+            if (typeof it.folder !== 'string') it.folder = '';
+        };
+
+        for (const act of actions) {
+            const { id, strategy } = act || {};
+            const fields = Array.isArray(act.fields) && act.fields.length ? act.fields : ['image','sound'];
+            if (!id || (strategy !== 'useDisplay' && strategy !== 'useFile')) {
+                results.push({ id, ok: false, message: 'Ungültige Aktion' });
+                continue;
+            }
+            const item = db[id];
+            if (!item) { results.push({ id, ok: false, message: 'ID nicht gefunden' }); continue; }
+
+            try {
+                if (strategy === 'useDisplay') {
+                    const desiredBase = prettyBaseFromDisplayName(item.name || '');
+                    for (const kind of fields) {
+                        const cur = item && item[kind] ? String(item[kind]) : '';
+                        if (!cur) continue;
+                        const dir = expectedDirForField(kind === 'image' ? 'image' : 'sound', isSaetze ? 'saetze' : 'woerter', id, cur);
+                        const extMatch = cur.match(/\.[a-zA-Z0-9]+$/);
+                        const ext = extMatch ? extMatch[0].toLowerCase() : (kind === 'image' ? '.jpg' : '.mp3');
+                        const desired = `${dir}/${desiredBase}${ext}`;
+                        const finalRel = await renameAssetIfNeeded(cur, desired);
+                        if (finalRel) item[kind] = ensureForwardSlashes(finalRel);
+                    }
+                } else if (strategy === 'useFile') {
+                    // Neuen Namen aus existierendem Dateinamen ableiten (image bevorzugt)
+                    const imageBase = basenameWithoutExt(item.image || '');
+                    const soundBase = basenameWithoutExt(item.sound || '');
+                    const sourceBase = imageBase || soundBase || '';
+                    if (!sourceBase) { results.push({ id, ok: false, message: 'Kein Dateiname vorhanden' }); continue; }
+                    const newName = displayNameFromBase(sourceBase);
+                    const desiredBase = prettyBaseFromDisplayName(newName);
+                    // Beide vorhandenen Felder auf neuen Basenamen bringen
+                    for (const kind of ['image','sound']) {
+                        const cur = item && item[kind] ? String(item[kind]) : '';
+                        if (!cur) continue;
+                        const dir = expectedDirForField(kind, isSaetze ? 'saetze' : 'woerter', id, cur);
+                        const extMatch = cur.match(/\.[a-zA-Z0-9]+$/);
+                        const ext = extMatch ? extMatch[0].toLowerCase() : (kind === 'image' ? '.jpg' : '.mp3');
+                        const desired = `${dir}/${desiredBase}${ext}`;
+                        const finalRel = await renameAssetIfNeeded(cur, desired);
+                        if (finalRel) item[kind] = ensureForwardSlashes(finalRel);
+                    }
+                    // Namen setzen
+                    item.name = newName;
+                }
+                ensureFolder(id, item);
+                results.push({ id, ok: true });
+            } catch (e) {
+                console.warn('[resolve-name-file-conflicts] Fehler bei', id, e.message);
+                results.push({ id, ok: false, message: e.message });
+            }
+        }
+
+        await writeDbValidated(dbPathMode, db, { stamp, backup: true, auditOp: 'resolve-name-file-conflicts', context: { mode, actions: actions.length } });
+        return res.json({ ok: true, results });
+    } catch (e) {
+        console.error('[resolve-name-file-conflicts] Fehler:', e);
+        return res.status(500).json({ ok: false, message: 'Interner Fehler bei der Konfliktauflösung' });
+    } finally {
+        await releaseLock(lock);
     }
 });
 

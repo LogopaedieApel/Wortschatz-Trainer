@@ -402,7 +402,7 @@
     "folder": "r"
   },
   "riechen": {
-    "name": "riechen",
+    "name": "Riechen",
     "image": "data/wörter/images/r/riechen.jpg",
     "sound": "data/wörter/sounds/r/riechen.mp3",
     "folder": "r"
@@ -420,7 +420,7 @@
     "folder": "r"
   },
   "rot": {
-    "name": "rot",
+    "name": "Rot",
     "image": "data/wörter/images/r/rot.jpg",
     "sound": "",
     "folder": "r"
@@ -510,13 +510,13 @@
     "folder": "s"
   },
   "stechen": {
-    "name": "stechen",
+    "name": "Stechen",
     "image": "data/wörter/images/s/stechen.jpeg",
     "sound": "",
     "folder": "s"
   },
   "streicheln": {
-    "name": "streicheln",
+    "name": "Streicheln",
     "image": "data/wörter/images/s/streicheln.jpeg",
     "sound": "",
     "folder": "s"

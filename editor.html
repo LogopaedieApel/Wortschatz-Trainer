@@ -160,6 +160,7 @@
             Fix Case vor Prüfung
         </label>
     <button id="show-missing-assets-button">🔎 Fehlende Assets</button>
+    <button id="show-namefile-conflicts-button">⚖️ Name-Dateiname-Konflikte</button>
     <button id="import-new-sounds-button">🎙️ Neue Sounds einsortieren</button>
         <button id="open-help-button">❓ Hilfe</button>
         <label style="margin-left: 12px;">
@@ -245,6 +246,22 @@
             <div id="missing-assets-list" style="max-height: 60vh; overflow-y: auto;">
                 <!-- Wird per JS eingefüllt -->
             </div>
+        </div>
+    </div>
+
+    <!-- Modal: Name vs. Dateiname Konflikte -->
+    <div id="namefile-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 960px; width: 96%;">
+            <span class="close-button" id="namefile-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h2>Name ↔ Dateiname Konflikte</h2>
+            <div id="namefile-summary" style="margin: 10px 0; font-weight: bold;"></div>
+            <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+                <button id="namefile-refresh">Neu prüfen</button>
+                <button id="namefile-apply-display">Alle → Anzeige übernehmen</button>
+                <button id="namefile-apply-file">Alle → Dateiname übernehmen</button>
+                <input type="text" id="namefile-search" placeholder="Suche (ID/Name/Datei)" style="flex:1; padding: 6px 8px;">
+            </div>
+            <div id="namefile-list" style="max-height: 60vh; overflow-y: auto; font-size: 14px;"></div>
         </div>
     </div>
 

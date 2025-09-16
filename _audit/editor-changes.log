@@ -1005,3 +1005,12 @@
 {"ts":"2025-09-16T07:15:30.796Z","op":"patch-display-name","file":"data/items_database.json","backup":"_backup/2025-09-16T071530776Z/data/items_database.json","mode":"woerter","id":"ich"}
 {"ts":"2025-09-16T07:15:30.806Z","op":"name-history:write","file":"_state/name-history.json","backup":"_backup/2025-09-16T071530776Z/_state/name-history.json"}
 {"ts":"2025-09-16T07:15:33.572Z","op":"patch-display-name","file":"data/items_database.json","backup":"_backup/2025-09-16T071533558Z/data/items_database.json","mode":"woerter","id":"ich"}
+{"ts":"2025-09-16T07:33:39.637Z","op":"resolve-name-file-conflicts","file":"data/items_database.json","backup":"_backup/2025-09-16T073339607Z/data/items_database.json","mode":"woerter","actions":1}
+{"ts":"2025-09-16T07:33:41.569Z","op":"resolve-name-file-conflicts","file":"data/items_database.json","backup":"_backup/2025-09-16T073341558Z/data/items_database.json","mode":"woerter","actions":1}
+{"ts":"2025-09-16T07:33:45.634Z","op":"resolve-name-file-conflicts","file":"data/items_database.json","backup":"_backup/2025-09-16T073345622Z/data/items_database.json","mode":"woerter","actions":1}
+{"ts":"2025-09-16T07:33:52.470Z","op":"resolve-name-file-conflicts","file":"data/items_database.json","backup":"_backup/2025-09-16T073352460Z/data/items_database.json","mode":"woerter","actions":1}
+{"ts":"2025-09-16T07:33:55.928Z","op":"resolve-name-file-conflicts","file":"data/items_database.json","backup":"_backup/2025-09-16T073355917Z/data/items_database.json","mode":"woerter","actions":1}
+{"ts":"2025-09-16T07:33:57.220Z","op":"resolve-name-file-conflicts","file":"data/items_database.json","backup":"_backup/2025-09-16T073357209Z/data/items_database.json","mode":"woerter","actions":1}
+{"ts":"2025-09-16T07:33:59.228Z","op":"resolve-name-file-conflicts","file":"data/items_database.json","backup":"_backup/2025-09-16T073359217Z/data/items_database.json","mode":"woerter","actions":1}
+{"ts":"2025-09-16T07:34:01.004Z","op":"resolve-name-file-conflicts","file":"data/items_database.json","backup":"_backup/2025-09-16T073400994Z/data/items_database.json","mode":"woerter","actions":1}
+{"ts":"2025-09-16T07:34:03.462Z","op":"resolve-name-file-conflicts","file":"data/items_database.json","backup":"_backup/2025-09-16T073403451Z/data/items_database.json","mode":"woerter","actions":1}

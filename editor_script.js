@@ -38,6 +38,15 @@ const newAreaMessage = document.getElementById('new-area-message');
 const searchInput = document.getElementById('search-input');
 const tabWoerter = document.getElementById('tab-woerter');
 const tabSaetze = document.getElementById('tab-saetze');
+const showNameFileConflictsButton = document.getElementById('show-namefile-conflicts-button');
+const nameFileModal = document.getElementById('namefile-modal');
+const nameFileClose = document.getElementById('namefile-close');
+const nameFileSummary = document.getElementById('namefile-summary');
+const nameFileList = document.getElementById('namefile-list');
+const nameFileSearch = document.getElementById('namefile-search');
+const nameFileRefreshBtn = document.getElementById('namefile-refresh');
+const nameFileApplyDisplayBtn = document.getElementById('namefile-apply-display');
+const nameFileApplyFileBtn = document.getElementById('namefile-apply-file');
 const saveStatus = document.getElementById('save-status');
 const notificationArea = document.getElementById('notification-area');
 const runHealthcheckButton = document.getElementById('run-healthcheck-button');
@@ -1800,9 +1809,11 @@ if (runHealthcheckButton) {
             const caseS = data.case?.saetze_mismatches ?? data.saetze?.case?.mismatches?.length ?? 0;
             const ok = data.ok === true;
                         const fixNote = (healthcheckFixCaseToggle && healthcheckFixCaseToggle.checked) ? ' (mit Case-Fix)' : '';
-                        notificationArea.textContent = ok
-                            ? `Healthcheck OK${fixNote} – Sets: W ${w.sets}/${w.items}, S ${s.sets}/${s.items} · Dateien fehlen: W ${filesW}, S ${filesS} · Case: W ${caseW}, S ${caseS}`
-                            : `Healthcheck PROBLEME${fixNote} – fehlende IDs: W=${w.missingIds}, S=${s.missingIds} · fehlende Dateien: W=${filesW}, S=${filesS} · Case: W=${caseW}, S=${caseS}`;
+            const nameW = data.nameFile?.woerter_namefile ?? data.woerter?.nameFile?.mismatches?.length ?? 0;
+            const nameS = data.nameFile?.saetze_namefile ?? data.saetze?.nameFile?.mismatches?.length ?? 0;
+            notificationArea.textContent = ok
+                ? `Healthcheck OK${fixNote} – Sets: W ${w.sets}/${w.items}, S ${s.sets}/${s.items} · Dateien fehlen: W ${filesW}, S ${filesS} · Case: W ${caseW}, S ${caseS} · Name↔Datei: W ${nameW}, S ${nameS}`
+                : `Healthcheck PROBLEME${fixNote} – fehlende IDs: W=${w.missingIds}, S=${s.missingIds} · fehlende Dateien: W=${filesW}, S=${filesS} · Case: W=${caseW}, S=${caseS} · Name↔Datei: W=${nameW}, S=${nameS}`;
             // Details bei Bedarf in der Konsole
             if (!ok) {
                 console.warn('[Healthcheck Details]', data);
@@ -1813,6 +1824,118 @@ if (runHealthcheckButton) {
         }
     });
 }
+
+// Name↔Dateiname Konflikte – Client-Seite
+let lastNameFileData = { mismatches: [] };
+function computeNameFileMismatchesFromHealthcheck(json) {
+    try {
+        const modeKey = currentMode === 'saetze' ? 'saetze' : 'woerter';
+        const arr = json?.[modeKey]?.nameFile?.mismatches || [];
+        return Array.isArray(arr) ? arr : [];
+    } catch { return []; }
+}
+function renderNameFileList() {
+    if (!nameFileList) return;
+    const q = (nameFileSearch?.value || '').toLowerCase();
+    const filtered = lastNameFileData.mismatches.filter(x => {
+        const hay = `${x.id} ${x.kind} ${x.nameBase} ${x.fileBase} ${x.path}`.toLowerCase();
+        return hay.includes(q);
+    });
+    nameFileSummary.textContent = `${filtered.length} Konflikte (Modus: ${currentMode === 'woerter' ? 'Wörter' : 'Sätze'})`;
+    const container = document.createElement('div');
+    filtered.sort((a,b)=>a.id.localeCompare(b.id)).forEach(x => {
+        const row = document.createElement('div');
+        row.style.padding = '8px 6px';
+        row.style.borderBottom = '1px solid #eee';
+        row.innerHTML = `
+            <div style="display:grid; grid-template-columns: 130px 1fr; gap:8px; align-items:center;">
+                <div><code>${x.id}</code> · <em>${x.kind}</em></div>
+                <div>
+                    <div>Anzeige: <strong>${x.nameBase}</strong></div>
+                    <div>Datei: <code>${x.fileBase}</code> <span style="color:#888">(${x.path})</span></div>
+                </div>
+            </div>
+            <div style="margin-top:6px; display:flex; gap:8px;">
+                <button class="nf-apply" data-id="${x.id}" data-kind="${x.kind}" data-strategy="useDisplay">→ Anzeige übernehmen</button>
+                <button class="nf-apply" data-id="${x.id}" data-kind="${x.kind}" data-strategy="useFile">→ Dateiname übernehmen</button>
+                <button class="nf-jump" data-id="${x.id}">Zur Zeile</button>
+            </div>
+        `;
+        container.appendChild(row);
+    });
+    nameFileList.innerHTML = '';
+    nameFileList.appendChild(container);
+    // Wire buttons
+    nameFileList.querySelectorAll('.nf-apply').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            const id = e.currentTarget.getAttribute('data-id');
+            const strategy = e.currentTarget.getAttribute('data-strategy');
+            const kind = e.currentTarget.getAttribute('data-kind');
+            await applyNameFileActions([{ id, strategy, fields: [kind] }]);
+        });
+    });
+    nameFileList.querySelectorAll('.nf-jump').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = e.currentTarget.getAttribute('data-id');
+            if (nameFileModal) nameFileModal.style.display = 'none';
+            jumpToItemRow(id);
+        });
+    });
+}
+async function fetchNameFileData() {
+    // Holen wir aus dem Full-Healthcheck (liefert Details)
+    const fixCase = healthcheckFixCaseToggle ? (healthcheckFixCaseToggle.checked ? '&fixCase=1' : '') : '';
+    const res = await fetch(`/api/healthcheck?full=1&detail=1${fixCase}`);
+    const json = await res.json();
+    const mismatches = computeNameFileMismatchesFromHealthcheck(json);
+    lastNameFileData = { mismatches };
+}
+async function applyNameFileActions(actions) {
+    try {
+        const body = { mode: currentMode, actions };
+        const resp = await fetch('/api/resolve-name-file-conflicts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        const json = await resp.json();
+        if (!resp.ok || json.ok === false) throw new Error(json.message || 'Serverfehler');
+        // Refresh data and UI
+        await fetchNameFileData();
+        renderNameFileList();
+        statusMessage.textContent = 'Konflikt(e) verarbeitet.';
+        await loadData(true);
+    } catch (e) {
+        console.error(e);
+        statusMessage.textContent = `Fehler bei Konfliktauflösung: ${e.message}`;
+    }
+}
+if (showNameFileConflictsButton && nameFileModal) {
+    showNameFileConflictsButton.addEventListener('click', async () => {
+        try {
+            nameFileSummary.textContent = '';
+            nameFileList.innerHTML = 'Prüfe…';
+            nameFileModal.style.display = 'flex';
+            await fetchNameFileData();
+            renderNameFileList();
+        } catch (e) {
+            console.error(e);
+            nameFileList.innerHTML = 'Fehler beim Prüfen.';
+        }
+    });
+}
+if (nameFileClose && nameFileModal) {
+    nameFileClose.addEventListener('click', ()=> nameFileModal.style.display = 'none');
+    nameFileModal.addEventListener('click', (e)=> { if (e.target === nameFileModal) nameFileModal.style.display = 'none'; });
+}
+if (nameFileRefreshBtn) nameFileRefreshBtn.addEventListener('click', async ()=> { await fetchNameFileData(); renderNameFileList(); });
+if (nameFileApplyDisplayBtn) nameFileApplyDisplayBtn.addEventListener('click', async ()=> {
+    const ids = Array.from(new Set(lastNameFileData.mismatches.map(m=>m.id)));
+    const actions = ids.map(id => ({ id, strategy: 'useDisplay' }));
+    await applyNameFileActions(actions);
+});
+if (nameFileApplyFileBtn) nameFileApplyFileBtn.addEventListener('click', async ()=> {
+    const ids = Array.from(new Set(lastNameFileData.mismatches.map(m=>m.id)));
+    const actions = ids.map(id => ({ id, strategy: 'useFile' }));
+    await applyNameFileActions(actions);
+});
+if (nameFileSearch) nameFileSearch.addEventListener('input', renderNameFileList);
 
 // Schließen des Modals bei Klick außerhalb des Inhalts
 if (archiveModal) {
