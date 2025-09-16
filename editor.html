@@ -14,11 +14,13 @@
     .controls { margin-bottom: 8px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .controls > * { flex: 0 0 auto; }
     #save-status { order: 0; }
+    /* Hide placeholder when empty to avoid left indent before status-message */
+    #save-status:empty { display: none !important; }
     #status-message { order: 1; }
     #notification-area { order: 2; }
     #server-status-badge { order: 99; margin-left: 8px !important; }
     .tab-controls { display:flex; gap:8px; margin-bottom: 6px; position: relative; align-items: center; }
-    #add-set-button { white-space: nowrap; padding: 10px 22px; }
+    #add-set-button { white-space: nowrap; padding: 10px 22px; min-width: 240px; }
     .tab-controls .flex-spacer { flex: 1 1 auto; }
     .tab-button { padding:10px 22px; border:1px solid #ccc; border-radius:6px; background:#eee; min-width: 140px; font-weight: 600; }
     #table-wrapper .tab-controls { border-bottom: 0; }
@@ -139,16 +141,106 @@
             text-decoration: none;
             cursor: pointer;
         }
+
+        /* Reduzierte Matrix-Ansicht: nur Name + Aktionen sichtbar */
+        body.matrix-reduced #editor-table th.col-id,
+        body.matrix-reduced #editor-table td.col-id,
+        body.matrix-reduced #editor-table th.col-image,
+        body.matrix-reduced #editor-table td.col-image,
+        body.matrix-reduced #editor-table th.col-sound,
+        body.matrix-reduced #editor-table td.col-sound,
+        body.matrix-reduced #editor-table th.set-col,
+        body.matrix-reduced #editor-table td.set-cell {
+            display: none;
+        }
+        
+        /* Variante: Nur ID, Bild, Ton ausblenden (Listen bleiben sichtbar) */
+        body.matrix-hide-id-media #editor-table th.col-id,
+        body.matrix-hide-id-media #editor-table td.col-id,
+        body.matrix-hide-id-media #editor-table th.col-image,
+        body.matrix-hide-id-media #editor-table td.col-image,
+        body.matrix-hide-id-media #editor-table th.col-sound,
+        body.matrix-hide-id-media #editor-table td.col-sound {
+            display: none;
+        }
+        /* Wenn der Name selbst klickbar ist, kann die Aktionsspalte entfallen */
+        body.matrix-hide-id-media #editor-table th#th-actions,
+        body.matrix-hide-id-media #editor-table td.col-actions { display: none; }
+        /* Sticky-Offset korrigieren, wenn die ID-Spalte ausgeblendet ist */
+        body.matrix-hide-id-media .sticky-col.col-2 { left: 0 !important; }
+        /* Aktionsspalte dezenter Button */
+        .edit-button-subtle {
+            padding: 6px 10px;
+            background: #f7f7f7;
+            border: 1px solid #ddd;
+            color: #333;
+            border-radius: 4px;
+        }
+        .edit-button-subtle:hover { background: #efefef; }
+        /* Name-Button dezent und volle Breite */
+        .name-edit-button {
+            width: 100%;
+            text-align: left;
+            padding: 8px 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            color: #333;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .name-edit-button::before { content: '\270E'; opacity: 0.75; font-size: 0.95em; }
+        .name-edit-button:hover { background: #f0f0f0; }
+        .name-edit-button:focus { outline: none; border-color: #7da6ff; box-shadow: 0 0 0 2px rgba(125,166,255,0.25); }
+
+        /* Tools menu styling */
+        #tools-menu-button {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: #f8f8f8;
+            cursor: pointer;
+            font-size: 200%;
+        }
+        #tools-menu-button:hover { background: #f0f0f0; }
+        #tools-menu-button[aria-expanded="true"] { border-color: #7da6ff; box-shadow: 0 0 0 2px rgba(125,166,255,0.25); }
+        #tools-menu button[role="menuitem"] {
+            text-align: left;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+            background: #fafafa;
+        }
+        #tools-menu button[role="menuitem"]:hover { background:#f0f0f0; }
     </style>
 </head>
-<body>
+<body class="matrix-hide-id-media">
     <h1>Wortschatz-Editor</h1>
+    <!-- Icon-only Menüzeile (rechts, über der Statusmeldung) -->
+    <div class="controls" id="top-menu-row" style="margin-bottom:4px; justify-content:flex-end;">
+        <div id="tools-menu-wrap" style="position: relative; display:inline-block;">
+            <button id="tools-menu-button" aria-haspopup="true" aria-expanded="false" aria-label="Werkzeuge" style="display:inline-flex; align-items:center; gap:8px;">☰</button>
+            <div id="tools-menu" role="menu" aria-labelledby="tools-menu-button" style="position:absolute; top:calc(100% + 6px); right:0; background:#fff; border:1px solid #ddd; border-radius:8px; padding:10px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width: 260px; display:none; z-index:20;">
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <button id="show-archive-button" role="menuitem">♻️ Gelöschte Dateien</button>
+                    <button id="run-healthcheck-button" role="menuitem">🧺 Daten prüfen</button>
+                    <button id="show-missing-assets-button" role="menuitem">🔎 Fehlende Assets</button>
+                    <button id="show-namefile-conflicts-button" role="menuitem">⚖️ Name-Dateiname-Konflikte</button>
+                    <button id="open-help-button" role="menuitem">❓ Hilfe</button>
+                    <label role="menuitemcheckbox" aria-checked="true" style="margin-top:4px; display:flex; align-items:center; gap:8px; padding:6px 8px; border:1px solid #eee; border-radius:6px;">
+                        <input type="checkbox" id="auto-fix-toggle" checked>
+                        Auto-Fixes beim Speichern
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="controls">
         <span id="save-status" style="font-weight:bold;display:inline-block;margin-right:16px;"></span>
-        <p id="status-message" style="display: inline-block; margin-left: 10px;"></p>
-        <div id="notification-area" style="margin-left: 20px; font-weight: bold;"></div>
-        <input type="text" id="search-input" placeholder="Einträge nach Namen filtern...">
-    <span id="server-status-badge" style="margin-left:auto; font-size:11px; padding:3px 8px; border-radius:999px; border:1px solid #ddd; background:#f7f7f7; color:#333; display:inline-flex; align-items:center; gap:6px;" title="Serverstatus">
+        <p id="status-message" style="display:inline-block; margin: 0; padding: 0;"></p>
+        <div id="notification-area" style="margin: 0; font-weight: bold;"></div>
+        <span id="server-status-badge" style="margin-left:auto !important; font-size:11px; padding:3px 8px; border-radius:999px; border:1px solid #ddd; background:#f7f7f7; color:#333; display:inline-flex; align-items:center; gap:6px;" title="Serverstatus">
             <span id="server-status-dot" style="width:8px; height:8px; border-radius:50%; background:#28a745; display:inline-block;"></span>
             <span id="server-status-text">RW @3000</span>
         </span>
@@ -157,26 +249,16 @@
         Hinweis: Der Server läuft im Nur-Lese-Modus. Speichern/Ändern ist vorübergehend deaktiviert.
     </div>
     
-    <div class="controls">
-        <button id="show-archive-button">♻️ Gelöschte Dateien</button>
-    <button id="run-healthcheck-button" title="Prüft Datenintegrität. Führt vorab Case-Fix aus (falls möglich).">🩺 Daten prüfen</button>
-        
-        <button id="show-missing-assets-button">🔎 Fehlende Assets</button>
-        <button id="show-namefile-conflicts-button">⚖️ Name-Dateiname-Konflikte</button>
-        <button id="import-new-sounds-button">🎙️ Neue Sounds einsortieren</button>
-        <button id="open-help-button">❓ Hilfe</button>
-        <label style="margin-left: 8px;">
-            <input type="checkbox" id="auto-fix-toggle" checked>
-            Auto-Fixes beim Speichern
-        </label>
+    <div class="controls" style="justify-content:flex-start;">
+        <input type="text" id="search-input" placeholder="Einträge nach Namen filtern..." style="margin-left:0; order:0;">
     </div>
 
-    <div id="table-wrapper" style="max-height: 70vh; overflow: auto;">
-        <div class="tab-controls" style="position:sticky; top:0; z-index:4; background:#fff; padding-top:6px; margin-bottom:6px;">
+    <div class="tab-controls" style="position:sticky; top:0; z-index:4; background:#fff; padding-top:6px; padding-bottom:4px; padding-left:0; margin-bottom:6px;">
             <button class="tab-button active" id="tab-woerter">Wörter</button>
             <button class="tab-button" id="tab-saetze">Sätze</button>
-            <button id="add-set-button">+ Neue Spalte hinzufügen</button>
+            <button id="add-set-button" style="margin-left:auto;">+ Neue Spalte hinzufügen</button>
         </div>
+    <div id="table-wrapper" style="max-height: 70vh; overflow: auto;">
         <table id="editor-table">
             <thead></thead>
             <tbody>
@@ -298,10 +380,15 @@
     <div id="edit-name-modal" class="modal-overlay">
         <div class="modal-content">
             <span class="close-button" id="edit-name-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
-            <h2>Namen bearbeiten</h2>
-            <div style="margin: 6px 0 12px; font-size: 0.95em; color:#444;">
-                ID: <code id="edit-name-id" style="background:#f7f7f7; padding:2px 4px; border-radius:4px;">—</code>
+            <h2>Bearbeiten</h2>
+            <div style="margin: 6px 0 12px; font-size: 0.95em; color:#444; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <div>ID: <code id="edit-name-id" style="background:#f7f7f7; padding:2px 4px; border-radius:4px;">—</code></div>
+                <button id="edit-open-id-rename" title="ID umbenennen">ID umbenennen…</button>
+                <button id="edit-delete-item" title="Diesen Eintrag löschen" class="delete-button" style="margin-left:auto;">Löschen</button>
             </div>
+
+            <!-- Abschnitt: Allgemein -->
+            <h3 style="margin:8px 0 6px;">Allgemein</h3>
             <div style="display:flex; gap:10px; align-items:center; flex-wrap: wrap; margin-bottom: 10px;">
                 <input type="text" id="edit-name-input" placeholder="Anzeigename" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius: 4px;">
                 <button id="edit-name-save">Speichern</button>
@@ -310,6 +397,30 @@
             </div>
             <div id="edit-name-preview" style="margin-top:6px; color:#666; font-size: 0.9em;"></div>
             <div id="edit-name-message" style="margin-top: 8px; color:#555;"></div>
+
+            <!-- Abschnitt: Dateien -->
+            <h3 style="margin:12px 0 6px;">Dateien</h3>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <label for="edit-image-input" style="min-width:90px;">Bild</label>
+                    <input type="text" id="edit-image-input" placeholder="data/wörter/images/a/…jpg" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;">
+                    <span id="edit-image-status" style="font-size:12px; color:#666;"></span>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <label for="edit-sound-input" style="min-width:90px;">Ton</label>
+                    <input type="text" id="edit-sound-input" placeholder="data/wörter/sounds/a/…mp3" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;">
+                    <span id="edit-sound-status" style="font-size:12px; color:#666;"></span>
+                </div>
+            </div>
+
+            <!-- Abschnitt: Listen -->
+            <h3 style="margin:12px 0 6px;">Listen-Zugehörigkeit</h3>
+            <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px;">
+                <input type="text" id="edit-sets-search" placeholder="Filtern…" style="flex:1; padding:6px 8px; border:1px solid #ccc; border-radius:4px;">
+                <span id="edit-sets-summary" style="font-size:12px; color:#666;"></span>
+            </div>
+            <div id="edit-sets-container" style="max-height: 35vh; overflow:auto; border:1px solid #eee; border-radius:6px; padding:8px;"></div>
+
             <div class="modal-footer" style="text-align:right;">
                 <button id="edit-name-cancel">Schließen</button>
             </div>

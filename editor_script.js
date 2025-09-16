@@ -51,7 +51,6 @@ const saveStatus = document.getElementById('save-status');
 const notificationArea = document.getElementById('notification-area');
 const runHealthcheckButton = document.getElementById('run-healthcheck-button');
 const autoFixToggle = document.getElementById('auto-fix-toggle');
-const importNewSoundsButton = document.getElementById('import-new-sounds-button');
 const showMissingAssetsButton = document.getElementById('show-missing-assets-button');
 const missingAssetsModal = document.getElementById('missing-assets-modal');
 const missingAssetsClose = document.getElementById('missing-assets-close');
@@ -76,6 +75,40 @@ let activeHelpFile = '';
 const helpIndexStatus = document.getElementById('help-index-status');
 let helpIndexStatusTimer = null;
 
+// Tools dropdown menu
+const toolsMenuButton = document.getElementById('tools-menu-button');
+const toolsMenu = document.getElementById('tools-menu');
+function closeToolsMenu() {
+    if (toolsMenu) toolsMenu.style.display = 'none';
+    if (toolsMenuButton) toolsMenuButton.setAttribute('aria-expanded', 'false');
+}
+function openToolsMenu() {
+    if (toolsMenu) toolsMenu.style.display = 'block';
+    if (toolsMenuButton) toolsMenuButton.setAttribute('aria-expanded', 'true');
+}
+if (toolsMenuButton && toolsMenu) {
+    toolsMenuButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isOpen = toolsMenuButton.getAttribute('aria-expanded') === 'true';
+        if (isOpen) closeToolsMenu(); else openToolsMenu();
+    });
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+        if (!toolsMenu.contains(e.target) && e.target !== toolsMenuButton && !toolsMenuButton.contains(e.target)) {
+            closeToolsMenu();
+        }
+    });
+    // Close on Escape
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeToolsMenu(); });
+    // Close after picking an item (buttons or label with checkbox)
+    toolsMenu.addEventListener('click', (e) => {
+        const el = e.target;
+        if (el.closest('button[role="menuitem"], label[role="menuitemcheckbox"]')) {
+            setTimeout(closeToolsMenu, 0);
+        }
+    });
+}
+
 async function fetchEditorConfig() {
     try {
         const res = await fetch('/api/editor/config');
@@ -87,8 +120,7 @@ async function fetchEditorConfig() {
         // Disable buttons that would result in writes
         const writeButtons = [
             document.getElementById('add-set-button'),
-            document.getElementById('show-archive-button'),
-            document.getElementById('import-new-sounds-button')
+            document.getElementById('show-archive-button')
         ].filter(Boolean);
         writeButtons.forEach(btn => btn.disabled = serverReadOnly);
 
@@ -358,13 +390,18 @@ function renderTable() {
     
     // Fixed columns headers
     ['ID', 'Name', 'Bild', 'Ton'].forEach((text, index) => {
-        const th = document.createElement('th');
+            const th = document.createElement('th');
         th.rowSpan = 2;
         th.textContent = text;
         if (index < 2) {
             th.classList.add('sticky-col');
             if (index === 1) th.classList.add('col-2');
         }
+                // neue Spaltenklassen
+                if (index === 0) th.classList.add('col-id');
+                if (index === 1) th.classList.add('col-name');
+                if (index === 2) th.classList.add('col-image');
+                if (index === 3) th.classList.add('col-sound');
         topHeaderRow.appendChild(th);
     });
     const actionTh = document.createElement('th');
@@ -375,16 +412,17 @@ function renderTable() {
     
     // Dynamic category columns headers
     sortedTopCategories.forEach(topCategory => {
-        const setsInGroup = groupedSets[topCategory];
+            const setsInGroup = groupedSets[topCategory];
         const topTh = document.createElement('th');
         topTh.colSpan = setsInGroup.length;
         topTh.textContent = topCategory;
         topHeaderRow.appendChild(topTh);
 
-        setsInGroup.forEach(set => {
-            const subTh = document.createElement('th');
-            subTh.title = set.path;
-            const headerCheckbox = document.createElement('input');
+    setsInGroup.forEach(set => {
+        const subTh = document.createElement('th');
+        subTh.title = set.path;
+        subTh.classList.add('set-col');
+                    const headerCheckbox = document.createElement('input');
             headerCheckbox.type = 'checkbox';
             headerCheckbox.className = 'header-checkbox';
             headerCheckbox.dataset.path = set.path;
@@ -409,20 +447,21 @@ function renderTable() {
     const row = document.createElement('tr');
         row.dataset.id = id;
 
-        const isNewItem = item.isNew === true;
+                        const isNewItem = item.isNew === true;
         const readonlyAttr = isNewItem ? '' : 'readonly';
         const readonlyTitle = isNewItem ? '' : 'title="Die ID kann nach dem ersten Speichern nicht mehr geändert werden."';
 
         row.innerHTML = `
-            <td class="sticky-col"><input type="text" value="${id}" class="id-input" style="width: 120px;" ${readonlyAttr} ${readonlyTitle}></td>
-            <td class="sticky-col col-2"><input type="text" value="${item.name || ''}" data-field="name" readonly title="Name über 'Namen bearbeiten' ändern"></td>
-            <td><input type="text" value="${getImagePathForItem(id, item)}" data-field="image"></td>
-            <td><input type="text" value="${item.sound || ''}" data-field="sound"></td>
-          <td style="text-align: center; white-space: nowrap;">
-                 <button class="edit-name-button" title="Name bearbeiten">Namen bearbeiten</button>
-              <button class="rename-id-button" title="ID umbenennen">&#128393;</button>
-              <button class="delete-button" title="Dieses Wort löschen">&#10060;</button>
-          </td>
+                                <td class="sticky-col col-id"><input type="text" value="${id}" class="id-input" style="width: 120px;" ${readonlyAttr} ${readonlyTitle}></td>
+                                <td class="sticky-col col-2 col-name">
+                                    <button type="button" class="name-edit-button" title="Bearbeiten">${(item.name || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</button>
+                                    <input type="hidden" value="${item.name || ''}" data-field="name">
+                                </td>
+                                <td class="col-image"><input type="text" value="${getImagePathForItem(id, item)}" data-field="image"></td>
+                                <td class="col-sound"><input type="text" value="${item.sound || ''}" data-field="sound"></td>
+                            <td class="col-actions" style="text-align: center; white-space: nowrap;">
+                                         <button class="edit-name-button edit-button-subtle" title="Bearbeiten">Bearbeiten</button>
+                            </td>
         `;
 
 
@@ -444,6 +483,7 @@ function renderTable() {
             checkbox.checked = isChecked;
             checkbox.dataset.path = path;
             cell.style.textAlign = 'center';
+            cell.classList.add('set-cell');
             cell.appendChild(checkbox);
             row.appendChild(cell);
         });
@@ -455,6 +495,8 @@ function renderTable() {
         }
     });
     filterTable();
+    // Nach dem Rendern: Namensspalte dynamisch auf besten Kompromiss einstellen
+    setTimeout(adjustNameColumnWidth, 0);
 }
 
 // =====================
@@ -1284,6 +1326,134 @@ async function checkUnsortedFiles() {
     }
 }
 
+// ===== Erweiterungen für zentrales Bearbeiten-Modal =====
+function getItemById(id) {
+    return database && database[id] ? database[id] : null;
+}
+
+function setItemField(id, field, value) {
+    if (!database[id]) database[id] = {};
+    database[id][field] = value;
+}
+
+function populateEditModalExtra(id) {
+    const item = getItemById(id) || {};
+    const imageInput = document.getElementById('edit-image-input');
+    const soundInput = document.getElementById('edit-sound-input');
+    const imageStatus = document.getElementById('edit-image-status');
+    const soundStatus = document.getElementById('edit-sound-status');
+    const setsContainer = document.getElementById('edit-sets-container');
+    const setsSearch = document.getElementById('edit-sets-search');
+    const setsSummary = document.getElementById('edit-sets-summary');
+    const openRenameBtn = document.getElementById('edit-open-id-rename');
+    const deleteBtn = document.getElementById('edit-delete-item');
+
+    if (imageInput) imageInput.value = item.image || '';
+    if (soundInput) soundInput.value = item.sound || '';
+    if (imageStatus) imageStatus.textContent = '';
+    if (soundStatus) soundStatus.textContent = '';
+
+    // ID umbenennen Button
+    if (openRenameBtn) {
+        openRenameBtn.onclick = () => openIdRenameModal(id, id);
+    }
+    // Löschen Button
+    if (deleteBtn) {
+        deleteBtn.onclick = async () => {
+            try {
+                if (serverReadOnly) { statusMessage.textContent = 'Nur-Lese-Modus: Löschen deaktiviert.'; return; }
+                const name = (item && item.name) ? item.name : id;
+                if (!window.confirm(`Möchten Sie den Eintrag "${name}" wirklich löschen?`)) return;
+                const resp = await fetch('/api/delete-item', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, mode: currentMode }) });
+                if (!resp.ok) throw new Error('Serverfehler beim Löschen');
+                // Lokalen Zustand aktualisieren
+                delete database[id];
+                Object.values(flatSets||{}).forEach(s => { const i = s.items.indexOf(id); if (i>=0) s.items.splice(i,1); });
+                closeEditNameModal();
+                await loadData(true);
+                statusMessage.textContent = 'Eintrag gelöscht.';
+            } catch (e) {
+                console.error(e);
+                statusMessage.textContent = `Fehler beim Löschen: ${e.message}`;
+            }
+        };
+    }
+
+    // Event: Bild/Ton Validierung + Autosave
+    const bindMedia = (field, inputEl, statusEl) => {
+        if (!inputEl) return;
+        inputEl.onblur = () => {
+            const row = tableBody ? tableBody.querySelector(`tr[data-id="${CSS.escape(id)}"]`) : null;
+            const idInput = row ? row.querySelector('.id-input') : null;
+            const nameInput = row ? row.querySelector('input[data-field="name"]') : null;
+            const tableFieldInput = row ? row.querySelector(`input[data-field="${field}"]`) : null;
+            const currentVal = inputEl.value || '';
+            const baseCheck = validatePath(field, currentVal);
+            let fixed = baseCheck.fixed;
+            const expectedDir = expectedDirFor(field, id, nameInput ? nameInput.value : '', currentVal);
+            const expectedBase = prettyBaseFromName(nameInput ? nameInput.value : '');
+            const fixedNorm = fixSlashes(toNFC(fixed));
+            const parts = fixedNorm.split('/');
+            const filename = parts.pop() || '';
+            const dot = filename.lastIndexOf('.');
+            const ext0 = dot === -1 ? '' : filename.slice(dot).toLowerCase();
+            let desiredExt = ext0 || (field === 'sound' ? '.mp3' : '.jpg');
+            const desired = expectedDir + '/' + expectedBase + desiredExt;
+            const finalCheck = validatePath(field, desired);
+            inputEl.value = finalCheck.fixed;
+            if (tableFieldInput) tableFieldInput.value = finalCheck.fixed; // Sync hidden table input with modal
+            setItemField(id, field, finalCheck.fixed);
+            setUnsavedChanges(true);
+            debouncedSave();
+            if (statusEl) statusEl.textContent = '';
+        };
+    };
+    bindMedia('image', imageInput, imageStatus);
+    bindMedia('sound', soundInput, soundStatus);
+
+    // Listen rendern
+    const renderSets = () => {
+        if (!setsContainer) return;
+        const q = (setsSearch && setsSearch.value ? setsSearch.value.toLowerCase() : '');
+        const entries = Object.entries(flatSets || {});
+        const list = document.createElement('div');
+        let count = 0;
+        entries
+            .sort((a,b)=> a[1].topCategory.localeCompare(b[1].topCategory) || a[1].displayName.localeCompare(b[1].displayName))
+            .forEach(([path, set]) => {
+                const hay = `${set.topCategory} ${set.displayName} ${path}`.toLowerCase();
+                if (q && !hay.includes(q)) return;
+                const wrap = document.createElement('div');
+                wrap.style.display = 'grid';
+                wrap.style.gridTemplateColumns = '24px 1fr';
+                wrap.style.alignItems = 'center';
+                wrap.style.gap = '8px';
+                const cb = document.createElement('input');
+                cb.type = 'checkbox';
+                cb.checked = Array.isArray(set.items) && set.items.includes(id);
+                cb.addEventListener('change', () => {
+                    const arr = flatSets[path].items;
+                    const idx = arr.indexOf(id);
+                    if (cb.checked && idx === -1) arr.push(id);
+                    if (!cb.checked && idx >= 0) arr.splice(idx, 1);
+                    setUnsavedChanges(true);
+                    debouncedSave();
+                });
+                const label = document.createElement('div');
+                label.innerHTML = `<strong>${set.topCategory}</strong> · ${set.displayName}`;
+                wrap.appendChild(cb);
+                wrap.appendChild(label);
+                list.appendChild(wrap);
+                count++;
+            });
+        setsContainer.innerHTML = '';
+        setsContainer.appendChild(list);
+        if (setsSummary) setsSummary.textContent = count ? `${count} Listen angezeigt` : 'Keine Treffer';
+    };
+    if (setsSearch) setsSearch.oninput = renderSets;
+    renderSets();
+}
+
 /**
  * Triggers the server to analyze unsorted files and displays the conflict resolution dialog if needed.
  */
@@ -1459,10 +1629,46 @@ document.addEventListener('DOMContentLoaded', () => {
     setupHelp();
     // Keep add-set aligned with table header during horizontal scroll and resizes
     if (tableWrapper) tableWrapper.addEventListener('scroll', updateAddSetOverlayPos);
-    window.addEventListener('resize', updateAddSetOverlayPos);
+    window.addEventListener('resize', () => { updateAddSetOverlayPos(); adjustNameColumnWidth(); });
     // Initial position
     setTimeout(updateAddSetOverlayPos, 0);
 });
+
+// Dynamische Breite für die Namensspalte (Kompromiss: gut lesbar, nicht zu breit)
+function adjustNameColumnWidth() {
+    try {
+        const thName = tableHead ? tableHead.querySelector('th.col-name') : null;
+        if (!thName) return;
+        // Basis: längster Anzeigename in Pixeln messen
+        const names = Object.keys(database || {}).map(id => (database[id] && database[id].name) ? String(database[id].name) : '');
+        const longest = names.reduce((a, b) => (b && b.length > a.length ? b : a), '');
+        // Font aus einer Tabellen-Zelle ermitteln (fällt zurück auf Body-Font)
+        const sampleInput = tableBody ? tableBody.querySelector('tr input[data-field="name"]') : null;
+        const font = sampleInput ? getComputedStyle(sampleInput).font : (getComputedStyle(document.body).font || '14px sans-serif');
+        const canvas = adjustNameColumnWidth._canvas || (adjustNameColumnWidth._canvas = document.createElement('canvas'));
+        const ctx = canvas.getContext('2d');
+        ctx.font = font;
+        // Sicherheits-Puffer für Input-Innenabstand + Zell-Padding + Button-Abstand
+        const measure = (s) => Math.ceil(ctx.measureText(s || '').width);
+    const rawPx = measure(longest);
+    // Minimaler Seitenpuffer links/rechts (sehr knapp gehalten)
+    const sidePadding = 20; // gesamt ~20px
+    const desired = Math.ceil(rawPx + sidePadding);
+    // Mindestbreite, falls sehr kurze Namen
+    const minW = 140;
+    const target = Math.max(minW, desired);
+        // Breite anwenden auf Header und Zellen der Spalte
+        thName.style.width = target + 'px';
+        thName.style.minWidth = target + 'px';
+        thName.style.maxWidth = target + 'px';
+        const tdNames = tableBody ? tableBody.querySelectorAll('td.col-name') : [];
+        tdNames.forEach(td => {
+            td.style.width = target + 'px';
+            td.style.minWidth = target + 'px';
+            td.style.maxWidth = target + 'px';
+        });
+    } catch {}
+}
 
 function setupHelp() {
     if (!openHelpButton || !helpModal) return;
@@ -2144,6 +2350,17 @@ function setUnsavedChanges(state) {
 // Event listener for delete buttons using event delegation
 if (tableBody) {
     tableBody.addEventListener('click', async (event) => {
+        // Klick auf den Namen (Button) öffnet ebenfalls das Bearbeiten-Modal
+        if (event.target.classList.contains('name-edit-button')) {
+            const row = event.target.closest('tr');
+            if (!row) return;
+            const id = row.dataset.id;
+            const nameInput = row.querySelector('input[data-field="name"]');
+            const currentName = nameInput ? String(nameInput.value) : '';
+            openEditNameModal(id, currentName);
+            try { populateEditModalExtra(id); } catch {}
+            return;
+        }
         // Namen bearbeiten (Modal öffnen)
         if (event.target.classList.contains('edit-name-button')) {
             const row = event.target.closest('tr');
@@ -2152,6 +2369,8 @@ if (tableBody) {
             const nameInput = row.querySelector('input[data-field="name"]');
             const currentName = nameInput ? String(nameInput.value) : '';
             openEditNameModal(id, currentName);
+            // Populate additional sections (Dateien, Listen, Aktionen) in the edit modal
+            try { populateEditModalExtra(id); } catch {}
             return;
         }
         // ID umbenennen (Wizard öffnen)
@@ -2256,56 +2475,7 @@ function showFixBubble(input, messages, { timeout = 1800 } = {}) {
     setTimeout(removeBubble, timeout);
 }
 
-// Dedicated sound import flow
-async function checkUnsortedSounds() {
-    try {
-        const response = await fetch(`/api/check-unsorted-files?mode=${currentMode}&type=sounds`);
-        if (!response.ok) throw new Error('Prüfung auf unsortierte Sounds fehlgeschlagen.');
-        const data = await response.json();
-        return data;
-    } catch (e) {
-        console.error(e);
-        return { count: 0, files: [] };
-    }
-}
-
-async function analyzeUnsortedSounds() {
-    try {
-        notificationArea.textContent = 'Analysiere unsortierte Sounds...';
-        const response = await fetch(`/api/analyze-unsorted-files?mode=${currentMode}&type=sounds`, { method: 'POST' });
-        if (!response.ok) throw new Error('Serverfehler bei der Analyse (Sounds).');
-        const result = await response.json();
-        const { movableFiles, conflicts } = result;
-        if (conflicts.length === 0 && movableFiles.length === 0) {
-            notificationArea.textContent = 'Keine unsortierten Sounds gefunden.';
-            setTimeout(() => { if (notificationArea.textContent === 'Keine unsortierten Sounds gefunden.') notificationArea.innerHTML = ''; }, 2500);
-            return;
-        }
-        if (conflicts.length > 0) {
-            displayConflictModal(movableFiles, conflicts);
-        } else {
-            const actions = movableFiles.map(f => ({ type: 'move', sourcePath: f.sourcePath, targetPath: f.targetPath, fileName: f.fileName }));
-            await resolveAndReload(actions);
-        }
-    } catch (e) {
-        console.error('Fehler beim Analysieren der Sounds:', e);
-        notificationArea.textContent = 'Fehler bei der Analyse der Sounds.';
-    }
-}
-
-if (importNewSoundsButton) {
-    importNewSoundsButton.addEventListener('click', async () => {
-        // Schnellcheck, ob sich das Klicken lohnt
-        const quick = await checkUnsortedSounds();
-        if (!quick || quick.count === 0) {
-            notificationArea.textContent = 'Keine unsortierten Sounds gefunden.';
-            setTimeout(() => { if (notificationArea.textContent === 'Keine unsortierten Sounds gefunden.') notificationArea.innerHTML = ''; }, 2500);
-            return;
-        }
-        // Direkt Analyse starten
-        await analyzeUnsortedSounds();
-    });
-}
+// Hinweis: Die frühere spezielle Schaltfläche zum Einsortieren neuer Sounds wurde entfernt.
 
 // Edit-Name modal controls
 if (editNameClose) editNameClose.addEventListener('click', closeEditNameModal);
@@ -2345,6 +2515,8 @@ if (editNameSave) {
             if (row) {
                 const nameInput = row.querySelector('input[data-field="name"]');
                 if (nameInput) nameInput.value = newName;
+                const nameBtn = row.querySelector('button.name-edit-button');
+                if (nameBtn) nameBtn.textContent = newName;
             }
             if (prevName && prevName !== newName) {
                 lastNameChange.set(id, prevName);
@@ -2359,6 +2531,8 @@ if (editNameSave) {
             setUnsavedChanges(false);
             await fetchNameHistory(currentMode, id);
             updateNameHistoryButtons(currentMode, id);
+            // Spaltenbreite ggf. anpassen, falls längster Name sich geändert hat
+            setTimeout(adjustNameColumnWidth, 0);
             // nicht schließen, damit Undo/Redo direkt möglich ist
         } catch (e) {
             console.error(e);
@@ -2400,6 +2574,8 @@ if (editNameUndo) {
             if (row) {
                 const nameInput = row.querySelector('input[data-field="name"]');
                 if (nameInput) nameInput.value = name;
+                const nameBtn = row.querySelector('button.name-edit-button');
+                if (nameBtn) nameBtn.textContent = name;
             }
             editNameInput.value = name;
             if (editNamePreview) editNamePreview.textContent = name ? `Wird gespeichert als: ${name}` : '';
@@ -2410,6 +2586,7 @@ if (editNameUndo) {
                 editNameMessage.style.color = '#2e7d32';
                 editNameMessage.textContent = '✓ Rückgängig ausgeführt.';
             }
+            setTimeout(adjustNameColumnWidth, 0);
         } catch (e) {
             console.error(e);
             if (editNameMessage) {
@@ -2440,6 +2617,8 @@ if (editNameRedo) {
             if (row) {
                 const nameInput = row.querySelector('input[data-field="name"]');
                 if (nameInput) nameInput.value = name;
+                const nameBtn = row.querySelector('button.name-edit-button');
+                if (nameBtn) nameBtn.textContent = name;
             }
             editNameInput.value = name;
             if (editNamePreview) editNamePreview.textContent = name ? `Wird gespeichert als: ${name}` : '';
@@ -2450,6 +2629,7 @@ if (editNameRedo) {
                 editNameMessage.style.color = '#2e7d32';
                 editNameMessage.textContent = '✓ Wiederholen ausgeführt.';
             }
+            setTimeout(adjustNameColumnWidth, 0);
         } catch (e) {
             console.error(e);
             if (editNameMessage) {
@@ -2506,9 +2686,8 @@ function updateAddSetOverlayPos() {
     try {
         const btn = addSetButton;
         const wrapper = tableWrapper;
-        const actionsTh = document.getElementById('th-actions');
         const tabs = document.querySelector('#table-wrapper .tab-controls');
-        if (!btn || !wrapper || !actionsTh || !tabs) return;
+        if (!btn || !wrapper || !tabs) return;
         // Ensure absolute positioning inside the sticky tab bar
         const tabsStyle = getComputedStyle(tabs);
         if (tabsStyle.position === 'static') {
@@ -2517,30 +2696,39 @@ function updateAddSetOverlayPos() {
             tabs.style.zIndex = '4';
             tabs.style.background = '#fff';
         }
-        btn.style.position = 'absolute';
+    btn.style.position = 'absolute';
         btn.style.whiteSpace = 'nowrap';
-    // Compute x so that when you scroll the table to the right, the button shifts to the right as well (invert previous behavior)
-    const aRect = actionsTh.getBoundingClientRect();
-    const wRect = wrapper.getBoundingClientRect();
-    const visibleLeft = aRect.left - wRect.left; // decreases when scrolling right
-    // Place button based on distance from wrapper's right edge to the Aktionen header's right edge
-    const distanceFromRight = (wRect.width - (visibleLeft + aRect.width)); // increases when scrolling right
-    let x = Math.round(distanceFromRight + 8);
-    // Clamp within the wrapper
-    const maxX = Math.max(0, Math.round(wRect.width - btn.offsetWidth - 4));
-    if (x < 0) x = 0; else if (x > maxX) x = maxX;
-    btn.style.left = x + 'px';
-        // Vertically align with the first tab button's top to match baseline (prevent clipping)
-        const firstTab = document.getElementById('tab-woerter');
-        const tRect = tabs.getBoundingClientRect();
-        let y = 0;
-        if (firstTab) {
-            const fRect = firstTab.getBoundingClientRect();
-            y = Math.max(0, Math.round((fRect.top - tRect.top) + ((firstTab.offsetHeight - btn.offsetHeight) / 2)));
-        } else {
-            // Fallback to centered if first tab not found
-            y = Math.round((tRect.height - btn.offsetHeight) / 2);
+    btn.style.zIndex = '3'; // below tabs (zIndex 4), above table content
+        // Compute x relative to the right edge of the last visible table header cell.
+        const ths = tableHead ? tableHead.querySelectorAll('th') : [];
+        const wRect = wrapper.getBoundingClientRect();
+        let lastVisibleRect = null;
+        if (ths && ths.length) {
+            ths.forEach(th => {
+                const style = window.getComputedStyle(th);
+                if (style && style.display !== 'none' && th.offsetParent !== null) {
+                    const r = th.getBoundingClientRect();
+                    if (r && r.width > 0 && r.height > 0) {
+                        lastVisibleRect = r; // keep advancing to the last visible
+                    }
+                }
+            });
         }
+        let x;
+        if (lastVisibleRect) {
+            const distanceFromRight = Math.max(0, Math.round(wRect.right - lastVisibleRect.right));
+            x = Math.round(distanceFromRight + 8);
+        } else {
+            // Fallback: stick to the right padding of the wrapper
+            x = Math.round(wRect.width - btn.offsetWidth - 8);
+        }
+        // Clamp within the wrapper
+        const maxX = Math.max(0, Math.round(wRect.width - btn.offsetWidth - 4));
+        if (x < 0) x = 0; else if (x > maxX) x = maxX;
+        btn.style.left = x + 'px';
+        // Place the button just below the tabs row to avoid covering the tab buttons.
+        // Keeps dynamic X-alignment while freeing the tabs for clicks/visibility.
+        const y = Math.round(tabs.offsetHeight + 6);
         btn.style.top = y + 'px';
     } catch {}
 }
