@@ -9,9 +9,9 @@ let currentMode = 'woerter'; // 'woerter' oder 'saetze'
 const tableHead = document.querySelector('#editor-table thead');
 const tableBody = document.querySelector('#editor-table tbody');
 const saveButton = document.getElementById('save-button');
-const addRowButton = document.getElementById('add-row-button');
 const statusMessage = document.getElementById('status-message');
 const addSetButton = document.getElementById('add-set-button');
+const tableWrapper = document.getElementById('table-wrapper');
 // Modal controls for adding a new set
 const addSetModal = document.getElementById('add-set-modal');
 const addSetClose = document.getElementById('add-set-close');
@@ -50,7 +50,6 @@ const nameFileApplyFileBtn = document.getElementById('namefile-apply-file');
 const saveStatus = document.getElementById('save-status');
 const notificationArea = document.getElementById('notification-area');
 const runHealthcheckButton = document.getElementById('run-healthcheck-button');
-const healthcheckFixCaseToggle = document.getElementById('healthcheck-fix-case-toggle');
 const autoFixToggle = document.getElementById('auto-fix-toggle');
 const importNewSoundsButton = document.getElementById('import-new-sounds-button');
 const showMissingAssetsButton = document.getElementById('show-missing-assets-button');
@@ -88,7 +87,6 @@ async function fetchEditorConfig() {
         // Disable buttons that would result in writes
         const writeButtons = [
             document.getElementById('add-set-button'),
-            document.getElementById('add-row-button'),
             document.getElementById('show-archive-button'),
             document.getElementById('import-new-sounds-button')
         ].filter(Boolean);
@@ -370,6 +368,7 @@ function renderTable() {
         topHeaderRow.appendChild(th);
     });
     const actionTh = document.createElement('th');
+    actionTh.id = 'th-actions';
     actionTh.rowSpan = 2;
     actionTh.textContent = 'Aktionen';
     topHeaderRow.appendChild(actionTh);
@@ -400,12 +399,14 @@ function renderTable() {
 
     tableHead.appendChild(topHeaderRow);
     tableHead.appendChild(subHeaderRow);
+    // Update overlay position after header draw
+    updateAddSetOverlayPos();
 
     // Create table body rows for each item in the database
     const sortedItemIds = Object.keys(database).sort();
     sortedItemIds.forEach(id => {
         const item = database[id];
-        const row = document.createElement('tr');
+    const row = document.createElement('tr');
         row.dataset.id = id;
 
         const isNewItem = item.isNew === true;
@@ -424,7 +425,8 @@ function renderTable() {
           </td>
         `;
 
-        // Create a checkbox cell for each category column
+
+    // Create a checkbox cell for each category column
         orderedColumnPaths.forEach(path => {
             const cell = document.createElement('td');
             const checkbox = document.createElement('input');
@@ -756,11 +758,13 @@ function preSaveGuardAndFix({ autoFix } = { autoFix: true }) {
         const previews = issues.slice(0, 3).map(i => `• ${i.field.toUpperCase()}: ${i.reasons[0] || 'Ungültig'}`).join('  ');
         if (notificationArea) {
             notificationArea.textContent = `Validierung: ${issues.length} Problem(e). ${previews}${issues.length > 3 ? ' …' : ''}`;
+            notificationArea.style.color = '';
         }
     } else {
         // Clear notice only if it was a validation message (best-effort)
         if (notificationArea && /Validierung:/.test(notificationArea.textContent)) {
             notificationArea.textContent = '';
+            notificationArea.style.color = '';
         }
     }
 
@@ -842,17 +846,13 @@ function getImagePathForItem(id, item) {
 // Attach event listeners to UI elements
 searchInput.addEventListener('input', filterTable);
 
-addRowButton.addEventListener('click', () => {
-    readTableIntoState();
-    const newId = `neues_item_${Date.now()}`;
-    database[newId] = { name: 'Neues Wort', image: '', sound: '', isNew: true };
-    renderTable();
-    setUnsavedChanges(true);
-});
+// Entfernt: add-row-button und zugehöriger Click-Handler
 
 // Replace inline add with modal UX
-if (addSetButton) {
-    addSetButton.addEventListener('click', () => {
+// delegate: the add-set button can be dynamically created in header; attach listener on document
+document.addEventListener('click', (e) => {
+    const t = e.target;
+    if (t && t.id === 'add-set-button') {
         if (!addSetModal) return;
         if (addSetMessage) { addSetMessage.textContent = ''; addSetMessage.style.color = '#555'; }
         // Populate Bereich dropdown from manifest
@@ -864,8 +864,8 @@ if (addSetButton) {
         updateAddSetPreview();
         addSetModal.style.display = 'flex';
         setTimeout(() => { try { addSetAreaSelect?.focus(); } catch {} }, 50);
-    });
-}
+    }
+});
 
 function closeAddSetModal() { if (addSetModal) addSetModal.style.display = 'none'; }
 if (addSetClose) addSetClose.addEventListener('click', closeAddSetModal);
@@ -1457,6 +1457,11 @@ async function resolveAndReload(actions) {
 document.addEventListener('DOMContentLoaded', () => {
     fetchEditorConfig().finally(() => switchMode('woerter'));
     setupHelp();
+    // Keep add-set aligned with table header during horizontal scroll and resizes
+    if (tableWrapper) tableWrapper.addEventListener('scroll', updateAddSetOverlayPos);
+    window.addEventListener('resize', updateAddSetOverlayPos);
+    // Initial position
+    setTimeout(updateAddSetOverlayPos, 0);
 });
 
 function setupHelp() {
@@ -1792,10 +1797,11 @@ if (runHealthcheckButton) {
     runHealthcheckButton.addEventListener('click', async () => {
         const prev = notificationArea.textContent;
         notificationArea.textContent = 'Prüfe Daten…';
+        if (notificationArea) notificationArea.style.color = '';
         try {
-            // Versuche erweiterten Healthcheck (full=1), optional mit fixCase
-            const fixCase = healthcheckFixCaseToggle ? (healthcheckFixCaseToggle.checked ? '&fixCase=1' : '') : '';
-            let res = await fetch(`/api/healthcheck?full=1${fixCase}`);
+            // Erweiterten Healthcheck (full=1) mit Fix-Case, außer im Read-Only-Modus
+            const fixParam = serverReadOnly ? '' : '&fixCase=1';
+            let res = await fetch(`/api/healthcheck?full=1${fixParam}`);
             if (res.status === 400 || res.status === 404) {
                 res = await fetch('/api/healthcheck');
             }
@@ -1808,12 +1814,13 @@ if (runHealthcheckButton) {
             const caseW = data.case?.woerter_mismatches ?? data.woerter?.case?.mismatches?.length ?? 0;
             const caseS = data.case?.saetze_mismatches ?? data.saetze?.case?.mismatches?.length ?? 0;
             const ok = data.ok === true;
-                        const fixNote = (healthcheckFixCaseToggle && healthcheckFixCaseToggle.checked) ? ' (mit Case-Fix)' : '';
+                        const fixNote = serverReadOnly ? '' : ' (mit Case-Fix)';
             const nameW = data.nameFile?.woerter_namefile ?? data.woerter?.nameFile?.mismatches?.length ?? 0;
             const nameS = data.nameFile?.saetze_namefile ?? data.saetze?.nameFile?.mismatches?.length ?? 0;
             notificationArea.textContent = ok
                 ? `Healthcheck OK${fixNote} – Sets: W ${w.sets}/${w.items}, S ${s.sets}/${s.items} · Dateien fehlen: W ${filesW}, S ${filesS} · Case: W ${caseW}, S ${caseS} · Name↔Datei: W ${nameW}, S ${nameS}`
                 : `Healthcheck PROBLEME${fixNote} – fehlende IDs: W=${w.missingIds}, S=${s.missingIds} · fehlende Dateien: W=${filesW}, S=${filesS} · Case: W=${caseW}, S=${caseS} · Name↔Datei: W=${nameW}, S=${nameS}`;
+            if (notificationArea) notificationArea.style.color = ok ? '#28a745' : '#cc0000';
             // Details bei Bedarf in der Konsole
             if (!ok) {
                 console.warn('[Healthcheck Details]', data);
@@ -1821,6 +1828,7 @@ if (runHealthcheckButton) {
         } catch (e) {
             console.error('Healthcheck fehlgeschlagen:', e);
             notificationArea.textContent = prev || 'Healthcheck fehlgeschlagen.';
+            if (notificationArea) notificationArea.style.color = '#cc0000';
         }
     });
 }
@@ -2491,4 +2499,48 @@ async function updateHelpIndexStatus() {
     } catch {
         helpIndexStatus.style.display = 'none';
     }
+}
+
+// Keep the in-tab add-set button horizontally aligned with the table content
+function updateAddSetOverlayPos() {
+    try {
+        const btn = addSetButton;
+        const wrapper = tableWrapper;
+        const actionsTh = document.getElementById('th-actions');
+        const tabs = document.querySelector('#table-wrapper .tab-controls');
+        if (!btn || !wrapper || !actionsTh || !tabs) return;
+        // Ensure absolute positioning inside the sticky tab bar
+        const tabsStyle = getComputedStyle(tabs);
+        if (tabsStyle.position === 'static') {
+            tabs.style.position = 'sticky';
+            tabs.style.top = '0';
+            tabs.style.zIndex = '4';
+            tabs.style.background = '#fff';
+        }
+        btn.style.position = 'absolute';
+        btn.style.whiteSpace = 'nowrap';
+    // Compute x so that when you scroll the table to the right, the button shifts to the right as well (invert previous behavior)
+    const aRect = actionsTh.getBoundingClientRect();
+    const wRect = wrapper.getBoundingClientRect();
+    const visibleLeft = aRect.left - wRect.left; // decreases when scrolling right
+    // Place button based on distance from wrapper's right edge to the Aktionen header's right edge
+    const distanceFromRight = (wRect.width - (visibleLeft + aRect.width)); // increases when scrolling right
+    let x = Math.round(distanceFromRight + 8);
+    // Clamp within the wrapper
+    const maxX = Math.max(0, Math.round(wRect.width - btn.offsetWidth - 4));
+    if (x < 0) x = 0; else if (x > maxX) x = maxX;
+    btn.style.left = x + 'px';
+        // Vertically align with the first tab button's top to match baseline (prevent clipping)
+        const firstTab = document.getElementById('tab-woerter');
+        const tRect = tabs.getBoundingClientRect();
+        let y = 0;
+        if (firstTab) {
+            const fRect = firstTab.getBoundingClientRect();
+            y = Math.max(0, Math.round((fRect.top - tRect.top) + ((firstTab.offsetHeight - btn.offsetHeight) / 2)));
+        } else {
+            // Fallback to centered if first tab not found
+            y = Math.round((tRect.height - btn.offsetHeight) / 2);
+        }
+        btn.style.top = y + 'px';
+    } catch {}
 }

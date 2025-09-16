@@ -5,16 +5,29 @@
     <title>Wortschatz-Editor</title>
     <style>
         /* CSS bleibt unverändert */
-        body { font-family: sans-serif; margin: 20px; }
+    body { font-family: sans-serif; margin: 20px; }
+    h1 { margin: 0 0 8px; font-size: 24px; }
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; background-color: white; }
         th { background-color: #f2f2f2; text-align: center; vertical-align: middle;}
         td input[type="text"] { width: 98%; box-sizing: border-box; }
-        .controls { margin-bottom: 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-        button { padding: 10px 15px; cursor: pointer; border: 1px solid #ccc; background-color: #f0f0f0; border-radius: 4px; }
+    .controls { margin-bottom: 8px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .controls > * { flex: 0 0 auto; }
+    #save-status { order: 0; }
+    #status-message { order: 1; }
+    #notification-area { order: 2; }
+    #server-status-badge { order: 99; margin-left: 8px !important; }
+    .tab-controls { display:flex; gap:8px; margin-bottom: 6px; position: relative; align-items: center; }
+    #add-set-button { white-space: nowrap; padding: 10px 22px; }
+    .tab-controls .flex-spacer { flex: 1 1 auto; }
+    .tab-button { padding:10px 22px; border:1px solid #ccc; border-radius:6px; background:#eee; min-width: 140px; font-weight: 600; }
+    #table-wrapper .tab-controls { border-bottom: 0; }
+    button { padding: 6px 10px; font-size: 14px; cursor: pointer; border: 1px solid #ccc; background-color: #f0f0f0; border-radius: 4px; }
+    #run-healthcheck-button { background-color: #e8f0ff; border-color: #7da6ff; color: #1a3d8f; }
+    #run-healthcheck-button:hover { background-color: #dce8ff; }
         #new-set-controls { border-left: 2px solid #ccc; padding-left: 20px; }
         #status-message { font-weight: bold; }
-        #search-input { padding: 10px; width: 250px; border: 1px solid #ccc; border-radius: 4px; }
+    #search-input { padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; flex: 0 1 360px; min-width: 220px; max-width: 480px; margin-left: auto; order: 98; }
 
         #editor-table thead .top-header-row th { position: sticky; top: 0; z-index: 2; }
         #editor-table thead .sub-header-row th { position: sticky; top: 40px; z-index: 2; }
@@ -130,15 +143,12 @@
 </head>
 <body>
     <h1>Wortschatz-Editor</h1>
-    <div class="tab-controls" style="margin-bottom: 20px;">
-        <button class="tab-button active" id="tab-woerter">Wörter</button>
-        <button class="tab-button" id="tab-saetze">Sätze</button>
-    </div>
     <div class="controls">
         <span id="save-status" style="font-weight:bold;display:inline-block;margin-right:16px;"></span>
         <p id="status-message" style="display: inline-block; margin-left: 10px;"></p>
         <div id="notification-area" style="margin-left: 20px; font-weight: bold;"></div>
-        <span id="server-status-badge" style="margin-left:auto; font-size:12px; padding:4px 8px; border-radius:999px; border:1px solid #ddd; background:#f7f7f7; color:#333; display:inline-flex; align-items:center; gap:6px;" title="Serverstatus">
+        <input type="text" id="search-input" placeholder="Einträge nach Namen filtern...">
+    <span id="server-status-badge" style="margin-left:auto; font-size:11px; padding:3px 8px; border-radius:999px; border:1px solid #ddd; background:#f7f7f7; color:#333; display:inline-flex; align-items:center; gap:6px;" title="Serverstatus">
             <span id="server-status-dot" style="width:8px; height:8px; border-radius:50%; background:#28a745; display:inline-block;"></span>
             <span id="server-status-text">RW @3000</span>
         </span>
@@ -146,30 +156,27 @@
     <div id="read-only-banner" style="display:none; background:#fff3cd; color:#856404; border:1px solid #ffeeba; padding:8px 12px; border-radius:6px; margin-bottom: 12px;">
         Hinweis: Der Server läuft im Nur-Lese-Modus. Speichern/Ändern ist vorübergehend deaktiviert.
     </div>
+    
     <div class="controls">
-        <input type="text" id="search-input" placeholder="Einträge nach Namen filtern...">
-    </div>
-    <div class="controls">
-        <button id="add-set-button">+ Neue Spalte hinzufügen</button>
-        <span style="border-left: 1px solid #ccc; margin: 0 10px;"></span>
-        <button id="add-row-button">+ Neue Zeile hinzufügen</button>
         <button id="show-archive-button">♻️ Gelöschte Dateien</button>
-        <button id="run-healthcheck-button">🩺 Daten prüfen</button>
-        <label style="display:inline-flex; align-items:center; gap:6px;">
-            <input type="checkbox" id="healthcheck-fix-case-toggle">
-            Fix Case vor Prüfung
-        </label>
-    <button id="show-missing-assets-button">🔎 Fehlende Assets</button>
-    <button id="show-namefile-conflicts-button">⚖️ Name-Dateiname-Konflikte</button>
-    <button id="import-new-sounds-button">🎙️ Neue Sounds einsortieren</button>
+    <button id="run-healthcheck-button" title="Prüft Datenintegrität. Führt vorab Case-Fix aus (falls möglich).">🩺 Daten prüfen</button>
+        
+        <button id="show-missing-assets-button">🔎 Fehlende Assets</button>
+        <button id="show-namefile-conflicts-button">⚖️ Name-Dateiname-Konflikte</button>
+        <button id="import-new-sounds-button">🎙️ Neue Sounds einsortieren</button>
         <button id="open-help-button">❓ Hilfe</button>
-        <label style="margin-left: 12px;">
+        <label style="margin-left: 8px;">
             <input type="checkbox" id="auto-fix-toggle" checked>
             Auto-Fixes beim Speichern
         </label>
     </div>
 
     <div id="table-wrapper" style="max-height: 70vh; overflow: auto;">
+        <div class="tab-controls" style="position:sticky; top:0; z-index:4; background:#fff; padding-top:6px; margin-bottom:6px;">
+            <button class="tab-button active" id="tab-woerter">Wörter</button>
+            <button class="tab-button" id="tab-saetze">Sätze</button>
+            <button id="add-set-button">+ Neue Spalte hinzufügen</button>
+        </div>
         <table id="editor-table">
             <thead></thead>
             <tbody>
@@ -177,9 +184,7 @@
             </tbody>
         </table>
     </div>
-    <div class="controls" style="margin-top: 20px;">
-        <!-- Dieser Bereich ist jetzt leer -->
-    </div>
+    
 
     <!-- Modal for Conflict Resolution -->
     <div id="conflict-modal" class="modal-overlay">

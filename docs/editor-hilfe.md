@@ -93,7 +93,7 @@ npm test
 
 - Healthcheck im Editor: Button „Daten prüfen“ → Ergebnis im UI. Backend-API: `/api/healthcheck`.
 	- Der Healthcheck fasst drei Prüfungen zusammen: Sets-Integrität (fehlende IDs/Dateien), fehlende Dateien (DB→FS), und Case-Mismatches (Pfad vs. Git-Index).
-	- Option „Fix Case vor Prüfung“: korrigiert vorab Pfade in `items_database*.json` auf die exakten Git-Namen (empfohlen bei Windows, GitHub Pages ist case-sensitiv).
+	- Der Editor korrigiert vor der Prüfung automatisch die Pfad-Schreibweise (Case) in `items_database*.json` auf die exakten Git-Namen. Das ist vor allem auf Windows sinnvoll (GitHub Pages ist case-sensitiv).
 
 Strenge Case-Prüfung und Auto-Fix (Konsole):
 
