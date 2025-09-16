@@ -1,5 +1,6 @@
 {
   "artikulation": {
+    "displayName": "Artikulation",
     "b": {
       "displayName": "B",
       "initial": {
@@ -25,7 +26,6 @@
         "path": "data/sets/artikulation_d_initial.json"
       }
     },
-    "displayName": "Artikulation",
     "f": {
       "displayName": "F",
       "initial": {
@@ -96,13 +96,6 @@
         "path": "data/sets/artikulation_r_initial.json"
       }
     },
-    "s": {
-      "displayName": "S",
-      "initial": {
-        "displayName": "Initial",
-        "path": "data/sets/artikulation_s_initial.json"
-      }
-    },
     "sch": {
       "displayName": "Sch",
       "initial": {
@@ -112,6 +105,13 @@
       "medial": {
         "displayName": "Medial",
         "path": "data/sets/artikulation_sch_medial.json"
+      }
+    },
+    "s": {
+      "displayName": "S",
+      "initial": {
+        "displayName": "Initial",
+        "path": "data/sets/artikulation_s_initial.json"
       }
     },
     "t": {
