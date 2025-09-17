@@ -42,7 +42,7 @@
   "dusche": {
     "name": "Dusche",
     "image": "data/wörter/images/d/Dusche.jpg",
-    "sound": "data/wörter/sounds/d/Dusche.mp3"
+    "sound": ""
   },
   "faecher": {
     "name": "Fächer",
@@ -67,7 +67,7 @@
   "flasche": {
     "name": "Flasche",
     "image": "data/wörter/images/f/Flasche.jpg",
-    "sound": "data/wörter/sounds/f/Flasche.mp3"
+    "sound": ""
   },
   "fleisch": {
     "name": "Fleisch",
@@ -92,7 +92,7 @@
   "geschenk": {
     "name": "Geschenk",
     "image": "data/wörter/images/g/Geschenk.jpg",
-    "sound": "data/wörter/sounds/g/Geschenk.mp3"
+    "sound": ""
   },
   "geschirr": {
     "name": "Geschirr",
@@ -157,7 +157,7 @@
   "kirschen": {
     "name": "Kirschen",
     "image": "data/wörter/images/k/Kirschen.jpg",
-    "sound": "data/wörter/sounds/k/Kirschen.mp3"
+    "sound": ""
   },
   "koechin": {
     "name": "Köchin",
@@ -207,7 +207,7 @@
   "lutscher": {
     "name": "Lutscher",
     "image": "data/wörter/images/l/Lutscher.jpg",
-    "sound": "data/wörter/sounds/l/Lutscher.mp3"
+    "sound": ""
   },
   "maedchen": {
     "name": "Mädchen",
@@ -457,7 +457,7 @@
   "tasche": {
     "name": "Tasche",
     "image": "data/wörter/images/t/Tasche.jpg",
-    "sound": "data/wörter/sounds/t/Tasche.mp3"
+    "sound": ""
   },
   "taschenlampe": {
     "name": "Taschenlampe",
