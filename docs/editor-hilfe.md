@@ -65,6 +65,63 @@ Hinweis: Details für Mitwirkende findest du zusätzlich in `docs/CONTRIBUTING.m
 - Unsortierte Dateien einsortieren: Benachrichtigung anklicken → Konflikte lösen → Sync läuft automatisch.
 - Gelöschte Dateien wiederherstellen: Dialog „Gelöschte Dateien“ öffnen und Datei(en) zurückspielen.
 
+### Neues Layout (Beta)
+
+Der Editor enthält eine optionale, neue Ansicht („Layout: Next“) mit Sidebar + Detailbereich. Funktional bleibt alles kompatibel zur klassischen Tabelle; die Datenstruktur/Backends bleiben unverändert.
+
+- Aktivieren/Deaktivieren über Werkzeuge → „Neues Layout (Beta)“ (Checkbox)
+- Alternativ per URL: `?layout=next` bzw. `?layout=classic`
+- Der Status wird (sofern möglich) im Browser lokal gespeichert und beim nächsten Laden angewendet.
+- Im Kopfbereich erscheint bei aktivem Next-Layout ein Badge „Layout: Next“.
+
+Hinweis: Beta-Status. UI kann sich noch ändern; Classic bleibt Standard und vollständig funktionsfähig.
+
+#### Sidebar: Suche & Navigation
+
+- Suche nach ID oder Anzeigename mit Live-Filter (debounced). Bei keinen Treffern: „Keine Treffer“.
+- Große Listen werden performanter gerendert (in Blöcken); laufendes Rendering wird beim Tippen abgebrochen und neu gestartet.
+- Tastatur/Screenreader: Die Liste ist als Listbox markiert; Einträge sind Optionen.
+	- Tasten: Pfeil hoch/runter zum Navigieren; Enter/Space öffnet Details; Home/End springen zum ersten/letzten Eintrag.
+	- Roving Tabindex: Nur der aktive Eintrag ist im Tab-Fokus; die aktive Option wird via `aria-activedescendant` markiert.
+	- Shortcuts: '/' fokussiert die Sidebar-Suche; Enter im Suchfeld öffnet das aktive/erste Ergebnis; Escape leert den Filter (erneutes Escape entfernt den Fokus).
+
+#### Details: Anzeige & Set-Chips
+
+- Rechts zeigt der Detailbereich den Namen (Überschrift) und die ID. Darunter steht „Listen: N“ – diese Zahl aktualisiert sich live.
+- Listen-Mitgliedschaften werden als Chips angezeigt. Ein Klick oder Enter/Space toggeln die Zugehörigkeit.
+	- Die Chips sind als `role=checkbox` ausgezeichnet und setzen `aria-checked` korrekt.
+	- Änderungen werden automatisch gespeichert (Autosave) und der Status „Änderungen werden gespeichert…“ erscheint kurz.
+	- Die klassische Tabellenansicht bleibt synchron: Checkboxen der betroffenen Zeile werden mit umgeschaltet.
+	- Read-Only wird respektiert; in diesem Modus sind Aktionen gesperrt.
+
+#### Responsiv & Dichte
+
+- Sticky: Tab-Leiste und Sidebar sind „sticky“ und bleiben beim Scrollen sichtbar.
+- Kleine Bildschirme (< 900px): Die Sidebar ist einklappbar. Der ☰-Button blendet sie ein/aus.
+- Kompakte Darstellung: Per Tastatur Umschalten mit Shift+D (nur visuell, keine Verhaltensänderung).
+
+#### Performance
+
+- Debounce für Suchfelder (Next-Sidebar und klassische Suche) reduziert unnötige DOM-Updates.
+- Chunked Rendering der Sidebar-Liste (mit Cancel), damit auch große Datenmengen flüssig bleiben.
+
+### Name ↔ Dateiname Konflikte
+
+- Öffnen über Werkzeuge → „⚖️ Name-Dateiname-Konflikte“.
+- Liste zeigt Abweichungen zwischen Anzeigename (Editor) und abgeleitetem Dateinamen (aus der ID).
+- Aktionen:
+	- „Alle → Anzeige übernehmen“: Erzeugt Dateinamen gemäß aktuellen Anzeigenamen (empfohlen, wenn Anzeigenamen bereits bereinigt sind).
+	- „Alle → Dateiname übernehmen“: Setzt Anzeigenamen aus den Dateinamen (nützlich, wenn Dateien die zuverlässigere Quelle sind).
+- Empfehlung: Erst Healthcheck/Auto-Fixes laufen lassen, dann Konflikte gezielt prüfen und anwenden.
+- Hinweis: Änderungen respektieren die Normalisierung (ä→ae, ß→ss, Kleinschreibung) und werden validiert.
+
+### Gelöschte Dateien (Archiv)
+
+- Öffnen über Werkzeuge → „♻️ Gelöschte Dateien“.
+- Der Dialog listet archivierte Einträge/Dateien, die über „Löschen“ entfernt wurden.
+- Wiederherstellen: Gewünschte Elemente auswählen und zurückspielen. Dateien landen zunächst im unsortierten Bereich; anschließend einsortieren/prüfen.
+- Endgültig entfernen: Nur wenn sicher, dass kein Bedarf mehr besteht. Archiv dient als Sicherheitsnetz für versehentliche Löschungen.
+
 ### Set-Dateinamen migrieren
 
 Wenn bestehende Set-Dateien auf die neue Konvention gebracht werden sollen (Unterstrich `_` trennt Ebenen, Bindestrich `-` trennt Wörter innerhalb einer Ebene), nutze das Migrations-Tool.

@@ -32,7 +32,7 @@
     "prepare": "husky",
     "test": "jest --runInBand",
     "test:watch": "jest --watchAll",
-    "test:smoke": "npx playwright test",
+    "test:smoke": "npx playwright install --with-deps && npx playwright test --workers=1",
     "snapshot": "node tools/snapshot-data.mjs",
     "restore": "node tools/restore-snapshot.mjs",
     "changelog": "node tools/generate-changelog.mjs",

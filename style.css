@@ -11,6 +11,34 @@
     --box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     --transition-speed: 0.3s;
 }
+
+/* Editor Design Tokens (mirrored, no behavior change) */
+:root {
+    /* Farben */
+    --color-bg: #f7f8fa;
+    --color-card: #ffffff;
+    --color-text: #1f2937;
+    --color-border: #e5e7eb;
+    --color-muted: #f3f4f6;
+    --color-muted-2: #eef2f7;
+    --color-primary: #7da6ff;
+    --color-primary-ink: #1a3d8f;
+    --color-success: #22c55e;
+    --color-danger: #cc0000;
+
+    /* Abstände & Radius */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+
+    /* Schatten & Fokus */
+    --shadow-1: 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-2: 0 2px 8px rgba(0,0,0,0.12);
+    --focus-ring: 0 0 0 3px rgba(125,166,255,0.35);
+}
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; font-family: 'Lexend', sans-serif; background-color: var(--background-color); color: var(--text-color); overflow: hidden; }
 h1, h2, h3, h4 { font-family: 'Lexend', sans-serif; }
@@ -60,7 +88,10 @@ button:focus-visible, .clickable-card:focus-visible {
 
 button, .nav-arrow, .clickable-card { -webkit-tap-highlight-color: transparent; outline: none; }
 button:focus, .nav-arrow:focus, .clickable-card:focus { outline: none; box-shadow: none; }
-button:focus:not(:hover), .nav-arrow:focus:not(:hover), .clickable-card:focus:not(:hover) { /* Leer gelassen für Touch-App */ }
+button:focus:not(:hover), .nav-arrow:focus:not(:hover), .clickable-card:focus:not(:hover) {
+    /* Intentionally minimal for touch-first UI */
+    outline: none;
+}
 
 .hamburger-menu { position: fixed; top: calc(env(safe-area-inset-top) + 20px); right: 20px; z-index: 1001; }
 .hamburger-icon { font-size: 2rem; cursor: pointer; background: var(--card-background); padding: 5px 10px; border-radius: var(--border-radius); user-select: none; }

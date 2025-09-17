@@ -62,6 +62,22 @@ const filterMissingFiles = document.getElementById('filter-missing-files');
 let debounceTimer; // Timer for debouncing save action
 let serverReadOnly = false; // server-side read-only flag
 
+// Performance helpers
+let nextListRenderSeq = 0; // increases to cancel in-flight Next renders
+function debounce(fn, wait = 120) {
+    let timer;
+    return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn.apply(this, args), wait);
+    };
+}
+
+// NEXT-Layout Elemente (read-only Skelett)
+const nextLayout = document.getElementById('next-layout');
+const nextList = document.getElementById('next-list');
+const nextSearch = document.getElementById('next-sidebar-search');
+const nextMain = document.getElementById('next-main');
+
 // Help modal elements
 const helpModal = document.getElementById('help-modal');
 const openHelpButton = document.getElementById('open-help-button');
@@ -286,8 +302,22 @@ function renderIdRenamePreview(result) {
 function switchMode(mode) {
     if (mode !== 'woerter' && mode !== 'saetze') return;
     currentMode = mode;
-    tabWoerter.classList.toggle('active', mode === 'woerter');
-    tabSaetze.classList.toggle('active', mode === 'saetze');
+    const isWoerter = mode === 'woerter';
+    const isSaetze = mode === 'saetze';
+    // Visual active state
+    tabWoerter.classList.toggle('active', isWoerter);
+    tabSaetze.classList.toggle('active', isSaetze);
+    // ARIA state sync for accessibility
+    try {
+        if (tabWoerter) {
+            tabWoerter.setAttribute('aria-selected', isWoerter ? 'true' : 'false');
+            tabWoerter.tabIndex = isWoerter ? 0 : -1;
+        }
+        if (tabSaetze) {
+            tabSaetze.setAttribute('aria-selected', isSaetze ? 'true' : 'false');
+            tabSaetze.tabIndex = isSaetze ? 0 : -1;
+        }
+    } catch {}
     loadData();
 }
 
@@ -295,6 +325,39 @@ function switchMode(mode) {
 if (tabWoerter && tabSaetze) {
     tabWoerter.addEventListener('click', () => switchMode('woerter'));
     tabSaetze.addEventListener('click', () => switchMode('saetze'));
+    // Tastaturnavigation gemäß WAI-ARIA (Links/Rechts/Home/End, Enter/Space)
+    const tabs = [tabWoerter, tabSaetze];
+    const activateTab = (btn) => {
+        if (!btn) return;
+        if (btn === tabWoerter) switchMode('woerter');
+        else if (btn === tabSaetze) switchMode('saetze');
+        try { btn.focus(); } catch {}
+    };
+    const firstTab = () => tabs[0];
+    const lastTab = () => tabs[tabs.length - 1];
+    const nextTab = (current) => current === tabWoerter ? tabSaetze : tabWoerter;
+    const prevTab = (current) => current === tabSaetze ? tabWoerter : tabSaetze;
+    tabs.forEach((tab) => {
+        tab.addEventListener('keydown', (e) => {
+            const key = e.key;
+            if (key === 'ArrowRight') {
+                e.preventDefault();
+                activateTab(nextTab(tab));
+            } else if (key === 'ArrowLeft') {
+                e.preventDefault();
+                activateTab(prevTab(tab));
+            } else if (key === 'Home') {
+                e.preventDefault();
+                activateTab(firstTab());
+            } else if (key === 'End') {
+                e.preventDefault();
+                activateTab(lastTab());
+            } else if (key === 'Enter' || key === ' ') {
+                e.preventDefault();
+                activateTab(tab);
+            }
+        });
+    });
 }
 
 // Event listener for the header checkboxes to select/deselect all in a column
@@ -859,6 +922,8 @@ async function loadData(isReload = false) {
         manifest = data.manifest;
         flatSets = data.flatSets;
         renderTable();
+    // NEXT-Layout: Liste (read-only) aktualisieren
+    try { renderNextList(); } catch {}
         if (!isReload) {
             statusMessage.textContent = `Daten für ${currentMode === 'woerter' ? 'Wörter' : 'Sätze'} erfolgreich geladen.`;
             checkUnsortedFiles(); // Check for unsorted files after initial load
@@ -885,8 +950,554 @@ function getImagePathForItem(id, item) {
 // Das Caching für die Bildexistenz wird nicht mehr benötigt.
 // if (!window.imageExistenceCache) window.imageExistenceCache = {};
 
+// =====================
+// NEXT-Layout: Read-only Sidebar
+// =====================
+function safeNextOptionId(rawId) {
+    try {
+        return 'next-option-' + String(rawId).replace(/[^a-zA-Z0-9_-]/g, '-');
+    } catch { return 'next-option-unknown'; }
+}
+
+function renderNextList() {
+    if (!nextLayout || !nextList) return;
+    const mySeq = ++nextListRenderSeq;
+    // Nur anzeigen, wenn .layout-next aktiv ist; Rendering ist dennoch leichtgewichtig
+    const entries = Object.keys(database || {}).map(id => ({ id, name: (database[id] && database[id].name) ? String(database[id].name) : id }));
+    const q = (nextSearch && nextSearch.value ? nextSearch.value.toLowerCase() : '').trim();
+    const filtered = q ? entries.filter(e => e.id.toLowerCase().includes(q) || e.name.toLowerCase().includes(q)) : entries;
+    nextList.innerHTML = '';
+    if (filtered.length === 0) {
+        const div = document.createElement('div');
+        div.style.color = '#666';
+        div.style.padding = '6px 8px';
+        div.textContent = 'Keine Treffer';
+        nextList.appendChild(div);
+        return;
+    }
+    filtered.sort((a,b)=> a.name.localeCompare(b.name,'de'));
+    const ul = document.createElement('ul');
+    // A11y: explizit als Listbox markieren (rein lesend)
+    ul.setAttribute('role', 'listbox');
+    ul.setAttribute('aria-label', 'Einträge');
+    ul.style.listStyle = 'none';
+    ul.style.padding = '0';
+    ul.style.margin = '0';
+    // A11y: Kein aktiver Eintrag beim Neuaufbau
+    ul.removeAttribute('aria-activedescendant');
+    nextList.appendChild(ul);
+
+    const CHUNK = 200;
+    let index = 0;
+    let firstAssigned = false;
+    const appendChunk = () => {
+        if (mySeq !== nextListRenderSeq) return; // cancelled
+        const frag = document.createDocumentFragment();
+        const end = Math.min(index + CHUNK, filtered.length);
+        for (let i = index; i < end; i++) {
+            const { id, name } = filtered[i];
+            const li = document.createElement('li');
+            li.setAttribute('role','option');
+            li.setAttribute('aria-selected', 'false');
+            li.id = safeNextOptionId(id);
+            const a = document.createElement('a');
+            a.href = '#';
+            a.textContent = name || id;
+            a.style.display = 'block';
+            a.style.padding = '6px 8px';
+            a.style.borderRadius = '6px';
+            a.setAttribute('data-item-id', id);
+            a.tabIndex = -1;
+            a.title = id;
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                try {
+                    const all = nextList.querySelectorAll('li[role="option"]');
+                    all.forEach(li2 => li2.setAttribute('aria-selected','false'));
+                    li.setAttribute('aria-selected','true');
+                    a.focus();
+                    const listbox = nextList.querySelector('ul[role="listbox"]');
+                    if (listbox) listbox.setAttribute('aria-activedescendant', li.id);
+                    const links = nextList.querySelectorAll('li[role="option"] a[data-item-id]');
+                    links.forEach(link => link.tabIndex = -1);
+                    a.tabIndex = 0;
+                } catch {}
+                openNextDetails(id);
+            });
+            li.appendChild(a);
+            frag.appendChild(li);
+            if (!firstAssigned) { a.tabIndex = 0; firstAssigned = true; }
+        }
+        ul.appendChild(frag);
+        index = end;
+        if (index < filtered.length) {
+            // schedule next chunk
+            requestAnimationFrame(appendChunk);
+        }
+    };
+    appendChunk();
+}
+
+function openNextDetails(id) {
+    if (!nextMain) return;
+    const item = (database && database[id]) || null;
+    nextMain.innerHTML = '';
+    // Semantische Überschrift als Titel des Detailbereichs
+    const title = document.createElement('h2');
+    title.id = 'next-details-title';
+    title.style.fontSize = '1.05em';
+    title.style.margin = '0 0 8px 0';
+    title.style.fontWeight = 'bold';
+    title.textContent = item ? (item.name || id) : id;
+    nextMain.appendChild(title);
+    try { nextMain.setAttribute('aria-labelledby', 'next-details-title'); } catch {}
+    const meta = document.createElement('div');
+    meta.style.fontSize = '12px';
+    meta.style.color = '#555';
+    meta.textContent = id;
+    nextMain.appendChild(meta);
+
+    // Read-only Zusatzinfo: Anzahl zugehöriger Listen (Sets)
+    try {
+        const count = Object.values(flatSets || {}).reduce((acc, s) => acc + (Array.isArray(s.items) && s.items.includes(id) ? 1 : 0), 0);
+        const setsInfo = document.createElement('div');
+        setsInfo.style.marginTop = '6px';
+        setsInfo.style.fontSize = '12px';
+        setsInfo.style.color = '#444';
+        setsInfo.setAttribute('data-testid', 'details-sets-count');
+        setsInfo.textContent = `Listen: ${count}`;
+        nextMain.appendChild(setsInfo);
+    } catch {}
+
+    // Gruppierte Set-Chips: Bereiche/Untergruppen aus Manifest (sets.json) ableiten
+    try {
+        const section = document.createElement('div');
+        section.style.marginTop = '10px';
+        const title = document.createElement('div');
+        title.textContent = 'Listen-Mitgliedschaften';
+        title.style.fontWeight = '600';
+        title.style.marginBottom = '6px';
+        title.style.fontSize = '12px';
+        section.appendChild(title);
+
+        // Hilfsfunktionen (lokal, um Scope von id/serverReadOnly zu nutzen)
+        const lsKey = (areaId) => `editor.next.details.collapse.${currentMode}.${areaId}`;
+        const getCollapsed = (areaId, def) => {
+            try { const v = localStorage.getItem(lsKey(areaId)); return v === null ? def : v === 'true'; } catch { return def; }
+        };
+        const setCollapsed = (areaId, val) => { try { localStorage.setItem(lsKey(areaId), String(!!val)); } catch {} };
+        const localeCmp = (a, b) => String(a).localeCompare(String(b), 'de');
+        const isMember = (path) => {
+            const s = flatSets && flatSets[path];
+            return !!(s && Array.isArray(s.items) && s.items.includes(id));
+        };
+        const syncClassicTableFor = (path, member) => {
+            try {
+                const row = tableBody ? tableBody.querySelector(`tr[data-id="${CSS.escape(id)}"]`) : null;
+                if (!row) return;
+                const cb = row.querySelector(`input[type="checkbox"][data-path="${CSS.escape(path)}"]`);
+                if (cb) cb.checked = !!member;
+            } catch {}
+        };
+        const applyChipStyle = (btn, active) => {
+            btn.style.padding = '4px 8px';
+            btn.style.borderRadius = '999px';
+            btn.style.fontSize = '12px';
+            btn.style.lineHeight = '1';
+            btn.style.cursor = serverReadOnly ? 'not-allowed' : 'pointer';
+            if (active) {
+                btn.style.background = '#e6f4ea';
+                btn.style.color = '#0b5d1e';
+                btn.style.border = '1px solid #b7e1c1';
+            } else {
+                btn.style.background = '#f5f5f5';
+                btn.style.color = '#333';
+                btn.style.border = '1px solid #ddd';
+            }
+        };
+
+        const updateSetsCount = () => {
+            const info = nextMain.querySelector('[data-testid="details-sets-count"]');
+            if (!info) return;
+            const c = Object.values(flatSets || {}).reduce((acc, s) => acc + (Array.isArray(s.items) && s.items.includes(id) ? 1 : 0), 0);
+            info.textContent = `Listen: ${c}`;
+        };
+
+        // 1) Kategorien aus Manifest ableiten (streng an sets.json halten)
+        const categories = [];
+        const areaKeys = Object.keys(manifest || {});
+        areaKeys.sort((a, b) => localeCmp(manifest[a]?.displayName || a, manifest[b]?.displayName || b));
+        areaKeys.forEach(areaKey => {
+            const areaNode = manifest[areaKey];
+            if (!areaNode || typeof areaNode !== 'object') return;
+            const areaTitle = areaNode.displayName || areaKey;
+            const childKeys = Object.keys(areaNode).filter(k => k !== 'displayName');
+            // Tiefe-1 Leaves
+            const leavesTop = [];
+            // Untergruppen
+            const subgroups = [];
+            childKeys.forEach(k => {
+                const v = areaNode[k];
+                if (!v || typeof v !== 'object') return;
+                if (v.path) {
+                    // Leaf auf Ebene 1
+                    leavesTop.push({ path: v.path, title: v.displayName || k });
+                } else {
+                    // Untergruppe mit Leaves
+                    const leafKeys = Object.keys(v).filter(kk => kk !== 'displayName');
+                    const leaves = [];
+                    leafKeys.forEach(kk => {
+                        const lv = v[kk];
+                        if (lv && typeof lv === 'object' && lv.path) {
+                            leaves.push({ path: lv.path, title: lv.displayName || kk });
+                        }
+                    });
+                    leaves.sort((x, y) => localeCmp(x.title, y.title));
+                    subgroups.push({ id: k, title: v.displayName || k, leaves });
+                }
+            });
+            leavesTop.sort((x, y) => localeCmp(x.title, y.title));
+            subgroups.sort((x, y) => localeCmp(x.title, y.title));
+            const allLeaves = [...leavesTop, ...subgroups.flatMap(sg => sg.leaves)];
+            const countTotal = allLeaves.length;
+            const countSelected = allLeaves.reduce((n, lf) => n + (isMember(lf.path) ? 1 : 0), 0);
+            categories.push({ areaKey, areaTitle, leavesTop, subgroups, countTotal, countSelected });
+        });
+
+        // 2) Sektionen rendern (Bereiche)
+        const makeChevron = (open) => {
+            const span = document.createElement('span');
+            span.textContent = open ? '▾' : '▸';
+            span.style.display = 'inline-block';
+            span.style.width = '1em';
+            span.style.marginRight = '6px';
+            return span;
+        };
+        const areaFrag = document.createDocumentFragment();
+        categories.forEach(cat => {
+            // Bereichs-Container
+            const area = document.createElement('section');
+            area.setAttribute('role', 'group');
+            area.style.border = '1px solid #eee';
+            area.style.borderRadius = '6px';
+            area.style.padding = '8px';
+            area.style.margin = '8px 0';
+
+            const areaHeader = document.createElement('div');
+            areaHeader.style.display = 'flex';
+            areaHeader.style.alignItems = 'center';
+            areaHeader.style.gap = '8px';
+            areaHeader.style.cursor = 'pointer';
+            const hId = `next-area-${cat.areaKey.replace(/[^a-zA-Z0-9_-]/g,'-')}`;
+            const badge = document.createElement('span');
+            badge.textContent = `(${cat.countSelected}/${cat.countTotal})`;
+            badge.style.fontSize = '12px';
+            badge.style.color = '#444';
+            const hint = document.createElement('span');
+            hint.textContent = cat.countSelected === 0 ? 'keine Treffer' : '';
+            hint.style.marginLeft = 'auto';
+            hint.style.color = '#666';
+            hint.style.fontSize = '12px';
+
+            const defaultCollapsed = cat.countSelected === 0;
+            let collapsed = getCollapsed(cat.areaKey, defaultCollapsed);
+            const chevron = makeChevron(!collapsed);
+
+            const titleSpan = document.createElement('span');
+            titleSpan.textContent = cat.areaTitle;
+            titleSpan.id = hId;
+
+            areaHeader.appendChild(chevron);
+            areaHeader.appendChild(titleSpan);
+            areaHeader.appendChild(badge);
+            areaHeader.appendChild(hint);
+            areaHeader.setAttribute('aria-labelledby', hId);
+            area.appendChild(areaHeader);
+
+            const body = document.createElement('div');
+            body.style.marginTop = '8px';
+            // Kompakte horizontale Aufreihung: Grid mit auto-fit Spalten
+            body.style.display = 'grid';
+            body.style.gridTemplateColumns = 'repeat(auto-fit, minmax(240px, 1fr))';
+            body.style.gap = '8px 12px';
+            body.style.alignItems = 'start';
+            area.appendChild(body);
+
+            const updateAreaHeader = () => {
+                badge.textContent = `(${cat.countSelected}/${cat.countTotal})`;
+                hint.textContent = cat.countSelected === 0 ? 'keine Treffer' : '';
+                chevron.textContent = collapsed ? '▸' : '▾';
+                body.style.display = collapsed ? 'none' : 'grid';
+            };
+
+            // 2a) Inhalt bauen (Untergruppen oder direkte Leaves) – zeilenbasierte Aufreihung
+            const makeChipsGroup = (leaves) => {
+                const wrap = document.createElement('div');
+                wrap.className = 'next-chips-group';
+                wrap.style.display = 'flex';
+                wrap.style.flexWrap = 'wrap';
+                wrap.style.gap = '6px';
+
+                const chips = leaves.map(({ path, title }) => {
+                    const selected = isMember(path);
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.textContent = title || path;
+                    btn.setAttribute('data-set-path', path);
+                    btn.setAttribute('role', 'checkbox');
+                    btn.setAttribute('aria-checked', selected ? 'true' : 'false');
+                    btn.title = title || path;
+                    applyChipStyle(btn, selected);
+
+                    const toggle = () => {
+                        if (serverReadOnly) { statusMessage.textContent = 'Nur-Lese-Modus: Änderungen deaktiviert.'; return; }
+                        if (!flatSets[path]) return;
+                        const arr = flatSets[path].items = Array.isArray(flatSets[path].items) ? flatSets[path].items : [];
+                        const idx = arr.indexOf(id);
+                        const nowSelected = idx === -1;
+                        if (idx >= 0) arr.splice(idx, 1); else arr.push(id);
+                        btn.setAttribute('aria-checked', nowSelected ? 'true' : 'false');
+                        applyChipStyle(btn, nowSelected);
+                        syncClassicTableFor(path, nowSelected);
+                        // Update Counter "Listen: N" + Bereichszähler
+                        cat.countSelected += nowSelected ? 1 : -1;
+                        if (cat.countSelected < 0) cat.countSelected = 0;
+                        updateAreaHeader();
+                        updateSetsCount();
+                        setUnsavedChanges(true);
+                        try { showSaveStatus(null, 'Änderungen werden gespeichert...'); } catch {}
+                        debouncedSave();
+                    };
+
+                    btn.addEventListener('click', (e) => { e.preventDefault(); toggle(); });
+                    btn.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); return; }
+                        const all = Array.from(wrap.querySelectorAll('button[data-set-path]'));
+                        const idx2 = all.indexOf(btn);
+                        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            const rowEl = wrap.closest('[data-row="1"]');
+                            const container = rowEl && rowEl.parentElement;
+                            if (rowEl && container) {
+                                const rows = Array.from(container.querySelectorAll('[data-row="1"]'));
+                                const rIdx = rows.indexOf(rowEl);
+                                const targetRow = e.key === 'ArrowUp' ? rows[rIdx - 1] : rows[rIdx + 1];
+                                if (targetRow) {
+                                    const firstBtn = targetRow.querySelector('button[data-set-path]');
+                                    if (firstBtn) {
+                                        try { firstBtn.tabIndex = 0; firstBtn.focus(); } catch {}
+                                        return;
+                                    }
+                                }
+                            }
+                            // kein Ziel gefunden → kein Move
+                            return;
+                        }
+                        // Roving Tabindex in der Zeile
+                        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'Home' || e.key === 'End') {
+                            e.preventDefault();
+                            if (!all.length) return;
+                            let nextIdx = idx2;
+                            if (e.key === 'ArrowLeft') nextIdx = Math.max(0, idx2 - 1);
+                            else if (e.key === 'ArrowRight') nextIdx = Math.min(all.length - 1, idx2 + 1);
+                            else if (e.key === 'Home') nextIdx = 0;
+                            else if (e.key === 'End') nextIdx = all.length - 1;
+                            all.forEach(b => b.tabIndex = -1);
+                            const target = all[nextIdx];
+                            target.tabIndex = 0;
+                            try { target.focus(); } catch {}
+                        }
+                    });
+
+                    return btn;
+                });
+                // Erstes fokussierbar
+                let first = true;
+                chips.forEach(c => { c.tabIndex = first ? 0 : -1; first = false; wrap.appendChild(c); });
+                return wrap;
+            };
+
+            const appendRow = (labelText, leaves) => {
+                const row = document.createElement('div');
+                row.setAttribute('data-row', '1');
+                row.style.display = 'flex';
+                row.style.alignItems = 'center';
+                row.style.gap = '8px';
+                row.style.margin = '0'; // Abstände ergeben sich aus Grid-Gap
+
+                const label = document.createElement('div');
+                label.textContent = labelText;
+                label.style.fontWeight = '600';
+                label.style.minWidth = '2ch';
+                label.style.whiteSpace = 'nowrap';
+                row.appendChild(label);
+
+                const right = document.createElement('div');
+                right.style.display = 'flex';
+                right.style.flex = '1';
+                const groupWrap = makeChipsGroup(leaves);
+                right.appendChild(groupWrap);
+                row.appendChild(right);
+
+                body.appendChild(row);
+            };
+
+            // Top-Level Leaves (Tiefe 1) → je Leaf eine Zeile
+            if (cat.leavesTop.length) {
+                cat.leavesTop.forEach(lf => appendRow(lf.title, [lf]));
+            }
+            // Untergruppen → pro Untergruppe eine Zeile
+            cat.subgroups.forEach(sg => {
+                if (sg.leaves && sg.leaves.length) {
+                    appendRow(sg.title, sg.leaves);
+                }
+            });
+
+            // Collapse Handling
+            const onToggle = () => {
+                collapsed = !collapsed;
+                setCollapsed(cat.areaKey, collapsed);
+                updateAreaHeader();
+            };
+            areaHeader.addEventListener('click', onToggle);
+
+            updateAreaHeader();
+            areaFrag.appendChild(area);
+        });
+
+        section.appendChild(areaFrag);
+        nextMain.appendChild(section);
+    } catch {}
+}
+
+if (nextSearch) {
+    const scheduleNextRender = debounce(() => { try { renderNextList(); } catch {} }, 120);
+    nextSearch.addEventListener('input', scheduleNextRender);
+}
+
+// NEXT-Layout: Tastatur-Navigation in der Sidebar
+function getNextSidebarAnchors() {
+    return Array.from(nextList ? nextList.querySelectorAll('li[role="option"] a[data-item-id]') : []);
+}
+function setNextSidebarActiveByIndex(idx) {
+    const links = getNextSidebarAnchors();
+    if (links.length === 0) return;
+    const i = Math.max(0, Math.min(idx, links.length - 1));
+    const link = links[i];
+    try {
+        const items = nextList.querySelectorAll('li[role="option"]');
+        items.forEach(li => li.setAttribute('aria-selected','false'));
+        const li = link.closest('li');
+        li?.setAttribute('aria-selected','true');
+        // aria-activedescendant aktualisieren
+        const listbox = nextList.querySelector('ul[role="listbox"]');
+        if (li && listbox) listbox.setAttribute('aria-activedescendant', li.id);
+        // Roving Tabindex aktualisieren
+        links.forEach(l => l.tabIndex = -1);
+        link.tabIndex = 0;
+        link.focus();
+    } catch {}
+}
+function getIndexOfLink(el) {
+    const links = getNextSidebarAnchors();
+    const i = links.indexOf(el);
+    return i >= 0 ? i : 0;
+}
+
+if (nextSearch) nextSearch.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setNextSidebarActiveByIndex(0);
+    } else if (e.key === 'Enter') {
+        // Enter im Suchfeld: ausgewähltes Ergebnis öffnen, falls vorhanden.
+        // Andernfalls das erste Ergebnis auswählen und öffnen.
+        try {
+            const links = getNextSidebarAnchors();
+            if (!links.length) return; // keine Treffer
+            // Prüfe, ob es bereits eine aktive Auswahl gibt
+            const listbox = nextList.querySelector('ul[role="listbox"]');
+            const activeId = listbox ? listbox.getAttribute('aria-activedescendant') : '';
+            let targetIndex = 0;
+            if (activeId) {
+                const activeLi = document.getElementById(activeId);
+                const activeLink = activeLi ? activeLi.querySelector('a[data-item-id]') : null;
+                if (activeLink) {
+                    const idx = links.indexOf(activeLink);
+                    if (idx >= 0) targetIndex = idx;
+                }
+            }
+            e.preventDefault();
+            setNextSidebarActiveByIndex(targetIndex);
+            const link = links[targetIndex];
+            const id = link ? link.getAttribute('data-item-id') : '';
+            if (id) openNextDetails(id);
+        } catch {}
+    }
+});
+
+if (nextList) nextList.addEventListener('keydown', (e) => {
+    const t = e.target;
+    if (!(t instanceof HTMLElement)) return;
+    if (t.matches('a[data-item-id]')) {
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            setNextSidebarActiveByIndex(getIndexOfLink(t) + 1);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            setNextSidebarActiveByIndex(getIndexOfLink(t) - 1);
+        } else if (e.key === 'Home') {
+            e.preventDefault();
+            setNextSidebarActiveByIndex(0);
+        } else if (e.key === 'End') {
+            e.preventDefault();
+            const links = getNextSidebarAnchors();
+            setNextSidebarActiveByIndex(links.length - 1);
+        } else if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            t.click();
+        }
+    }
+});
+
+// NEXT-Layout: globale Shortcuts
+//  - '/': fokussiert die Sidebar-Suche (wenn Cursor nicht bereits in einem Eingabefeld steht)
+//  - Escape: leert den aktuellen Filter in der Sidebar-Suche (erneutes Escape entfernt den Fokus)
+document.addEventListener('keydown', (e) => {
+    try {
+        if (!document.body.classList.contains('layout-next')) return;
+        if (!nextSearch) return;
+        const t = e.target;
+        const tag = t && t.tagName ? t.tagName.toUpperCase() : '';
+        const isEditable = (t && (t.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT'));
+
+        // '/' → Suche fokussieren (nur wenn wir nicht bereits tippen)
+        if (e.key === '/' && !e.altKey && !e.ctrlKey && !e.metaKey) {
+            if (isEditable) return; // Slash normal eingeben lassen
+            e.preventDefault();
+            nextSearch.focus();
+            try { nextSearch.select(); } catch {}
+            return;
+        }
+
+        // Escape → Filter leeren (wenn Suchfeld fokussiert ist); erneutes Escape → Fokus verlassen
+        if (e.key === 'Escape' && document.activeElement === nextSearch) {
+            if (nextSearch.value) {
+                e.preventDefault();
+                nextSearch.value = '';
+                try { renderNextList(); } catch {}
+            } else {
+                // bereits leer → Fokus entfernen
+                try { nextSearch.blur(); } catch {}
+            }
+        }
+    } catch {}
+});
+
 // Attach event listeners to UI elements
-searchInput.addEventListener('input', filterTable);
+if (searchInput) {
+    const debouncedFilter = debounce(filterTable, 120);
+    searchInput.addEventListener('input', debouncedFilter);
+}
 
 // Entfernt: add-row-button und zugehöriger Click-Handler
 

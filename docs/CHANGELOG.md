@@ -2,6 +2,14 @@
 
 Ein menschlich lesbarer Änderungsverlauf. Quellen: _audit/editor-changes.log und _state/name-history.json.
 
+## 2025-09-17
+- Editor (Beta-Layout „Next“): Sidebar + Detailbereich hinter Feature-Flag; Badge „Layout: Next“ im Header.
+- A11y/Tastatur: Listbox-Navigation (Pfeile, Home/End, Enter/Space), roving Tabindex, aria-activedescendant.
+- Set-Chips im Detail: Mitgliedschaften als Chips (role=checkbox) mit Autosave; synchron mit klassischer Tabellen-Checkbox; Read-Only respektiert.
+- Responsiv: Sticky Tab-Leiste/Sidebar; Sidebar auf kleinen Screens einklappbar (☰); kompakte Dichte umschaltbar (Shift+D).
+- Performance: Debounced Suche (Classic/Next) und chunked Rendering der Sidebar (mit Cancel) für große Datenmengen.
+- Keine Backend/API-Änderungen; klassische Ansicht bleibt Standard.
+
 ## 2025-09-15
 - 08:50:04 Name geändert (woerter) [haenchen]: "Hänchen" → "Hähnchen"
 - 08:50:04 name-history:write

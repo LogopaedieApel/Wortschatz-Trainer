@@ -5,28 +5,137 @@
     <title>Wortschatz-Editor</title>
     <style>
         /* CSS bleibt unverändert */
-    body { font-family: sans-serif; margin: 20px; }
+    /* Design Tokens */
+    :root {
+      /* Farben */
+      --color-bg: #f7f8fa;
+      --color-card: #ffffff;
+      --color-text: #1f2937;
+      --color-border: #e5e7eb;
+      --color-muted: #f3f4f6;
+      --color-muted-2: #eef2f7;
+      --color-primary: #7da6ff;
+      --color-primary-ink: #1a3d8f;
+      --color-success: #22c55e;
+      --color-danger: #cc0000;
+
+      /* Abstände & Radius */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --radius-sm: 6px;
+      --radius-md: 8px;
+
+      /* Schatten & Fokus */
+      --shadow-1: 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-2: 0 2px 8px rgba(0,0,0,0.12);
+      --focus-ring: 0 0 0 3px rgba(125,166,255,0.35);
+    }
+
+    body { font-family: sans-serif; margin: 20px; color: var(--color-text); background: var(--color-bg); }
     h1 { margin: 0 0 8px; font-size: 24px; }
         table { border-collapse: collapse; width: 100%; }
         th, td { border: 1px solid #ccc; padding: 8px; text-align: left; background-color: white; }
         th { background-color: #f2f2f2; text-align: center; vertical-align: middle;}
         td input[type="text"] { width: 98%; box-sizing: border-box; }
+    /* Header: zwei Zeilen, robustes Wrapping */
     .controls { margin-bottom: 8px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .controls > * { flex: 0 0 auto; }
+    #top-menu-row { justify-content: flex-end; }
     #save-status { order: 0; }
     /* Hide placeholder when empty to avoid left indent before status-message */
     #save-status:empty { display: none !important; }
     #status-message { order: 1; }
     #notification-area { order: 2; }
-    #server-status-badge { order: 99; margin-left: 8px !important; }
+    #layout-next-badge { order: 3; }
+    #server-status-badge { order: 4; margin-left: auto !important; }
+    /* Suchfeld in eigene Zeile unter Status/Benachrichtigungen */
+    #search-input { flex: 1 1 360px; min-width: 220px; max-width: 640px; order: 10; margin-left: 0; }
     .tab-controls { display:flex; gap:8px; margin-bottom: 6px; position: relative; align-items: center; }
     #add-set-button { white-space: nowrap; padding: 10px 22px; min-width: 240px; }
     .tab-controls .flex-spacer { flex: 1 1 auto; }
     .tab-button { padding:10px 22px; border:1px solid #ccc; border-radius:6px; background:#eee; min-width: 140px; font-weight: 600; }
     #table-wrapper .tab-controls { border-bottom: 0; }
-    button { padding: 6px 10px; font-size: 14px; cursor: pointer; border: 1px solid #ccc; background-color: #f0f0f0; border-radius: 4px; }
-    #run-healthcheck-button { background-color: #e8f0ff; border-color: #7da6ff; color: #1a3d8f; }
-    #run-healthcheck-button:hover { background-color: #dce8ff; }
+    
+    /* Buttons vereinheitlichen */
+    button {
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid var(--color-border);
+      background-color: var(--color-muted);
+      color: inherit;
+      border-radius: var(--radius-sm);
+      transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .1s ease;
+    }
+    button:not(:disabled):hover { background-color: var(--color-muted-2); }
+    button:disabled { opacity: .6; cursor: not-allowed; }
+    button:focus { outline: none; }
+    button:focus-visible { box-shadow: var(--focus-ring); }
+
+    /* Inputs/Selects angleichen */
+    input[type="text"], select {
+      border: 1px solid var(--color-border);
+      background: var(--color-card);
+      color: var(--color-text);
+      border-radius: var(--radius-sm);
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    input[type="text"]:focus-visible, select:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+    /* Tab-Buttons modernisieren */
+    .tab-button {
+      padding: 10px 22px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-muted);
+      min-width: 140px;
+      font-weight: 600;
+      transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+    .tab-button:hover { background: var(--color-muted-2); }
+    .tab-button:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+    .tab-button.active { background: #e8f0ff; border-color: var(--color-primary); color: var(--color-primary-ink); }
+
+    /* Add-Set Button dezent hervorheben */
+    #add-set-button {
+      white-space: nowrap;
+      padding: 10px 22px;
+      min-width: 240px;
+      background: #eef4ff;
+      border-color: var(--color-primary);
+      color: var(--color-primary-ink);
+    }
+    #add-set-button:hover { background: #e1ecff; }
+
+    /* Tools-Menü Button angleichen */
+    #tools-menu-button {
+      padding: 8px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      background: var(--color-card);
+      cursor: pointer;
+      font-size: 200%;
+      transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+    #tools-menu-button:hover { background: var(--color-muted); }
+    #tools-menu-button:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+    /* Menüeinträge konsistent */
+    #tools-menu button[role="menuitem"] {
+      text-align: left;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      background: var(--color-card);
+      transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+    #tools-menu button[role="menuitem"]:hover { background: var(--color-muted); }
+    #tools-menu button[role="menuitem"]:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+        #run-healthcheck-button { background-color: #e8f0ff; border-color: #7da6ff; color: #1a3d8f; }
+        #run-healthcheck-button:hover { background-color: #dce8ff; }
         #new-set-controls { border-left: 2px solid #ccc; padding-left: 20px; }
         #status-message { font-weight: bold; }
     #search-input { padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; flex: 0 1 360px; min-width: 220px; max-width: 480px; margin-left: auto; order: 98; }
@@ -201,7 +310,7 @@
             border: 1px solid #ddd;
             background: #f8f8f8;
             cursor: pointer;
-            font-size: 200%;
+            font-size: 100%;
         }
         #tools-menu-button:hover { background: #f0f0f0; }
         #tools-menu-button[aria-expanded="true"] { border-color: #7da6ff; box-shadow: 0 0 0 2px rgba(125,166,255,0.25); }
@@ -213,14 +322,92 @@
             background: #fafafa;
         }
         #tools-menu button[role="menuitem"]:hover { background:#f0f0f0; }
+
+        /* Phase 2 – Header robuster machen */
+        #top-menu-row {
+          display: flex;
+          gap: var(--space-2);
+          flex-wrap: wrap;
+        }
+        .controls { gap: var(--space-2); }
+        .tab-controls {
+          flex-wrap: wrap;
+          row-gap: var(--space-1);
+          column-gap: var(--space-2);
+          background: var(--color-card);
+        }
+        .tab-controls .tab-button { order: 0; }
+        #add-set-button { order: 1; margin-left: auto; }
+        .tab-controls::after {
+          content: "";
+          position: absolute;
+          left: 0; right: 0; bottom: -1px; height: 1px;
+          background: var(--color-border);
+          opacity: .8;
+        }
+        #search-input { margin-top: 2px; }
+
+          /* Phase 3 – Feature-Flag Layout-NEXT (inaktiv per Default) */
+          /* Diese Klasse wird nur gesetzt, wenn explizit aktiviert.
+              Hier nur leichte visuelle Hinweise als Proof-of-life, ohne Logikänderungen */
+          body.layout-next .tab-button.active { background: #e6ffed; border-color: #22c55e; color: #166534; }
+          body.layout-next #add-set-button { background: #ecfdf5; border-color: #10b981; color: #065f46; }
+          body.layout-next #table-wrapper { background: #ffffff; }
+          /* Beispiel: etwas kompaktere Zellen in NEXT-Layout */
+          body.layout-next th, body.layout-next td { padding: 6px; }
+          
+        /* Phase 4 – Sichtbarer Hinweis, wenn NEXT aktiv ist */
+        #layout-next-badge { order: 98; }
+        body.layout-next #layout-next-badge { display: inline-flex !important; }
+
+        /* Phase 4 – Layout-Umschaltung Classic vs. Next */
+        #next-layout { display: none; }
+        body.layout-next #table-wrapper { display: none !important; }
+        body.layout-next #next-layout { display: block !important; }
+
+                /* Phase 4 – Next-Sidebar: aktiver Eintrag (dezent) */
+                #next-sidebar a[data-item-id] {
+                    border: 1px solid transparent;
+                    transition: background-color .12s ease, border-color .12s ease, box-shadow .12s ease;
+                }
+                #next-sidebar a[data-item-id]:hover {
+                    background: var(--color-muted);
+                }
+                #next-sidebar a[data-item-id]:focus-visible {
+                    outline: none;
+                    box-shadow: var(--focus-ring);
+                }
+                #next-sidebar li[role="option"][aria-selected="true"] a[data-item-id] {
+                    background: #e8f0ff;
+                    border-color: var(--color-primary);
+                    color: var(--color-primary-ink);
+                }
+
+        /* Phase 8 – Responsive & Dichte (nur im Next-Layout) */
+        body.layout-next #next-grid { grid-template-columns: 280px 1fr; }
+        body.layout-next.compact th, body.layout-next.compact td { padding: 4px !important; }
+        body.layout-next .sticky-tabs { position: sticky; top: 0; z-index: 6; background: var(--color-card); box-shadow: 0 1px 0 var(--color-border); }
+        body.layout-next #next-sidebar { position: sticky; top: 52px; max-height: calc(100vh - 64px); overflow: auto; }
+        body.layout-next #next-main { position: relative; }
+        body.layout-next #next-main .sticky-subheader { position: sticky; top: 52px; z-index: 5; background: var(--color-card); padding: 6px 0; box-shadow: 0 1px 0 var(--color-border); }
+        /* Collapsible Sidebar on small screens */
+        @media (max-width: 900px) {
+            body.layout-next #next-grid { grid-template-columns: 1fr; }
+            /* Sidebar bleibt sichtbar; stapelt oberhalb des Inhalts */
+            body.layout-next #next-sidebar { display: block; position: static; max-height: none; }
+            body.layout-next #next-main { grid-column: 1 / -1; }
+        }
+        /* Density control */
+        body.layout-next.compact #next-main { font-size: 14px; }
+        body.layout-next.compact #next-sidebar a[data-item-id] { padding: 4px 6px !important; }
     </style>
 </head>
 <body class="matrix-hide-id-media">
-    <h1>Wortschatz-Editor</h1>
+    <h1 style="display:none;" aria-hidden="true">Wortschatz-Editor</h1>
     <!-- Icon-only Menüzeile (rechts, über der Statusmeldung) -->
     <div class="controls" id="top-menu-row" style="margin-bottom:4px; justify-content:flex-end;">
         <div id="tools-menu-wrap" style="position: relative; display:inline-block;">
-            <button id="tools-menu-button" aria-haspopup="true" aria-expanded="false" aria-label="Werkzeuge" style="display:inline-flex; align-items:center; gap:8px;">☰</button>
+            <button id="tools-menu-button" aria-haspopup="true" aria-expanded="false" aria-controls="tools-menu" aria-label="Werkzeuge" style="display:inline-flex; align-items:center; gap:8px;">☰</button>
             <div id="tools-menu" role="menu" aria-labelledby="tools-menu-button" style="position:absolute; top:calc(100% + 6px); right:0; background:#fff; border:1px solid #ddd; border-radius:8px; padding:10px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width: 260px; display:none; z-index:20;">
                 <div style="display:flex; flex-direction:column; gap:8px;">
                     <button id="show-archive-button" role="menuitem">♻️ Gelöschte Dateien</button>
@@ -228,6 +415,11 @@
                     <button id="show-missing-assets-button" role="menuitem">🔎 Fehlende Assets</button>
                     <button id="show-namefile-conflicts-button" role="menuitem">⚖️ Name-Dateiname-Konflikte</button>
                     <button id="open-help-button" role="menuitem">❓ Hilfe</button>
+                    <!-- Feature-Flag: Neues Layout (Beta) -->
+                    <label id="layout-next-toggle" role="menuitemcheckbox" aria-checked="false" style="margin-top:4px; display:flex; align-items:center; gap:8px; padding:6px 8px; border:1px solid #eee; border-radius:6px;">
+                        <input type="checkbox" id="layout-next-checkbox">
+                        Neues Layout (Beta)
+                    </label>
                     <label role="menuitemcheckbox" aria-checked="true" style="margin-top:4px; display:flex; align-items:center; gap:8px; padding:6px 8px; border:1px solid #eee; border-radius:6px;">
                         <input type="checkbox" id="auto-fix-toggle" checked>
                         Auto-Fixes beim Speichern
@@ -238,9 +430,16 @@
     </div>
     <div class="controls">
         <span id="save-status" style="font-weight:bold;display:inline-block;margin-right:16px;"></span>
-        <p id="status-message" style="display:inline-block; margin: 0; padding: 0;"></p>
-        <div id="notification-area" style="margin: 0; font-weight: bold;"></div>
-        <span id="server-status-badge" style="margin-left:auto !important; font-size:11px; padding:3px 8px; border-radius:999px; border:1px solid #ddd; background:#f7f7f7; color:#333; display:inline-flex; align-items:center; gap:6px;" title="Serverstatus">
+    <p id="status-message" role="status" aria-live="polite" style="display:inline-block; margin: 0; padding: 0;"></p>
+    <div id="notification-area" role="status" aria-live="polite" style="margin: 0; font-weight: bold;"></div>
+      <span id="layout-next-badge" title="Neues Layout aktiv"
+          style="display:none; font-size:11px; padding:3px 8px; border-radius:999px; border:1px solid #86efac; background:#ecfdf5; color:#065f46; align-items:center; gap:6px;">
+            <span style="width:8px; height:8px; border-radius:50%; background:#10b981; display:inline-block;"></span>
+            Layout: Next
+        </span>
+    <!-- Slot für Hamburger im Header (entfällt, da Toggle entfernt) -->
+    <div id="header-hamburger-slot" style="display:none; margin-left:auto; align-items:center; gap:8px;"></div>
+    <span id="server-status-badge" aria-label="Serverstatus" style="margin-left:auto !important; font-size:11px; padding:3px 8px; border-radius:999px; border:1px solid #ddd; background:#f7f7f7; color:#333; display:inline-flex; align-items:center; gap:6px;" title="Serverstatus">
             <span id="server-status-dot" style="width:8px; height:8px; border-radius:50%; background:#28a745; display:inline-block;"></span>
             <span id="server-status-text">RW @3000</span>
         </span>
@@ -249,13 +448,17 @@
         Hinweis: Der Server läuft im Nur-Lese-Modus. Speichern/Ändern ist vorübergehend deaktiviert.
     </div>
     
+    <style>
+        /* Im Next-Layout wird das klassische Tabellen-Suchfeld ausgeblendet */
+        body.layout-next #search-input { display: none !important; }
+    </style>
     <div class="controls" style="justify-content:flex-start;">
         <input type="text" id="search-input" placeholder="Einträge nach Namen filtern..." style="margin-left:0; order:0;">
     </div>
 
-    <div class="tab-controls" style="position:sticky; top:0; z-index:4; background:#fff; padding-top:6px; padding-bottom:4px; padding-left:0; margin-bottom:6px;">
-            <button class="tab-button active" id="tab-woerter">Wörter</button>
-            <button class="tab-button" id="tab-saetze">Sätze</button>
+    <div class="tab-controls sticky-tabs" role="tablist" aria-label="Bereiche" style="position:sticky; top:0; z-index:4; background:#fff; padding-top:6px; padding-bottom:4px; padding-left:0; margin-bottom:6px;">
+            <button class="tab-button active" id="tab-woerter" role="tab" aria-selected="true" aria-controls="table-wrapper">Wörter</button>
+            <button class="tab-button" id="tab-saetze" role="tab" aria-selected="false" aria-controls="table-wrapper">Sätze</button>
             <button id="add-set-button" style="margin-left:auto;">+ Neue Spalte hinzufügen</button>
         </div>
     <div id="table-wrapper" style="max-height: 70vh; overflow: auto;">
@@ -265,6 +468,24 @@
                 <!-- Rows will be inserted here by JavaScript -->
             </tbody>
         </table>
+    </div>
+    
+    <!-- Phase 4: NEXT-Layout Skelett (nur sichtbar mit body.layout-next) -->
+    <div id="next-layout" aria-label="Neue Ansicht" style="display:none;">
+        <div id="next-grid" style="display:grid; grid-template-columns: 280px 1fr; gap: 12px; align-items: start;">
+            <aside id="next-sidebar" aria-label="Liste" style="border:1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-card); padding: 8px; min-height: 40vh;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <input id="next-sidebar-search" type="text" placeholder="Suchen/Filtern…" aria-label="Einträge durchsuchen" aria-controls="next-list" style="flex:1; padding:6px 8px; border:1px solid var(--color-border); border-radius: var(--radius-sm);">
+                </div>
+                <div id="next-list" style="max-height: 60vh; overflow:auto;">
+                    <!-- Platzhalter; Inhalte folgen später per JS -->
+                </div>
+            </aside>
+            <main id="next-main" aria-label="Details" aria-live="polite" aria-labelledby="next-details-title" style="border:1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-card); padding: 10px; min-height: 40vh;">
+                <h2 id="next-details-title" style="font-size:1.05em; margin:0 0 8px 0; font-weight:bold; color:#444;">Neue Ansicht (Beta)</h2>
+                <div style="color:#666;">Inhalte folgen.</div>
+            </main>
+        </div>
     </div>
     
 
@@ -477,6 +698,72 @@
     <script>
         // Fügt einen Zeitstempel an das Skript an, um Caching zu verhindern
         document.write(`<script src="editor_script.js?v=${new Date().getTime()}"><\/script>`);
+    </script>
+    <script>
+        // Phase 3: Feature-Flag "Neues Layout" (.layout-next)
+        (function(){
+            const LS_KEY = 'editor.layoutNext.enabled';
+            const qs = new URLSearchParams(window.location.search);
+            const wantFromQuery = qs.get('layout') === 'next' ? true : (qs.get('layout') === 'classic' ? false : null);
+            const stored = localStorage.getItem(LS_KEY);
+            const wantFromStore = stored === 'true' ? true : (stored === 'false' ? false : null);
+
+            // Regel: Query > LocalStorage > Default(false)
+            const initial = (wantFromQuery !== null) ? wantFromQuery : ((wantFromStore !== null) ? wantFromStore : false);
+
+            // Toggle-Button wurde entfernt; Slot bleibt dauerhaft verborgen
+            const placeHamburger = () => {
+                const slot = document.getElementById('header-hamburger-slot');
+                if (slot) slot.style.display = 'none';
+            };
+
+            const apply = (on) => {
+                document.body.classList.toggle('layout-next', !!on);
+                const cb = document.getElementById('layout-next-checkbox');
+                const wrap = document.getElementById('layout-next-toggle');
+                const tableWrapper = document.getElementById('table-wrapper');
+                const nextLayout = document.getElementById('next-layout');
+                const layoutBadge = document.getElementById('layout-next-badge');
+                if (cb) cb.checked = !!on;
+                if (wrap) wrap.setAttribute('aria-checked', on ? 'true' : 'false');
+                // Kein Hamburger mehr umzusetzen
+                placeHamburger();
+                // Hard switch visibility as a fallback to avoid any CSS specificity issues
+                if (on) {
+                    if (tableWrapper) tableWrapper.style.display = 'none';
+                    if (nextLayout) nextLayout.style.display = 'block';
+                    if (layoutBadge) layoutBadge.style.display = 'inline-flex';
+                } else {
+                    if (tableWrapper) tableWrapper.style.display = 'block';
+                    if (nextLayout) nextLayout.style.display = 'none';
+                    if (layoutBadge) layoutBadge.style.display = 'none';
+                }
+            };
+
+            apply(initial);
+
+            const cb = document.getElementById('layout-next-checkbox');
+            const wrap = document.getElementById('layout-next-toggle');
+            if (cb && wrap) {
+                cb.addEventListener('change', () => {
+                    const on = !!cb.checked;
+                    apply(on);
+                    try { localStorage.setItem(LS_KEY, String(on)); } catch {}
+                });
+            }
+        })();
+
+        // Phase 8: Sidebar-Klappschalter + Compact-Density Toggle (nur visuell)
+        (function(){
+            // Sidebar bleibt stets sichtbar – kein Toggle mehr nötig
+            // Optional: Kompaktmodus via Tastatur Umschalten (Shift+D) – kein UI-Element, nur Entwicklerhilfe
+            document.addEventListener('keydown', (e) => {
+                if (!document.body.classList.contains('layout-next')) return;
+                if (e.shiftKey && (e.key === 'D' || e.key === 'd')) {
+                    document.body.classList.toggle('compact');
+                }
+            });
+        })();
     </script>
 </body>
 </html>

@@ -2008,6 +2008,17 @@ if (require.main === module) {
     serverInstance = app.listen(PORT, () => {
         logInfo(`Server läuft und lauscht auf http://localhost:${PORT}`);
     });
+    // Freundlicher Handler: Wenn der Port bereits belegt ist, keinen Stacktrace ausgeben
+    serverInstance.on('error', (err) => {
+        const code = err && (err.code || err.errno);
+        if (code === 'EADDRINUSE') {
+            console.warn(`[Server] Port ${PORT} ist bereits belegt – verwende bestehenden Server (kein Neustart).`);
+            // Kein Exit: Der aufrufende Prozess (z. B. Testläufe) kann den bestehenden Server nutzen.
+            return;
+        }
+        console.error('[Server] Unerwarteter Fehler beim Start:', err);
+        process.exit(1);
+    });
 }
 
 module.exports = serverInstance || app;
