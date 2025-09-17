@@ -534,15 +534,10 @@ function renderTable() {
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             
-            let isChecked = flatSets[path] && flatSets[path].items.includes(id);
-            
-            // NEU: Logik zum automatischen Ankreuzen basierend auf dem Ordner
-            if (item.folder) {
-                const pathSegments = path.toLowerCase().split(/[/_.]+/);
-                if (pathSegments.includes(item.folder.toLowerCase())) {
-                    isChecked = true;
-                }
-            }
+            // Set-Mitgliedschaft wird ausschließlich aus den Set-Dateien gelesen.
+            // Die frühere Auto-Ankreuz-Logik über item.folder führte zu fehlerhaften
+            // Zuordnungen (z. B. B-Wörter in "B Medial"). Daher entfernt.
+            let isChecked = !!(flatSets[path] && flatSets[path].items.includes(id));
             checkbox.checked = isChecked;
             checkbox.dataset.path = path;
             cell.style.textAlign = 'center';
