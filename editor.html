@@ -148,8 +148,8 @@
         
         #save-button.unsaved { background-color: #007bff; color: white; border-color: #0056b3; font-weight: bold; }
         
-        .delete-button { background: none; border: none; color: #cc0000; cursor: pointer; font-size: 1.1em; padding: 0 5px; border-radius: 4px; }
-        .delete-button:hover { background-color: #ffdddd; }
+                        /* Danger-Variante: wie Standard-Buttons, aber mit roter Schrift */
+                        .delete-button { color: #cc0000; font-weight: 600; }
     .save-name-text { margin-left: 6px; padding: 6px 10px; font-size: 0.9em; }
 
         input[readonly] {
@@ -384,7 +384,7 @@
                 }
 
         /* Phase 8 – Responsive & Dichte (nur im Next-Layout) */
-        body.layout-next #next-grid { grid-template-columns: 280px 1fr; }
+    body.layout-next #next-grid { grid-template-columns: var(--next-sidebar-w) var(--next-split-w) 1fr; }
         body.layout-next.compact th, body.layout-next.compact td { padding: 4px !important; }
         body.layout-next .sticky-tabs { position: sticky; top: 0; z-index: 6; background: var(--color-card); box-shadow: 0 1px 0 var(--color-border); }
         body.layout-next #next-sidebar { position: sticky; top: 52px; max-height: calc(100vh - 64px); overflow: auto; }
@@ -393,6 +393,7 @@
         /* Collapsible Sidebar on small screens */
         @media (max-width: 900px) {
             body.layout-next #next-grid { grid-template-columns: 1fr; }
+            body.layout-next #next-splitter { display:none; }
             /* Sidebar bleibt sichtbar; stapelt oberhalb des Inhalts */
             body.layout-next #next-sidebar { display: block; position: static; max-height: none; }
             body.layout-next #next-main { grid-column: 1 / -1; }
@@ -459,7 +460,7 @@
     <div class="tab-controls sticky-tabs" role="tablist" aria-label="Bereiche" style="position:sticky; top:0; z-index:4; background:#fff; padding-top:6px; padding-bottom:4px; padding-left:0; margin-bottom:6px;">
             <button class="tab-button active" id="tab-woerter" role="tab" aria-selected="true" aria-controls="table-wrapper">Wörter</button>
             <button class="tab-button" id="tab-saetze" role="tab" aria-selected="false" aria-controls="table-wrapper">Sätze</button>
-            <button id="add-set-button" style="margin-left:auto;">+ Neue Spalte hinzufügen</button>
+            <button id="add-set-button" style="margin-left:auto;">+ neue Liste</button>
         </div>
     <div id="table-wrapper" style="max-height: 70vh; overflow: auto;">
         <table id="editor-table">
@@ -470,10 +471,41 @@
         </table>
     </div>
     
+    <!-- Modal: Liste bearbeiten (Umbenennen/Löschen) -->
+    <div id="edit-set-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width:620px;">
+            <span class="close-button" id="edit-set-close" title="Schließen" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h2>Liste bearbeiten</h2>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <label for="edit-set-name" style="min-width:120px;">Anzeigename</label>
+                    <input type="text" id="edit-set-name" placeholder="z. B. A initial" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;">
+                </div>
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <label for="edit-set-path" style="min-width:120px;">Datei-Pfad</label>
+                    <input type="text" id="edit-set-path" placeholder="data/sets/artikulation_a_initial.json" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;">
+                </div>
+            </div>
+            <div id="edit-set-message" style="margin-top:8px; color:#555;"></div>
+            <div class="modal-footer" style="text-align:right; display:flex; gap:8px; justify-content:flex-end;">
+                <button id="edit-set-delete" class="delete-button" title="Liste löschen">Liste löschen</button>
+                <button id="edit-set-save">Speichern</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Phase 4: NEXT-Layout Skelett (nur sichtbar mit body.layout-next) -->
     <div id="next-layout" aria-label="Neue Ansicht" style="display:none;">
-        <div id="next-grid" style="display:grid; grid-template-columns: 280px 1fr; gap: 12px; align-items: start;">
+        <div id="next-grid" style="--next-sidebar-w: 280px; --next-split-w: 8px; display:grid; grid-template-columns: var(--next-sidebar-w) var(--next-split-w) 1fr; gap: 12px; align-items: start;">
             <aside id="next-sidebar" aria-label="Liste" style="border:1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-card); padding: 8px; min-height: 40vh;">
+                <div id="next-mode-switch" style="display:flex; gap:6px; align-items:center; margin-bottom:6px;">
+                    <button id="next-mode-entries" type="button" aria-pressed="true" title="Einträge anzeigen (Wörter/Sätze)" style="padding:4px 8px; border:1px solid var(--color-border); border-radius:999px; background:#e6ffed; color:#166534;">Einträge</button>
+                    <button id="next-mode-lists" type="button" aria-pressed="false" title="Listen anzeigen (alle Listen)" style="padding:4px 8px; border:1px solid var(--color-border); border-radius:999px; background:#f7f7f7; color:#333;">Listen</button>
+                </div>
+                <!-- Bereich-Filter (Alle | Artikulation | Wortschatz) wird per JS befüllt; nur im Listen-Modus sichtbar -->
+                <div id="next-area-filter" aria-label="Bereich filtern" style="display:none; gap:6px; align-items:center; margin-bottom:6px; flex-wrap: wrap;">
+                    <!-- Chips werden dynamisch eingefügt -->
+                </div>
                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
                     <input id="next-sidebar-search" type="text" placeholder="Suchen/Filtern…" aria-label="Einträge durchsuchen" aria-controls="next-list" style="flex:1; padding:6px 8px; border:1px solid var(--color-border); border-radius: var(--radius-sm);">
                 </div>
@@ -481,6 +513,8 @@
                     <!-- Platzhalter; Inhalte folgen später per JS -->
                 </div>
             </aside>
+            <div id="next-splitter" role="separator" aria-label="Größe der Bereiche anpassen" aria-orientation="vertical" aria-valuemin="200" aria-valuemax="600" aria-valuenow="280" tabindex="0"
+                 style="cursor: col-resize; width: var(--next-split-w); height: 100%; align-self: stretch; background: linear-gradient(90deg, transparent 0, transparent 3px, var(--color-border) 3px, var(--color-border) 4px, transparent 4px); border-radius: 4px;" title="Ziehen oder ←/→ zum Anpassen"></div>
             <main id="next-main" aria-label="Details" aria-live="polite" aria-labelledby="next-details-title" style="border:1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-card); padding: 10px; min-height: 40vh;">
                 <h2 id="next-details-title" style="font-size:1.05em; margin:0 0 8px 0; font-weight:bold; color:#444;">Neue Ansicht (Beta)</h2>
                 <div style="color:#666;">Inhalte folgen.</div>

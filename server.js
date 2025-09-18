@@ -978,6 +978,102 @@ app.post('/api/save-all-data', guardWrite, async (req, res) => {
         await writeJsonAtomic(dbPathMode, database, { stamp, backup: true, auditOp: 'save-all-data:db', context: { mode } });
         const manifestToSave = JSON.parse(JSON.stringify(manifest));
 
+        // Diff previous vs new manifest (leaf-level) to propagate file operations (rename/delete)
+        const readPrevManifest = async () => {
+            try {
+                const txt = await fs.readFile(setsManifestPathMode, 'utf8');
+                return JSON.parse(txt);
+            } catch (e) {
+                if (e.code === 'ENOENT') return {};
+                throw e;
+            }
+        };
+
+        const collectLeaves = (node, keyPath = []) => {
+            const out = new Map();
+            const walk = (obj, kp) => {
+                if (!obj || typeof obj !== 'object') return;
+                for (const k of Object.keys(obj)) {
+                    const v = obj[k];
+                    if (!v || typeof v !== 'object') continue;
+                    const nextKp = kp.concat(k);
+                    if (typeof v.path === 'string') {
+                        out.set(nextKp.join('/'), { path: String(v.path) });
+                    }
+                    // Recurse into children (handles nested groups)
+                    walk(v, nextKp);
+                }
+            };
+            walk(node, keyPath);
+            return out;
+        };
+
+        const prevManifest = await readPrevManifest();
+        const prevLeaves = collectLeaves(prevManifest);
+        const newLeaves = collectLeaves(manifestToSave);
+
+        const toLowerPath = (p) => (p || '').replace(/\\/g, '/').toLowerCase();
+
+        // 1) Handle renames: same keyPath exists but path changed -> move file if present
+        for (const [kp, prevLeaf] of prevLeaves.entries()) {
+            if (!newLeaves.has(kp)) continue;
+            const newLeaf = newLeaves.get(kp);
+            const oldPath = prevLeaf.path || '';
+            const newPath = newLeaf.path || '';
+            if (!oldPath || !newPath) continue;
+            if (toLowerPath(oldPath) === toLowerPath(newPath)) continue; // no change (case-insensitive)
+            const oldAbs = absFromDataRel(oldPath);
+            const newAbs = absFromDataRel(newPath);
+            try {
+                // If source exists and destination differs, try to move. If destination exists, archive old.
+                const srcExists = await fs.access(oldAbs).then(() => true).catch(() => false);
+                if (srcExists) {
+                    const destExists = await fs.access(newAbs).then(() => true).catch(() => false);
+                    await ensureDir(path.dirname(newAbs));
+                    if (!destExists) {
+                        await fs.rename(oldAbs, newAbs);
+                        await auditLog({ op: 'save-all-data:set-rename', from: relFromRoot(oldAbs), to: relFromRoot(newAbs), keyPath: kp, mode });
+                    } else {
+                        // Collision: keep destination, archive old
+                        const archiveDir = path.join(STATE_DIR, '_deleted_files', stamp);
+                        await ensureDir(archiveDir);
+                        const base = path.basename(oldAbs);
+                        const archived = path.join(archiveDir, base);
+                        await fs.rename(oldAbs, archived).catch(async (err) => {
+                            // If rename fails (e.g., cross-device), fallback to copy+unlink
+                            try { await fs.copyFile(oldAbs, archived); await fs.unlink(oldAbs); } catch {}
+                        });
+                        await auditLog({ op: 'save-all-data:set-rename-collide-archived-old', from: relFromRoot(oldAbs), archived: relFromRoot(archived), keep: relFromRoot(newAbs), keyPath: kp, mode });
+                    }
+                }
+            } catch (e) {
+                console.warn('[SAVE-ALL] Set-Rename fehlgeschlagen:', relFromRoot(oldAbs), '->', relFromRoot(newAbs), e.message);
+            }
+        }
+
+        // 2) Handle deletions: keyPath removed altogether -> archive old set file
+        for (const [kp, prevLeaf] of prevLeaves.entries()) {
+            if (newLeaves.has(kp)) continue;
+            const oldPath = prevLeaf.path || '';
+            if (!oldPath) continue;
+            const oldAbs = absFromDataRel(oldPath);
+            try {
+                const exists = await fs.access(oldAbs).then(() => true).catch(() => false);
+                if (exists) {
+                    const archiveDir = path.join(STATE_DIR, '_deleted_files', stamp);
+                    await ensureDir(archiveDir);
+                    const base = path.basename(oldAbs);
+                    const archived = path.join(archiveDir, base);
+                    await fs.rename(oldAbs, archived).catch(async (err) => {
+                        try { await fs.copyFile(oldAbs, archived); await fs.unlink(oldAbs); } catch {}
+                    });
+                    await auditLog({ op: 'save-all-data:set-archived', from: relFromRoot(oldAbs), to: relFromRoot(archived), keyPath: kp, mode });
+                }
+            } catch (e) {
+                console.warn('[SAVE-ALL] Set-Archivierung fehlgeschlagen:', relFromRoot(oldAbs), e.message);
+            }
+        }
+
         const saveSetContent = async (node) => {
             for (const key in node) {
                 const child = node[key];
@@ -1709,6 +1805,9 @@ app.post('/api/sync-files', guardWrite, async (req, res) => {
 
     try {
         // Helper function to generate a manifest file from a directory of set files
+        const regenerate = String(req.query.regenerateManifest || '').toLowerCase();
+        const shouldRegenerate = regenerate === '1' || regenerate === 'true' || regenerate === 'yes';
+
         const generateManifest = async (setsDir, manifestPath) => {
             const rulesPath = dataPath('sets_manifest.rules.json');
             const readRules = async () => {
@@ -1751,6 +1850,7 @@ app.post('/api/sync-files', guardWrite, async (req, res) => {
                 }
                 return parts;
             };
+            if (!shouldRegenerate) return; // Standard: Manifest nicht neu generieren
             try {
                 const files = await fs.readdir(setsDir);
                 const manifest = {};
@@ -1860,7 +1960,8 @@ app.post('/api/sync-files', guardWrite, async (req, res) => {
         // Update database only for the specified mode
         const processedItems = await updateDatabaseForMode(mode);
 
-        res.json({ message: `Synchronisierung für Modus '${mode}' erfolgreich. ${processedItems} Einträge verarbeitet.` });
+    const note = shouldRegenerate ? 'Manifest regeneriert' : 'Manifest unverändert';
+    res.json({ message: `Synchronisierung für Modus '${mode}' erfolgreich. ${processedItems} Einträge verarbeitet. (${note})` });
 
     } catch (error) {
         console.error(`Fehler bei der Synchronisierung:`, error);

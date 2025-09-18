@@ -61,7 +61,7 @@ Hinweis: Details für Mitwirkende findest du zusätzlich in `docs/CONTRIBUTING.m
 
 - Namen bearbeiten: Button „Namen bearbeiten“, Vorschau prüfen, speichern. Änderungen sind rückgängig machbar.
 - ID umbenennen: Stiftsymbol klicken → Vorschau/Diffs prüfen → Übernehmen.
-- Neue Spalte (Set) anlegen: Hierarchie und Anzeigename eingeben → „+ Neue Spalte hinzufügen“
+- Neue Liste (Set) anlegen: Hierarchie und Anzeigename eingeben → „+ neue Liste“
 - Unsortierte Dateien einsortieren: Benachrichtigung anklicken → Konflikte lösen → Sync läuft automatisch.
 - Gelöschte Dateien wiederherstellen: Dialog „Gelöschte Dateien“ öffnen und Datei(en) zurückspielen.
 

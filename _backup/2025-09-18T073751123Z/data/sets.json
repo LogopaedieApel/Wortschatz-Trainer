@@ -1,0 +1,143 @@
+{
+  "artikulation": {
+    "b": {
+      "displayName": "B",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_b_initial.json"
+      },
+      "medial": {
+        "displayName": "medial",
+        "path": "data/sets/artikulation_b_medial.json"
+      }
+    },
+    "ch1": {
+      "displayName": "Ch1",
+      "medial": {
+        "displayName": "medial",
+        "path": "data/sets/artikulation_ch1_medial.json"
+      }
+    },
+    "d": {
+      "displayName": "D",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_d_initial.json"
+      }
+    },
+    "displayName": "Artikulation",
+    "f": {
+      "displayName": "F",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_f_initial.json"
+      }
+    },
+    "g": {
+      "displayName": "G",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_g_initial.json"
+      }
+    },
+    "h": {
+      "displayName": "H",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_h_initial.json"
+      }
+    },
+    "i": {
+      "displayName": "I",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_i_initial.json"
+      }
+    },
+    "k": {
+      "displayName": "K",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_k_initial.json"
+      }
+    },
+    "l": {
+      "displayName": "L",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_l_initial.json"
+      }
+    },
+    "m": {
+      "displayName": "M",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_m_initial.json"
+      }
+    },
+    "o": {
+      "displayName": "O",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_o_initial.json"
+      }
+    },
+    "p": {
+      "displayName": "P",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_p_initial.json"
+      }
+    },
+    "r": {
+      "displayName": "R",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_r_initial.json"
+      }
+    },
+    "s": {
+      "displayName": "S",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_s_initial.json"
+      }
+    },
+    "sch": {
+      "displayName": "Sch",
+      "final": {
+        "displayName": "final",
+        "path": "data/sets/artikulation_sch_final.json"
+      },
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_sch_initial.json"
+      },
+      "medial": {
+        "displayName": "medial",
+        "path": "data/sets/artikulation_sch_medial.json"
+      }
+    },
+    "t": {
+      "displayName": "T",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_t_initial.json"
+      }
+    },
+    "w": {
+      "displayName": "W",
+      "initial": {
+        "displayName": "initial",
+        "path": "data/sets/artikulation_w_initial.json"
+      }
+    }
+  },
+  "wortschatz": {
+    "displayName": "Wortschatz",
+    "nahrungsmittel": {
+      "displayName": "Nahrungsmittel",
+      "path": "data/sets/wortschatz_nahrungsmittel.json"
+    }
+  }
+}

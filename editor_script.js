@@ -62,6 +62,16 @@ const filterMissingFiles = document.getElementById('filter-missing-files');
 let debounceTimer; // Timer for debouncing save action
 let serverReadOnly = false; // server-side read-only flag
 
+// Phase 2: Edit-Set modal elements
+const editSetModal = document.getElementById('edit-set-modal');
+const editSetClose = document.getElementById('edit-set-close');
+const editSetName = document.getElementById('edit-set-name');
+const editSetPath = document.getElementById('edit-set-path');
+const editSetSave = document.getElementById('edit-set-save');
+const editSetDelete = document.getElementById('edit-set-delete');
+const editSetMessage = document.getElementById('edit-set-message');
+let editSetCurrentPath = '';
+
 // Performance helpers
 let nextListRenderSeq = 0; // increases to cancel in-flight Next renders
 function debounce(fn, wait = 120) {
@@ -76,7 +86,157 @@ function debounce(fn, wait = 120) {
 const nextLayout = document.getElementById('next-layout');
 const nextList = document.getElementById('next-list');
 const nextSearch = document.getElementById('next-sidebar-search');
+const nextSplitter = document.getElementById('next-splitter');
 const nextMain = document.getElementById('next-main');
+const nextGrid = document.getElementById('next-grid');
+
+// NEXT-Layout: Splitter (Sidebar/Main) – Drag/Keyboard resize with persistence
+(function initNextSplitter() {
+    if (!nextSplitter || !nextGrid) return;
+    const LS_KEY = 'wst.next.sidebarW';
+    const getNumAttr = (el, name, fallback) => {
+        const v = parseInt(el.getAttribute(name), 10);
+        return Number.isFinite(v) ? v : fallback;
+    };
+    const minW = getNumAttr(nextSplitter, 'aria-valuemin', 200);
+    const maxW = getNumAttr(nextSplitter, 'aria-valuemax', 600);
+    const applyWidth = (w) => {
+        const width = Math.max(minW, Math.min(maxW, Math.round(w)));
+        nextGrid.style.setProperty('--next-sidebar-w', `${width}px`);
+        nextSplitter.setAttribute('aria-valuenow', String(width));
+        return width;
+    };
+    // Restore stored width
+    const stored = parseInt(localStorage.getItem(LS_KEY) || '', 10);
+    if (Number.isFinite(stored)) {
+        applyWidth(stored);
+    } else {
+        // Initialize from current aria-valuenow if present
+        const now = getNumAttr(nextSplitter, 'aria-valuenow', 280);
+        applyWidth(now);
+    }
+
+    // Drag to resize (Pointer Events)
+    let dragStartX = 0;
+    let startWidth = 0;
+    let dragging = false;
+    const onPointerMove = (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - dragStartX;
+        const newW = applyWidth(startWidth + dx);
+        // Do not persist on every move to reduce churn
+        nextSplitter.setAttribute('aria-valuenow', String(newW));
+        e.preventDefault();
+    };
+    const endDrag = () => {
+        if (!dragging) return;
+        dragging = false;
+        document.removeEventListener('pointermove', onPointerMove);
+        document.removeEventListener('pointerup', endDrag);
+        // Persist
+        const cur = getNumAttr(nextSplitter, 'aria-valuenow', 280);
+        localStorage.setItem(LS_KEY, String(cur));
+        document.body.style.userSelect = '';
+        document.body.style.cursor = '';
+    };
+    nextSplitter.addEventListener('pointerdown', (e) => {
+        // Only left button / primary
+        if (e.button !== 0) return;
+        // Compute current sidebar width
+        const sidebar = document.getElementById('next-sidebar');
+        const rect = sidebar ? sidebar.getBoundingClientRect() : null;
+        startWidth = rect ? rect.width : getNumAttr(nextSplitter, 'aria-valuenow', 280);
+        dragStartX = e.clientX;
+        dragging = true;
+        document.addEventListener('pointermove', onPointerMove);
+        document.addEventListener('pointerup', endDrag);
+        document.body.style.userSelect = 'none';
+        document.body.style.cursor = 'col-resize';
+        e.preventDefault();
+    });
+
+    // Keyboard accessibility
+    nextSplitter.addEventListener('keydown', (e) => {
+        const step = e.shiftKey ? 32 : 16;
+        let cur = getNumAttr(nextSplitter, 'aria-valuenow', 280);
+        if (e.key === 'ArrowLeft') {
+            cur = applyWidth(cur - step);
+            localStorage.setItem(LS_KEY, String(cur));
+            e.preventDefault();
+        } else if (e.key === 'ArrowRight') {
+            cur = applyWidth(cur + step);
+            localStorage.setItem(LS_KEY, String(cur));
+            e.preventDefault();
+        } else if (e.key === 'Home') {
+            cur = applyWidth(minW);
+            localStorage.setItem(LS_KEY, String(cur));
+            e.preventDefault();
+        } else if (e.key === 'End') {
+            cur = applyWidth(maxW);
+            localStorage.setItem(LS_KEY, String(cur));
+            e.preventDefault();
+        }
+    });
+})();
+// Next-Layout: einfacher Umschalter Einträge/Listen
+const nextModeEntriesBtn = document.getElementById('next-mode-entries');
+const nextModeListsBtn = document.getElementById('next-mode-lists');
+let nextSidebarMode = 'entries'; // 'entries' | 'lists'
+// Bereich-Filter (Alle | Artikulation | Wortschatz)
+const nextAreaFilterWrap = document.getElementById('next-area-filter');
+let nextAreaFilter = 'Alle'; // 'Alle' | 'Artikulation' | 'Wortschatz'
+const AREA_LS_KEY = 'editor.next.areaFilter';
+try { const v = localStorage.getItem(AREA_LS_KEY); if (v) nextAreaFilter = v; } catch {}
+
+function renderAreaFilterChips() {
+    if (!nextAreaFilterWrap) return;
+    // Erzeuge Kandidaten aus Manifest-Root (displayName, Fallback key)
+    const areas = [];
+    try {
+        const root = manifest || {};
+        Object.keys(root).forEach(k => {
+            const node = root[k];
+            if (!node || typeof node !== 'object') return;
+            const title = node.displayName || k;
+            areas.push(title);
+        });
+    } catch {}
+    // Immer 'Alle' vorn; doppelte vermeiden; sortiert anzeigen
+    const uniq = Array.from(new Set(areas)).sort((a,b)=> String(a).localeCompare(String(b),'de'));
+    const items = ['Alle', ...uniq];
+    nextAreaFilterWrap.innerHTML = '';
+    const label = document.createElement('span');
+    label.textContent = 'Bereich:';
+    label.style.fontSize = '12px';
+    label.style.color = '#444';
+    nextAreaFilterWrap.appendChild(label);
+    items.forEach(title => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = title;
+        btn.setAttribute('data-area', title);
+        btn.setAttribute('aria-pressed', title === nextAreaFilter ? 'true' : 'false');
+        btn.style.padding = '4px 8px';
+        btn.style.border = '1px solid #ddd';
+        btn.style.borderRadius = '999px';
+        btn.style.background = (title === nextAreaFilter) ? '#e6ffed' : '#f7f7f7';
+        btn.style.color = (title === nextAreaFilter) ? '#166534' : '#333';
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            nextAreaFilter = title;
+            try { localStorage.setItem(AREA_LS_KEY, title); } catch {}
+            // Visuals aktualisieren
+            Array.from(nextAreaFilterWrap.querySelectorAll('button[data-area]')).forEach(b => {
+                const active = b.getAttribute('data-area') === nextAreaFilter;
+                b.setAttribute('aria-pressed', active ? 'true' : 'false');
+                b.style.background = active ? '#e6ffed' : '#f7f7f7';
+                b.style.color = active ? '#166534' : '#333';
+            });
+            try { renderNextList(); } catch {}
+        });
+        nextAreaFilterWrap.appendChild(btn);
+    });
+}
 
 // Help modal elements
 const helpModal = document.getElementById('help-modal');
@@ -514,9 +674,30 @@ function renderTable() {
             headerCheckbox.dataset.path = set.path;
             headerCheckbox.title = `Alle in dieser Spalte an-/abwählen`;
             const label = document.createElement('label');
+            label.style.display = 'inline-flex';
+            label.style.alignItems = 'center';
+            label.style.gap = '6px';
             label.appendChild(headerCheckbox);
-            label.appendChild(document.createTextNode(` ${set.displayName}`));
-            subTh.appendChild(label);
+            const span = document.createElement('span');
+            span.textContent = ` ${set.displayName}`;
+            label.appendChild(span);
+            // Bearbeiten-Button für die Liste (Phase 2)
+            const editBtn = document.createElement('button');
+            editBtn.type = 'button';
+            editBtn.className = 'edit-button-subtle';
+            editBtn.textContent = '✎';
+            editBtn.title = 'Liste umbenennen/löschen';
+            editBtn.style.marginLeft = '6px';
+            editBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openEditSetModal({ path: set.path, displayName: set.displayName });
+            });
+            const wrap = document.createElement('div');
+            wrap.style.display = 'flex';
+            wrap.style.alignItems = 'center';
+            wrap.appendChild(label);
+            wrap.appendChild(editBtn);
+            subTh.appendChild(wrap);
             subHeaderRow.appendChild(subTh);
         });
     });
@@ -583,6 +764,101 @@ function renderTable() {
 // =====================
 // Validation Utilities
 // =====================
+
+// Phase 2: Set-Leaf edit helpers
+function openEditSetModal({ path, displayName }) {
+    if (!editSetModal) return;
+    editSetCurrentPath = String(path || '');
+    if (editSetName) editSetName.value = displayName || '';
+    if (editSetPath) editSetPath.value = path || '';
+    if (editSetMessage) { editSetMessage.textContent = ''; editSetMessage.style.color = '#555'; }
+    editSetModal.style.display = 'flex';
+    setTimeout(() => { try { editSetName?.focus(); editSetName?.select(); } catch {} }, 50);
+}
+function closeEditSetModal() { if (editSetModal) editSetModal.style.display = 'none'; }
+if (editSetClose) editSetClose.addEventListener('click', closeEditSetModal);
+if (editSetModal) editSetModal.addEventListener('click', (e) => { if (e.target === editSetModal) closeEditSetModal(); });
+
+function findAndMutateLeafByPath(node, targetPath, mutate) {
+    if (!node || typeof node !== 'object') return false;
+    const keys = Object.keys(node);
+    for (const k of keys) {
+        if (k === 'displayName') continue;
+        const v = node[k];
+        if (!v || typeof v !== 'object') continue;
+        if (v.path && String(v.path) === targetPath) {
+            return mutate(v, node, k), true;
+        }
+        if (findAndMutateLeafByPath(v, targetPath, mutate)) return true;
+    }
+    return false;
+}
+
+function normalizeSetPathInput(p) {
+    // very light normalization: slashes and .json suffix
+    let v = (p || '').trim().replace(/\\+/g, '/');
+    if (v && !/\.json$/i.test(v)) v += '.json';
+    return v;
+}
+
+async function applyEditSetSave() {
+    try {
+        if (serverReadOnly) { if (editSetMessage) { editSetMessage.style.color = '#b94a48'; editSetMessage.textContent = 'Nur-Lese-Modus.'; } return; }
+        const newName = (editSetName?.value || '').trim();
+        const newPathRaw = (editSetPath?.value || '').trim();
+        const newPath = normalizeSetPathInput(newPathRaw);
+        if (!editSetCurrentPath || !newName || !newPath) {
+            if (editSetMessage) { editSetMessage.style.color = '#b94a48'; editSetMessage.textContent = 'Bitte Name und Pfad ausfüllen.'; }
+            return;
+        }
+        // Update manifest leaf (displayName + path)
+        const ok = findAndMutateLeafByPath(manifest, editSetCurrentPath, (leaf) => {
+            leaf.displayName = newName;
+            leaf.path = newPath;
+        });
+        if (!ok) {
+            if (editSetMessage) { editSetMessage.style.color = '#b94a48'; editSetMessage.textContent = 'Liste nicht gefunden.'; }
+            return;
+        }
+        // If path changed, adjust flatSets key in-memory so chips/table pick up immediately
+        if (flatSets[editSetCurrentPath] && editSetCurrentPath !== newPath) {
+            flatSets[newPath] = flatSets[editSetCurrentPath];
+            delete flatSets[editSetCurrentPath];
+        }
+        setUnsavedChanges(true);
+        await saveData();
+        closeEditSetModal();
+        // Re-render table headers quickly so the edit button still works
+        renderTable();
+    } catch (e) {
+        if (editSetMessage) { editSetMessage.style.color = '#b94a48'; editSetMessage.textContent = `Fehler: ${e.message}`; }
+    }
+}
+async function applyEditSetDelete() {
+    try {
+        if (serverReadOnly) { if (editSetMessage) { editSetMessage.style.color = '#b94a48'; editSetMessage.textContent = 'Nur-Lese-Modus.'; } return; }
+        if (!editSetCurrentPath) return;
+        if (!window.confirm('Liste wirklich löschen? Die zugehörige Set-Datei wird archiviert.')) return;
+        // Remove leaf from manifest
+        const ok = findAndMutateLeafByPath(manifest, editSetCurrentPath, (leaf, parent, key) => {
+            try { delete parent[key]; } catch {}
+        });
+        if (!ok) {
+            if (editSetMessage) { editSetMessage.style.color = '#b94a48'; editSetMessage.textContent = 'Liste nicht gefunden.'; }
+            return;
+        }
+        // Also drop from flatSets for immediate UI
+        if (flatSets[editSetCurrentPath]) delete flatSets[editSetCurrentPath];
+        setUnsavedChanges(true);
+        await saveData();
+        closeEditSetModal();
+        renderTable();
+    } catch (e) {
+        if (editSetMessage) { editSetMessage.style.color = '#b94a48'; editSetMessage.textContent = `Fehler: ${e.message}`; }
+    }
+}
+if (editSetSave) editSetSave.addEventListener('click', applyEditSetSave);
+if (editSetDelete) editSetDelete.addEventListener('click', applyEditSetDelete);
 
 function toNFC(str) {
     try { return (str || '').normalize('NFC'); } catch { return str || ''; }
@@ -981,9 +1257,237 @@ function renderNextList() {
     if (!nextLayout || !nextList) return;
     const mySeq = ++nextListRenderSeq;
     // Nur anzeigen, wenn .layout-next aktiv ist; Rendering ist dennoch leichtgewichtig
-    const entries = Object.keys(database || {}).map(id => ({ id, name: (database[id] && database[id].name) ? String(database[id].name) : id }));
     const q = (nextSearch && nextSearch.value ? nextSearch.value.toLowerCase() : '').trim();
-    const filtered = q ? entries.filter(e => e.id.toLowerCase().includes(q) || e.name.toLowerCase().includes(q)) : entries;
+    let filtered = [];
+    if (nextSidebarMode === 'lists') {
+        // Bereich-Filterleiste sichtbar schalten
+        if (nextAreaFilterWrap) nextAreaFilterWrap.style.display = 'flex';
+        // Chips (neu) aufbauen, falls Manifest inzwischen geladen wurde
+        try { renderAreaFilterChips(); } catch {}
+        // Alle Leaves aus dem Manifest als Listen sammeln
+        const lists = [];
+        const isImf = (t) => /^(initial|medial|final)$/i.test(String(t||''));
+        const walkArea = (node, areaTitle = '', subgroupTitle = '') => {
+            if (!node || typeof node !== 'object') return;
+            const keys = Object.keys(node);
+            for (const k of keys) {
+                if (k === 'displayName') continue;
+                const v = node[k];
+                if (!v || typeof v !== 'object') continue;
+                if (v.path) {
+                    const leafTitle = v.displayName || k;
+                    // Anzeige: z. B. "B initial" wenn Untergruppe vorhanden und Leaf IMF ist
+                    const composed = (subgroupTitle && isImf(leafTitle)) ? `${subgroupTitle} ${leafTitle}` : leafTitle;
+                    const count = (flatSets && flatSets[v.path] && Array.isArray(flatSets[v.path].items)) ? flatSets[v.path].items.length : 0;
+                    lists.push({ key: v.path, name: composed, top: areaTitle, group: subgroupTitle, leaf: leafTitle, count });
+                } else {
+                    const subTitle = v.displayName || k;
+                    // Tiefer laufen: gleiche Area, neue Subgroup
+                    walkArea(v, areaTitle || subTitle, subTitle);
+                }
+            }
+        };
+        // Root: Bereiche durchlaufen
+        const root = manifest || {};
+        Object.keys(root).forEach(areaKey => {
+            const areaNode = root[areaKey];
+            if (!areaNode || typeof areaNode !== 'object') return;
+            const areaTitle = areaNode.displayName || areaKey;
+            walkArea(areaNode, areaTitle, '');
+        });
+        // Bereichsfilter anwenden (sofern nicht 'Alle')
+        if (nextAreaFilter && nextAreaFilter !== 'Alle') {
+            const needle = String(nextAreaFilter).toLowerCase();
+            for (let i = lists.length - 1; i >= 0; i--) {
+                const t = String(lists[i].top || '').toLowerCase();
+                if (t !== needle) lists.splice(i, 1);
+            }
+        }
+        // Filter & Sort: Bereich → Untergruppe → IMF → Name
+        const imfRankFrom = (leafTitle, displayName) => {
+            const t1 = String(leafTitle||'').toLowerCase();
+            if (t1 === 'initial') return 0; if (t1 === 'medial') return 1; if (t1 === 'final') return 2;
+            const t2 = String(displayName||'').toLowerCase();
+            if (t2.endsWith(' initial')) return 0; if (t2.endsWith(' medial')) return 1; if (t2.endsWith(' final')) return 2;
+            return 99;
+        };
+        filtered = lists.filter(l => {
+            if (!q) return true;
+            return l.name.toLowerCase().includes(q)
+                || l.key.toLowerCase().includes(q)
+                || String(l.top||'').toLowerCase().includes(q)
+                || String(l.group||'').toLowerCase().includes(q);
+        }).sort((a,b)=>{
+            const topCmp = String(a.top||'').localeCompare(String(b.top||''), 'de');
+            if (topCmp !== 0) return topCmp;
+            const grpCmp = String(a.group||'').localeCompare(String(b.group||''), 'de');
+            if (grpCmp !== 0) return grpCmp;
+            const rank = imfRankFrom(a.leaf, a.name) - imfRankFrom(b.leaf, b.name);
+            if (rank !== 0) return rank;
+            return String(a.name).localeCompare(String(b.name),'de');
+        });
+        // Render (gruppiert nach Untergruppe)
+        nextList.innerHTML = '';
+        if (filtered.length === 0) {
+            const div = document.createElement('div');
+            div.style.color = '#666';
+            div.style.padding = '6px 8px';
+            div.textContent = 'Keine Treffer';
+            nextList.appendChild(div);
+            return;
+        }
+    const ul = document.createElement('ul');
+    ul.setAttribute('role', 'listbox');
+    ul.setAttribute('aria-label', 'Listen');
+    ul.style.listStyle = 'none';
+    ul.style.padding = '0';
+    ul.style.margin = '0';
+    // Mehrspaltiges Layout: responsive, so viele Spalten wie möglich bei ~260px Breite
+    ul.style.columnWidth = '120px';
+    ul.style.columnGap = '12px';
+        ul.removeAttribute('aria-activedescendant');
+        nextList.appendChild(ul);
+
+        // Gruppen bilden: group (Untergruppe) -> Items
+        const groups = new Map();
+        for (const item of filtered) {
+            const g = item.group || '(ohne Gruppe)';
+            if (!groups.has(g)) groups.set(g, []);
+            groups.get(g).push(item);
+        }
+        const groupNames = Array.from(groups.keys()).sort((a,b)=> String(a).localeCompare(String(b),'de'));
+
+        let firstAssigned = false;
+        const fragAll = document.createDocumentFragment();
+        for (const gName of groupNames) {
+            // Wrapper pro Gruppe, damit Kolumnen das Paket zusammenhalten
+            const groupLi = document.createElement('li');
+            groupLi.style.breakInside = 'avoid';
+            groupLi.style.pageBreakInside = 'avoid';
+            groupLi.style.webkitColumnBreakInside = 'avoid';
+            groupLi.style.paddingBottom = '6px';
+
+            const h = document.createElement('div');
+            h.textContent = gName;
+            h.style.fontWeight = '600';
+            h.style.color = '#334155';
+            h.style.padding = '8px 8px 4px 8px';
+            h.style.marginTop = '4px';
+            // Bei Filter 'Alle' ein kleines Badge mit Bereichsnamen zeigen (Artikulation/Wortschatz) –
+            // ermittelbar über das erste Child der Gruppe
+            if (nextAreaFilter === 'Alle') {
+                const first = (groups.get(gName) || [])[0];
+                if (first && first.top) {
+                    const badge = document.createElement('span');
+                    badge.textContent = String(first.top);
+                    badge.style.marginLeft = '6px';
+                    badge.style.fontSize = '11px';
+                    badge.style.color = '#555';
+                    badge.style.border = '1px solid #ddd';
+                    badge.style.borderRadius = '999px';
+                    badge.style.padding = '1px 6px';
+                    h.appendChild(badge);
+                }
+            }
+            groupLi.appendChild(h);
+
+            const inner = document.createElement('ul');
+            inner.style.listStyle = 'none';
+            inner.style.padding = '0';
+            inner.style.margin = '0 0 2px 0';
+            groupLi.appendChild(inner);
+
+            const children = groups.get(gName);
+            for (const { key, name, count } of children) {
+                const li = document.createElement('li');
+                li.setAttribute('role','option');
+                li.setAttribute('aria-selected', 'false');
+                li.id = safeNextOptionId(key);
+                const a = document.createElement('a');
+                a.href = '#';
+                a.style.display = 'flex';
+                a.style.alignItems = 'center';
+                a.style.justifyContent = 'space-between';
+                a.style.gap = '8px';
+                a.style.padding = '4px 8px 4px 18px';
+                a.style.borderRadius = '6px';
+                a.setAttribute('data-list-path', key);
+                a.tabIndex = -1;
+                a.title = key;
+                const left = document.createElement('span'); left.textContent = name; left.style.flex = '1';
+                const right = document.createElement('span'); right.textContent = String(count); right.title = 'Elemente'; right.style.fontSize = '12px'; right.style.color='#555'; right.style.border='1px solid #ddd'; right.style.borderRadius='999px'; right.style.padding='2px 6px';
+                a.appendChild(left); a.appendChild(right);
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    try {
+                        const all = nextList.querySelectorAll('li[role="option"]');
+                        all.forEach(li2 => li2.setAttribute('aria-selected','false'));
+                        li.setAttribute('aria-selected','true');
+                        a.focus();
+                        const listbox = nextList.querySelector('ul[role="listbox"]');
+                        if (listbox) listbox.setAttribute('aria-activedescendant', li.id);
+                        const links = nextList.querySelectorAll('li[role="option"] a[data-list-path]');
+                        links.forEach(link => link.tabIndex = -1);
+                        a.tabIndex = 0;
+                    } catch {}
+                    openNextListDetails(key, name);
+                });
+                li.appendChild(a);
+                inner.appendChild(li);
+                if (!firstAssigned) { a.tabIndex = 0; firstAssigned = true; }
+            }
+            fragAll.appendChild(groupLi);
+        }
+        ul.appendChild(fragAll);
+        return;
+    }
+
+    // entries mode (bestehend)
+    // Bereich-Filterleiste sichtbar halten und Chips sicher aufbauen
+    if (nextAreaFilterWrap) nextAreaFilterWrap.style.display = 'flex';
+    try { renderAreaFilterChips(); } catch {}
+
+    // Alle Einträge sammeln
+    let entries = Object.keys(database || {}).map(id => ({ id, name: (database[id] && database[id].name) ? String(database[id].name) : id }));
+
+    // Falls ein Bereich ausgewählt ist (≠ 'Alle'): nur Einträge anzeigen, die in irgendeiner Liste dieses Bereichs enthalten sind
+    if (nextAreaFilter && nextAreaFilter !== 'Alle') {
+        try {
+            const target = String(nextAreaFilter);
+            const areaPaths = [];
+            const root = manifest || {};
+            const collectLeaves = (node) => {
+                if (!node || typeof node !== 'object') return;
+                Object.keys(node).forEach(k => {
+                    if (k === 'displayName') return;
+                    const v = node[k];
+                    if (!v || typeof v !== 'object') return;
+                    if (v.path) {
+                        areaPaths.push(v.path);
+                    } else {
+                        collectLeaves(v);
+                    }
+                });
+            };
+            // Nur die gewählte Top-Area traversieren
+            Object.keys(root).forEach(areaKey => {
+                const areaNode = root[areaKey];
+                if (!areaNode || typeof areaNode !== 'object') return;
+                const areaTitle = areaNode.displayName || areaKey;
+                if (String(areaTitle) === target) collectLeaves(areaNode);
+            });
+
+            // IDs der Einträge aus allen Sets dieses Bereichs sammeln
+            const idsInArea = new Set();
+            for (const p of areaPaths) {
+                const items = flatSets && flatSets[p] && Array.isArray(flatSets[p].items) ? flatSets[p].items : null;
+                if (items) for (const id of items) idsInArea.add(id);
+            }
+            entries = entries.filter(e => idsInArea.has(e.id));
+        } catch {}
+    }
+
+    filtered = q ? entries.filter(e => e.id.toLowerCase().includes(q) || e.name.toLowerCase().includes(q)) : entries;
     nextList.innerHTML = '';
     if (filtered.length === 0) {
         const div = document.createElement('div');
@@ -1005,24 +1509,63 @@ function renderNextList() {
     ul.removeAttribute('aria-activedescendant');
     nextList.appendChild(ul);
 
-    const CHUNK = 200;
-    let index = 0;
+    // Gruppierung nach Anfangsbuchstaben
+    const getInitial = (s) => {
+        try {
+            const t = String(s || '').trim();
+            if (!t) return '#';
+            const ch = t[0];
+            // Deutsch: Großbuchstabe, einfache Normalisierung
+            return ch.toLocaleUpperCase('de-DE');
+        } catch { return '#'; }
+    };
+    const groups = new Map();
+    for (const e of filtered) {
+        const key = getInitial(e.name || e.id);
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(e);
+    }
+    const groupKeys = Array.from(groups.keys()).sort((a,b)=> String(a).localeCompare(String(b),'de'));
+
     let firstAssigned = false;
-    const appendChunk = () => {
-        if (mySeq !== nextListRenderSeq) return; // cancelled
-        const frag = document.createDocumentFragment();
-        const end = Math.min(index + CHUNK, filtered.length);
-        for (let i = index; i < end; i++) {
-            const { id, name } = filtered[i];
+    const fragAll = document.createDocumentFragment();
+    for (const g of groupKeys) {
+        const liGroup = document.createElement('li');
+        liGroup.setAttribute('role','group');
+        // Label für Gruppe
+        const headerId = `next-group-${g}`.replace(/[^a-zA-Z0-9_-]/g,'-');
+        const header = document.createElement('div');
+        header.id = headerId;
+        header.textContent = g;
+        header.style.fontWeight = '600';
+        header.style.color = '#334155';
+        header.style.padding = '8px 8px 4px 8px';
+        header.style.marginTop = '6px';
+        liGroup.setAttribute('aria-labelledby', headerId);
+        liGroup.appendChild(header);
+
+        // Container für Optionen: in einer Zeile, Umbruch erlaubt
+        const inner = document.createElement('ul');
+        inner.style.listStyle = 'none';
+        inner.style.padding = '0';
+    inner.style.margin = '0 0 6px 0';
+        inner.style.display = 'flex';
+        inner.style.flexWrap = 'wrap';
+        inner.style.gap = '6px 12px';
+    inner.style.paddingLeft = '12px';
+
+        const children = groups.get(g).sort((a,b)=> String(a.name||a.id).localeCompare(String(b.name||b.id),'de'));
+        for (const { id, name } of children) {
             const li = document.createElement('li');
             li.setAttribute('role','option');
             li.setAttribute('aria-selected', 'false');
             li.id = safeNextOptionId(id);
+            // inline Option
             const a = document.createElement('a');
             a.href = '#';
             a.textContent = name || id;
-            a.style.display = 'block';
-            a.style.padding = '6px 8px';
+            a.style.display = 'inline-block';
+            a.style.padding = '4px 8px';
             a.style.borderRadius = '6px';
             a.setAttribute('data-item-id', id);
             a.tabIndex = -1;
@@ -1043,17 +1586,146 @@ function renderNextList() {
                 openNextDetails(id);
             });
             li.appendChild(a);
-            frag.appendChild(li);
+            inner.appendChild(li);
             if (!firstAssigned) { a.tabIndex = 0; firstAssigned = true; }
         }
-        ul.appendChild(frag);
-        index = end;
-        if (index < filtered.length) {
-            // schedule next chunk
-            requestAnimationFrame(appendChunk);
-        }
+        liGroup.appendChild(inner);
+        fragAll.appendChild(liGroup);
+    }
+    ul.appendChild(fragAll);
+}
+
+function openNextListDetails(path, displayName) {
+    if (!nextMain) return;
+    nextMain.innerHTML = '';
+    const title = document.createElement('h2');
+    title.id = 'next-details-title';
+    title.style.fontSize = '1.05em';
+    title.style.margin = '0 0 8px 0';
+    title.style.fontWeight = 'bold';
+    title.textContent = displayName || path;
+    nextMain.appendChild(title);
+    try { nextMain.setAttribute('aria-labelledby', 'next-details-title'); } catch {}
+
+    const meta = document.createElement('div');
+    meta.style.fontSize = '12px';
+    meta.style.color = '#555';
+    meta.textContent = path;
+    nextMain.appendChild(meta);
+
+    // Inline-Editor für Anzeigename + Pfad (nutzt bestehende Save/Delete Logik)
+    const form = document.createElement('div');
+    form.style.display = 'grid';
+    form.style.gridTemplateColumns = '140px 1fr auto';
+    form.style.gap = '8px';
+    form.style.alignItems = 'center';
+    form.style.marginTop = '8px';
+
+    const labelName = document.createElement('label'); labelName.textContent = 'Anzeigename';
+    const inputName = document.createElement('input'); inputName.type='text'; inputName.value = displayName || '';
+    const btnSave = document.createElement('button'); btnSave.textContent = 'Speichern'; btnSave.type='button';
+    const labelPath = document.createElement('label'); labelPath.textContent = 'Datei-Pfad';
+    const inputPath = document.createElement('input'); inputPath.type='text'; inputPath.value = path || '';
+    const btnDelete = document.createElement('button'); btnDelete.textContent = 'Liste löschen'; btnDelete.type='button'; btnDelete.className='delete-button'; btnDelete.title = 'Liste löschen';
+    const msg = document.createElement('div'); msg.style.gridColumn = '1 / -1'; msg.style.fontSize = '12px'; msg.style.color = '#555';
+
+    form.appendChild(labelName); form.appendChild(inputName); form.appendChild(btnSave);
+    form.appendChild(labelPath); form.appendChild(inputPath); form.appendChild(btnDelete);
+    form.appendChild(msg);
+    nextMain.appendChild(form);
+
+    const onSave = async () => {
+        if (serverReadOnly) { msg.style.color = '#b94a48'; msg.textContent = 'Nur-Lese-Modus.'; return; }
+        const newName = (inputName.value||'').trim();
+        const newPath = normalizeSetPathInput((inputPath.value||'').trim());
+        if (!newName || !newPath) { msg.style.color='#b94a48'; msg.textContent='Bitte Name und Pfad ausfüllen.'; return; }
+        const ok = findAndMutateLeafByPath(manifest, path, (leaf) => { leaf.displayName = newName; leaf.path = newPath; });
+        if (!ok) { msg.style.color='#b94a48'; msg.textContent='Liste nicht gefunden.'; return; }
+        if (flatSets[path] && path !== newPath) { flatSets[newPath] = flatSets[path]; delete flatSets[path]; }
+        setUnsavedChanges(true);
+        msg.style.color=''; msg.textContent='Änderungen werden gespeichert…';
+        await saveData();
+        // Nach Speichern: Details neu öffnen (neuer Pfad kann Schlüssel sein)
+        openNextListDetails(newPath, newName);
+        try { renderNextList(); } catch {}
     };
-    appendChunk();
+    const onDelete = async () => {
+        if (serverReadOnly) { msg.style.color = '#b94a48'; msg.textContent = 'Nur-Lese-Modus.'; return; }
+        if (!window.confirm('Liste wirklich löschen? Die zugehörige Set-Datei wird archiviert.')) return;
+        const ok = findAndMutateLeafByPath(manifest, path, (leaf, parent, key) => { try { delete parent[key]; } catch {} });
+        if (!ok) { msg.style.color='#b94a48'; msg.textContent='Liste nicht gefunden.'; return; }
+        if (flatSets[path]) delete flatSets[path];
+        setUnsavedChanges(true);
+        msg.style.color=''; msg.textContent='Änderungen werden gespeichert…';
+        await saveData();
+        // Nach Löschen: Details leeren
+        nextMain.innerHTML = '<h2 id="next-details-title" style="font-size:1.05em; margin:0 0 8px 0; font-weight:bold; color:#444;">Neue Ansicht (Beta)</h2><div style="color:#666;">Inhalte folgen.</div>';
+        try { renderNextList(); } catch {}
+    };
+    btnSave.addEventListener('click', onSave);
+    btnDelete.addEventListener('click', onDelete);
+
+    // Vorschau der Listenelemente (erste 100)
+    try {
+        const previewWrap = document.createElement('div');
+        previewWrap.style.marginTop = '12px';
+        const h = document.createElement('div'); h.textContent = 'Elemente (Vorschau)'; h.style.fontWeight='600'; h.style.marginBottom='6px';
+        const ul = document.createElement('ul');
+        // Mehrspaltige Darstellung über CSS-Columns
+        ul.style.margin = '0';
+        ul.style.padding = '0';
+        ul.style.listStyle = 'none';
+    ul.style.columnWidth = '110px';   // Breite je Spalte (anpassbar)
+    ul.style.columnGap = '140px';      // Abstand zwischen Spalten (anpassbar)
+        const items = (flatSets && flatSets[path] && Array.isArray(flatSets[path].items)) ? flatSets[path].items.slice(0, 100) : [];
+    const removeItem = async (itemId) => {
+            try {
+                if (serverReadOnly) { msg.style.color = '#b94a48'; msg.textContent = 'Nur-Lese-Modus.'; return; }
+        // Bestätigung einholen
+        const ok = window.confirm('Element wirklich aus dieser Liste entfernen?');
+        if (!ok) return;
+                const arr = flatSets && flatSets[path] && Array.isArray(flatSets[path].items) ? flatSets[path].items : null;
+                if (!arr) return;
+                const idx = arr.indexOf(itemId);
+                if (idx === -1) return;
+                arr.splice(idx, 1);
+                // Sync klassische Tabelle: Checkbox für (itemId, path) deaktivieren
+                try {
+                    const row = tableBody ? tableBody.querySelector(`tr[data-id="${CSS.escape(itemId)}"]`) : null;
+                    if (row) {
+                        const cb = row.querySelector(`input[type="checkbox"][data-path="${CSS.escape(path)}"]`);
+                        if (cb) cb.checked = false;
+                    }
+                } catch {}
+                setUnsavedChanges(true);
+                msg.style.color=''; msg.textContent='Änderungen werden gespeichert…';
+                await saveData();
+                // Nach Speichern: Ansicht aktualisieren
+                openNextListDetails(path, (title && title.textContent) || displayName || path);
+                try { renderNextList(); } catch {}
+            } catch {}
+        };
+        items.forEach(id => {
+            const li = document.createElement('li');
+            // Verhindert, dass Einträge in Spalten umbrochen werden
+            li.style.breakInside = 'avoid-column';
+            li.style.pageBreakInside = 'avoid';
+            li.style.webkitColumnBreakInside = 'avoid';
+            // Layout innerhalb des Eintrags
+            li.style.display='flex';
+            li.style.alignItems='center';
+            li.style.gap='8px';
+            li.style.marginBottom='4px';
+            const nameSpan = document.createElement('span'); nameSpan.textContent = id; nameSpan.style.flex='1';
+            const btn = document.createElement('button'); btn.type='button'; btn.textContent='✕'; btn.title='Aus Liste entfernen';
+            btn.style.border='1px solid #ddd'; btn.style.borderRadius='999px'; btn.style.padding='0 6px'; btn.style.lineHeight='1.4'; btn.style.fontSize='12px'; btn.style.cursor='pointer'; btn.style.background='#f7f7f7'; btn.style.color='#333';
+            btn.addEventListener('click', (e) => { e.preventDefault(); removeItem(id); });
+            li.appendChild(nameSpan); li.appendChild(btn);
+            ul.appendChild(li);
+        });
+        previewWrap.appendChild(h); previewWrap.appendChild(ul);
+        nextMain.appendChild(previewWrap);
+    } catch {}
 }
 
 function openNextDetails(id) {
@@ -1408,9 +2080,36 @@ if (nextSearch) {
     nextSearch.addEventListener('input', scheduleNextRender);
 }
 
+// Next-Layout: Umschalter Einträge/Listen
+function nextModeApply(mode) {
+    nextSidebarMode = mode;
+    if (nextModeEntriesBtn) {
+        nextModeEntriesBtn.setAttribute('aria-pressed', mode === 'entries' ? 'true' : 'false');
+        nextModeEntriesBtn.style.background = mode === 'entries' ? '#e6ffed' : '#f7f7f7';
+        nextModeEntriesBtn.style.color = mode === 'entries' ? '#166534' : '#333';
+    }
+    if (nextModeListsBtn) {
+        nextModeListsBtn.setAttribute('aria-pressed', mode === 'lists' ? 'true' : 'false');
+        nextModeListsBtn.style.background = mode === 'lists' ? '#e6ffed' : '#f7f7f7';
+        nextModeListsBtn.style.color = mode === 'lists' ? '#166534' : '#333';
+    }
+    // Sichtbarkeit Bereich-Filter: in beiden Modi anzeigen
+    if (nextAreaFilterWrap) nextAreaFilterWrap.style.display = (mode === 'lists' || mode === 'entries') ? 'flex' : 'none';
+    if (nextSearch) nextSearch.setAttribute('aria-label', mode === 'lists' ? 'Listen durchsuchen' : 'Einträge durchsuchen');
+    try { renderNextList(); } catch {}
+}
+if (nextModeEntriesBtn) nextModeEntriesBtn.addEventListener('click', () => nextModeApply('entries'));
+if (nextModeListsBtn) nextModeListsBtn.addEventListener('click', () => nextModeApply('lists'));
+// Bereich-Filterchips initial aufbauen
+try { renderAreaFilterChips(); } catch {}
+// Standard: Einträge
+nextModeApply('entries');
+
 // NEXT-Layout: Tastatur-Navigation in der Sidebar
 function getNextSidebarAnchors() {
-    return Array.from(nextList ? nextList.querySelectorAll('li[role="option"] a[data-item-id]') : []);
+    if (!nextList) return [];
+    const selector = (nextSidebarMode === 'lists') ? 'li[role="option"] a[data-list-path]' : 'li[role="option"] a[data-item-id]';
+    return Array.from(nextList.querySelectorAll(selector));
 }
 function setNextSidebarActiveByIndex(idx) {
     const links = getNextSidebarAnchors();
@@ -1453,7 +2152,7 @@ if (nextSearch) nextSearch.addEventListener('keydown', (e) => {
             let targetIndex = 0;
             if (activeId) {
                 const activeLi = document.getElementById(activeId);
-                const activeLink = activeLi ? activeLi.querySelector('a[data-item-id]') : null;
+                const activeLink = activeLi ? activeLi.querySelector(nextSidebarMode === 'lists' ? 'a[data-list-path]' : 'a[data-item-id]') : null;
                 if (activeLink) {
                     const idx = links.indexOf(activeLink);
                     if (idx >= 0) targetIndex = idx;
@@ -1462,8 +2161,15 @@ if (nextSearch) nextSearch.addEventListener('keydown', (e) => {
             e.preventDefault();
             setNextSidebarActiveByIndex(targetIndex);
             const link = links[targetIndex];
-            const id = link ? link.getAttribute('data-item-id') : '';
-            if (id) openNextDetails(id);
+            if (!link) return;
+            if (nextSidebarMode === 'lists') {
+                const p = link.getAttribute('data-list-path') || '';
+                const dn = link.querySelector('span')?.textContent || p;
+                if (p) openNextListDetails(p, dn);
+            } else {
+                const id = link.getAttribute('data-item-id') || '';
+                if (id) openNextDetails(id);
+            }
         } catch {}
     }
 });
@@ -1471,7 +2177,7 @@ if (nextSearch) nextSearch.addEventListener('keydown', (e) => {
 if (nextList) nextList.addEventListener('keydown', (e) => {
     const t = e.target;
     if (!(t instanceof HTMLElement)) return;
-    if (t.matches('a[data-item-id]')) {
+    if (t.matches('a[data-item-id], a[data-list-path]')) {
         if (e.key === 'ArrowDown') {
             e.preventDefault();
             setNextSidebarActiveByIndex(getIndexOfLink(t) + 1);
