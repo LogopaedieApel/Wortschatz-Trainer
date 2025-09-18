@@ -437,8 +437,31 @@ function renderTable() {
     // Create a sorted list of column paths to ensure consistent order
     const orderedColumnPaths = [];
     const sortedTopCategories = Object.keys(groupedSets).sort();
+    // Helper: stable ordering for Artikulation suffixes (initial < medial < final)
+    const imfRank = (s) => {
+        const t = String(s || '').toLowerCase();
+        if (t === 'initial') return 0;
+        if (t === 'medial') return 1;
+        if (t === 'final') return 2;
+        return 99;
+    };
+    const splitBaseAndKind = (disp) => {
+        const m = String(disp || '').match(/^(.*?)(?:\s+(initial|medial|final))$/i);
+        return m ? { base: m[1].trim(), kind: m[2].toLowerCase() } : { base: String(disp || '').trim(), kind: '' };
+    };
     sortedTopCategories.forEach(topCategory => {
-        const setsInGroup = groupedSets[topCategory].sort((a, b) => a.displayName.localeCompare(b.displayName));
+        const setsInGroup = groupedSets[topCategory]
+            .sort((a, b) => {
+                // Preferred order: by base label (e.g. letter) and then initial<medial<final
+                const A = splitBaseAndKind(a.displayName);
+                const B = splitBaseAndKind(b.displayName);
+                const baseCmp = A.base.localeCompare(B.base, 'de');
+                if (baseCmp !== 0) return baseCmp;
+                const ra = imfRank(A.kind), rb = imfRank(B.kind);
+                if (ra !== rb) return ra - rb;
+                // Fallback to display name comparison
+                return String(a.displayName).localeCompare(String(b.displayName), 'de');
+            });
         setsInGroup.forEach(set => orderedColumnPaths.push(set.path));
     });
 
@@ -1082,6 +1105,13 @@ function openNextDetails(id) {
         };
         const setCollapsed = (areaId, val) => { try { localStorage.setItem(lsKey(areaId), String(!!val)); } catch {} };
         const localeCmp = (a, b) => String(a).localeCompare(String(b), 'de');
+        const kindRank = (t) => {
+            const x = String(t || '').toLowerCase();
+            if (x === 'initial') return 0;
+            if (x === 'medial') return 1;
+            if (x === 'final') return 2;
+            return 99;
+        };
         const isMember = (path) => {
             const s = flatSets && flatSets[path];
             return !!(s && Array.isArray(s.items) && s.items.includes(id));
@@ -1101,9 +1131,9 @@ function openNextDetails(id) {
             btn.style.lineHeight = '1';
             btn.style.cursor = serverReadOnly ? 'not-allowed' : 'pointer';
             if (active) {
-                btn.style.background = '#e6f4ea';
-                btn.style.color = '#0b5d1e';
-                btn.style.border = '1px solid #b7e1c1';
+                btn.style.background = '#95e9adff';
+                btn.style.color = '#106b25ff';
+                btn.style.border = '2px solid #23b345ff';
             } else {
                 btn.style.background = '#f5f5f5';
                 btn.style.color = '#333';
@@ -1147,11 +1177,19 @@ function openNextDetails(id) {
                             leaves.push({ path: lv.path, title: lv.displayName || kk });
                         }
                     });
-                    leaves.sort((x, y) => localeCmp(x.title, y.title));
+                    // Sortiere initial → medial → final, sonst alphabetisch
+                    leaves.sort((x, y) => {
+                        const rk = kindRank(x.title) - kindRank(y.title);
+                        return rk !== 0 ? rk : localeCmp(x.title, y.title);
+                    });
                     subgroups.push({ id: k, title: v.displayName || k, leaves });
                 }
             });
-            leavesTop.sort((x, y) => localeCmp(x.title, y.title));
+            // Sortiere initial → medial → final, sonst alphabetisch
+            leavesTop.sort((x, y) => {
+                const rk = kindRank(x.title) - kindRank(y.title);
+                return rk !== 0 ? rk : localeCmp(x.title, y.title);
+            });
             subgroups.sort((x, y) => localeCmp(x.title, y.title));
             const allLeaves = [...leavesTop, ...subgroups.flatMap(sg => sg.leaves)];
             const countTotal = allLeaves.length;
