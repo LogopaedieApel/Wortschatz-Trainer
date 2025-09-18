@@ -825,8 +825,8 @@ async function applyEditSetSave() {
             flatSets[newPath] = flatSets[editSetCurrentPath];
             delete flatSets[editSetCurrentPath];
         }
-        setUnsavedChanges(true);
-        await saveData();
+    setUnsavedChanges(true);
+    debouncedSaveFromNext();
         closeEditSetModal();
         // Re-render table headers quickly so the edit button still works
         renderTable();
@@ -1642,9 +1642,10 @@ function openNextListDetails(path, displayName) {
         const ok = findAndMutateLeafByPath(manifest, path, (leaf) => { leaf.displayName = newName; leaf.path = newPath; });
         if (!ok) { msg.style.color='#b94a48'; msg.textContent='Liste nicht gefunden.'; return; }
         if (flatSets[path] && path !== newPath) { flatSets[newPath] = flatSets[path]; delete flatSets[path]; }
-        setUnsavedChanges(true);
-        msg.style.color=''; msg.textContent='Änderungen werden gespeichert…';
-        await saveData();
+    setUnsavedChanges(true);
+    msg.style.color=''; msg.textContent='Änderungen werden gespeichert…';
+    skipReadTableOnSave = true;
+    await saveData();
         // Nach Speichern: Details neu öffnen (neuer Pfad kann Schlüssel sein)
         openNextListDetails(newPath, newName);
         try { renderNextList(); } catch {}
@@ -1655,9 +1656,10 @@ function openNextListDetails(path, displayName) {
         const ok = findAndMutateLeafByPath(manifest, path, (leaf, parent, key) => { try { delete parent[key]; } catch {} });
         if (!ok) { msg.style.color='#b94a48'; msg.textContent='Liste nicht gefunden.'; return; }
         if (flatSets[path]) delete flatSets[path];
-        setUnsavedChanges(true);
-        msg.style.color=''; msg.textContent='Änderungen werden gespeichert…';
-        await saveData();
+    setUnsavedChanges(true);
+    msg.style.color=''; msg.textContent='Änderungen werden gespeichert…';
+    skipReadTableOnSave = true;
+    await saveData();
         // Nach Löschen: Details leeren
         nextMain.innerHTML = '<h2 id="next-details-title" style="font-size:1.05em; margin:0 0 8px 0; font-weight:bold; color:#444;">Neue Ansicht (Beta)</h2><div style="color:#666;">Inhalte folgen.</div>';
         try { renderNextList(); } catch {}
@@ -1699,7 +1701,7 @@ function openNextListDetails(path, displayName) {
                 } catch {}
                 setUnsavedChanges(true);
                 msg.style.color=''; msg.textContent='Änderungen werden gespeichert…';
-                await saveData();
+                debouncedSaveFromNext();
                 // Nach Speichern: Ansicht aktualisieren
                 openNextListDetails(path, (title && title.textContent) || displayName || path);
                 try { renderNextList(); } catch {}
@@ -1971,7 +1973,7 @@ function openNextDetails(id) {
                         updateSetsCount();
                         setUnsavedChanges(true);
                         try { showSaveStatus(null, 'Änderungen werden gespeichert...'); } catch {}
-                        debouncedSave();
+                        debouncedSaveFromNext();
                     };
 
                     btn.addEventListener('click', (e) => { e.preventDefault(); toggle(); });
@@ -2493,6 +2495,15 @@ function debouncedSave() {
     }, 1500); // Wait 1.5 seconds after the last change
 }
 
+// Flag: Wenn Änderungen aus dem NEXT-Layout kommen, soll readTableIntoState()
+// beim Speichern NICHT erneut den Zustand aus der klassischen Tabelle ziehen,
+// damit Next-Änderungen nicht überschrieben werden.
+let skipReadTableOnSave = false;
+function debouncedSaveFromNext() {
+    skipReadTableOnSave = true;
+    debouncedSave();
+}
+
 // Trigger for all relevant changes
 ['input', 'change'].forEach(eventType => {
     if (tableBody) {
@@ -2520,12 +2531,33 @@ async function saveData() {
             showSaveStatus(false, 'Ungültige Eingaben – bitte korrigieren.');
             return;
         }
-        readTableIntoState();
+        // Nur aus der klassischen Tabelle einlesen, wenn die Änderungen
+        // nicht aus dem NEXT-Layout stammen.
+        if (!skipReadTableOnSave) {
+            readTableIntoState();
+        }
+
+        // 1) Vor dem Persistieren: Alle Set-Items alphabetisch (de) sortieren
+        const nameOf = (id) => {
+            try { return (database && database[id] && database[id].name) ? String(database[id].name) : String(id); } catch { return String(id); }
+        };
+        const cmpIds = (a, b) => nameOf(a).localeCompare(nameOf(b), 'de', { sensitivity: 'base' });
+        try {
+            Object.keys(flatSets || {}).forEach(p => {
+                const s = flatSets[p];
+                if (s && Array.isArray(s.items)) {
+                    s.items.sort(cmpIds);
+                }
+            });
+        } catch {}
+
         const updateManifestWithFlatData = (node) => {
             for (const key in node) {
                 const child = node[key];
                 if (child && child.path && flatSets[child.path]) {
-                    child.items = flatSets[child.path].items;
+                    // 2) Manifest-Items übernehmen (bereits sortiert)
+                    const arr = flatSets[child.path].items || [];
+                    child.items = Array.isArray(arr) ? arr.slice() : [];
                 } else if (typeof child === 'object' && child !== null) {
                     updateManifestWithFlatData(child);
                 }
@@ -2542,6 +2574,8 @@ async function saveData() {
         const result = await response.json();
         showSaveStatus(true);
         setUnsavedChanges(false);
+    // Flag zurücksetzen, nachdem der Save-Durchlauf abgeschlossen ist
+    skipReadTableOnSave = false;
         // Reload data after saving to ensure consistency, but do it quietly
         const currentScroll = { x: window.scrollX, y: window.scrollY };
         await loadData(true); // Pass a flag to suppress status messages
