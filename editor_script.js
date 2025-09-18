@@ -1343,6 +1343,7 @@ function renderNextList() {
     ul.style.padding = '0';
     ul.style.margin = '0';
     // Mehrspaltiges Layout: responsive, so viele Spalten wie möglich bei ~260px Breite
+    // Standardgröße
     ul.style.columnWidth = '120px';
     ul.style.columnGap = '12px';
         ul.removeAttribute('aria-activedescendant');
@@ -1373,6 +1374,8 @@ function renderNextList() {
             h.style.color = '#334155';
             h.style.padding = '8px 8px 4px 8px';
             h.style.marginTop = '4px';
+            // Standard-Schriftgröße
+            // h.style.fontSize = '';
             // Bei Filter 'Alle' ein kleines Badge mit Bereichsnamen zeigen (Artikulation/Wortschatz) –
             // ermittelbar über das erste Child der Gruppe
             if (nextAreaFilter === 'Alle') {
@@ -1411,6 +1414,7 @@ function renderNextList() {
                 a.style.gap = '8px';
                 a.style.padding = '4px 8px 4px 18px';
                 a.style.borderRadius = '6px';
+                // a.style.fontSize = '';
                 a.setAttribute('data-list-path', key);
                 a.tabIndex = -1;
                 a.title = key;
@@ -1534,13 +1538,14 @@ function renderNextList() {
         liGroup.setAttribute('role','group');
         // Label für Gruppe
         const headerId = `next-group-${g}`.replace(/[^a-zA-Z0-9_-]/g,'-');
-        const header = document.createElement('div');
+    const header = document.createElement('div');
         header.id = headerId;
         header.textContent = g;
-        header.style.fontWeight = '600';
+    header.style.fontWeight = '600';
         header.style.color = '#334155';
-        header.style.padding = '8px 8px 4px 8px';
+    header.style.padding = '8px 8px 4px 8px';
         header.style.marginTop = '6px';
+    // header.style.fontSize = '';
         liGroup.setAttribute('aria-labelledby', headerId);
         liGroup.appendChild(header);
 
@@ -1551,7 +1556,7 @@ function renderNextList() {
     inner.style.margin = '0 0 6px 0';
         inner.style.display = 'flex';
         inner.style.flexWrap = 'wrap';
-        inner.style.gap = '6px 12px';
+    inner.style.gap = '6px 12px';
     inner.style.paddingLeft = '12px';
 
         const children = groups.get(g).sort((a,b)=> String(a.name||a.id).localeCompare(String(b.name||b.id),'de'));
@@ -1567,6 +1572,7 @@ function renderNextList() {
             a.style.display = 'inline-block';
             a.style.padding = '4px 8px';
             a.style.borderRadius = '6px';
+            // a.style.fontSize = '';
             a.setAttribute('data-item-id', id);
             a.tabIndex = -1;
             a.title = id;

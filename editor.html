@@ -116,7 +116,7 @@
       border: 1px solid var(--color-border);
       background: var(--color-card);
       cursor: pointer;
-      font-size: 200%;
+      font-size: 100%;
       transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
     }
     #tools-menu-button:hover { background: var(--color-muted); }
@@ -499,8 +499,8 @@
         <div id="next-grid" style="--next-sidebar-w: 280px; --next-split-w: 8px; display:grid; grid-template-columns: var(--next-sidebar-w) var(--next-split-w) 1fr; gap: 12px; align-items: start;">
             <aside id="next-sidebar" aria-label="Liste" style="border:1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-card); padding: 8px; min-height: 40vh;">
                 <div id="next-mode-switch" style="display:flex; gap:6px; align-items:center; margin-bottom:6px;">
-                    <button id="next-mode-entries" type="button" aria-pressed="true" title="Einträge anzeigen (Wörter/Sätze)" style="padding:4px 8px; border:1px solid var(--color-border); border-radius:999px; background:#e6ffed; color:#166534;">Einträge</button>
-                    <button id="next-mode-lists" type="button" aria-pressed="false" title="Listen anzeigen (alle Listen)" style="padding:4px 8px; border:1px solid var(--color-border); border-radius:999px; background:#f7f7f7; color:#333;">Listen</button>
+                    <button id="next-mode-entries" type="button" aria-pressed="true" title="Einträge anzeigen (Wörter/Sätze)" style="padding:12px 24px; border:1px solid var(--color-border); border-radius:999px; background:#e6ffed; color:#166534;">Einträge</button>
+                    <button id="next-mode-lists" type="button" aria-pressed="false" title="Listen anzeigen (alle Listen)" style="padding:12px 24px; border:1px solid var(--color-border); border-radius:999px; background:#f7f7f7; color:#333;">Listen</button>
                 </div>
                 <!-- Bereich-Filter (Alle | Artikulation | Wortschatz) wird per JS befüllt; nur im Listen-Modus sichtbar -->
                 <div id="next-area-filter" aria-label="Bereich filtern" style="display:none; gap:6px; align-items:center; margin-bottom:6px; flex-wrap: wrap;">
