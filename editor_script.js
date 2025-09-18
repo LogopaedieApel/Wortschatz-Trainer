@@ -301,23 +301,30 @@ async function fetchEditorConfig() {
         writeButtons.forEach(btn => btn.disabled = serverReadOnly);
 
         // Update status badge
-        const dot = document.getElementById('server-status-dot');
-        const txt = document.getElementById('server-status-text');
-        const badge = document.getElementById('server-status-badge');
+    const dot = document.getElementById('server-status-dot');
+    const txt = document.getElementById('server-status-text');
+    const badge = document.getElementById('server-status-badge');
         const port = cfg.port || 3000;
+        // Badge wurde im UI versteckt; wir aktualisieren weiter (für evtl. spätere Reaktivierung),
+        // verändern aber die Anzeige nicht, wenn es per CSS/inline versteckt ist.
         if (dot && txt && badge) {
             if (serverReadOnly) {
                 dot.style.background = '#ffc107'; // amber
                 txt.textContent = `RO @${port}`;
-                badge.style.background = '#fff3cd';
-                badge.style.borderColor = '#ffeeba';
-                badge.style.color = '#856404';
+                // Visuelle Anpassungen nur, wenn sichtbar
+                if (badge.style.display !== 'none') {
+                    badge.style.background = '#fff3cd';
+                    badge.style.borderColor = '#ffeeba';
+                    badge.style.color = '#856404';
+                }
             } else {
                 dot.style.background = '#28a745'; // green
                 txt.textContent = `RW @${port}`;
-                badge.style.background = '#f7f7f7';
-                badge.style.borderColor = '#ddd';
-                badge.style.color = '#333';
+                if (badge.style.display !== 'none') {
+                    badge.style.background = '#f7f7f7';
+                    badge.style.borderColor = '#ddd';
+                    badge.style.color = '#333';
+                }
             }
         }
     } catch (e) {}
@@ -478,6 +485,28 @@ function switchMode(mode) {
             tabSaetze.tabIndex = isSaetze ? 0 : -1;
         }
     } catch {}
+    // Next-Layout: Standardzustand beim Moduswechsel setzen
+    // - Sidebar-Modus: Einträge
+    // - Bereichsfilter: Alle
+    try {
+        nextSidebarMode = 'entries';
+        nextModeApply && nextModeApply('entries'); // aktualisiert Buttons + Search-ARIA und rendert
+    } catch {}
+    try {
+        nextAreaFilter = 'Alle';
+        const wrap = nextAreaFilterWrap;
+        if (wrap) {
+            // UI vorläufig anpassen; endgültig nach loadData() gerendert
+            Array.from(wrap.querySelectorAll('button[data-area]')).forEach(b => {
+                const active = (b.getAttribute('data-area') || '') === 'Alle';
+                b.setAttribute('aria-pressed', active ? 'true' : 'false');
+                b.style.background = active ? '#e6ffed' : '#f7f7f7';
+                b.style.color = active ? '#166534' : '#333';
+            });
+        }
+        try { localStorage.setItem('editor.next.areaFilter', 'Alle'); } catch {}
+    } catch {}
+    // Daten für neuen Modus laden → renderNextList() läuft darin und zeigt das erste Wort automatisch an
     loadData();
 }
 
@@ -907,15 +936,30 @@ function normalizeBaseNameFromName(name) {
 // Rehydrate German umlauts for filenames: ae→ä, oe→ö, ue→ü (case-aware)
 function rehydrateUmlautsFromAscii(s) {
     if (!s) return '';
-    // First handle uppercase variants
-    return s
-        .replace(/Ae/g, 'Ä')
-        .replace(/Oe/g, 'Ö')
-        .replace(/Ue/g, 'Ü')
-        // Then lowercase variants
-        .replace(/ae/g, 'ä')
-        .replace(/oe/g, 'ö')
-        .replace(/ue/g, 'ü');
+    // Conservative rehydration: ae/oe/ue -> ä/ö/ü only at word start or after a non-vowel and not after 'q'.
+    // Avoids turning 'sauer' -> 'saür'. Handles basic German casing (Ae/Oe/Ue -> Ä/Ö/Ü).
+    const isVowel = (ch) => /[aeiouyäöü]/i.test(ch);
+    const out = [];
+    for (let i = 0; i < s.length; i++) {
+        const prev = i > 0 ? s[i - 1] : '';
+        const a = s[i];
+        const b = s[i + 1] || '';
+        // Check sequences: 'ae', 'oe', 'ue' (case-aware on first letter)
+        const seq = a + b;
+        const atWordStart = i === 0 || /[^A-Za-zÄÖÜäöü]/.test(prev);
+        const prevBlocks = !atWordStart && (isVowel(prev) || /q/i.test(prev));
+        const allow = atWordStart || !prevBlocks; // allowed when start or previous is not vowel/Q
+        if (allow) {
+            if (/^Ae$/.test(seq)) { out.push('Ä'); i++; continue; }
+            if (/^Oe$/.test(seq)) { out.push('Ö'); i++; continue; }
+            if (/^Ue$/.test(seq)) { out.push('Ü'); i++; continue; }
+            if (/^ae$/.test(seq)) { out.push('ä'); i++; continue; }
+            if (/^oe$/.test(seq)) { out.push('ö'); i++; continue; }
+            if (/^ue$/.test(seq)) { out.push('ü'); i++; continue; }
+        }
+        out.push(a);
+    }
+    return out.join('');
 }
 
 function prettyBaseFromName(name) {
@@ -1099,39 +1143,20 @@ function preSaveGuardAndFix({ autoFix } = { autoFix: true }) {
             const baseCheck = validatePath(field, val);
             let fixed = baseCheck.fixed;
             let reasons = [...baseCheck.reasons];
-
-            // Stricter rules: directory and basename must match expected (basename derived from display name with umlauts)
+            // Suggest expectedDir/expectedBase as a non-blocking hint (no auto-change)
             const expectedDir = expectedDirFor(field, idInput.value.trim(), nameInput ? nameInput.value : '', val);
             const expectedBase = prettyBaseFromName(nameInput ? nameInput.value : '');
             const fixedNorm = fixSlashes(toNFC(fixed));
             const parts = fixedNorm.split('/');
             const filename = parts.pop() || '';
             const dot = filename.lastIndexOf('.');
-            const basename = dot === -1 ? filename : filename.slice(0, dot);
-            let ext = dot === -1 ? '' : filename.slice(dot).toLowerCase();
-            // Choose desired extension (infer for images, default .jpg; sound .mp3)
-            let desiredExt = ext;
-            if (!desiredExt) {
-                if (field === 'sound') {
-                    desiredExt = '.mp3';
-                } else {
-                    const curId = idInput.value.trim();
-                    const prevPath = (database[curId] && database[curId].image) ? String(database[curId].image) : '';
-                    const prevExtMatch = prevPath.match(/\.[a-zA-Z0-9]+$/);
-                    const prevExt = prevExtMatch ? prevExtMatch[0].toLowerCase() : '';
-                    desiredExt = ['.jpg', '.jpeg', '.png'].includes(prevExt) ? prevExt : '.jpg';
-                }
-            }
-
-            // Rebuild fixed path from expectedDir + expectedBase + desiredExt
-            let desired = expectedDir + '/' + expectedBase + desiredExt;
-
+            const ext = dot === -1 ? '' : filename.slice(dot).toLowerCase();
+            const desiredExt = ext || (field === 'sound' ? '.mp3' : '.jpg');
+            const desired = expectedDir + '/' + expectedBase + desiredExt;
             if (fixedNorm !== desired) {
-                reasons.push('Pfadstruktur und Dateiname an erwartetes Muster angepasst');
-                fixed = desired;
+                reasons.push(`Empfehlung: ${desired}`);
             }
-
-            // Validate again including prefix checks
+            // Validate again including prefix checks (but do not force expected dir/base)
             const finalCheck = validatePath(field, fixed);
             if (!finalCheck.ok) {
                 if (autoFix) {
@@ -1147,7 +1172,9 @@ function preSaveGuardAndFix({ autoFix } = { autoFix: true }) {
                     inp.value = finalCheck.fixed;
                     setUnsavedChanges(true);
                 }
-                showFieldIssue(inp, []);
+                // Still surface non-blocking recommendation if present
+                const onlyHints = reasons.filter(r => /^Empfehlung:/.test(r));
+                showFieldIssue(inp, onlyHints.length ? onlyHints : []);
             }
         });
     });
@@ -1434,7 +1461,10 @@ function renderNextList() {
                         links.forEach(link => link.tabIndex = -1);
                         a.tabIndex = 0;
                     } catch {}
-                    openNextListDetails(key, name);
+                    // Gewünschtes Verhalten: Listendetails und Inhalt anzeigen (keine Auto-Öffnung des ersten Wortes)
+                    try {
+                        openNextListDetails(key, name);
+                    } catch {}
                 });
                 li.appendChild(a);
                 inner.appendChild(li);
@@ -1443,6 +1473,17 @@ function renderNextList() {
             fragAll.appendChild(groupLi);
         }
         ul.appendChild(fragAll);
+        // Nach dem Rendern (Listen-Modus): erste Liste öffnen (Listendetails), nicht erstes Wort
+        try {
+            const firstLink = nextList.querySelector('a[data-list-path]');
+            if (firstLink) {
+                const path = firstLink.getAttribute('data-list-path');
+                // Displayname aus dem linken <span>
+                const dnEl = firstLink.querySelector('span');
+                const dn = dnEl ? dnEl.textContent : path;
+                if (path) openNextListDetails(path, dn);
+            }
+        } catch {}
         return;
     }
 
@@ -1599,6 +1640,14 @@ function renderNextList() {
         fragAll.appendChild(liGroup);
     }
     ul.appendChild(fragAll);
+    // Nach dem Rendern (Einträge-Modus): erstes Wort der Liste im Detailbereich anzeigen
+    try {
+        const firstLink = nextList.querySelector('a[data-item-id]');
+        if (firstLink) {
+            const id = firstLink.getAttribute('data-item-id');
+            if (id) openNextDetails(id);
+        }
+    } catch {}
 }
 
 function openNextListDetails(path, displayName) {
@@ -1606,9 +1655,7 @@ function openNextListDetails(path, displayName) {
     nextMain.innerHTML = '';
     const title = document.createElement('h2');
     title.id = 'next-details-title';
-    title.style.fontSize = '1.05em';
-    title.style.margin = '0 0 8px 0';
-    title.style.fontWeight = 'bold';
+    // Styling zentral über CSS-Variablen in style.css (#next-details-title)
     title.textContent = displayName || path;
     nextMain.appendChild(title);
     try { nextMain.setAttribute('aria-labelledby', 'next-details-title'); } catch {}
@@ -1667,17 +1714,17 @@ function openNextListDetails(path, displayName) {
     skipReadTableOnSave = true;
     await saveData();
         // Nach Löschen: Details leeren
-        nextMain.innerHTML = '<h2 id="next-details-title" style="font-size:1.05em; margin:0 0 8px 0; font-weight:bold; color:#444;">Neue Ansicht (Beta)</h2><div style="color:#666;">Inhalte folgen.</div>';
+        nextMain.innerHTML = '<h2 id="next-details-title">Neue Ansicht (Beta)</h2><div style="color:#666;">Inhalte folgen.</div>';
         try { renderNextList(); } catch {}
     };
     btnSave.addEventListener('click', onSave);
     btnDelete.addEventListener('click', onDelete);
 
-    // Vorschau der Listenelemente (erste 100)
+    // Vorschau der Listenelemente (erste 100), nach Anzeigename sortiert
     try {
         const previewWrap = document.createElement('div');
         previewWrap.style.marginTop = '12px';
-        const h = document.createElement('div'); h.textContent = 'Elemente (Vorschau)'; h.style.fontWeight='600'; h.style.marginBottom='6px';
+        const h = document.createElement('div'); h.textContent = 'Elemente (max. 100)'; h.style.fontWeight='600'; h.style.marginBottom='6px';
         const ul = document.createElement('ul');
         // Mehrspaltige Darstellung über CSS-Columns
         ul.style.margin = '0';
@@ -1685,7 +1732,12 @@ function openNextListDetails(path, displayName) {
         ul.style.listStyle = 'none';
     ul.style.columnWidth = '110px';   // Breite je Spalte (anpassbar)
     ul.style.columnGap = '140px';      // Abstand zwischen Spalten (anpassbar)
-        const items = (flatSets && flatSets[path] && Array.isArray(flatSets[path].items)) ? flatSets[path].items.slice(0, 100) : [];
+        // Aus flatSets laden, in {id,name} transformieren und sortieren
+        const raw = (flatSets && flatSets[path] && Array.isArray(flatSets[path].items)) ? flatSets[path].items.slice() : [];
+        const items = raw
+            .map(x => ({ id: x, name: (database && database[x] && database[x].name) ? String(database[x].name) : String(x) }))
+            .sort((a,b)=> String(a.name||a.id).localeCompare(String(b.name||b.id), 'de'))
+            .slice(0, 100);
     const removeItem = async (itemId) => {
             try {
                 if (serverReadOnly) { msg.style.color = '#b94a48'; msg.textContent = 'Nur-Lese-Modus.'; return; }
@@ -1713,7 +1765,7 @@ function openNextListDetails(path, displayName) {
                 try { renderNextList(); } catch {}
             } catch {}
         };
-        items.forEach(id => {
+        items.forEach(({id, name}) => {
             const li = document.createElement('li');
             // Verhindert, dass Einträge in Spalten umbrochen werden
             li.style.breakInside = 'avoid-column';
@@ -1724,7 +1776,7 @@ function openNextListDetails(path, displayName) {
             li.style.alignItems='center';
             li.style.gap='8px';
             li.style.marginBottom='4px';
-            const nameSpan = document.createElement('span'); nameSpan.textContent = id; nameSpan.style.flex='1';
+            const nameSpan = document.createElement('span'); nameSpan.textContent = name; nameSpan.title = id; nameSpan.style.flex='1';
             const btn = document.createElement('button'); btn.type='button'; btn.textContent='✕'; btn.title='Aus Liste entfernen';
             btn.style.border='1px solid #ddd'; btn.style.borderRadius='999px'; btn.style.padding='0 6px'; btn.style.lineHeight='1.4'; btn.style.fontSize='12px'; btn.style.cursor='pointer'; btn.style.background='#f7f7f7'; btn.style.color='#333';
             btn.addEventListener('click', (e) => { e.preventDefault(); removeItem(id); });
@@ -1743,9 +1795,7 @@ function openNextDetails(id) {
     // Semantische Überschrift als Titel des Detailbereichs
     const title = document.createElement('h2');
     title.id = 'next-details-title';
-    title.style.fontSize = '1.05em';
-    title.style.margin = '0 0 8px 0';
-    title.style.fontWeight = 'bold';
+    // Styling zentral über CSS-Variablen in style.css (#next-details-title)
     title.textContent = item ? (item.name || id) : id;
     nextMain.appendChild(title);
     try { nextMain.setAttribute('aria-labelledby', 'next-details-title'); } catch {}
@@ -2105,6 +2155,24 @@ function nextModeApply(mode) {
     if (nextAreaFilterWrap) nextAreaFilterWrap.style.display = (mode === 'lists' || mode === 'entries') ? 'flex' : 'none';
     if (nextSearch) nextSearch.setAttribute('aria-label', mode === 'lists' ? 'Listen durchsuchen' : 'Einträge durchsuchen');
     try { renderNextList(); } catch {}
+    // Nach Moduswechsel Details aktualisieren
+    try {
+        if (mode === 'lists') {
+            // Öffne die erste Liste als Listendetail (nicht erstes Wort)
+            const link = nextList && nextList.querySelector('a[data-list-path]');
+            const path = link ? link.getAttribute('data-list-path') : '';
+            const dn = link ? (link.querySelector('span')?.textContent || path) : path;
+            if (path) {
+                openNextListDetails(path, dn);
+            } else {
+                nextMain && (nextMain.innerHTML = '<div style="color:#666;">Keine Listen gefunden.</div>');
+            }
+        } else {
+            const link = nextList && nextList.querySelector('a[data-item-id]');
+            const id = link ? link.getAttribute('data-item-id') : '';
+            if (id) openNextDetails(id);
+        }
+    } catch {}
 }
 if (nextModeEntriesBtn) nextModeEntriesBtn.addEventListener('click', () => nextModeApply('entries'));
 if (nextModeListsBtn) nextModeListsBtn.addEventListener('click', () => nextModeApply('lists'));
@@ -2779,17 +2847,7 @@ function populateEditModalExtra(id) {
             const tableFieldInput = row ? row.querySelector(`input[data-field="${field}"]`) : null;
             const currentVal = inputEl.value || '';
             const baseCheck = validatePath(field, currentVal);
-            let fixed = baseCheck.fixed;
-            const expectedDir = expectedDirFor(field, id, nameInput ? nameInput.value : '', currentVal);
-            const expectedBase = prettyBaseFromName(nameInput ? nameInput.value : '');
-            const fixedNorm = fixSlashes(toNFC(fixed));
-            const parts = fixedNorm.split('/');
-            const filename = parts.pop() || '';
-            const dot = filename.lastIndexOf('.');
-            const ext0 = dot === -1 ? '' : filename.slice(dot).toLowerCase();
-            let desiredExt = ext0 || (field === 'sound' ? '.mp3' : '.jpg');
-            const desired = expectedDir + '/' + expectedBase + desiredExt;
-            const finalCheck = validatePath(field, desired);
+            const finalCheck = baseCheck;
             inputEl.value = finalCheck.fixed;
             if (tableFieldInput) tableFieldInput.value = finalCheck.fixed; // Sync hidden table input with modal
             setItemField(id, field, finalCheck.fixed);

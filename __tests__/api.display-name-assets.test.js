@@ -56,7 +56,7 @@ test('PATCH display-name 409 when assets missing', async () => {
   expect(res.body.ok).toBe(false);
 });
 
-test('PATCH display-name succeeds and renames files when assets exist', async () => {
+test('PATCH display-name succeeds and does not rename files when assets exist', async () => {
   // Create dummy files for image and sound
   const imgPath = path.join(dataDir, 'wörter', 'images', 'l', 'Löschen.jpg');
   const sndPath = path.join(dataDir, 'wörter', 'sounds', 'l', 'Löschen.mp3');
@@ -71,19 +71,10 @@ test('PATCH display-name succeeds and renames files when assets exist', async ()
   expect(res.status).toBe(200);
   expect(res.body.ok).toBe(true);
 
-  // DB should reflect new name and adjusted paths
+  // DB should reflect new name; paths remain unchanged (no auto-rename)
   const db = JSON.parse(await fsp.readFile(path.join(dataDir, 'items_database.json'), 'utf8'));
   expect(db.loeschen.name).toBe('löschen');
-  const imgRel = db.loeschen.image;
-  const sndRel = db.loeschen.sound;
-  expect(imgRel.toLowerCase()).toContain('löschen');
-  expect(imgRel.toLowerCase().endsWith('.jpg')).toBe(true);
-  expect(sndRel.toLowerCase()).toContain('löschen');
-  expect(sndRel.toLowerCase().endsWith('.mp3')).toBe(true);
-
-  // Files should exist at new paths
-  const newImgAbs = path.resolve(path.join(__dirname, '..'), imgRel);
-  const newSndAbs = path.resolve(path.join(__dirname, '..'), sndRel);
-  await expect(fsp.access(newImgAbs)).resolves.not.toThrow();
-  await expect(fsp.access(newSndAbs)).resolves.not.toThrow();
+  // Files should still exist at their original locations
+  await expect(fsp.access(imgPath)).resolves.not.toThrow();
+  await expect(fsp.access(sndPath)).resolves.not.toThrow();
 });

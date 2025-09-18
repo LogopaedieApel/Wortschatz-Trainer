@@ -1543,7 +1543,7 @@ app.patch('/api/editor/item/display-name', guardWrite, async (req, res) => {
         if (!db[id]) {
             return res.status(404).json({ ok: false, message: `ID '${id}' nicht gefunden` });
         }
-        // Vorbedingung: Beide Dateien müssen existieren
+        // Vorbedingung: Beide Dateien müssen existieren (beibehalten)
         const curImage = db[id] && db[id].image ? String(db[id].image) : '';
         const curSound = db[id] && db[id].sound ? String(db[id].sound) : '';
         const requireBoth = true;
@@ -1555,34 +1555,8 @@ app.patch('/api/editor/item/display-name', guardWrite, async (req, res) => {
         // Whitespace- und NFC-Normalisierung (keine Auto-Kapitalisierung)
         const normalized = String(newDisplayName).replace(/\s+/g, ' ').trim();
         const prevName = (db[id] && typeof db[id].name === 'string') ? db[id].name : '';
-        // Geplante Zielpfade aus neuem Namen berechnen
-        const desiredBase = prettyBaseFromDisplayName(normalized);
-        // Bild: Endung beibehalten, fallback .jpg
-        let imageDesired = curImage;
-        if (curImage) {
-            const imgDir = expectedDirForField('image', isSaetze ? 'saetze' : 'woerter', id, curImage);
-            const curExtMatch = String(curImage).match(/\.[a-zA-Z0-9]+$/);
-            const ext = curExtMatch ? curExtMatch[0].toLowerCase() : '.jpg';
-            imageDesired = `${imgDir}/${desiredBase}${ext}`;
-        }
-        // Sound: .mp3
-        let soundDesired = curSound;
-        if (curSound) {
-            const sndDir = expectedDirForField('sound', isSaetze ? 'saetze' : 'woerter', id, curSound);
-            const sndExtMatch = String(curSound).match(/\.[a-zA-Z0-9]+$/);
-            const ext = sndExtMatch ? sndExtMatch[0].toLowerCase() : '.mp3';
-            soundDesired = `${sndDir}/${desiredBase}${ext}`;
-        }
-
-        // Dateien ggf. verschieben/umbenennen
-        if (curImage) {
-            const finalRel = await renameAssetIfNeeded(curImage, imageDesired);
-            if (finalRel) db[id].image = ensureForwardSlashes(finalRel);
-        }
-        if (curSound) {
-            const finalRel = await renameAssetIfNeeded(curSound, soundDesired);
-            if (finalRel) db[id].sound = ensureForwardSlashes(finalRel);
-        }
+        // Policy: Keine automatische Umbenennung/Verschiebung von Dateien bei Namensänderung.
+        // Pfade bleiben unverändert. Nur der Anzeigename wird aktualisiert.
 
         // Namen setzen
         db[id].name = normalized;
@@ -1642,7 +1616,7 @@ app.patch('/api/editor/item/display-name', guardWrite, async (req, res) => {
         } catch (e) {
             console.warn('[NAME-HISTORY] Update fehlgeschlagen:', e.message);
         }
-        return res.json({ ok: true, changedFields: ['name'], warnings: [] });
+    return res.json({ ok: true, changedFields: ['name'], warnings: [] });
     } catch (err) {
         // Spezifische Fehler besser kommunizieren (z. B. Datei in Benutzung)
         const code = err && (err.code || err.errno);
@@ -1698,23 +1672,7 @@ app.post('/api/editor/name-undo', guardWrite, async (req, res) => {
             return res.status(409).json({ ok: false, message: 'Undo nur möglich, wenn Bild- und Tondatei vorhanden sind.', details: { imageExists, soundExists } });
         }
         const newName = target ? target.value : '';
-        const desiredBase = prettyBaseFromDisplayName(newName);
-        if (curImage) {
-            const imgDir = expectedDirForField('image', isSaetze ? 'saetze' : 'woerter', id, curImage);
-            const extMatch = String(curImage).match(/\.[a-zA-Z0-9]+$/);
-            const ext = extMatch ? extMatch[0].toLowerCase() : '.jpg';
-            const desired = `${imgDir}/${desiredBase}${ext}`;
-            const finalRel = await renameAssetIfNeeded(curImage, desired);
-            if (finalRel) db[id].image = ensureForwardSlashes(finalRel);
-        }
-        if (curSound) {
-            const sndDir = expectedDirForField('sound', isSaetze ? 'saetze' : 'woerter', id, curSound);
-            const extMatch = String(curSound).match(/\.[a-zA-Z0-9]+$/);
-            const ext = extMatch ? extMatch[0].toLowerCase() : '.mp3';
-            const desired = `${sndDir}/${desiredBase}${ext}`;
-            const finalRel = await renameAssetIfNeeded(curSound, desired);
-            if (finalRel) db[id].sound = ensureForwardSlashes(finalRel);
-        }
+        // Policy: bei Undo/Redo keine Datei-Umbenennungen, nur den Namen setzen
         db[id].name = newName;
     await writeDbValidated(dbPath, db, { stamp, backup: true, auditOp: 'name-undo', context: { mode, id } });
     if (!validateNameHistorySchema(hist)) throw new Error(`Schemafehler (History): ${ajvErrorsToMessage(validateNameHistorySchema.errors)}`);
@@ -1751,23 +1709,7 @@ app.post('/api/editor/name-redo', guardWrite, async (req, res) => {
             return res.status(409).json({ ok: false, message: 'Redo nur möglich, wenn Bild- und Tondatei vorhanden sind.', details: { imageExists, soundExists } });
         }
         const newName = target ? target.value : '';
-        const desiredBase = prettyBaseFromDisplayName(newName);
-        if (curImage) {
-            const imgDir = expectedDirForField('image', isSaetze ? 'saetze' : 'woerter', id, curImage);
-            const extMatch = String(curImage).match(/\.[a-zA-Z0-9]+$/);
-            const ext = extMatch ? extMatch[0].toLowerCase() : '.jpg';
-            const desired = `${imgDir}/${desiredBase}${ext}`;
-            const finalRel = await renameAssetIfNeeded(curImage, desired);
-            if (finalRel) db[id].image = ensureForwardSlashes(finalRel);
-        }
-        if (curSound) {
-            const sndDir = expectedDirForField('sound', isSaetze ? 'saetze' : 'woerter', id, curSound);
-            const extMatch = String(curSound).match(/\.[a-zA-Z0-9]+$/);
-            const ext = extMatch ? extMatch[0].toLowerCase() : '.mp3';
-            const desired = `${sndDir}/${desiredBase}${ext}`;
-            const finalRel = await renameAssetIfNeeded(curSound, desired);
-            if (finalRel) db[id].sound = ensureForwardSlashes(finalRel);
-        }
+        // Policy: bei Undo/Redo keine Datei-Umbenennungen, nur den Namen setzen
         db[id].name = newName;
     await writeDbValidated(dbPath, db, { stamp, backup: true, auditOp: 'name-redo', context: { mode, id } });
     if (!validateNameHistorySchema(hist)) throw new Error(`Schemafehler (History): ${ajvErrorsToMessage(validateNameHistorySchema.errors)}`);
@@ -2022,39 +1964,7 @@ app.post('/api/editor/item/id-rename', guardWrite, async (req, res) => {
         delete db[oldId];
         db[normalized] = item;
 
-        // Nachziehen der Asset-Pfade: Für 'woerter' erwartet die Ordnerlogik den ersten Buchstaben der (neuen) ID
-        // Dateinamen bleiben aus dem Anzeigenamen abgeleitet, Endungen bleiben erhalten (.jpg/.jpeg/.png bzw. .mp3)
-    const isSaetzeRename = mode === 'saetze';
-    const nameForBase = (item && typeof item.name === 'string') ? item.name : normalized;
-        const desiredBase = prettyBaseFromDisplayName(nameForBase);
-        // Bild
-        const curImage = item && item.image ? String(item.image) : '';
-        if (curImage) {
-            const imgDir = expectedDirForField('image', isSaetzeRename ? 'saetze' : 'woerter', normalized, curImage);
-            const extMatch = curImage.match(/\.[a-zA-Z0-9]+$/);
-            const ext = extMatch ? extMatch[0].toLowerCase() : '.jpg';
-            const desired = `${imgDir}/${desiredBase}${ext}`;
-            try {
-                const finalRel = await renameAssetIfNeeded(curImage, desired);
-                if (finalRel) db[normalized].image = ensureForwardSlashes(finalRel);
-            } catch (e) {
-                console.warn('[ID-RENAME] Bild konnte nicht verschoben werden:', e.message);
-            }
-        }
-        // Ton
-        const curSound = item && item.sound ? String(item.sound) : '';
-        if (curSound) {
-            const sndDir = expectedDirForField('sound', isSaetzeRename ? 'saetze' : 'woerter', normalized, curSound);
-            const extMatch = curSound.match(/\.[a-zA-Z0-9]+$/);
-            const ext = extMatch ? extMatch[0].toLowerCase() : '.mp3';
-            const desired = `${sndDir}/${desiredBase}${ext}`;
-            try {
-                const finalRel = await renameAssetIfNeeded(curSound, desired);
-                if (finalRel) db[normalized].sound = ensureForwardSlashes(finalRel);
-            } catch (e) {
-                console.warn('[ID-RENAME] Ton konnte nicht verschoben werden:', e.message);
-            }
-        }
+        // Policy: Keine automatischen Datei-Umzüge bei ID-Umbenennung. Pfade bleiben wie in der DB.
         // Rückwärtskompatibilität: fehlende 'folder'-Felder ergänzen (analog Patch-Display-Name), damit Schema-Validierung nicht scheitert
         const isSaetze = mode === 'saetze';
         const ensureFolder = (k, it) => {
