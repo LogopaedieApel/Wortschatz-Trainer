@@ -9,7 +9,8 @@
 <body>
   <main class="container">
     <h1>Übung erstellen und Link versenden</h1>
-    <section class="card">
+    <!-- Card 1: Übung erstellen (Builder) -->
+    <section class="card" id="builder-card">
       <div class="form-row">
         <label for="mode-select">Modus</label>
         <select id="mode-select">
@@ -44,6 +45,19 @@
         </select>
       </div>
       <div id="set-breadcrumb" class="hint" aria-live="polite"></div>
+      <div class="form-row actions">
+        <button id="btn-add-list" class="secondary">Weitere Liste</button>
+        <button id="btn-add-exercise" class="secondary">Weitere Übung</button>
+      </div>
+      <div class="form-row" id="active-exercise-sets"></div>
+    </section>
+    <!-- Card 2: Ausgewählte Übungen -->
+    <section class="card" id="exercises-card">
+      <h2>Ausgewählte Übungen</h2>
+      <div id="exercises-list" class="exercises-list"></div>
+    </section>
+    <!-- Card 3: Patient & Versand -->
+    <section class="card" id="send-card">
       <div class="form-row">
         <label for="patient-input">Patient (optional)</label>
         <input id="patient-input" type="text" placeholder="z. B. Testpatient A" />
@@ -53,9 +67,18 @@
         <button id="btn-copy" disabled>Link kopieren</button>
         <button id="btn-mail" disabled>Als E‑Mail öffnen</button>
       </div>
+      <div class="form-row actions" id="multi-links-actions">
+        <button id="btn-generate-all" disabled>Links generieren</button>
+        <button id="btn-copy-all" disabled>Alle kopieren</button>
+        <button id="btn-mail-all" disabled>Als E‑Mail öffnen (alle)</button>
+      </div>
       <div class="form-row">
         <label for="link-output">Link</label>
         <input id="link-output" type="text" readonly />
+      </div>
+      <div class="form-row">
+        <label>Übungs‑Links</label>
+        <div id="links-list" class="links-list"></div>
       </div>
       <p class="hint">Hinweis: Der Link startet die Übung direkt mit der Auswahl. Die Navigation ist gesperrt (uiLock) und kann für den Testpatienten nicht geändert werden.</p>
     </section>

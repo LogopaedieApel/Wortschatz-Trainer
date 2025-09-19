@@ -11,3 +11,16 @@ h1{font-size:20px;margin:0 0 16px}
 .actions button[disabled]{opacity:.6;cursor:not-allowed}
 #link-output{width:100%}
 .hint{color:var(--muted);font-size:13px}
+
+/* Zusatzstyles für Multi-Übungen-/Link-UI */
+.list-inline{list-style:none;padding:0;margin:4px 0 0;display:flex;flex-wrap:wrap;gap:6px}
+.list-inline li{background:#eef3ff;color:#2d3a7b;padding:2px 8px;border-radius:12px;font-size:13px}
+.exercises-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.exercise-card{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}
+.exercise-header{font-weight:600;margin-bottom:6px}
+.exercise-actions{display:flex;gap:8px;margin-top:8px}
+.exercise-actions .small{font-size:13px;padding:6px 8px}
+.exercise-actions .danger{background:#e11d48}
+.links-list{display:flex;flex-direction:column;gap:8px;flex:1}
+.link-row{display:flex;gap:8px;align-items:center}
+.link-row input[type=text]{flex:1}

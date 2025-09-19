@@ -537,7 +537,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const autostart = getBool(params.get('autostart') || '0');
         const urlMode = (params.get('mode') || '').toLowerCase();
         const urlMaterial = (params.get('material') || '').toLowerCase();
-        const setPath = params.get('set');
+    const setPath = params.get('set');
+    const setsParam = params.get('sets');
         uiLocked = getBool(params.get('uiLock') || '0');
         patientName = params.get('patient') || null;
 
@@ -547,7 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (btnSettingsBack) btnSettingsBack.style.display = 'none';
         }
 
-        if (autostart && setPath) {
+        if (autostart && (setPath || setsParam)) {
             // Material wählen
             if (urlMaterial === 'saetze') {
                 currentMaterialType = 'saetze';
@@ -564,7 +565,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentMode = 'quiz';
             }
             configureSettingsScreen();
-            await performStartExercise([setPath]);
+            const paths = setsParam ? setsParam.split(',').map(s=>s.trim()).filter(Boolean) : [setPath];
+            await performStartExercise(paths);
         } else {
             showScreen('screen-mode-selection');
         }

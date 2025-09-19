@@ -9,10 +9,87 @@
   const btnGenerate = document.getElementById('btn-generate');
   const btnCopy = document.getElementById('btn-copy');
   const btnMail = document.getElementById('btn-mail');
+  const btnGenerateAll = document.getElementById('btn-generate-all');
+  const btnCopyAll = document.getElementById('btn-copy-all');
+  const btnMailAll = document.getElementById('btn-mail-all');
   const linkOutput = document.getElementById('link-output');
+  const linksListEl = document.getElementById('links-list');
+  const btnAddList = document.getElementById('btn-add-list');
+  const btnAddExercise = document.getElementById('btn-add-exercise');
+  const activeExerciseSetsEl = document.getElementById('active-exercise-sets');
+  const exercisesListEl = document.getElementById('exercises-list');
 
   let flatSetsByMode = { woerter: {}, saetze: {} };
   let manifestByMode = { woerter: null, saetze: null };
+  // --- Neues Datenmodell (MVP Multi-Übungen) ---
+  const MAX_EXERCISES = 10;
+  const MAX_LISTS_PER_EX = 10;
+  let exercises = []; // [{ mode, material, sets: [{path, breadcrumb}], createdAt }]
+  let activeExercise = null; // gleiches Shape wie in exercises
+  let patientNameState = '';
+
+  function resetActiveExercise(){
+    activeExercise = {
+      mode: (modeSelect && modeSelect.value) || 'quiz',
+      material: (materialSelect && materialSelect.value) || 'woerter',
+      sets: [],
+      createdAt: Date.now()
+    };
+  }
+  function canAddExercise(){ return exercises.length < MAX_EXERCISES; }
+  function canAddList(){ return activeExercise && activeExercise.sets.length < MAX_LISTS_PER_EX; }
+  function addListToActive({ path, breadcrumb }){
+    if (!activeExercise) resetActiveExercise();
+    if (!path) return { ok:false, reason:'missing_path' };
+    if (!canAddList()) return { ok:false, reason:'limit_lists' };
+    if (activeExercise.sets.some(s=>s.path===path)) return { ok:false, reason:'duplicate' };
+    activeExercise.sets.push({ path, breadcrumb });
+    return { ok:true };
+  }
+  function finalizeActiveExercise(){
+    if (!activeExercise || activeExercise.sets.length === 0) return { ok:false, reason:'no_sets' };
+    if (!canAddExercise()) return { ok:false, reason:'limit_exercises' };
+    // Sync mode/material in case user changed selects
+    activeExercise.mode = (modeSelect && modeSelect.value) || activeExercise.mode;
+    activeExercise.material = (materialSelect && materialSelect.value) || activeExercise.material;
+    exercises.push(activeExercise);
+    resetActiveExercise();
+    return { ok:true };
+  }
+
+  function renderActiveExerciseSets(){
+    if (!activeExerciseSetsEl) return;
+    if (!activeExercise || activeExercise.sets.length === 0){
+      activeExerciseSetsEl.innerHTML = '';
+      return;
+    }
+    const items = activeExercise.sets.map(s => `<li>${escapeHtml(s.breadcrumb || s.path)}</li>`).join('');
+    activeExerciseSetsEl.innerHTML = `<div class="hint">Aktuelle Übung enthält:</div><ul class="list-inline">${items}</ul>`;
+  }
+
+  function renderExercises(){
+    if (!exercisesListEl) return;
+    if (exercises.length === 0){
+      exercisesListEl.innerHTML = '<div class="hint">Noch keine Übungen hinzugefügt.</div>';
+      return;
+    }
+    exercisesListEl.innerHTML = exercises.map((ex, idx) => {
+      const setsHtml = ex.sets.map(s=>`<li>${escapeHtml(s.breadcrumb || s.path)}</li>`).join('');
+      return `<div class="exercise-card">
+        <div class="exercise-header">Übung ${idx+1} – ${escapeHtml(ex.mode)} / ${escapeHtml(ex.material)}</div>
+        <ul class="list-inline">${setsHtml}</ul>
+        <div class="exercise-actions">
+          <button data-action="edit" data-index="${idx}" class="small">Bearbeiten</button>
+          <button data-action="delete" data-index="${idx}" class="small danger">Löschen</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function escapeHtml(str){
+    return String(str||'').replace(/[&<>"']/g, s=>({"&":"&amp;","<":"&lt;",
+      ">":"&gt;","\"":"&quot;","'":"&#39;"}[s]));
+  }
 
   function toAbsUrl(p){
     try{
@@ -194,26 +271,65 @@
   }
 
   function buildExerciseUrl(){
-    const mode = modeSelect.value || 'quiz';
-    const material = materialSelect.value || 'woerter';
-    const setPath = setSelect.value || '';
-    const patient = (patientInput.value||'').trim();
-    if(!setPath) return '';
+    // Rückwärtskompatibel: generiert den Link für die erste Übung oder aktuelle Auswahl
+    const all = buildAllExerciseUrls();
+    return all.length ? all[0].url : '';
+  }
 
+  function buildUrlFor(mode, material, paths, patient){
+    if (!paths || paths.length === 0) return '';
     const params = new URLSearchParams();
     params.set('mode', mode);
     params.set('material', material);
-    params.set('set', setPath);
-    params.set('autostart','1');
-    params.set('uiLock','1');
-    if(patient) params.set('patient', patient);
-
-    // Ziel ist index.html im selben Verzeichnis
+    if (paths.length === 1) params.set('set', paths[0]); else params.set('sets', paths.join(','));
+    params.set('autostart','1'); params.set('uiLock','1'); if (patient) params.set('patient', patient);
     const url = new URL(window.location.href);
-    url.pathname = url.pathname.replace(/therapeut\.html$/,'index.html');
-    url.search = '?' + params.toString();
-    url.hash = '';
+    url.pathname = url.pathname.replace(/therapeut\.html$/, 'index.html');
+    url.search = '?' + params.toString(); url.hash = '';
     return url.toString();
+  }
+
+  function buildAllExerciseUrls(){
+    const patient = (patientInput.value||'').trim();
+    const list = [];
+    // alle finalisierten Übungen
+    exercises.forEach((ex, idx) => {
+      const paths = ex.sets.map(s=>s.path);
+      const url = buildUrlFor(ex.mode, ex.material, paths, patient);
+      if (url) list.push({ index: idx+1, mode: ex.mode, material: ex.material, url });
+    });
+    // aktive Übung (wenn Sets vorhanden, aber noch nicht finalisiert)
+    if (activeExercise && activeExercise.sets && activeExercise.sets.length){
+      const paths = activeExercise.sets.map(s=>s.path);
+      const url = buildUrlFor(activeExercise.mode, activeExercise.material, paths, patient);
+      if (url) list.push({ index: exercises.length + 1, mode: activeExercise.mode, material: activeExercise.material, url, isActive: true });
+    }
+    return list;
+  }
+
+  function renderLinksList(){
+    if (!linksListEl) return;
+    const items = buildAllExerciseUrls();
+    if (items.length === 0){
+      linksListEl.innerHTML = '<div class="hint">Noch keine Übungen vorhanden.</div>';
+      if (btnGenerateAll) btnGenerateAll.disabled = true;
+      if (btnCopyAll) btnCopyAll.disabled = true;
+      if (btnMailAll) btnMailAll.disabled = true;
+      return;
+    }
+    const rows = items.map((it, i) => {
+      const label = `Übung ${it.index} – ${escapeHtml(it.mode)} / ${escapeHtml(it.material)}${it.isActive?' (aktuell)':''}`;
+      return `<div class="link-row">
+        <span style="min-width:220px">${label}</span>
+        <input type="text" readonly value="${escapeHtml(it.url)}" />
+        <button data-action="copy-link" data-i="${i}" class="small">Kopieren</button>
+        <button data-action="mail-link" data-i="${i}" class="small">E‑Mail</button>
+      </div>`;
+    }).join('');
+    linksListEl.innerHTML = rows;
+    if (btnGenerateAll) btnGenerateAll.disabled = false;
+    if (btnCopyAll) btnCopyAll.disabled = false;
+    if (btnMailAll) btnMailAll.disabled = false;
   }
 
   function updateButtons(){
@@ -221,6 +337,11 @@
     btnGenerate.disabled = !valid;
     btnCopy.disabled = !linkOutput.value;
     btnMail.disabled = !linkOutput.value;
+    // Multi-Links Buttons abhängig von vorhandenen Übungen
+    const hasAny = (exercises.length>0) || (activeExercise && activeExercise.sets && activeExercise.sets.length>0);
+    if (btnGenerateAll) btnGenerateAll.disabled = !hasAny;
+    if (btnCopyAll) btnCopyAll.disabled = !hasAny;
+    if (btnMailAll) btnMailAll.disabled = !hasAny;
   }
 
   materialSelect.addEventListener('change', ()=>{
@@ -295,6 +416,16 @@
     updateButtons();
   });
 
+  if (btnGenerateAll){
+    btnGenerateAll.addEventListener('click', ()=>{
+      renderLinksList();
+      // setze das Einzelfeld für Bequemlichkeit auf den ersten Link
+      const items = buildAllExerciseUrls();
+      linkOutput.value = items.length ? items[0].url : '';
+      updateButtons();
+    });
+  }
+
   btnCopy.addEventListener('click', async ()=>{
     if(!linkOutput.value) return;
     try{ await navigator.clipboard.writeText(linkOutput.value);}catch{}
@@ -306,6 +437,130 @@
     const body = encodeURIComponent(`Hier ist deine Übung:\n\n${linkOutput.value}\n\nViel Erfolg!`);
     window.location.href = `mailto:?subject=${subject}&body=${body}`;
   });
+
+  if (linksListEl){
+    linksListEl.addEventListener('click', async (e)=>{
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const items = buildAllExerciseUrls();
+      const idx = Number(btn.dataset.i);
+      if (Number.isNaN(idx) || !items[idx]) return;
+      const url = items[idx].url;
+      const action = btn.dataset.action;
+      if (action === 'copy-link'){
+        try{ await navigator.clipboard.writeText(url);}catch{}
+        return;
+      }
+      if (action === 'mail-link'){
+        const subject = encodeURIComponent('Übung im Wortschatz‑Trainer');
+        const body = encodeURIComponent(`Hier ist deine Übung:\n\n${url}\n\nViel Erfolg!`);
+        window.location.href = `mailto:?subject=${subject}&body=${body}`;
+      }
+    });
+  }
+
+  if (btnCopyAll){
+    btnCopyAll.addEventListener('click', async ()=>{
+      const items = buildAllExerciseUrls();
+      if (!items.length) return;
+      const joined = items.map(it => `• Übung ${it.index} (${it.mode}/${it.material}):\n${it.url}`).join('\n\n');
+      try{ await navigator.clipboard.writeText(joined); }catch{}
+    });
+  }
+
+  if (btnMailAll){
+    btnMailAll.addEventListener('click', ()=>{
+      const items = buildAllExerciseUrls();
+      if (!items.length) return;
+      const subject = encodeURIComponent('Übungen im Wortschatz‑Trainer');
+      const bodyText = items.map(it => `Übung ${it.index} (${it.mode}/${it.material}):\n${it.url}`).join('\n\n');
+      const body = encodeURIComponent(`Hier sind deine Übungen:\n\n${bodyText}\n\nViel Erfolg!`);
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    });
+  }
+
+  if (btnAddList){
+    btnAddList.addEventListener('click', ()=>{
+      const setPath = setSelect.value || '';
+      if (!setPath) return;
+      // Breadcrumb ermitteln (falls vorhanden)
+      const mode = materialSelect.value;
+      const manifest = manifestByMode[mode];
+      let breadcrumb = '';
+      if (manifest){
+        const findPath = (node, trail=[]) => {
+          for(const key of Object.keys(node||{})){
+            if (key === 'displayName' || key === 'unterkategorieName') continue;
+            const child = node[key];
+            if (!child || typeof child !== 'object') continue;
+            const dn = child.displayName || key;
+            if (child.path === setPath) return trail.concat(dn);
+            const deeper = findPath(child, trail.concat(dn));
+            if (deeper) return deeper;
+          }
+          return null;
+        };
+        const parts = findPath(manifest) || [];
+        breadcrumb = parts.join(' / ');
+      }
+      if (!activeExercise) resetActiveExercise();
+      activeExercise.mode = modeSelect.value || activeExercise.mode;
+      activeExercise.material = materialSelect.value || activeExercise.material;
+      const res = addListToActive({ path: setPath, breadcrumb });
+      if (!res.ok){
+        if (res.reason === 'duplicate') alert('Diese Liste ist bereits in der aktuellen Übung.');
+        if (res.reason === 'limit_lists') alert('Maximal 10 Listen pro Übung.');
+        return;
+      }
+      renderActiveExerciseSets();
+      renderLinksList();
+    });
+  }
+
+  if (btnAddExercise){
+    btnAddExercise.addEventListener('click', ()=>{
+      const r = finalizeActiveExercise();
+      if (!r.ok){
+        if (r.reason === 'no_sets') alert('Bitte mindestens eine Liste zur Übung hinzufügen.');
+        if (r.reason === 'limit_exercises') alert('Maximal 10 Übungen insgesamt.');
+        return;
+      }
+      renderActiveExerciseSets();
+      renderExercises();
+      renderLinksList();
+    });
+  }
+
+  if (exercisesListEl){
+    exercisesListEl.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const idx = Number(btn.dataset.index);
+      const action = btn.dataset.action;
+      if (Number.isNaN(idx) || !exercises[idx]) return;
+      if (action === 'delete'){
+        exercises.splice(idx,1);
+        renderExercises();
+        return;
+      }
+      if (action === 'edit'){
+        // Holen und in den Builder laden
+        const ex = exercises.splice(idx,1)[0];
+        modeSelect.value = ex.mode;
+        materialSelect.value = ex.material;
+        // Triggert Laden der Bereiche/Liste; sets werden nicht automatisch re-selektiert (MVP)
+        loadMode(ex.material).then(()=>{
+          resetActiveExercise();
+          activeExercise.mode = ex.mode;
+          activeExercise.material = ex.material;
+          for (const s of ex.sets){ addListToActive(s); }
+          renderActiveExerciseSets();
+          renderExercises();
+          renderLinksList();
+        });
+      }
+    });
+  }
 
   // Initial
   // Hinweis bei file:// Aufruf (CORS/Same-Origin-Problem)
@@ -327,5 +582,10 @@
     return; // Kein Laden versuchen
   }
 
-  loadMode(materialSelect.value);
+  resetActiveExercise();
+  loadMode(materialSelect.value).then(()=>{
+    renderExercises();
+    renderActiveExerciseSets();
+    renderLinksList();
+  });
 })();
