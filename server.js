@@ -44,6 +44,13 @@ function absFromDataRel(p) {
     return path.join(__dirname, norm);
 }
 
+// Einheitliche Import-Wurzelordner (neu):
+// - Wörter:   data/import_Wörter
+// - Sätze:    data/import_Sätze
+function importRootDir(mode) {
+    return path.join(DATA_DIR, mode === 'saetze' ? 'import_Sätze' : 'import_Wörter');
+}
+
 async function ensureDir(dir) { try { await fs.mkdir(dir, { recursive: true }); } catch {} }
 function nowIsoCompact() { return new Date().toISOString().replace(/[:.]/g, '').replace('Z','Z'); }
 function relFromRoot(p) { return path.relative(__dirname, p).replace(/\\/g, '/'); }
@@ -718,15 +725,10 @@ app.post('/api/manage-archive', guardWrite, async (req, res) => {
         return res.status(400).json({ message: 'Ungültige Anfrage.' });
     }
 
-    const unsortedDirs = {
-        woerter: {
-            images: dataPath('wörter', 'images', 'images_unsortiert'),
-            sounds: dataPath('wörter', 'sounds', 'sounds_unsortiert')
-        },
-        saetze: {
-            images: dataPath('sätze', 'images', 'images_unsortiert'),
-            sounds: dataPath('sätze', 'sounds', 'sounds_unsortiert')
-        }
+    // Wiederherstellung geht in die neuen Import-Ordner (Root), damit der normale Import-Flow greift
+    const restoreTargets = {
+        woerter: importRootDir('woerter'),
+        saetze: importRootDir('saetze')
     };
 
     try {
@@ -741,16 +743,7 @@ app.post('/api/manage-archive', guardWrite, async (req, res) => {
             if (action === 'restore') {
                 // Heuristik: Dateinamen mit Leerzeichen sind Sätze, andere sind Wörter.
                 const mode = file.name.includes(' ') ? 'saetze' : 'woerter';
-                const targetDirsForMode = unsortedDirs[mode];
-
-                const isImage = ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(path.extname(file.name).toLowerCase());
-                const isSound = ['.mp3', '.wav', '.ogg'].includes(path.extname(file.name).toLowerCase());
-                
-                let targetDir;
-                if (isImage) targetDir = targetDirsForMode.images;
-                else if (isSound) targetDir = targetDirsForMode.sounds;
-                else continue; // Unbekannter Dateityp
-
+                const targetDir = restoreTargets[mode];
                 await fs.mkdir(targetDir, { recursive: true });
                 const targetPath = path.join(targetDir, file.name);
                 await fs.rename(sourcePath, targetPath);
@@ -1140,96 +1133,86 @@ app.post('/api/sort-unsorted-files', guardWrite, async (req, res) => {
 
 // New endpoint to analyze unsorted files and detect conflicts
 app.post('/api/analyze-unsorted-files', guardWrite, async (req, res) => {
-    const mode = req.query.mode || 'woerter';
+    const mode = req.query.mode === 'saetze' ? 'saetze' : 'woerter';
     const onlyType = (req.query.type === 'images' || req.query.type === 'sounds') ? req.query.type : null;
 
-    const dirs = {
-        woerter: {
-            unsortedImages: dataPath('wörter', 'images', 'images_unsortiert'),
-            unsortedSounds: dataPath('wörter', 'sounds', 'sounds_unsortiert'),
-            baseImages: dataPath('wörter', 'images'),
-            baseSounds: dataPath('wörter', 'sounds')
-        },
-        saetze: {
-            unsortedImages: dataPath('sätze', 'images', 'images_unsortiert'),
-            unsortedSounds: dataPath('sätze', 'sounds', 'sounds_unsortiert'),
-            baseImages: dataPath('sätze', 'images'),
-            baseSounds: dataPath('sätze', 'sounds')
-        }
-    };
-
-    const d = dirs[mode];
-    if (!d) {
-        return res.status(400).json({ message: 'Ungültiger Modus.' });
-    }
-
-    const unsortedDirs = {
-        images: d.unsortedImages,
-        sounds: d.unsortedSounds
-    };
     const baseDirs = {
-        images: d.baseImages,
-        sounds: d.baseSounds
+        images: dataPath(mode === 'saetze' ? 'sätze' : 'wörter', 'images'),
+        sounds: dataPath(mode === 'saetze' ? 'sätze' : 'wörter', 'sounds')
     };
+
+    const extsImg = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+    const extsSnd = ['.mp3', '.wav', '.ogg', '.m4a'];
+    const isValidType = (name) => {
+        const ext = path.extname(name).toLowerCase();
+        if (!onlyType) return extsImg.includes(ext) || extsSnd.includes(ext);
+        return onlyType === 'images' ? extsImg.includes(ext) : extsSnd.includes(ext);
+    };
+
+    const importDir = importRootDir(mode);
+    let importEntries = [];
+    try { importEntries = await fs.readdir(importDir, { withFileTypes: true }); } catch (e) {
+        if (e.code !== 'ENOENT') throw e; // Wenn Import-Ordner fehlen, einfach ohne Import-Einträge fortfahren
+        importEntries = [];
+    }
 
     const movableFiles = [];
     const conflicts = [];
+    let saetzeNoSubfolder = false;
 
-    try {
-        const typesToProcess = onlyType ? [onlyType] : ['images', 'sounds'];
-        for (const type of typesToProcess) {
-            const unsortedDir = unsortedDirs[type];
-            const baseDir = baseDirs[type];
-            
-            let files;
-            try {
-                files = await fs.readdir(unsortedDir);
-            } catch (e) {
-                if (e.code === 'ENOENT') continue; // Directory does not exist, skip.
-                throw e;
-            }
-
-            for (const file of files) {
-                if (file.startsWith('.')) continue;
-
-                // Zielordner bestimmen
-                let targetDir;
-                if (mode === 'saetze') {
-                    // Sätze: keine Buchstaben-Unterordner, ggf. thematische Unterordner in Zukunft
-                    targetDir = baseDir;
-                } else {
-                    // Wörter: nach Anfangsbuchstabe einsortieren
-                    const firstChar = file.charAt(0).toLowerCase();
-                    targetDir = path.join(baseDir, firstChar);
+    for (const dirent of importEntries) {
+        if (dirent.name.startsWith('.')) continue;
+        const entryPath = path.join(importDir, dirent.name);
+        if (mode === 'saetze') {
+            if (dirent.isDirectory()) {
+                // Unterordner = Listenname; alle gültigen Dateien einsortieren in Basisordner (keine Buchstabenstruktur)
+                let files = [];
+                try { files = await fs.readdir(entryPath); } catch { files = []; }
+                for (const file of files) {
+                    if (file.startsWith('.')) continue;
+                    if (!isValidType(file)) continue;
+                    const sourcePath = path.join(entryPath, file);
+                    // Zielordner: direkt in baseDirs[type]
+                    const ext = path.extname(file).toLowerCase();
+                    const kind = extsImg.includes(ext) ? 'images' : 'sounds';
+                    const targetDir = baseDirs[kind];
+                    const targetPath = path.join(targetDir, dirent.name, file); // Ordnername = Listenname beibehalten
+                    try {
+                        await fs.access(targetPath);
+                        const sourceStats = await fs.stat(sourcePath);
+                        const targetStats = await fs.stat(targetPath);
+                        conflicts.push({ fileName: file, source: { path: sourcePath.replace(/\\/g,'/'), size: sourceStats.size, mtime: sourceStats.mtime }, target: { path: targetPath.replace(/\\/g,'/'), size: targetStats.size, mtime: targetStats.mtime } });
+                    } catch {
+                        movableFiles.push({ fileName: file, sourcePath: sourcePath.replace(/\\/g,'/'), targetPath: targetPath.replace(/\\/g,'/') });
+                    }
                 }
-                const sourcePath = path.join(unsortedDir, file);
-                const targetPath = path.join(targetDir, file);
-
+            } else if (dirent.isFile()) {
+                // Dateien direkt in import_Sätze -> Hinweis und ignorieren
+                if (isValidType(dirent.name)) saetzeNoSubfolder = true;
+            }
+        } else {
+            // Wörter: Dateien auf Root-Ebene erlaubt; Unterordner optional -> werden ignoriert (keine spezielle Semantik)
+            if (dirent.isFile() && isValidType(dirent.name)) {
+                const sourcePath = entryPath;
+                const ext = path.extname(dirent.name).toLowerCase();
+                const kind = extsImg.includes(ext) ? 'images' : 'sounds';
+                const firstChar = dirent.name.charAt(0).toLowerCase();
+                const targetDir = path.join(baseDirs[kind], firstChar);
+                const targetPath = path.join(targetDir, dirent.name);
                 try {
                     await fs.access(targetPath);
-                    // File exists at target, so it's a conflict.
                     const sourceStats = await fs.stat(sourcePath);
                     const targetStats = await fs.stat(targetPath);
-                    conflicts.push({
-                        fileName: file,
-                        source: { path: sourcePath.replace(/\\/g, '/'), size: sourceStats.size, mtime: sourceStats.mtime },
-                        target: { path: targetPath.replace(/\\/g, '/'), size: targetStats.size, mtime: targetStats.mtime }
-                    });
+                    conflicts.push({ fileName: dirent.name, source: { path: sourcePath.replace(/\\/g,'/'), size: sourceStats.size, mtime: sourceStats.mtime }, target: { path: targetPath.replace(/\\/g,'/'), size: targetStats.size, mtime: targetStats.mtime } });
                 } catch {
-                    // File does not exist at target, it's safely movable.
-                    movableFiles.push({
-                        fileName: file,
-                        sourcePath: sourcePath.replace(/\\/g, '/'),
-                        targetPath: targetPath.replace(/\\/g, '/')
-                    });
+                    movableFiles.push({ fileName: dirent.name, sourcePath: sourcePath.replace(/\\/g,'/'), targetPath: targetPath.replace(/\\/g,'/') });
                 }
             }
         }
-        res.json({ movableFiles, conflicts });
-    } catch (error) {
-        console.error('[ANALYZE] ERROR: Failed during analysis.', error);
-        res.status(500).json({ message: 'Fehler bei der Analyse der unsortierten Dateien.' });
     }
+
+
+    res.json({ movableFiles, conflicts, hints: { saetzeNoSubfolder } });
 });
 
 // New endpoint to resolve conflicts based on user decisions
@@ -1266,7 +1249,8 @@ app.post('/api/resolve-conflicts', guardWrite, async (req, res) => {
                     deletedCount++;
                     break;
             }
-            await auditLog({ op: 'resolve-conflict', type: action.type, source: path.relative(__dirname, sourcePath).replace(/\\/g,'/'), target: targetPath ? path.relative(__dirname, targetPath).replace(/\\/g,'/') : null });
+            const ctx = { source: path.relative(__dirname, sourcePath).replace(/\\/g,'/'), target: targetPath ? path.relative(__dirname, targetPath).replace(/\\/g,'/') : null };
+            await auditLog({ op: 'resolve-conflict', type: action.type, ...ctx });
         } catch (e) {
             console.error(`[RESOLVE] ERROR: Failed to perform action for ${action.fileName}:`, e);
             errors.push({ fileName: action.fileName, message: e.message });
@@ -1386,80 +1370,33 @@ app.post('/api/sort-unsorteds-files', async (req, res) => {
 });
 
 app.get('/api/check-unsorted-files', async (req, res) => {
-    const mode = req.query.mode || 'woerter'; // Default to 'woerter' if no mode is specified
+    const mode = req.query.mode === 'saetze' ? 'saetze' : 'woerter';
     const onlyType = (req.query.type === 'images' || req.query.type === 'sounds') ? req.query.type : null;
 
-    const unsortedDirs = {
-        woerter: {
-            images: dataPath('wörter', 'images', 'images_unsortiert'),
-            sounds: dataPath('wörter', 'sounds', 'sounds_unsortiert')
-        },
-        saetze: {
-            images: dataPath('sätze', 'images', 'images_unsortiert'),
-            sounds: dataPath('sätze', 'sounds', 'sounds_unsortiert')
-        }
+    const importDir = importRootDir(mode);
+    let entries = [];
+    try {
+        entries = await fs.readdir(importDir);
+    } catch (e) {
+        if (e.code !== 'ENOENT') console.error(`[CHECK-IMPORT] Fehler beim Lesen von ${importDir}:`, e);
+        return res.json({ count: 0, files: [] });
+    }
+
+    const extsImg = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+    const extsSnd = ['.mp3', '.wav', '.ogg', '.m4a'];
+    const files = entries.filter(f => !f.startsWith('.'));
+
+    const typeFilter = (name) => {
+        const ext = path.extname(name).toLowerCase();
+        if (!onlyType) return extsImg.includes(ext) || extsSnd.includes(ext);
+        return onlyType === 'images' ? extsImg.includes(ext) : extsSnd.includes(ext);
     };
 
-    const dirsToCheck = unsortedDirs[mode];
-    if (!dirsToCheck) {
-        return res.status(400).json({ message: 'Ungültiger Modus.' });
-    }
-
-    let filesList = [];
-    try {
-        if (!onlyType || onlyType === 'images') {
-            const imageFiles = await fs.readdir(dirsToCheck.images);
-            filesList = filesList.concat(imageFiles.filter(f => !f.startsWith('.')));
-        }
-    } catch (e) {
-        if (e.code !== 'ENOENT') console.error(`Fehler beim Lesen des Bild-Verzeichnisses für Modus '${mode}':`, e);
-    }
-    try {
-        if (!onlyType || onlyType === 'sounds') {
-            const soundFiles = await fs.readdir(dirsToCheck.sounds);
-            filesList = filesList.concat(soundFiles.filter(f => !f.startsWith('.')));
-        }
-    } catch (e) {
-        if (e.code !== 'ENOENT') console.error(`Fehler beim Lesen des Sound-Verzeichnisses für Modus '${mode}':`, e);
-    }
-    res.json({ count: filesList.length, files: filesList });
+    const filtered = files.filter(typeFilter);
+    res.json({ count: filtered.length, files: filtered });
 });
 
-// Liefert fehlende Assets (leere Pfade und nicht vorhandene Dateien) für den Editor
-app.get('/api/missing-assets', async (req, res) => {
-    try {
-        const mode = req.query.mode === 'saetze' ? 'saetze' : 'woerter';
-    const dbPathMode = dataPath(mode === 'saetze' ? 'items_database_saetze.json' : 'items_database.json');
-        let database = {};
-        try {
-            const content = await fs.readFile(dbPathMode, 'utf8');
-            database = JSON.parse(content);
-        } catch (e) {
-            if (e.code !== 'ENOENT') throw e;
-        }
-        const items = [];
-        for (const [id, item] of Object.entries(database)) {
-            const name = (item && item.name) ? String(item.name) : id;
-            for (const kind of ['image', 'sound']) {
-                const p = item && item[kind] ? String(item[kind]) : '';
-                if (!p) {
-                    items.push({ id, name, kind, reason: 'empty_path' });
-                    continue;
-                }
-                const abs = path.join(__dirname, p);
-                try {
-                    await fs.access(abs);
-                } catch {
-                    items.push({ id, name, kind, reason: 'file_missing', path: p });
-                }
-            }
-        }
-        res.json({ items });
-    } catch (err) {
-        console.error('[MISSING-ASSETS] Fehler:', err);
-        res.status(500).json({ message: 'Fehler beim Ermitteln fehlender Assets.' });
-    }
-});
+// (dedupliziert) – Die Implementierung für /api/missing-assets befindet sich weiter unten
 
 // Preflight/Dry-Run-Validator für Editor-Änderungen
 app.post('/api/editor/validate-change', async (req, res) => {
@@ -2117,6 +2054,7 @@ app.get('/api/healthcheck', async (req, res) => {
     const detail = req.query.detail === '1' || req.query.detail === 'true';
     const wantFull = req.query.full === '1' || req.query.full === 'true';
     const wantFixCase = req.query.fixCase === '1' || req.query.fixCase === 'true';
+    const strictName = req.query.strictName === '1' || req.query.strictName === 'true';
     try {
         // Optional: vorab Case-Fix auf DB-Pfade anwenden
         if (wantFull && wantFixCase) {
@@ -2141,6 +2079,8 @@ app.get('/api/healthcheck', async (req, res) => {
         let cases = null;
         let names = null;
         let naming = null;
+        let conflicts = null; // counts
+        let conflictsDetails = null; // detailed lists when requested
         if (wantFull) {
             const [filesW, filesS, nameMismW, nameMismS] = await Promise.all([
                 collectDbFileIssues('woerter'),
@@ -2148,6 +2088,22 @@ app.get('/api/healthcheck', async (req, res) => {
                 collectNameFileMismatches('woerter'),
                 collectNameFileMismatches('saetze')
             ]);
+            // Zusätzliche Aggregation: Leere Pfade (empty_path)
+            const collectEmpty = async (mode) => {
+                const isSaetze = mode === 'saetze';
+                const dbFile = dataPath(isSaetze ? 'items_database_saetze.json' : 'items_database.json');
+                let db = {};
+                try { db = JSON.parse(await fs.readFile(dbFile, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+                const out = [];
+                for (const [id, item] of Object.entries(db)) {
+                    for (const k of ['image','sound']) {
+                        const p = item && item[k] ? String(item[k]).trim() : '';
+                        if (!p) out.push({ id, kind: k });
+                    }
+                }
+                return out;
+            };
+            const [emptyW, emptyS] = await Promise.all([collectEmpty('woerter'), collectEmpty('saetze')]);
             // Naming-Warnungen aus Sets-Dateien ableiten (Heuristik): Wenn eine erste Ebene mehrere Tokens ohne '-' enthält,
             // aber durch Regeln theoretisch zusammengehören könnte, Hinweis geben.
             const rulesPath = dataPath('sets_manifest.rules.json');
@@ -2186,22 +2142,63 @@ app.get('/api/healthcheck', async (req, res) => {
             const caseW = filesW.caseMismatches;
             const missS = filesS.missing;
             const caseS = filesS.caseMismatches;
-            files = { woerter_missing: missW.length, saetze_missing: missS.length };
+            files = { woerter_missing: missW.length, saetze_missing: missS.length, woerter_empty: emptyW.length, saetze_empty: emptyS.length };
             cases = { woerter_mismatches: caseW.length, saetze_mismatches: caseS.length };
             baseSummary.woerter.files = { missing: missW };
             baseSummary.saetze.files = { missing: missS };
+            // füge Details zu leeren Pfaden hinzu
+            baseSummary.woerter.filesEmpty = { empty: emptyW };
+            baseSummary.saetze.filesEmpty = { empty: emptyS };
             baseSummary.woerter.case = { mismatches: caseW };
             baseSummary.saetze.case = { mismatches: caseS };
             names = { woerter_namefile: nameMismW.length, saetze_namefile: nameMismS.length };
             baseSummary.woerter.nameFile = { mismatches: nameMismW };
             baseSummary.saetze.nameFile = { mismatches: nameMismS };
             baseSummary.naming = naming;
+
+            // Konfliktanalyse (Parität mit CLI)
+            try {
+                const analyzerPath = path.join(__dirname, 'tools', 'lib', 'assets-analyzer.mjs');
+                const { collectSuggestions, markRenameTargetConflicts, filterNameMismatches, detectRepoDuplicates, detectDbDoubleReferences } = await import('file://' + analyzerPath.replace(/\\/g, '/'));
+                // DBs laden (bereits oben genutzt)
+                const dbW = JSON.parse(await fs.readFile(dataPath('items_database.json'), 'utf8')).__proto__ ? JSON.parse(await fs.readFile(dataPath('items_database.json'), 'utf8')) : JSON.parse(await fs.readFile(dataPath('items_database.json'), 'utf8'));
+                const dbS = JSON.parse(await fs.readFile(dataPath('items_database_saetze.json'), 'utf8')).__proto__ ? JSON.parse(await fs.readFile(dataPath('items_database_saetze.json'), 'utf8')) : JSON.parse(await fs.readFile(dataPath('items_database_saetze.json'), 'utf8'));
+                const suggestionsRaw = await collectSuggestions({ repoRoot: __dirname, mode: 'all', dbWoerter: dbW, dbSaetze: dbS });
+                const suggestions = markRenameTargetConflicts(suggestionsRaw);
+                const nameMismatches = filterNameMismatches(suggestions);
+                const repoFiles = listGitFiles('data');
+                const repoDuplicates = detectRepoDuplicates(repoFiles);
+                const dbDoubleRefs = detectDbDoubleReferences({ dbWoerter: dbW, dbSaetze: dbS });
+                const renameTargetConflicts = suggestions.filter(s => s.conflict);
+                conflicts = {
+                    name_mismatches: nameMismatches.length,
+                    rename_target_conflicts: renameTargetConflicts.length,
+                    db_repo_double_refs: dbDoubleRefs.length,
+                    repo_duplicates: repoDuplicates.length
+                };
+                if (detail) {
+                    conflictsDetails = {
+                        name_mismatches: nameMismatches,
+                        rename_target_conflicts: renameTargetConflicts,
+                        db_repo_double_refs: dbDoubleRefs,
+                        repo_duplicates: repoDuplicates
+                    };
+                }
+            } catch (e) {
+                console.warn('[healthcheck] Konfliktanalyse nicht verfügbar:', e.message);
+                conflicts = { name_mismatches: names ? (names.woerter_namefile + names.saetze_namefile) : 0, rename_target_conflicts: 0, db_repo_double_refs: 0, repo_duplicates: 0 };
+            }
         }
 
         const ok = woerter.ok && saetze.ok
             && (!files || (files.woerter_missing === 0 && files.saetze_missing === 0))
             && (!cases || (cases.woerter_mismatches === 0 && cases.saetze_mismatches === 0))
-            && (!names || (names.woerter_namefile === 0 && names.saetze_namefile === 0));
+            && (!names || (!strictName ? true : (names.woerter_namefile === 0 && names.saetze_namefile === 0)))
+            && (!conflicts || (
+                conflicts.rename_target_conflicts === 0 &&
+                conflicts.db_repo_double_refs === 0 &&
+                conflicts.repo_duplicates === 0
+            ));
 
         const summary = {
             ok,
@@ -2210,12 +2207,14 @@ app.get('/api/healthcheck', async (req, res) => {
             ...(cases ? { case: cases } : {}),
             ...(names ? { nameFile: names } : {}),
             ...(naming ? { naming } : {}),
+            ...(conflicts ? { conflicts } : {}),
             woerter: baseSummary.woerter,
             saetze: baseSummary.saetze
         };
         if (detail) {
             summary.woerter.details = woerter.sets;
             summary.saetze.details = saetze.sets;
+            if (conflictsDetails) summary.conflictsDetails = conflictsDetails;
         }
         res.json(summary);
     } catch (error) {

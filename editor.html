@@ -14,9 +14,7 @@
             <div id="tools-menu" role="menu" aria-labelledby="tools-menu-button" style="position:absolute; top:calc(100% + 6px); right:0; background:#fff; border:1px solid #ddd; border-radius:8px; padding:10px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width: 260px; display:none; z-index:20;">
                 <div style="display:flex; flex-direction:column; gap:8px;">
                     <button id="show-archive-button" role="menuitem">♻️ Gelöschte Dateien</button>
-                    <button id="run-healthcheck-button" role="menuitem">🧺 Daten prüfen</button>
-                    <button id="show-missing-assets-button" role="menuitem">🔎 Fehlende Assets</button>
-                    <button id="show-namefile-conflicts-button" role="menuitem">⚖️ Name-Dateiname-Konflikte</button>
+                    <button id="run-healthcheck-button" role="menuitem">🧺 Healthcheck</button>
                     <button id="open-help-button" role="menuitem">❓ Hilfe</button>
                     <!-- Feature-Flag: Neues Layout (Beta) -->
                     <label id="layout-next-toggle" role="menuitemcheckbox" aria-checked="false" style="margin-top:4px; display:flex; align-items:center; gap:8px; padding:6px 8px; border:1px solid #eee; border-radius:6px;">
@@ -31,10 +29,34 @@
             </div>
         </div>
     </div>
+    <!-- Modal: Unified Healthcheck -->
+    <div id="healthcheck-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 1100px; width: 96%;">
+            <span class="close-button" id="healthcheck-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h2 style="margin-right:48px;">Healthcheck</h2>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap: wrap; margin: 6px 0 10px;">
+                <label style="display:flex; align-items:center; gap:6px;">
+                    <input type="checkbox" id="healthcheck-fix-case" checked>
+                    Case-Fix vorher ausführen
+                </label>
+                <label style="display:flex; align-items:center; gap:6px;">
+                    <input type="checkbox" id="healthcheck-strict-name">
+                    Name↔Datei strikt in OK einbeziehen
+                </label>
+                <button id="healthcheck-refresh">Neu prüfen</button>
+            </div>
+            <div id="healthcheck-summary" style="margin: 10px 0; font-weight: bold;"></div>
+            <div id="healthcheck-sections" style="max-height: 60vh; overflow-y: auto;"></div>
+        </div>
+    </div>
+
     <div class="controls">
         <span id="save-status" style="font-weight:bold;display:inline-block;margin-right:16px;"></span>
     <p id="status-message" role="status" aria-live="polite" style="display:inline-block; margin: 0; padding: 0;"></p>
     <div id="notification-area" role="status" aria-live="polite" style="margin: 0; font-weight: bold;"></div>
+        <div id="notification-banner" style="display:none; margin:6px 0; padding:8px 12px; border:1px solid #d1ecf1; background:#e8f6fb; color:#0c5460; border-radius:6px;">
+            <!-- Wird dynamisch gefüllt: Hinweise zu Import Sätze ohne Unterordner -->
+        </div>
       <span id="layout-next-badge" title="Neues Layout aktiv"
           style="display:none; font-size:11px; padding:3px 8px; border-radius:999px; border:1px solid #86efac; background:#ecfdf5; color:#065f46; align-items:center; gap:6px;">
             <span style="width:8px; height:8px; border-radius:50%; background:#10b981; display:inline-block;"></span>
@@ -172,38 +194,7 @@
         </div>
     </div>
 
-    <!-- Modal: Missing Assets -->
-    <div id="missing-assets-modal" class="modal-overlay">
-        <div class="modal-content">
-            <span class="close-button" id="missing-assets-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
-            <h2>Fehlende Assets</h2>
-            <div id="missing-assets-summary" style="margin: 10px 0; font-weight: bold;"></div>
-            <div style="margin-bottom: 10px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                <label><input type="checkbox" id="filter-empty-paths" checked> Nur leere Pfade</label>
-                <label><input type="checkbox" id="filter-missing-files" checked> Nur fehlende Dateien</label>
-                <input type="text" id="missing-assets-search" placeholder="Suche (ID/Name/Pfad)" style="flex:1; padding: 6px 8px;">
-            </div>
-            <div id="missing-assets-list" style="max-height: 60vh; overflow-y: auto;">
-                <!-- Wird per JS eingefüllt -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Name vs. Dateiname Konflikte -->
-    <div id="namefile-modal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 960px; width: 96%;">
-            <span class="close-button" id="namefile-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
-            <h2>Name ↔ Dateiname Konflikte</h2>
-            <div id="namefile-summary" style="margin: 10px 0; font-weight: bold;"></div>
-            <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
-                <button id="namefile-refresh">Neu prüfen</button>
-                <button id="namefile-apply-display">Alle → Anzeige übernehmen</button>
-                <button id="namefile-apply-file">Alle → Dateiname übernehmen</button>
-                <input type="text" id="namefile-search" placeholder="Suche (ID/Name/Datei)" style="flex:1; padding: 6px 8px;">
-            </div>
-            <div id="namefile-list" style="max-height: 60vh; overflow-y: auto; font-size: 14px;"></div>
-        </div>
-    </div>
+    
 
     <!-- Modal: ID umbenennen -->
     <div id="id-rename-modal" class="modal-overlay">

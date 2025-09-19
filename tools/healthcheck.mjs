@@ -4,6 +4,7 @@ import fssync from 'fs';
 import { execSync } from 'node:child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { collectSuggestions, detectDbDoubleReferences, detectRepoDuplicates, filterNameMismatches, markRenameTargetConflicts } from './lib/assets-analyzer.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,6 +12,7 @@ const repoRoot = path.resolve(__dirname, '..');
 const args = process.argv.slice(2);
 const format = args.includes('--format') ? args[args.indexOf('--format') + 1] : 'table';
 const fixCase = args.includes('--fix-case');
+const strictName = args.includes('--strict-name');
 
 const DB = {
   woerter: 'data/items_database.json',
@@ -150,8 +152,19 @@ async function checkSets(manifestRel, domain) {
     const filesSaetze = await checkFiles(DB.saetze);
     const caseWoerter = await checkCaseMismatches(DB.woerter);
     const caseSaetze = await checkCaseMismatches(DB.saetze);
-    const setsWoerter = await checkSets(MANIFEST.woerter, 'woerter');
-    const setsSaetze = await checkSets(MANIFEST.saetze, 'saetze');
+  const setsWoerter = await checkSets(MANIFEST.woerter, 'woerter');
+  const setsSaetze = await checkSets(MANIFEST.saetze, 'saetze');
+
+  // Zusätzliche Konflikt-/Mismatch-Analyse
+  const dbW = await readJSON(DB.woerter);
+  const dbS = await readJSON(DB.saetze);
+  const suggestionsRaw = await collectSuggestions({ repoRoot, mode: 'all', dbWoerter: dbW, dbSaetze: dbS });
+  const suggestions = markRenameTargetConflicts(suggestionsRaw);
+  const nameMismatches = filterNameMismatches(suggestions);
+  const repoFiles = listGitFiles('data');
+  const repoDuplicates = detectRepoDuplicates(repoFiles);
+  const dbDoubleRefs = detectDbDoubleReferences({ dbWoerter: dbW, dbSaetze: dbS });
+  const renameTargetConflicts = suggestions.filter(s => s.conflict);
     const summary = {
       files: {
         woerter_missing: filesWoerter.length,
@@ -160,6 +173,12 @@ async function checkSets(manifestRel, domain) {
       case: {
         woerter_mismatches: caseWoerter.mismatches.length,
         saetze_mismatches: caseSaetze.mismatches.length,
+      },
+      conflicts: {
+        name_mismatches: nameMismatches.length,
+        rename_target_conflicts: renameTargetConflicts.length,
+        db_repo_double_refs: dbDoubleRefs.length,
+        repo_duplicates: repoDuplicates.length,
       },
       sets: {
         woerter_invalid_format: setsWoerter.invalidFormat.length,
@@ -171,6 +190,10 @@ async function checkSets(manifestRel, domain) {
         && filesSaetze.length === 0
         && caseWoerter.mismatches.length === 0
         && caseSaetze.mismatches.length === 0
+        && renameTargetConflicts.length === 0
+        && dbDoubleRefs.length === 0
+        && repoDuplicates.length === 0
+        && (!strictName || nameMismatches.length === 0)
         && setsWoerter.invalidFormat.length === 0
         && setsSaetze.invalidFormat.length === 0
         && setsWoerter.missingIds.length === 0
@@ -184,10 +207,16 @@ async function checkSets(manifestRel, domain) {
           files: {
             woerter: filesWoerter,
             saetze: filesSaetze,
-          },
           case: {
-            woerter: caseWoerter,
-            saetze: caseSaetze,
+            woerter: { mismatches: caseWoerter.mismatches },
+            saetze: { mismatches: caseSaetze.mismatches },
+          },
+          conflicts: {
+            name_mismatches: nameMismatches,
+            rename_target_conflicts: renameTargetConflicts,
+            db_repo_double_refs: dbDoubleRefs,
+            repo_duplicates: repoDuplicates,
+          },
           },
           sets: {
             woerter: setsWoerter,
@@ -198,12 +227,17 @@ async function checkSets(manifestRel, domain) {
     } else {
       console.log(`Healthcheck: ok=${summary.ok ? 'true' : 'false'}`);
       console.log(`- Dateien fehlen: woerter=${summary.files.woerter_missing}, saetze=${summary.files.saetze_missing}`);
+      console.log(`- Konflikte: name↔datei=${summary.conflicts.name_mismatches}, rename_ziel=${summary.conflicts.rename_target_conflicts}, db_repo_doppelt=${summary.conflicts.db_repo_double_refs}, repo_duplikate=${summary.conflicts.repo_duplicates}`);
       console.log(`- Case-Mismatches: woerter=${summary.case.woerter_mismatches}, saetze=${summary.case.saetze_mismatches}`);
       console.log(`- Sets: invalid_format (woerter=${summary.sets.woerter_invalid_format}, saetze=${summary.sets.saetze_invalid_format}), missing_ids (woerter=${summary.sets.woerter_missing_ids}, saetze=${summary.sets.saetze_missing_ids})`);
       const sample = (arr) => arr.slice(0, 10);
       if (filesWoerter.length) console.log('Beispiele fehlende Dateien (woerter):', sample(filesWoerter));
       if (filesSaetze.length) console.log('Beispiele fehlende Dateien (saetze):', sample(filesSaetze));
       if (caseWoerter.mismatches.length) console.log('Beispiele Case-Mismatches (woerter):', sample(caseWoerter.mismatches));
+      if (nameMismatches.length) console.log('Beispiele Name↔Datei (woerter+saetze):', sample(nameMismatches.map(x => ({ id: x.id, kind: x.kind, current: x.currentPath, suggested: x.suggestedPath }))));
+      if (renameTargetConflicts.length) console.log('Beispiele Rename-Zielkonflikte:', sample(renameTargetConflicts.map(x => ({ id: x.id, kind: x.kind, suggested: x.suggestedPath }))));
+      if (dbDoubleRefs.length) console.log('Beispiele DB→Repo-Doppelbelegung:', sample(dbDoubleRefs));
+      if (repoDuplicates.length) console.log('Beispiele Repo-Duplikate:', sample(repoDuplicates));
       if (caseSaetze.mismatches.length) console.log('Beispiele Case-Mismatches (saetze):', sample(caseSaetze.mismatches));
       if (setsWoerter.invalidFormat.length) console.log('Beispiele ungültige Sets (woerter):', sample(setsWoerter.invalidFormat));
       if (setsSaetze.invalidFormat.length) console.log('Beispiele ungültige Sets (saetze):', sample(setsSaetze.invalidFormat));

@@ -72,11 +72,11 @@ test('Flow 1: Neuer Ordner z + sync-files', async () => {
 });
 
 /**
- * Flow 2: Unsortierte Dateien -> analyze-unsorted-files -> resolve-conflicts (move) -> Zielordner sollten bei Bedarf angelegt werden.
+ * Flow 2: Dateien im Import-Ordner -> analyze-unsorted-files -> resolve-conflicts (move) -> Zielordner sollten bei Bedarf angelegt werden.
  */
-test('Flow 2: Unsortiert -> analyze -> resolve (move) sortiert richtig ein', async () => {
-  const uImg = path.join(dataDir, 'wörter', 'images', 'images_unsortiert', 'apfel.jpg');
-  const uSnd = path.join(dataDir, 'wörter', 'sounds', 'sounds_unsortiert', 'apfel.mp3');
+test('Flow 2: Import-Ordner -> analyze -> resolve (move) sortiert richtig ein', async () => {
+  const uImg = path.join(dataDir, 'import_Wörter', 'apfel.jpg');
+  const uSnd = path.join(dataDir, 'import_Wörter', 'apfel.mp3');
   await touch(uImg);
   await touch(uSnd);
 

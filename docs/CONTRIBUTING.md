@@ -8,6 +8,16 @@ Dieser Leitfaden dokumentiert die Ziele, Regeln, Tools und Arbeitsabläufe, dami
 - Werkzeugkette für Audit, Korrektur (dry/apply) und Healthcheck (Backend/CLI)
 - Daten-/Set-Integrität sichern (IDs, Set-Struktur, Pfade)
 
+## Zusammenarbeit mit Copilot/PRs (Go‑Prozess)
+
+Für alle Code‑Änderungen gilt der in `.vscode/copilot-instructions.md` beschriebene Ablauf:
+
+- Änderungen werden zuerst als Diff vorgeschlagen und kurz begründet.
+- Es wird explizit auf das „Go“ gewartet; erst danach werden Änderungen übernommen.
+- Einfache Sprache, keine stillen/ungefragten Änderungen.
+
+Hinweis: Dieser Prozess hat Vorrang vor abweichenden Einzelanweisungen im Chat/PR‑Kommentar.
+
 ## Dateinamen-/Pfadregeln
 - Wörter (Domain „woerter“)
   - Dateiname = Anzeigename (mit echten Umlauten: ä, ö, ü), Unicode NFC
@@ -20,6 +30,21 @@ Dieser Leitfaden dokumentiert die Ziele, Regeln, Tools und Arbeitsabläufe, dami
 - IDs/Set-Struktur
   - IDs bleiben ASCII-klein_mit_unterstrich
   - Sets referenzieren IDs als String-Liste (oder `{ items: [...] }`)
+
+## Import-Ordner (nur noch import_*)
+
+Ab sofort werden neue Dateien ausschließlich über zentralisierte Import-Ordner eingesammelt. Die früheren „unsortiert“-Ordner (`images_unsortiert`/`sounds_unsortiert`) werden nicht mehr unterstützt und sollen nicht mehr verwendet werden.
+
+- Wörter
+  - Import-Pfad: `data/import_Wörter`
+  - Erlaubt sind Bilder (.jpg/.jpeg/.png) und Sounds (.mp3). Dateinamen mit echten Umlauten (NFC), Endungen kleingeschrieben.
+- Sätze
+  - Import-Pfad: `data/import_Sätze/<Listenname>` – Unterordner ist Pflicht (z. B. `data/import_Sätze/Reime`).
+  - Wenn Dateien fälschlich direkt im Root `data/import_Sätze` liegen, zeigt der Editor einen Hinweisbanner; diese Dateien werden nicht einsortiert, bis ein Unterordner vergeben wurde.
+- Verhalten beim Import
+  - Der Server analysiert die Import-Ordner und schlägt Zielpfade in den kanonischen Ablagen vor (`data/wörter/images|sounds/<buchstabe>` bzw. `data/sätze/images|sounds/<Listenname>`).
+  - Nach dem Anwenden (move/replace/keep) werden importierte Dateien aus den Import-Ordnern entfernt.
+  - Duplikat-Erkennung und Konfliktauflösung bleiben bestehen.
 
 ### Konvention für Set-Dateien (Manifeste)
 
@@ -73,10 +98,17 @@ Dieser Leitfaden dokumentiert die Ziele, Regeln, Tools und Arbeitsabläufe, dami
     - Alle: `npm run fill-empty-paths`
     - Wörter: `npm run fill-empty-paths:woerter`
     - Sätze (loose): `npm run fill-empty-paths:saetze:loose`
-- `tools/healthcheck.mjs` (Integrität)
-  - Prüft, ob alle referenzierten Dateien existieren und Sets gültig sind
+- `tools/healthcheck.mjs` (Integrität + Konflikte)
+  - Prüft Dateien, Groß-/Kleinschreibung, Sets und meldet Konflikte:
+    - Name↔Datei-Mismatches (Anzeigename passt nicht zum Dateinamen)
+    - Rename-Zielkonflikte (mehrere Items würden auf denselben Zielpfad zeigen)
+    - DB→Repo Doppelbelegung (mehrere DB-Pfade verweisen auf gleiche Datei)
+    - Repo-Duplikate (gleiche Datei kollidiert unter case/diakritik-insensitivem Schlüssel)
   - Nutzung:
-    - `npm run healthcheck`
+    - Tabelle: `npm run healthcheck`
+    - JSON: `node tools/healthcheck.mjs --format json`
+    - Streng bzgl. Name↔Datei: `node tools/healthcheck.mjs --strict-name`
+  - Exit-Policy: Standard ok=true ignoriert reine Name↔Datei-Mismatches; mit `--strict-name` führen auch diese zu ok=false.
 
 - `tools/check-missing-assets.mjs` (Fehlende Assets melden)
   - Listet alle Items mit leeren Pfaden (empty_path) und fehlenden Dateien (file_missing) auf.
@@ -85,16 +117,21 @@ Dieser Leitfaden dokumentiert die Ziele, Regeln, Tools und Arbeitsabläufe, dami
     - Tabelle: `npm run check-missing-assets`
     - JSON: `npm run check-missing-assets:json`
 
-## Editor – Fehlende Assets (UI)
-- In `editor.html` gibt es den Button „🔎 Fehlende Assets“.
-- Ein Klick öffnet ein Modal mit:
-  - Filtern (nur leere Pfade / nur fehlende Dateien)
-  - Suche (ID/Name/Pfad)
-  - Gruppierung nach Item, Anzeige je Feld (Bild/Ton) inkl. Grund (leer/fehlt)
-- Quick-Navigation: Klick auf einen Eintrag oder den Item-Titel springt zur entsprechenden Tabellenzeile, leert vorher den Suchfilter und hebt die Zeile kurz hervor.
+## Editor – Healthcheck (UI)
+- Ein Menüpunkt „🧺 Healthcheck“ bündelt alle Prüfungen in einem Modal.
+- Enthaltene Bereiche:
+  - Fehlende Dateien, Leere Pfade, Case-Mismatches
+  - Name↔Datei-Konflikte mit Inline-Aktionen (Anzeige übernehmen / Dateiname übernehmen)
+  - Konflikte: Rename-Ziele, DB↔Repo-Doppelbezüge, Repo-Duplikate
+- Optionen: „Case-Fix vorher ausführen“, „Name↔Datei strikt in OK einbeziehen“
+- Navigation: „Zur Zeile“ springt in die Tabelle und hebt den Eintrag kurz hervor.
 
 ## API-Endpunkte (Server)
 - `GET /api/missing-assets?mode=woerter|saetze` → JSON-Liste der fehlenden Assets im aktuellen Modus.
+- `POST /api/check-unsorted-files?mode=woerter|saetze` → prüft nur die Import-Ordner (`import_Wörter` bzw. `import_Sätze/<Listenname>`)
+- `POST /api/analyze-unsorted-files?mode=woerter|saetze` → analysiert ausschließlich Import-Ordner und schlägt Zielpfade vor; Legacy-„unsortiert“-Ordner werden nicht mehr berücksichtigt
+- `POST /api/resolve-conflicts` → führt die vorgeschlagenen Aktionen aus (move/replace/keep) und leert Import-Quellen
+- `POST /api/manage-archive` → Restore legt Dateien in den passenden Import-Ordner (Wörter: `import_Wörter`, Sätze: `import_Sätze/<Listenname>`) ab
 
 ## Typischer Arbeitsablauf
 1) Audit
@@ -209,6 +246,8 @@ Leitlinien ohne Überschneidung:
 - Hauptdateien: `data/items_database.json`, `data/items_database_saetze.json`, `data/sets.json`, `data/sets_saetze.json`
 - Frontend: `editor.html`, `editor_script.js`
 - Backend/Tools: `tools/*.mjs`, `server.js`
+- Import-Ordner: `data/import_Wörter`, `data/import_Sätze` (mit Unterordnern je Liste)
+  - Hinweis: Die alten Ordner `images_unsortiert`/`sounds_unsortiert` in `data/wörter/...` bzw. `data/sätze/...` sind entfernt oder werden vom Code nicht mehr gescannt.
 
 ## Troubleshooting
 - „Datei fehlt“ nach Migration: Healthcheck-Details ansehen; ggf. Endung prüfen (.jpg vs .jpeg vs .png)

@@ -11,8 +11,12 @@
 
 import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
-const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+// Robust: Konvertiere file: URL → OS-Pfad (Windows-kompatibel, inkl. Leerzeichen)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const ROOT = path.resolve(__dirname, '..');
 const DOCS_DIR = path.join(ROOT, 'docs');
 const OUT_FILE = path.join(DOCS_DIR, 'help-index.md');
 

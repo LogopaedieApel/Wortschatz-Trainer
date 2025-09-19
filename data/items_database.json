@@ -44,7 +44,7 @@
   "dreieck": {
     "name": "Dreieck",
     "image": "data/wörter/images/d/Dreieck.jpg",
-    "sound": "data/wörter/sounds/d/Dreieck .mp3",
+    "sound": "data/wörter/sounds/d/Dreieck.mp3",
     "folder": "d"
   },
   "dusche": {
@@ -596,7 +596,7 @@
   "sieben": {
     "name": "sieben",
     "image": "data/wörter/images/s/sieben.jpg",
-    "sound": "data/wörter/sounds/s/Sieben.mp3",
+    "sound": "data/wörter/sounds/s/sieben.mp3",
     "folder": "s"
   },
   "singen": {
@@ -704,7 +704,7 @@
   "taschenlampe": {
     "name": "Taschenlampe",
     "image": "data/wörter/images/t/Taschenlampe.jpg",
-    "sound": "data/wörter/sounds/t/Taschenlampe .mp3",
+    "sound": "data/wörter/sounds/t/Taschenlampe.mp3",
     "folder": "t"
   },
   "teppich": {

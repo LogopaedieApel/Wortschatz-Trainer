@@ -8,6 +8,13 @@ Umstellung auf GitDesktop am 02.09.2025
 ![Status](https://img.shields.io/badge/status-active-blue)
 ![Read--Only](https://img.shields.io/badge/editor-read--only%20guard-success)
 
+## Dokumentation
+
+- Beitragende: siehe `docs/CONTRIBUTING.md` (Regeln, Tools, Workflows; inkl. Verweis auf den Go‑Prozess).
+- Editor‑Hilfe (Kurzüberblick): `docs/editor-hilfe.md`
+- Änderungsverlauf: `docs/CHANGELOG.md` (wird automatisiert generiert)
+- Hilfe‑Index: `docs/help-index.md` (automatisch generiert, bitte nicht manuell bearbeiten)
+
 ## Tests ausführen (Jest)
 
 Automatisierte API- und E2E-Tests decken zentrale Editor-Flows und Schutzmechanismen ab.
@@ -25,7 +32,10 @@ Die Tests starten einen isolierten Server mit temporären `DATA_DIR`/`STATE_DIR`
 
 - Name-History und Anzeigenamen-Änderungen (Undo/Redo, ReadOnly-Guard)
 - Import/Sync:
-	- Neue Buchstabenordner -> `/api/sync-files`
+	- Neue Dateien bitte in die Import-Ordner legen:
+		- `data/import_Wörter` (Bilder/Sounds für Wörter)
+		- `data/import_Sätze` (Bilder/Sounds für Sätze; pro Liste einen Unterordner verwenden, Name = Listenname)
+	- Einsortierung/Analyse läuft wie bisher über den Editor (Benachrichtigung) und `/api/analyze-unsorted-files` + `/api/resolve-conflicts`. Die Datenbank wird anschließend mit `/api/sync-files` aktualisiert.
 	- Unsortiert-Analyse und -Auflösung -> `/api/analyze-unsorted-files`, `/api/resolve-conflicts`
 	- Löschen -> Archiv -> Wiederherstellen -> Einsortieren -> Sync
 - Sets (Spalten):

@@ -20,6 +20,8 @@ Der Wortschatz-Editor ist ein Werkzeug zum Pflegen der Datenbanken und Sets für
 - Read-Only-Modus zum Schutz vor versehentlichen Änderungen
 - Undo/Redo für Anzeigenamen
 - Import- und Einsortier-Flows für neue Dateien
+	- Neue Import-Ordner: `data/import_Wörter` und `data/import_Sätze`
+	- Sätze: Bitte Dateien in einen Unterordner legen, dessen Name dem Listen-Namen entspricht. Dateien direkt in `import_Sätze` werden nicht importiert (Hinweis erscheint im Editor).
 
 ## Ablagelogik & Ordnungsregeln
 
@@ -69,10 +71,10 @@ Hinweis: Details für Mitwirkende findest du zusätzlich in `docs/CONTRIBUTING.m
 
 Der Editor enthält eine optionale, neue Ansicht („Layout: Next“) mit Sidebar + Detailbereich. Funktional bleibt alles kompatibel zur klassischen Tabelle; die Datenstruktur/Backends bleiben unverändert.
 
-- Aktivieren/Deaktivieren über Werkzeuge → „Neues Layout (Beta)“ (Checkbox)
+- Aktivieren/Deaktivieren über Werkzeuge (☰ oben rechts) → „Neues Layout (Beta)“ (Checkbox)
 - Alternativ per URL: `?layout=next` bzw. `?layout=classic`
 - Der Status wird (sofern möglich) im Browser lokal gespeichert und beim nächsten Laden angewendet.
-- Im Kopfbereich erscheint bei aktivem Next-Layout ein Badge „Layout: Next“.
+- Hinweis: Es gibt kein „Layout: Next“-Badge mehr im Kopfbereich.
 
 Hinweis: Beta-Status. UI kann sich noch ändern; Classic bleibt Standard und vollständig funktionsfähig.
 
@@ -85,6 +87,13 @@ Hinweis: Beta-Status. UI kann sich noch ändern; Classic bleibt Standard und vol
 	- Roving Tabindex: Nur der aktive Eintrag ist im Tab-Fokus; die aktive Option wird via `aria-activedescendant` markiert.
 	- Shortcuts: '/' fokussiert die Sidebar-Suche; Enter im Suchfeld öffnet das aktive/erste Ergebnis; Escape leert den Filter (erneutes Escape entfernt den Fokus).
 
+Zusätze im Next‑Layout:
+- Einträge ↔ Listen umschalten (Buttons oben in der Sidebar). Im Listen‑Modus erscheinen Bereichs‑Chips (z. B. „Artikulation“, „Wortschatz“) zum Filtern.
+- Zwischen Sidebar und Details gibt es einen Splitter (vertikaler Griff). Größe per Maus ziehen oder via Tastatur (←/→, Home/End) ändern; die Breite wird lokal gespeichert.
+
+Optionaler Screenshot (Splitter & Sidebar):
+![Splitter und Sidebar](images/next-layout-splitter.png)
+
 #### Details: Anzeige & Set-Chips
 
 - Rechts zeigt der Detailbereich den Namen (Überschrift) und die ID. Darunter steht „Listen: N“ – diese Zahl aktualisiert sich live.
@@ -94,10 +103,16 @@ Hinweis: Beta-Status. UI kann sich noch ändern; Classic bleibt Standard und vol
 	- Die klassische Tabellenansicht bleibt synchron: Checkboxen der betroffenen Zeile werden mit umgeschaltet.
 	- Read-Only wird respektiert; in diesem Modus sind Aktionen gesperrt.
 
+Listen‑Details (Listen‑Modus):
+- Klick auf eine Liste öffnet rechts einen Inline‑Editor für Anzeigename und Datei‑Pfad sowie eine Vorschau (erste 100 Elemente). Einzelne Elemente lassen sich aus der Liste entfernen; die Tabelle bleibt synchron.
+
+Optionaler Screenshot (Listen‑Details):
+![Listen-Details mit Inline-Editor](images/next-layout-list-details.png)
+
 #### Responsiv & Dichte
 
 - Sticky: Tab-Leiste und Sidebar sind „sticky“ und bleiben beim Scrollen sichtbar.
-- Kleine Bildschirme (< 900px): Die Sidebar ist einklappbar. Der ☰-Button blendet sie ein/aus.
+- Sidebar bleibt sichtbar; es gibt keinen separaten Ein-/Ausklapp‑Toggle mehr.
 - Kompakte Darstellung: Per Tastatur Umschalten mit Shift+D (nur visuell, keine Verhaltensänderung).
 
 #### Performance
@@ -105,15 +120,24 @@ Hinweis: Beta-Status. UI kann sich noch ändern; Classic bleibt Standard und vol
 - Debounce für Suchfelder (Next-Sidebar und klassische Suche) reduziert unnötige DOM-Updates.
 - Chunked Rendering der Sidebar-Liste (mit Cancel), damit auch große Datenmengen flüssig bleiben.
 
-### Name ↔ Dateiname Konflikte
+### Healthcheck (einheitlich)
 
-- Öffnen über Werkzeuge → „⚖️ Name-Dateiname-Konflikte“.
-- Liste zeigt Abweichungen zwischen Anzeigename (Editor) und abgeleitetem Dateinamen (aus der ID).
-- Aktionen:
-	- „Alle → Anzeige übernehmen“: Erzeugt Dateinamen gemäß aktuellen Anzeigenamen (empfohlen, wenn Anzeigenamen bereits bereinigt sind).
-	- „Alle → Dateiname übernehmen“: Setzt Anzeigenamen aus den Dateinamen (nützlich, wenn Dateien die zuverlässigere Quelle sind).
-- Empfehlung: Erst Healthcheck/Auto-Fixes laufen lassen, dann Konflikte gezielt prüfen und anwenden.
-- Hinweis: Änderungen respektieren die Normalisierung (ä→ae, ß→ss, Kleinschreibung) und werden validiert.
+- Öffnen über Werkzeuge → „🧺 Healthcheck“.
+- Der Healthcheck zeigt auf einen Blick:
+	- Fehlende Dateien (DB → Repo)
+	- Leere Pfade (image/sound nicht gesetzt)
+	- Case-Mismatches (JSON-Pfad vs. Repo-Datei)
+	- Name↔Dateiname-Konflikte mit Inline-Aktionen
+	- Konflikte: Rename-Zielkollisionen, DB↔Repo-Doppelbezüge, Repo-Duplikate
+- Optionen im Modal:
+	- „Case-Fix vorher ausführen“: Korrigiert JSON-Pfade auf exakte Repo-Schreibweise (empfohlen, falls nicht read-only)
+	- „Name↔Datei strikt in OK einbeziehen“: Wenn aktiv, setzt reine Name↔Datei-Mismatches ok=false
+- Inline-Aktionen bei Name↔Datei:
+	- „→ Anzeige übernehmen“: Dateiname wird aus dem Anzeigenamen abgeleitet und Pfad aktualisiert
+	- „→ Dateiname übernehmen“: Anzeigename wird aus dem bestehenden Dateinamen gesetzt
+	- „Zur Zeile“: springt zur Eintragszeile in der Tabelle
+ 
+Hinweis: Die früheren separaten Modals „Fehlende Assets“ und „Name-Dateiname-Konflikte“ wurden entfernt; alles läuft über das Healthcheck-Modal.
 
 ### Gelöschte Dateien (Archiv)
 
@@ -140,6 +164,11 @@ npm run migrate-sets
 
 Nach der Migration werden die Manifestdateien automatisch aktualisiert.
 
+## Klassische Tabelle – Sicherheitsabfrage & Listen bearbeiten
+
+- Spalten‑„Alle“-Checkbox: Beim Aktivieren/Deaktivieren einer gesamten Spalte erscheint eine Sicherheitsabfrage. Nur nach Bestätigung werden alle sichtbaren Zeilen geändert.
+- Listen bearbeiten: In den Spaltenköpfen gibt es ein Stiftsymbol (✎), um die jeweilige Liste umzubenennen oder zu löschen. Änderungen werden gespeichert und sofort in Tabelle/Next‑Layout gespiegelt.
+
 ## Tests & Healthcheck
 
 - API/E2E-Tests: In VS Code Terminal ausführen:
@@ -148,9 +177,8 @@ Nach der Migration werden die Manifestdateien automatisch aktualisiert.
 npm test
 ```
 
-- Healthcheck im Editor: Button „Daten prüfen“ → Ergebnis im UI. Backend-API: `/api/healthcheck`.
-	- Der Healthcheck fasst drei Prüfungen zusammen: Sets-Integrität (fehlende IDs/Dateien), fehlende Dateien (DB→FS), und Case-Mismatches (Pfad vs. Git-Index).
-	- Der Editor korrigiert vor der Prüfung automatisch die Pfad-Schreibweise (Case) in `items_database*.json` auf die exakten Git-Namen. Das ist vor allem auf Windows sinnvoll (GitHub Pages ist case-sensitiv).
+- Healthcheck im Editor: Werkzeuge → „🧺 Healthcheck“ (siehe oben). Backend-API: `/api/healthcheck` (Parität zur CLI, inkl. Konflikt-Details und Strict-Name-Option).
+  - Der Editor kann vorab automatisch die Pfad-Schreibweise (Case) in `items_database*.json` an die exakten Repo-Namen anpassen (Windows: 2‑Schritt-Umbenennung wird serverseitig gehandhabt).
 
 Strenge Case-Prüfung und Auto-Fix (Konsole):
 
@@ -165,7 +193,7 @@ npm run healthcheck -- --fix-case
 
 - Port 3000 belegt? Anderen Port starten: `set PORT=3100&& node server.js`
 - Editor ist read-only? Stelle sicher, dass `EDITOR_READONLY` nicht gesetzt ist oder starte mit `npm start`.
-- Assets fehlen? Button „Fehlende Assets“ zeigt eine Liste mit Filter & Suche.
+- Assets fehlen? Öffne den Healthcheck und klappe „Fehlende Dateien“ bzw. „Leere Pfade“ auf.
 
 ---
 

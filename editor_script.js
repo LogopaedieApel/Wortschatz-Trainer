@@ -38,27 +38,21 @@ const newAreaMessage = document.getElementById('new-area-message');
 const searchInput = document.getElementById('search-input');
 const tabWoerter = document.getElementById('tab-woerter');
 const tabSaetze = document.getElementById('tab-saetze');
-const showNameFileConflictsButton = document.getElementById('show-namefile-conflicts-button');
-const nameFileModal = document.getElementById('namefile-modal');
-const nameFileClose = document.getElementById('namefile-close');
-const nameFileSummary = document.getElementById('namefile-summary');
-const nameFileList = document.getElementById('namefile-list');
-const nameFileSearch = document.getElementById('namefile-search');
-const nameFileRefreshBtn = document.getElementById('namefile-refresh');
-const nameFileApplyDisplayBtn = document.getElementById('namefile-apply-display');
-const nameFileApplyFileBtn = document.getElementById('namefile-apply-file');
+// Legacy Name↔Datei-Modal entfernt – Konfliktaktionen sind nun im Healthcheck-Modal integriert
 const saveStatus = document.getElementById('save-status');
 const notificationArea = document.getElementById('notification-area');
 const runHealthcheckButton = document.getElementById('run-healthcheck-button');
 const autoFixToggle = document.getElementById('auto-fix-toggle');
-const showMissingAssetsButton = document.getElementById('show-missing-assets-button');
-const missingAssetsModal = document.getElementById('missing-assets-modal');
-const missingAssetsClose = document.getElementById('missing-assets-close');
-const missingAssetsSummary = document.getElementById('missing-assets-summary');
-const missingAssetsList = document.getElementById('missing-assets-list');
-const missingAssetsSearch = document.getElementById('missing-assets-search');
-const filterEmptyPaths = document.getElementById('filter-empty-paths');
-const filterMissingFiles = document.getElementById('filter-missing-files');
+// Legacy "Fehlende Assets"-Modal entfernt – Anzeige erfolgt im Healthcheck-Modal
+// Unified Healthcheck modal elements
+const healthcheckModal = document.getElementById('healthcheck-modal');
+const healthcheckClose = document.getElementById('healthcheck-close');
+const healthcheckFixCaseToggle = document.getElementById('healthcheck-fix-case');
+const healthcheckStrictNameToggle = document.getElementById('healthcheck-strict-name');
+const healthcheckRefreshBtn = document.getElementById('healthcheck-refresh');
+const healthcheckSummary = document.getElementById('healthcheck-summary');
+const healthcheckSections = document.getElementById('healthcheck-sections');
+// (Legacy-Elemente entfernt)
 let debounceTimer; // Timer for debouncing save action
 let serverReadOnly = false; // server-side read-only flag
 
@@ -2765,7 +2759,7 @@ async function checkUnsortedFiles() {
             const fileType = currentMode === 'woerter' ? 'Wort-Dateien' : 'Satz-Dateien';
             const notificationLink = document.createElement('a');
             notificationLink.href = '#';
-            notificationLink.innerHTML = `✨ ${data.count} neue ${fileType} gefunden. Hier klicken zum Einsortieren.`;
+            notificationLink.innerHTML = `✨ ${data.count} neue ${fileType} im Import-Ordner gefunden. Hier klicken zum Einsortieren.`;
             
             // Add a tooltip to show the list of files
             const fileList = data.files.join('\n');
@@ -2777,6 +2771,9 @@ async function checkUnsortedFiles() {
                 await analyzeUnsortedFiles();
             });
             notificationArea.appendChild(notificationLink);
+        } else if (currentMode === 'saetze') {
+            // Falls es Sätze-Dateien ohne Unterordner gibt, soll die Analyse den Banner setzen
+            try { await analyzeUnsortedFiles(); } catch {}
         }
     } catch (error) {
         console.error(error);
@@ -2911,10 +2908,26 @@ async function analyzeUnsortedFiles() {
         const response = await fetch(`/api/analyze-unsorted-files?mode=${currentMode}`, { method: 'POST' });
         if (!response.ok) throw new Error('Serverfehler bei der Analyse.');
         
-        const result = await response.json();
+    const result = await response.json();
         console.log("Analyse-Ergebnis:", result);
 
-        const { movableFiles, conflicts } = result;
+        const { movableFiles, conflicts, hints } = result;
+
+        // Hinweis-Banner für Sätze ohne Unterordner anzeigen
+        try {
+            if (currentMode === 'saetze' && hints && hints.saetzeNoSubfolder) {
+                const banner = document.getElementById('notification-banner') || notificationArea;
+                if (banner) {
+                    const msg = 'Hinweis: Dateien in import_Sätze ohne Unterordner werden nicht importiert. Bitte Dateien in einen Unterordner mit Listen-Namen verschieben.';
+                    if (banner === notificationArea) {
+                        notificationArea.textContent = msg;
+                    } else {
+                        banner.textContent = msg;
+                        banner.style.display = 'block';
+                    }
+                }
+            }
+        } catch {}
 
         if (conflicts.length === 0 && movableFiles.length === 0) {
             notificationArea.textContent = 'Keine neuen unsortierten Dateien gefunden.';
@@ -3447,111 +3460,171 @@ if (idRenameApplyBtn) {
 }
 
 // Healthcheck-Button: Führt den Server-Healthcheck (voll) aus und zeigt ein kompaktes Ergebnis an
-if (runHealthcheckButton) {
-    runHealthcheckButton.addEventListener('click', async () => {
-        const prev = notificationArea.textContent;
-        notificationArea.textContent = 'Prüfe Daten…';
-        if (notificationArea) notificationArea.style.color = '';
-        try {
-            // Erweiterten Healthcheck (full=1) mit Fix-Case, außer im Read-Only-Modus
-            const fixParam = serverReadOnly ? '' : '&fixCase=1';
-            let res = await fetch(`/api/healthcheck?full=1${fixParam}`);
-            if (res.status === 400 || res.status === 404) {
-                res = await fetch('/api/healthcheck');
-            }
-            if (!res.ok) throw new Error('Server-Antwort nicht OK');
-            const data = await res.json();
-            const w = data.woerter?.counts || { sets: 0, items: 0, missingIds: 0, missingSetFiles: 0 };
-            const s = data.saetze?.counts || { sets: 0, items: 0, missingIds: 0, missingSetFiles: 0 };
-            const filesW = data.files?.woerter_missing ?? data.woerter?.files?.missing?.length ?? 0;
-            const filesS = data.files?.saetze_missing ?? data.saetze?.files?.missing?.length ?? 0;
-            const caseW = data.case?.woerter_mismatches ?? data.woerter?.case?.mismatches?.length ?? 0;
-            const caseS = data.case?.saetze_mismatches ?? data.saetze?.case?.mismatches?.length ?? 0;
-            const ok = data.ok === true;
-                        const fixNote = serverReadOnly ? '' : ' (mit Case-Fix)';
-            const nameW = data.nameFile?.woerter_namefile ?? data.woerter?.nameFile?.mismatches?.length ?? 0;
-            const nameS = data.nameFile?.saetze_namefile ?? data.saetze?.nameFile?.mismatches?.length ?? 0;
-            notificationArea.textContent = ok
-                ? `Healthcheck OK${fixNote} – Sets: W ${w.sets}/${w.items}, S ${s.sets}/${s.items} · Dateien fehlen: W ${filesW}, S ${filesS} · Case: W ${caseW}, S ${caseS} · Name↔Datei: W ${nameW}, S ${nameS}`
-                : `Healthcheck PROBLEME${fixNote} – fehlende IDs: W=${w.missingIds}, S=${s.missingIds} · fehlende Dateien: W=${filesW}, S=${filesS} · Case: W=${caseW}, S=${caseS} · Name↔Datei: W=${nameW}, S=${nameS}`;
-            if (notificationArea) notificationArea.style.color = ok ? '#28a745' : '#cc0000';
-            // Details bei Bedarf in der Konsole
-            if (!ok) {
-                console.warn('[Healthcheck Details]', data);
-            }
-        } catch (e) {
-            console.error('Healthcheck fehlgeschlagen:', e);
-            notificationArea.textContent = prev || 'Healthcheck fehlgeschlagen.';
-            if (notificationArea) notificationArea.style.color = '#cc0000';
-        }
-    });
+async function runUnifiedHealthcheckAndRender() {
+    try {
+        const fixParam = (serverReadOnly || !healthcheckFixCaseToggle || !healthcheckFixCaseToggle.checked) ? '' : '&fixCase=1';
+        const strictParam = (healthcheckStrictNameToggle && healthcheckStrictNameToggle.checked) ? '&strictName=1' : '';
+        const url = `/api/healthcheck?full=1&detail=1${fixParam}${strictParam}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Server-Antwort nicht OK');
+        const data = await res.json();
+        renderUnifiedHealthcheck(data);
+    } catch (e) {
+        console.error('Healthcheck fehlgeschlagen:', e);
+        if (healthcheckSummary) healthcheckSummary.textContent = 'Healthcheck fehlgeschlagen.';
+    }
 }
 
-// Name↔Dateiname Konflikte – Client-Seite
-let lastNameFileData = { mismatches: [] };
-function computeNameFileMismatchesFromHealthcheck(json) {
-    try {
-        const modeKey = currentMode === 'saetze' ? 'saetze' : 'woerter';
-        const arr = json?.[modeKey]?.nameFile?.mismatches || [];
-        return Array.isArray(arr) ? arr : [];
-    } catch { return []; }
+if (runHealthcheckButton) {
+    runHealthcheckButton.addEventListener('click', async () => {
+        if (!healthcheckModal) return;
+        // Open modal and run
+        healthcheckSummary.textContent = 'Prüfe…';
+        healthcheckSections.innerHTML = '';
+        healthcheckModal.style.display = 'flex';
+        await runUnifiedHealthcheckAndRender();
+    });
 }
-function renderNameFileList() {
-    if (!nameFileList) return;
-    const q = (nameFileSearch?.value || '').toLowerCase();
-    const filtered = lastNameFileData.mismatches.filter(x => {
-        const hay = `${x.id} ${x.kind} ${x.nameBase} ${x.fileBase} ${x.path}`.toLowerCase();
-        return hay.includes(q);
-    });
-    nameFileSummary.textContent = `${filtered.length} Konflikte (Modus: ${currentMode === 'woerter' ? 'Wörter' : 'Sätze'})`;
-    const container = document.createElement('div');
-    filtered.sort((a,b)=>a.id.localeCompare(b.id)).forEach(x => {
-        const row = document.createElement('div');
-        row.style.padding = '8px 6px';
-        row.style.borderBottom = '1px solid #eee';
-        row.innerHTML = `
-            <div style="display:grid; grid-template-columns: 130px 1fr; gap:8px; align-items:center;">
-                <div><code>${x.id}</code> · <em>${x.kind}</em></div>
-                <div>
-                    <div>Anzeige: <strong>${x.nameBase}</strong></div>
-                    <div>Datei: <code>${x.fileBase}</code> <span style="color:#888">(${x.path})</span></div>
-                </div>
-            </div>
-            <div style="margin-top:6px; display:flex; gap:8px;">
-                <button class="nf-apply" data-id="${x.id}" data-kind="${x.kind}" data-strategy="useDisplay">→ Anzeige übernehmen</button>
-                <button class="nf-apply" data-id="${x.id}" data-kind="${x.kind}" data-strategy="useFile">→ Dateiname übernehmen</button>
-                <button class="nf-jump" data-id="${x.id}">Zur Zeile</button>
-            </div>
-        `;
-        container.appendChild(row);
-    });
-    nameFileList.innerHTML = '';
-    nameFileList.appendChild(container);
-    // Wire buttons
-    nameFileList.querySelectorAll('.nf-apply').forEach(btn => {
+if (healthcheckClose && healthcheckModal) {
+    healthcheckClose.addEventListener('click', () => healthcheckModal.style.display = 'none');
+    healthcheckModal.addEventListener('click', (e) => { if (e.target === healthcheckModal) healthcheckModal.style.display = 'none'; });
+}
+if (healthcheckRefreshBtn) healthcheckRefreshBtn.addEventListener('click', runUnifiedHealthcheckAndRender);
+
+function fmtCount(n) { return typeof n === 'number' ? n : 0; }
+function expandableSection(title, count, contentEl) {
+    const wrap = document.createElement('div');
+    wrap.style.borderBottom = '1px solid #eee';
+    wrap.style.padding = '8px 0';
+    const head = document.createElement('div');
+    head.style.cursor = 'pointer';
+    head.style.display = 'flex';
+    head.style.alignItems = 'center';
+    head.style.gap = '8px';
+    const badge = document.createElement('span');
+    badge.style.fontWeight = 'bold';
+    badge.textContent = String(fmtCount(count));
+    const t = document.createElement('span'); t.textContent = title;
+    head.appendChild(badge); head.appendChild(t);
+    const body = document.createElement('div');
+    body.style.display = count ? 'block' : 'none';
+    body.style.marginTop = '8px';
+    if (contentEl) body.appendChild(contentEl);
+    head.addEventListener('click', () => { body.style.display = body.style.display === 'none' ? 'block' : 'none'; });
+    wrap.appendChild(head); wrap.appendChild(body);
+    return wrap;
+}
+
+function renderUnifiedHealthcheck(data) {
+    const w = data.woerter?.counts || { sets: 0, items: 0, missingIds: 0, missingSetFiles: 0 };
+    const s = data.saetze?.counts || { sets: 0, items: 0, missingIds: 0, missingSetFiles: 0 };
+    const filesW = data.files?.woerter_missing ?? data.woerter?.files?.missing?.length ?? 0;
+    const filesS = data.files?.saetze_missing ?? data.saetze?.files?.missing?.length ?? 0;
+    const emptyW = data.files?.woerter_empty ?? data.woerter?.filesEmpty?.empty?.length ?? 0;
+    const emptyS = data.files?.saetze_empty ?? data.saetze?.filesEmpty?.empty?.length ?? 0;
+    const caseW = data.case?.woerter_mismatches ?? data.woerter?.case?.mismatches?.length ?? 0;
+    const caseS = data.case?.saetze_mismatches ?? data.saetze?.case?.mismatches?.length ?? 0;
+    const nameW = data.nameFile?.woerter_namefile ?? data.woerter?.nameFile?.mismatches?.length ?? 0;
+    const nameS = data.nameFile?.saetze_namefile ?? data.saetze?.nameFile?.mismatches?.length ?? 0;
+    const conflicts = data.conflicts || { name_mismatches: (nameW + nameS), rename_target_conflicts: 0, db_repo_double_refs: 0, repo_duplicates: 0 };
+    const ok = data.ok === true;
+    const header = ok ? 'OK' : 'PROBLEME';
+    const fixNote = (healthcheckFixCaseToggle && healthcheckFixCaseToggle.checked && !serverReadOnly) ? ' (mit Case-Fix)' : '';
+    healthcheckSummary.textContent = `Healthcheck ${header}${fixNote} – Sets: W ${w.sets}/${w.items}, S ${s.sets}/${s.items} · Fehlende Dateien: W ${filesW}, S ${filesS} · Leere Pfade: W ${emptyW}, S ${emptyS} · Case: W ${caseW}, S ${caseS} · Name↔Datei: W ${nameW}, S ${nameS} · Konflikte: RZ=${fmtCount(conflicts.rename_target_conflicts)}, DB↔Repo=${fmtCount(conflicts.db_repo_double_refs)}, Repo-Duplikate=${fmtCount(conflicts.repo_duplicates)}`;
+    // Sections
+    const sections = document.createDocumentFragment();
+    // Missing files
+    const mfList = document.createElement('div');
+    const mfItems = (data.woerter?.files?.missing || []).concat(data.saetze?.files?.missing || []);
+    mfItems.sort((a,b)=> (a.path||'').localeCompare(b.path||''));
+    mfList.innerHTML = mfItems.map(it => `<div style="display:grid; grid-template-columns: 110px 1fr; gap:8px; align-items:center;"><span>${it.id} · ${it.kind}</span><code>${it.path||''}</code></div>`).join('');
+    sections.appendChild(expandableSection('Fehlende Dateien (gesamt)', (filesW + filesS), mfList));
+    // Empty paths
+    const epList = document.createElement('div');
+    const epItems = ((data.woerter?.filesEmpty?.empty)||[]).concat((data.saetze?.filesEmpty?.empty)||[]);
+    epItems.sort((a,b)=> (a.id||'').localeCompare(b.id||''));
+    epList.innerHTML = epItems.map(e => `<div style="display:grid; grid-template-columns: 110px 1fr; gap:8px; align-items:center;"><span>${e.id}</span><span>${e.kind} · leer</span></div>`).join('');
+    sections.appendChild(expandableSection('Leere Pfade (gesamt)', (emptyW + emptyS), epList));
+    // Case mismatches
+    const cmList = document.createElement('div');
+    const cmItems = (data.woerter?.case?.mismatches || []).concat(data.saetze?.case?.mismatches || []);
+    cmItems.sort((a,b)=> (a.json||'').localeCompare(b.json||''));
+    cmList.innerHTML = cmItems.map(m => `<div style="display:grid; grid-template-columns: 110px 1fr; gap:8px; align-items:center;"><span>${m.id} · ${m.kind}</span><div><div>JSON: <code>${m.json}</code></div><div>Repo: <code>${m.repo}</code></div></div></div>`).join('');
+    sections.appendChild(expandableSection('Case-Mismatches (gesamt)', (caseW + caseS), cmList));
+    // Name↔Datei mismatches with actions
+    const nfList = document.createElement('div');
+    const nfItems = (data.woerter?.nameFile?.mismatches || []).concat(data.saetze?.nameFile?.mismatches || []);
+    nfItems.sort((a,b)=> (a.id||'').localeCompare(b.id||''));
+    nfList.innerHTML = nfItems.map(x => `<div style="padding:6px 0; border-bottom:1px solid #f0f0f0;">
+        <div style="display:grid; grid-template-columns: 130px 1fr; gap:8px; align-items:center;">
+            <div><code>${x.id}</code> · <em>${x.kind}</em></div>
+            <div><div>Anzeige: <strong>${x.nameBase}</strong></div><div>Datei: <code>${x.fileBase}</code> <span style="color:#888">(${x.path})</span></div></div>
+        </div>
+        <div style="margin-top:6px; display:flex; gap:8px;">
+            <button class="hc-nf-apply" data-id="${x.id}" data-kind="${x.kind}" data-strategy="useDisplay">→ Anzeige übernehmen</button>
+            <button class="hc-nf-apply" data-id="${x.id}" data-kind="${x.kind}" data-strategy="useFile">→ Dateiname übernehmen</button>
+            <button class="hc-nf-jump" data-id="${x.id}">Zur Zeile</button>
+        </div>
+    </div>`).join('');
+    const nameTotal = nameW + nameS;
+    sections.appendChild(expandableSection('Name ↔ Dateiname (gesamt)', nameTotal, nfList));
+    // Rename target conflicts
+    const rtc = data.conflictsDetails?.rename_target_conflicts || [];
+    const rtcList = document.createElement('div');
+    rtc.sort((a,b)=> (a.suggestedPath||'').localeCompare(b.suggestedPath||''));
+    rtcList.innerHTML = rtc.map(r => `<div style="display:grid; grid-template-columns: 160px 1fr; gap:8px; align-items:center;">
+        <span><code>${r.id}</code> · ${r.kind}</span>
+        <span><code>${r.suggestedPath}</code></span>
+    </div>`).join('');
+    sections.appendChild(expandableSection('Konflikte: Rename-Ziele', fmtCount(data.conflicts?.rename_target_conflicts), rtcList));
+    // DB→Repo double refs
+    const dbr = data.conflictsDetails?.db_repo_double_refs || [];
+    const dbrList = document.createElement('div');
+    dbrList.innerHTML = dbr.map(entry => `<div style="padding:6px 0; border-bottom:1px solid #f0f0f0;">
+        <div>Pfad: <code>${entry.key}</code></div>
+        ${(entry.refs||[]).map(ref => `<div style="display:grid; grid-template-columns: 100px 1fr; gap:8px;"><span>${ref.id} · ${ref.kind}</span><code>${ref.path}</code></div>`).join('')}
+    </div>`).join('');
+    sections.appendChild(expandableSection('Konflikte: DB→Repo doppelbelegt', fmtCount(data.conflicts?.db_repo_double_refs), dbrList));
+    // Repo duplicates
+    const rdp = data.conflictsDetails?.repo_duplicates || [];
+    const rdpList = document.createElement('div');
+    rdpList.innerHTML = rdp.map(d => `<div style="padding:6px 0; border-bottom:1px solid #f0f0f0;"><div>Key: <code>${d.key}</code></div><div>${(d.files||[]).map(f=>`<code>${f}</code>`).join(' · ')}</div></div>`).join('');
+    sections.appendChild(expandableSection('Konflikte: Repo-Duplikate', fmtCount(data.conflicts?.repo_duplicates), rdpList));
+    // Sets issues
+    const setsList = document.createElement('div');
+    const invW = data.woerter?.details ? [] : [];
+    // show missing IDs quickly per set
+    const setDetails = (data.woerter?.details||[]).concat(data.saetze?.details||[]);
+    setsList.innerHTML = setDetails.map(st => `<div style="display:grid; grid-template-columns: 1fr 90px 160px; gap:8px; border-bottom:1px solid #f0f0f0; padding:6px 0;">
+        <span>${st.displayName || '—'}</span>
+        <span>${st.itemsCount ?? '—'} Items</span>
+        <span>${(st.missingIds||[]).length} fehlende IDs</span>
+    </div>`).join('');
+    sections.appendChild(expandableSection('Sets (Details)', (w.missingIds + s.missingIds), setsList));
+
+    healthcheckSections.innerHTML = '';
+    healthcheckSections.appendChild(sections);
+
+    // Wire inline actions
+    healthcheckSections.querySelectorAll('.hc-nf-apply').forEach(btn => {
         btn.addEventListener('click', async (e) => {
             const id = e.currentTarget.getAttribute('data-id');
-            const strategy = e.currentTarget.getAttribute('data-strategy');
             const kind = e.currentTarget.getAttribute('data-kind');
+            const strategy = e.currentTarget.getAttribute('data-strategy');
             await applyNameFileActions([{ id, strategy, fields: [kind] }]);
+            await runUnifiedHealthcheckAndRender();
+            await loadData(true);
         });
     });
-    nameFileList.querySelectorAll('.nf-jump').forEach(btn => {
+    healthcheckSections.querySelectorAll('.hc-nf-jump').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const id = e.currentTarget.getAttribute('data-id');
-            if (nameFileModal) nameFileModal.style.display = 'none';
+            if (healthcheckModal) healthcheckModal.style.display = 'none';
             jumpToItemRow(id);
         });
     });
 }
-async function fetchNameFileData() {
-    // Holen wir aus dem Full-Healthcheck (liefert Details)
-    const fixCase = healthcheckFixCaseToggle ? (healthcheckFixCaseToggle.checked ? '&fixCase=1' : '') : '';
-    const res = await fetch(`/api/healthcheck?full=1&detail=1${fixCase}`);
-    const json = await res.json();
-    const mismatches = computeNameFileMismatchesFromHealthcheck(json);
-    lastNameFileData = { mismatches };
-}
+
 async function applyNameFileActions(actions) {
     try {
         const body = { mode: currentMode, actions };
@@ -3568,36 +3641,6 @@ async function applyNameFileActions(actions) {
         statusMessage.textContent = `Fehler bei Konfliktauflösung: ${e.message}`;
     }
 }
-if (showNameFileConflictsButton && nameFileModal) {
-    showNameFileConflictsButton.addEventListener('click', async () => {
-        try {
-            nameFileSummary.textContent = '';
-            nameFileList.innerHTML = 'Prüfe…';
-            nameFileModal.style.display = 'flex';
-            await fetchNameFileData();
-            renderNameFileList();
-        } catch (e) {
-            console.error(e);
-            nameFileList.innerHTML = 'Fehler beim Prüfen.';
-        }
-    });
-}
-if (nameFileClose && nameFileModal) {
-    nameFileClose.addEventListener('click', ()=> nameFileModal.style.display = 'none');
-    nameFileModal.addEventListener('click', (e)=> { if (e.target === nameFileModal) nameFileModal.style.display = 'none'; });
-}
-if (nameFileRefreshBtn) nameFileRefreshBtn.addEventListener('click', async ()=> { await fetchNameFileData(); renderNameFileList(); });
-if (nameFileApplyDisplayBtn) nameFileApplyDisplayBtn.addEventListener('click', async ()=> {
-    const ids = Array.from(new Set(lastNameFileData.mismatches.map(m=>m.id)));
-    const actions = ids.map(id => ({ id, strategy: 'useDisplay' }));
-    await applyNameFileActions(actions);
-});
-if (nameFileApplyFileBtn) nameFileApplyFileBtn.addEventListener('click', async ()=> {
-    const ids = Array.from(new Set(lastNameFileData.mismatches.map(m=>m.id)));
-    const actions = ids.map(id => ({ id, strategy: 'useFile' }));
-    await applyNameFileActions(actions);
-});
-if (nameFileSearch) nameFileSearch.addEventListener('input', renderNameFileList);
 
 // Schließen des Modals bei Klick außerhalb des Inhalts
 if (archiveModal) {
@@ -3608,99 +3651,12 @@ if (archiveModal) {
     });
 }
 
-// Missing Assets UI
-let missingAssetsData = [];
-async function fetchMissingAssets() {
-    const res = await fetch(`/api/missing-assets?mode=${currentMode}`);
-    if (!res.ok) throw new Error('Fehler beim Laden der fehlenden Assets');
-    const data = await res.json();
-    missingAssetsData = data.items || [];
-    renderMissingAssets();
-}
-
-function renderMissingAssets() {
-    if (!missingAssetsList) return;
-    const q = (missingAssetsSearch?.value || '').toLowerCase();
-    const wantEmpty = filterEmptyPaths ? !!filterEmptyPaths.checked : true;
-    const wantMissing = filterMissingFiles ? !!filterMissingFiles.checked : true;
-    const filtered = missingAssetsData.filter(x => {
-        if (x.reason === 'empty_path' && !wantEmpty) return false;
-        if (x.reason === 'file_missing' && !wantMissing) return false;
-        const hay = `${x.id} ${x.name} ${x.path || ''}`.toLowerCase();
-        return hay.includes(q);
-    });
-    missingAssetsSummary.textContent = `${filtered.length} Einträge (gesamt ${missingAssetsData.length})`;
-    const group = (arr) => {
-        const byId = new Map();
-        for (const it of arr) {
-            if (!byId.has(it.id)) byId.set(it.id, { id: it.id, name: it.name, entries: [] });
-            byId.get(it.id).entries.push(it);
-        }
-        return [...byId.values()].sort((a,b)=>a.id.localeCompare(b.id));
-    };
-    const grouped = group(filtered);
-    const container = document.createElement('div');
-    grouped.forEach(g => {
-        const div = document.createElement('div');
-        div.style.borderBottom = '1px solid #eee';
-        div.style.padding = '8px 4px';
-        const title = document.createElement('div');
-        title.innerHTML = `<strong style="cursor:pointer; text-decoration: underline;">${g.name}</strong> <code style=\"background:#f7f7f7; padding:2px 4px; border-radius:4px;\">${g.id}</code>`;
-        title.addEventListener('click', () => jumpToItemRow(g.id));
-        div.appendChild(title);
-        g.entries.forEach(e => {
-            const row = document.createElement('div');
-            row.style.display = 'grid';
-            row.style.gridTemplateColumns = '90px 1fr';
-            row.style.gap = '8px';
-            row.style.alignItems = 'center';
-            row.style.cursor = 'pointer';
-            const label = document.createElement('span');
-            label.textContent = `${e.kind} · ${e.reason === 'empty_path' ? 'leer' : 'fehlt'}`;
-            const pathEl = document.createElement('span');
-            pathEl.textContent = e.path || '—';
-            pathEl.style.fontFamily = 'monospace';
-            row.appendChild(label);
-            row.appendChild(pathEl);
-            row.addEventListener('click', () => jumpToItemRow(g.id));
-            div.appendChild(row);
-        });
-        container.appendChild(div);
-    });
-    missingAssetsList.innerHTML = '';
-    missingAssetsList.appendChild(container);
-}
-
-if (showMissingAssetsButton) {
-    showMissingAssetsButton.addEventListener('click', async () => {
-        if (!missingAssetsModal) return;
-        missingAssetsSummary.textContent = '';
-        missingAssetsList.innerHTML = 'Lade…';
-        missingAssetsModal.style.display = 'flex';
-        try {
-            await fetchMissingAssets();
-        } catch (e) {
-            console.error(e);
-            missingAssetsList.innerHTML = 'Fehler beim Laden.';
-        }
-    });
-}
-if (missingAssetsClose && missingAssetsModal) {
-    missingAssetsClose.addEventListener('click', () => {
-        missingAssetsModal.style.display = 'none';
-    });
-    missingAssetsModal.addEventListener('click', (e) => {
-        if (e.target === missingAssetsModal) missingAssetsModal.style.display = 'none';
-    });
-}
-if (missingAssetsSearch) missingAssetsSearch.addEventListener('input', renderMissingAssets);
-if (filterEmptyPaths) filterEmptyPaths.addEventListener('change', renderMissingAssets);
-if (filterMissingFiles) filterMissingFiles.addEventListener('change', renderMissingAssets);
+// (Legacy Missing-Assets-UI entfernt – Darstellung erfolgt im Healthcheck-Modal)
 
 function jumpToItemRow(id) {
     try {
         // Schließe das Modal
-        if (missingAssetsModal) missingAssetsModal.style.display = 'none';
+    // Keine Legacy-Modalen mehr zu schließen
         // Suchfilter leeren, damit Zeile sichtbar ist
         if (searchInput) { searchInput.value = ''; filterTable(); }
         // Zeile finden

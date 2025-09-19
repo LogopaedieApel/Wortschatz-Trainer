@@ -2,6 +2,14 @@
 
 Ein menschlich lesbarer Änderungsverlauf. Quellen: _audit/editor-changes.log und _state/name-history.json.
 
+## 2025-09-19
+- Import-Ordner-only: Unterstützung der Legacy-Ordner `images_unsortiert`/`sounds_unsortiert` entfernt. Neue Quellen: `data/import_Wörter` und `data/import_Sätze/<Listenname>`.
+- Server: `/api/analyze-unsorted-files` und `/api/check-unsorted-files` scannen nur noch die Import-Ordner. `/api/manage-archive` legt Restores in Import-Ordner ab.
+- Editor: Hinweisbanner, wenn Sätze-Dateien im Root von `import_Sätze` liegen (Unterordner erforderlich).
+- Tests: Import-Flow (Flow 2) auf Import-Ordner umgestellt; komplette Test-Suite grün.
+- Doku: CONTRIBUTING und Editor-Hilfe ergänzt/aktualisiert; Hilfe-Index neu erzeugt.
+ - Healthcheck: Konflikt-Report ergänzt (Name↔Datei, Rename-Zielkonflikte, DB→Repo Doppelbelegung, Repo-Duplikate) und Flag `--strict-name` hinzugefügt. JSON-Ausgabe enthält neue Felder `summary.conflicts` und `details.files.conflicts`.
+
 ## 2025-09-17
 - Editor (Beta-Layout „Next“): Sidebar + Detailbereich hinter Feature-Flag; Badge „Layout: Next“ im Header.
 - A11y/Tastatur: Listbox-Navigation (Pfeile, Home/End, Enter/Space), roving Tabindex, aria-activedescendant.
