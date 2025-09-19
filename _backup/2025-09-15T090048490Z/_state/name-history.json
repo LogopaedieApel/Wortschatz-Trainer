@@ -1,0 +1,25 @@
+{
+  "saetze": {},
+  "woerter": {
+    "haenchen": {
+      "cursor": 2,
+      "entries": [
+        {
+          "base": true,
+          "ts": "2025-09-15T08:50:04.367Z",
+          "value": "Hänchen"
+        },
+        {
+          "prev": "Hänchen",
+          "ts": "2025-09-15T08:50:04.367Z",
+          "value": "Hähnchen"
+        },
+        {
+          "prev": "Hähnchen",
+          "ts": "2025-09-15T08:56:18.766Z",
+          "value": "Hänchen"
+        }
+      ]
+    }
+  }
+}

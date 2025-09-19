@@ -3,153 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <title>Wortschatz-Editor</title>
-    <style>
-        /* CSS bleibt unverändert */
-        body { font-family: sans-serif; margin: 20px; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; background-color: white; }
-        th { background-color: #f2f2f2; text-align: center; vertical-align: middle;}
-        td input[type="text"] { width: 98%; box-sizing: border-box; }
-        .controls { margin-bottom: 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-        button { padding: 10px 15px; cursor: pointer; border: 1px solid #ccc; background-color: #f0f0f0; border-radius: 4px; }
-        #new-set-controls { border-left: 2px solid #ccc; padding-left: 20px; }
-        #status-message { font-weight: bold; }
-        #search-input { padding: 10px; width: 250px; border: 1px solid #ccc; border-radius: 4px; }
-
-        #editor-table thead .top-header-row th { position: sticky; top: 0; z-index: 2; }
-        #editor-table thead .sub-header-row th { position: sticky; top: 40px; z-index: 2; }
-        .sticky-col { position: sticky; left: 0; z-index: 1; }
-        .sticky-col.col-2 { left: 150px; }
-        #editor-table thead .sticky-col { z-index: 3; }
-        
-        #save-button.unsaved { background-color: #007bff; color: white; border-color: #0056b3; font-weight: bold; }
-        
-        .delete-button { background: none; border: none; color: #cc0000; cursor: pointer; font-size: 1.1em; padding: 0 5px; border-radius: 4px; }
-        .delete-button:hover { background-color: #ffdddd; }
-
-        input[readonly] {
-            background-color: #f5f5f5;
-            color: #555;
-            cursor: not-allowed;
-            border: 1px solid #ddd;
-        }
-
-        /* Styles for the conflict resolution modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: none; /* Hidden by default */
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 900px;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        .modal-header {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 10px;
-        }
-        .modal-footer {
-            margin-top: 20px;
-            border-top: 1px solid #ccc;
-            padding-top: 15px;
-            text-align: right;
-        }
-        .conflict-item {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 200px;
-            gap: 15px;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            align-items: center;
-        }
-        .conflict-item-header {
-            font-weight: bold;
-        }
-        .conflict-item:last-child {
-            border-bottom: none;
-        }
-        .conflict-details {
-            font-size: 0.9em;
-        }
-        .conflict-details strong {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 1.1em;
-        }
-        .conflict-actions button {
-            display: block;
-            width: 100%;
-            margin-bottom: 5px;
-        }
-        .conflict-actions button.selected {
-            background-color: #007bff;
-            color: white;
-            border-color: #0056b3;
-        }
-
-        /* Styles for the archive modal */
-        #archive-modal .modal-content {
-            width: 90%;
-            max-width: 800px;
-        }
-        #archive-list {
-            max-height: 60vh;
-            overflow-y: auto;
-        }
-        .close-button {
-            color: #aaa;
-            float: right;
-            font-size: 1.5em;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close-button:hover,
-        .close-button:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="editor.css">
 </head>
-<body>
-    <h1>Wortschatz-Editor</h1>
-    <div class="tab-controls" style="margin-bottom: 20px;">
-        <button class="tab-button active" id="tab-woerter">Wörter</button>
-        <button class="tab-button" id="tab-saetze">Sätze</button>
+<body class="matrix-hide-id-media">
+    <h1 style="display:none;" aria-hidden="true">Wortschatz-Editor</h1>
+    <!-- Icon-only Menüzeile (rechts, über der Statusmeldung) -->
+    <div class="controls" id="top-menu-row" style="margin-bottom:4px; justify-content:flex-end;">
+        <div id="tools-menu-wrap" style="position: relative; display:inline-block;">
+            <button id="tools-menu-button" aria-haspopup="true" aria-expanded="false" aria-controls="tools-menu" aria-label="Werkzeuge" style="display:inline-flex; align-items:center; gap:8px;">☰</button>
+            <div id="tools-menu" role="menu" aria-labelledby="tools-menu-button" style="position:absolute; top:calc(100% + 6px); right:0; background:#fff; border:1px solid #ddd; border-radius:8px; padding:10px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width: 260px; display:none; z-index:20;">
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <button id="show-archive-button" role="menuitem">♻️ Gelöschte Dateien</button>
+                    <button id="run-healthcheck-button" role="menuitem">🧺 Healthcheck</button>
+                    <button id="open-help-button" role="menuitem">❓ Hilfe</button>
+                    <!-- Feature-Flag: Neues Layout (Beta) -->
+                    <label id="layout-next-toggle" role="menuitemcheckbox" aria-checked="false" style="margin-top:4px; display:flex; align-items:center; gap:8px; padding:6px 8px; border:1px solid #eee; border-radius:6px;">
+                        <input type="checkbox" id="layout-next-checkbox">
+                        Neues Layout (Beta)
+                    </label>
+                    <label role="menuitemcheckbox" aria-checked="true" style="margin-top:4px; display:flex; align-items:center; gap:8px; padding:6px 8px; border:1px solid #eee; border-radius:6px;">
+                        <input type="checkbox" id="auto-fix-toggle" checked>
+                        Auto-Fixes beim Speichern
+                    </label>
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- Modal: Unified Healthcheck -->
+    <div id="healthcheck-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 1100px; width: 96%;">
+            <span class="close-button" id="healthcheck-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h2 style="margin-right:48px;">Healthcheck</h2>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap: wrap; margin: 6px 0 10px;">
+                <label style="display:flex; align-items:center; gap:6px;">
+                    <input type="checkbox" id="healthcheck-fix-case" checked>
+                    Case-Fix vorher ausführen
+                </label>
+                <label style="display:flex; align-items:center; gap:6px;">
+                    <input type="checkbox" id="healthcheck-strict-name">
+                    Name↔Datei strikt in OK einbeziehen
+                </label>
+                <button id="healthcheck-refresh">Neu prüfen</button>
+            </div>
+            <div id="healthcheck-summary" style="margin: 10px 0; font-weight: bold;"></div>
+            <div id="healthcheck-sections" style="max-height: 60vh; overflow-y: auto;"></div>
+        </div>
+    </div>
+
     <div class="controls">
         <span id="save-status" style="font-weight:bold;display:inline-block;margin-right:16px;"></span>
-        <p id="status-message" style="display: inline-block; margin-left: 10px;"></p>
-        <div id="notification-area" style="margin-left: 20px; font-weight: bold;"></div>
+    <p id="status-message" role="status" aria-live="polite" style="display:inline-block; margin: 0; padding: 0;"></p>
+    <div id="notification-area" role="status" aria-live="polite" style="margin: 0; font-weight: bold;"></div>
+        <div id="notification-banner" style="display:none; margin:6px 0; padding:8px 12px; border:1px solid #d1ecf1; background:#e8f6fb; color:#0c5460; border-radius:6px;">
+            <!-- Wird dynamisch gefüllt: Hinweise zu Import Sätze ohne Unterordner -->
+        </div>
+      <span id="layout-next-badge" title="Neues Layout aktiv"
+          style="display:none; font-size:11px; padding:3px 8px; border-radius:999px; border:1px solid #86efac; background:#ecfdf5; color:#065f46; align-items:center; gap:6px;">
+            <span style="width:8px; height:8px; border-radius:50%; background:#10b981; display:inline-block;"></span>
+            Layout: Next
+        </span>
+    <!-- Slot für Hamburger im Header (entfällt, da Toggle entfernt) -->
+    <div id="header-hamburger-slot" style="display:none; margin-left:auto; align-items:center; gap:8px;"></div>
+    <span id="server-status-badge" aria-label="Serverstatus" style="margin-left:auto !important; font-size:11px; padding:3px 8px; border-radius:999px; border:1px solid #ddd; background:#f7f7f7; color:#333; display:none; align-items:center; gap:6px;" title="Serverstatus">
+            <span id="server-status-dot" style="width:8px; height:8px; border-radius:50%; background:#28a745; display:inline-block;"></span>
+            <span id="server-status-text">RW @3000</span>
+        </span>
     </div>
-    <div class="controls">
-        <input type="text" id="search-input" placeholder="Einträge nach Namen filtern...">
+    <div id="read-only-banner" style="display:none; background:#fff3cd; color:#856404; border:1px solid #ffeeba; padding:8px 12px; border-radius:6px; margin-bottom: 12px;">
+        Hinweis: Der Server läuft im Nur-Lese-Modus. Speichern/Ändern ist vorübergehend deaktiviert.
     </div>
-    <div class="controls">
-        <input type="text" id="new-set-path" placeholder="Hierarchie/Dateiname (z.B. tiere/bauernhof)">
-        <input type="text" id="new-set-displayname" placeholder="Anzeigename (z.B. Bauernhof)">
-        <button id="add-set-button">+ Neue Spalte hinzufügen</button>
-        <span style="border-left: 1px solid #ccc; margin: 0 10px;"></span>
-        <button id="add-row-button">+ Neue Zeile hinzufügen</button>
-        <button id="show-archive-button">♻️ Gelöschte Dateien</button>
+    
+    <div class="controls" style="justify-content:flex-start;">
+        <input type="text" id="search-input" placeholder="Einträge nach Namen filtern..." style="margin-left:0; order:0;">
     </div>
 
+    <div class="tab-controls sticky-tabs" role="tablist" aria-label="Bereiche" style="position:sticky; top:0; z-index:4; background:#fff; padding-top:6px; padding-bottom:4px; padding-left:0; margin-bottom:6px;">
+            <button class="tab-button active" id="tab-woerter" role="tab" aria-selected="true" aria-controls="table-wrapper">Wörter</button>
+            <button class="tab-button" id="tab-saetze" role="tab" aria-selected="false" aria-controls="table-wrapper">Sätze</button>
+            <button id="add-set-button" style="margin-left:auto;">+ neue Liste</button>
+        </div>
     <div id="table-wrapper" style="max-height: 70vh; overflow: auto;">
         <table id="editor-table">
             <thead></thead>
@@ -158,9 +90,58 @@
             </tbody>
         </table>
     </div>
-    <div class="controls" style="margin-top: 20px;">
-        <!-- Dieser Bereich ist jetzt leer -->
+    
+    <!-- Modal: Liste bearbeiten (Umbenennen/Löschen) -->
+    <div id="edit-set-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width:620px;">
+            <span class="close-button" id="edit-set-close" title="Schließen" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h2>Liste bearbeiten</h2>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <label for="edit-set-name" style="min-width:120px;">Anzeigename</label>
+                    <input type="text" id="edit-set-name" placeholder="z. B. A initial" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;">
+                </div>
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <label for="edit-set-path" style="min-width:120px;">Datei-Pfad</label>
+                    <input type="text" id="edit-set-path" placeholder="data/sets/artikulation_a_initial.json" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;">
+                </div>
+            </div>
+            <div id="edit-set-message" style="margin-top:8px; color:#555;"></div>
+            <div class="modal-footer" style="text-align:right; display:flex; gap:8px; justify-content:flex-end;">
+                <button id="edit-set-delete" class="delete-button" title="Liste löschen">Liste löschen</button>
+                <button id="edit-set-save">Speichern</button>
+            </div>
+        </div>
     </div>
+
+    <!-- Phase 4: NEXT-Layout Skelett (nur sichtbar mit body.layout-next) -->
+    <div id="next-layout" aria-label="Neue Ansicht" style="display:none;">
+        <div id="next-grid" style="--next-sidebar-w: 280px; --next-split-w: 8px; display:grid; grid-template-columns: var(--next-sidebar-w) var(--next-split-w) 1fr; gap: 12px; align-items: start;">
+            <aside id="next-sidebar" aria-label="Liste" style="border:1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-card); padding: 8px; min-height: 40vh;">
+                <div id="next-mode-switch" style="display:flex; gap:6px; align-items:center; margin-bottom:6px;">
+                    <button id="next-mode-entries" type="button" aria-pressed="true" title="Einträge anzeigen (Wörter/Sätze)" style="padding:12px 24px; border:1px solid var(--color-border); border-radius:999px; background:#e6ffed; color:#166534;">Einträge</button>
+                    <button id="next-mode-lists" type="button" aria-pressed="false" title="Listen anzeigen (alle Listen)" style="padding:12px 24px; border:1px solid var(--color-border); border-radius:999px; background:#f7f7f7; color:#333;">Listen</button>
+                </div>
+                <!-- Bereich-Filter (Alle | Artikulation | Wortschatz) wird per JS befüllt; nur im Listen-Modus sichtbar -->
+                <div id="next-area-filter" aria-label="Bereich filtern" style="display:none; gap:6px; align-items:center; margin-bottom:6px; flex-wrap: wrap;">
+                    <!-- Chips werden dynamisch eingefügt -->
+                </div>
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <input id="next-sidebar-search" type="text" placeholder="Suchen/Filtern…" aria-label="Einträge durchsuchen" aria-controls="next-list" style="flex:1; padding:6px 8px; border:1px solid var(--color-border); border-radius: var(--radius-sm);">
+                </div>
+                <div id="next-list" style="max-height: 60vh; overflow:auto;">
+                    <!-- Platzhalter; Inhalte folgen später per JS -->
+                </div>
+            </aside>
+            <div id="next-splitter" role="separator" aria-label="Größe der Bereiche anpassen" aria-orientation="vertical" aria-valuemin="200" aria-valuemax="600" aria-valuenow="280" tabindex="0"
+                 style="cursor: col-resize; width: var(--next-split-w); height: 100%; align-self: stretch; background: linear-gradient(90deg, transparent 0, transparent 3px, var(--color-border) 3px, var(--color-border) 4px, transparent 4px); border-radius: 4px;" title="Ziehen oder ←/→ zum Anpassen"></div>
+            <main id="next-main" aria-label="Details" aria-live="polite" aria-labelledby="next-details-title" style="border:1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-card); padding: 10px; min-height: 40vh;">
+                <h2 id="next-details-title">Neue Ansicht (Beta)</h2>
+                <div style="color:#666;">Inhalte folgen.</div>
+            </main>
+        </div>
+    </div>
+    
 
     <!-- Modal for Conflict Resolution -->
     <div id="conflict-modal" class="modal-overlay">
@@ -189,9 +170,223 @@
         </div>
     </div>
 
+    <!-- Hilfe/Docs Modal -->
+    <div id="help-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 1000px; width: 92%; display:flex; gap:16px;">
+            <div style="flex: 0 0 260px; border-right: 1px solid #eee; padding-right: 12px; max-height:70vh; overflow:auto;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <strong>Hilfe</strong>
+                    <span id="help-close" class="close-button" title="Schließen" style="margin-left:auto; float:none;">&times;</span>
+                </div>
+                <input id="help-search" type="text" placeholder="Suchen..." style="width:100%; padding:6px 8px; border:1px solid #ccc; border-radius:4px;">
+                <ul id="help-docs-list" style="list-style:none; padding:0; margin:8px 0 0 0;"></ul>
+                <div id="help-index-status" style="margin-top:10px; font-size:12px; color:#445; display:none;"></div>
+                <div style="margin-top:12px; font-size:12px; color:#666;">
+                    Hinweis: Die Dateien liegen im Ordner <code>docs/</code> und können hier in VS Code bearbeitet werden.
+                </div>
+            </div>
+            <div style="flex:1; max-height:70vh; overflow:auto;">
+                <div id="help-view-title" style="font-weight:bold; font-size: 1.2em; margin-bottom: 6px;"></div>
+                <div id="help-view" style="line-height:1.5;">
+                    <!-- gerenderter Markdown-Inhalt -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Modal: ID umbenennen -->
+    <div id="id-rename-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-button" id="id-rename-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h2>ID umbenennen</h2>
+            <div style="margin: 6px 0 12px; font-size: 0.95em; color:#444;">
+                Alte ID: <code id="id-rename-old-id" style="background:#f7f7f7; padding:2px 4px; border-radius:4px;">—</code>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap: wrap; margin-bottom: 10px;">
+                <input type="text" id="id-rename-new-id" placeholder="Neue ID (ascii_lowercase_underscore)" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius: 4px;">
+                <button id="id-rename-validate">Prüfen</button>
+                <button id="id-rename-apply" disabled>Übernehmen</button>
+            </div>
+            <div id="id-rename-warnings" style="margin: 8px 0; color:#8a6d3b;"></div>
+            <div id="id-rename-issues" style="margin: 8px 0; color:#b94a48;"></div>
+            <div id="id-rename-diffs" style="margin-top: 12px;">
+                <!-- Preview wird per JS eingefügt -->
+            </div>
+            <div class="modal-footer" style="text-align:right;">
+                <button id="id-rename-cancel">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Namen bearbeiten -->
+    <div id="edit-name-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-button" id="edit-name-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h2>Bearbeiten</h2>
+            <div style="margin: 6px 0 12px; font-size: 0.95em; color:#444; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <div>ID: <code id="edit-name-id" style="background:#f7f7f7; padding:2px 4px; border-radius:4px;">—</code></div>
+                <button id="edit-open-id-rename" title="ID umbenennen">ID umbenennen…</button>
+                <button id="edit-delete-item" title="Diesen Eintrag löschen" class="delete-button" style="margin-left:auto;">Löschen</button>
+            </div>
+
+            <!-- Abschnitt: Allgemein -->
+            <h3 style="margin:8px 0 6px;">Allgemein</h3>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap: wrap; margin-bottom: 10px;">
+                <input type="text" id="edit-name-input" placeholder="Anzeigename" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius: 4px;">
+                <button id="edit-name-save">Speichern</button>
+                <button id="edit-name-undo" title="Letzte Namensänderung rückgängig">Rückgängig</button>
+                <button id="edit-name-redo" title="Rückgängig wiederholen">Wiederholen</button>
+            </div>
+            <div id="edit-name-preview" style="margin-top:6px; color:#666; font-size: 0.9em;"></div>
+            <div id="edit-name-message" style="margin-top: 8px; color:#555;"></div>
+
+            <!-- Abschnitt: Dateien -->
+            <h3 style="margin:12px 0 6px;">Dateien</h3>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <label for="edit-image-input" style="min-width:90px;">Bild</label>
+                    <input type="text" id="edit-image-input" placeholder="data/wörter/images/a/…jpg" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;">
+                    <span id="edit-image-status" style="font-size:12px; color:#666;"></span>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <label for="edit-sound-input" style="min-width:90px;">Ton</label>
+                    <input type="text" id="edit-sound-input" placeholder="data/wörter/sounds/a/…mp3" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;">
+                    <span id="edit-sound-status" style="font-size:12px; color:#666;"></span>
+                </div>
+            </div>
+
+            <!-- Abschnitt: Listen -->
+            <h3 style="margin:12px 0 6px;">Listen-Zugehörigkeit</h3>
+            <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px;">
+                <input type="text" id="edit-sets-search" placeholder="Filtern…" style="flex:1; padding:6px 8px; border:1px solid #ccc; border-radius:4px;">
+                <span id="edit-sets-summary" style="font-size:12px; color:#666;"></span>
+            </div>
+            <div id="edit-sets-container" style="max-height: 35vh; overflow:auto; border:1px solid #eee; border-radius:6px; padding:8px;"></div>
+
+            <div class="modal-footer" style="text-align:right;">
+                <button id="edit-name-cancel">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Neue Spalte hinzufügen -->
+    <div id="add-set-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-button" id="add-set-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h2>Neue Liste hinzufügen</h2>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-bottom: 10px;">
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <label for="add-set-area-select" style="min-width:120px;">Bereich</label>
+                    <select id="add-set-area-select" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;"></select>
+                    <button id="add-set-area-new">Neuer Bereich…</button>
+                </div>
+                <div id="add-set-sub1-row" style="display:none; align-items:center; gap:8px; flex-wrap:wrap;">
+                    <label for="add-set-sub1-input" id="add-set-sub1-label" style="min-width:120px;">Untergruppe</label>
+                    <input type="text" id="add-set-sub1-input" list="add-set-sub1-list" placeholder="Untergruppe" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;">
+                    <datalist id="add-set-sub1-list"></datalist>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <label for="add-set-leaf-input" id="add-set-leaf-label" style="min-width:120px;">Name der Liste</label>
+                    <input type="text" id="add-set-leaf-input" placeholder="z. B. Tiere oder A Initial" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius: 4px;">
+                    <button id="add-set-create">Erstellen</button>
+                </div>
+            </div>
+            <div id="add-set-preview" style="margin-top:6px; color:#666; font-size: 0.9em;"></div>
+            <div id="add-set-message" style="margin-top: 8px; color:#555;"></div>
+            <div class="modal-footer" style="text-align:right;">
+                <button id="add-set-cancel">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Neuer Bereich anlegen -->
+    <div id="new-area-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width:520px;">
+            <span class="close-button" id="new-area-close" style="float: right; font-size: 1.5em; cursor: pointer;">&times;</span>
+            <h3>Neuen Bereich anlegen</h3>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <label for="new-area-name" style="min-width:120px;">Bereichsname</label>
+                <input type="text" id="new-area-name" placeholder="z. B. Grammatik" style="flex:1; padding:8px 10px; border:1px solid #ccc; border-radius:4px;">
+                <button id="new-area-add">Hinzufügen</button>
+            </div>
+            <div id="new-area-message" style="margin-top:8px; color:#555;"></div>
+            <div class="modal-footer" style="text-align:right;">
+                <button id="new-area-cancel">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Fügt einen Zeitstempel an das Skript an, um Caching zu verhindern
         document.write(`<script src="editor_script.js?v=${new Date().getTime()}"><\/script>`);
+    </script>
+    <script>
+        // Phase 3: Feature-Flag "Neues Layout" (.layout-next)
+        (function(){
+            const LS_KEY = 'editor.layoutNext.enabled';
+            const qs = new URLSearchParams(window.location.search);
+            const wantFromQuery = qs.get('layout') === 'next' ? true : (qs.get('layout') === 'classic' ? false : null);
+            const stored = localStorage.getItem(LS_KEY);
+            const wantFromStore = stored === 'true' ? true : (stored === 'false' ? false : null);
+
+            // Regel: Query > LocalStorage > Default(false)
+            const initial = (wantFromQuery !== null) ? wantFromQuery : ((wantFromStore !== null) ? wantFromStore : false);
+
+            // Toggle-Button wurde entfernt; Slot bleibt dauerhaft verborgen
+            const placeHamburger = () => {
+                const slot = document.getElementById('header-hamburger-slot');
+                if (slot) slot.style.display = 'none';
+            };
+
+            const apply = (on) => {
+                document.body.classList.toggle('layout-next', !!on);
+                const cb = document.getElementById('layout-next-checkbox');
+                const wrap = document.getElementById('layout-next-toggle');
+                const tableWrapper = document.getElementById('table-wrapper');
+                const nextLayout = document.getElementById('next-layout');
+                const layoutBadge = document.getElementById('layout-next-badge');
+                if (cb) cb.checked = !!on;
+                if (wrap) wrap.setAttribute('aria-checked', on ? 'true' : 'false');
+                // Kein Hamburger mehr umzusetzen
+                placeHamburger();
+                // Hard switch visibility as a fallback to avoid any CSS specificity issues
+                if (on) {
+                    if (tableWrapper) tableWrapper.style.display = 'none';
+                    if (nextLayout) nextLayout.style.display = 'block';
+                    if (layoutBadge) layoutBadge.style.display = 'none';
+                } else {
+                    if (tableWrapper) tableWrapper.style.display = 'block';
+                    if (nextLayout) nextLayout.style.display = 'none';
+                    if (layoutBadge) layoutBadge.style.display = 'none';
+                }
+            };
+
+            apply(initial);
+
+            const cb = document.getElementById('layout-next-checkbox');
+            const wrap = document.getElementById('layout-next-toggle');
+            if (cb && wrap) {
+                cb.addEventListener('change', () => {
+                    const on = !!cb.checked;
+                    apply(on);
+                    try { localStorage.setItem(LS_KEY, String(on)); } catch {}
+                });
+            }
+        })();
+
+        // Phase 8: Sidebar-Klappschalter + Compact-Density Toggle (nur visuell)
+        (function(){
+            // Sidebar bleibt stets sichtbar – kein Toggle mehr nötig
+            // Optional: Kompaktmodus via Tastatur Umschalten (Shift+D) – kein UI-Element, nur Entwicklerhilfe
+            document.addEventListener('keydown', (e) => {
+                if (!document.body.classList.contains('layout-next')) return;
+                if (e.shiftKey && (e.key === 'D' || e.key === 'd')) {
+                    document.body.classList.toggle('compact');
+                }
+            });
+        })();
     </script>
 </body>
 </html>

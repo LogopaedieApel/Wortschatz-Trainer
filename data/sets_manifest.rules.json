@@ -1,0 +1,11 @@
+{
+  "mergeFirstLevelSequences": [
+    ["phonologische", "bewusstheit"]
+  ],
+  "displayOverrides": {
+    "hsu": "Heimat- und Sachunterricht",
+    "initial": "initial",
+    "medial": "medial",
+    "final": "final"
+  }
+}

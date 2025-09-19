@@ -4,9 +4,53 @@
   "description": "Ein Editor zur Verwaltung der Wortschatz-Trainer Daten.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "start:ro": "set EDITOR_READONLY=1&& set PORT=3001&& node server.js",
+    "start:test": "set PORT=3100&& node server.js",
+    "analyze-assets": "node tools/analyze-assets.mjs",
+    "analyze-assets:json": "node tools/analyze-assets.mjs --format json",
+    "apply-assets:dry": "node tools/apply-assets.mjs",
+    "apply-assets": "node tools/apply-assets.mjs --apply",
+    "healthcheck": "node tools/healthcheck.mjs",
+    "rehydrate:dry": "node tools/rehydrate-umlauts.mjs",
+    "rehydrate:apply": "node tools/rehydrate-umlauts.mjs --apply",
+    "fill-empty-paths": "node tools/fill-empty-paths.mjs",
+    "fill-empty-paths:woerter": "node tools/fill-empty-paths.mjs --mode woerter",
+    "fill-empty-paths:saetze": "node tools/fill-empty-paths.mjs --mode saetze",
+    "fill-empty-paths:saetze:loose": "node tools/fill-empty-paths.mjs --mode saetze --loose",
+    "check-missing-assets": "node tools/check-missing-assets.mjs",
+    "check-missing-assets:json": "node tools/check-missing-assets.mjs --format json",
+    "update-names:dry": "node tools/update-names-umlauts.mjs",
+    "update-names:apply": "node tools/update-names-umlauts.mjs --apply",
+    "check-case-consistency": "node tools/check-case-consistency.mjs",
+    "enforce-filename-case": "node tools/enforce-filename-case.mjs",
+  "fix:case": "node tools/fix-db-path-case.mjs --apply",
+  "repair-missing-assets:dry": "node tools/repair-missing-assets.mjs",
+  "repair-missing-assets": "node tools/repair-missing-assets.mjs --apply",
+  "migrate-sets:dry": "node tools/migrate-set-filenames.mjs",
+  "migrate-sets": "node tools/migrate-set-filenames.mjs --apply",
+    "prepare": "husky",
+    "test": "jest --runInBand",
+    "test:watch": "jest --watchAll",
+    "test:smoke": "npx playwright install --with-deps && npx playwright test --workers=1",
+    "snapshot": "node tools/snapshot-data.mjs",
+    "restore": "node tools/restore-snapshot.mjs",
+    "changelog": "node tools/generate-changelog.mjs",
+    "help-index": "node tools/generate-help-index.mjs",
+    "docs:update": "node tools/generate-changelog.mjs && node tools/generate-help-index.mjs",
+    "fix:sch-folders": "node tools/fix-woerter-subfolders.mjs",
+    "fix:sch-folders:apply": "node tools/fix-woerter-subfolders.mjs --apply",
+    "fix:woerter:first-letter": "node tools/fix-woerter-first-letter.mjs",
+    "fix:woerter:first-letter:apply": "node tools/fix-woerter-first-letter.mjs --apply"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "ajv": "^8.17.1"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4",
+    "@playwright/test": "^1.46.0"
   }
 }

@@ -1,0 +1,90 @@
+{
+  "saetze": {},
+  "woerter": {
+    "becher": {
+      "cursor": 2,
+      "entries": [
+        {
+          "base": true,
+          "ts": "2025-09-15T14:07:18.677Z",
+          "value": "Becher"
+        },
+        {
+          "prev": "Becher",
+          "ts": "2025-09-15T14:07:18.677Z",
+          "value": "becher"
+        },
+        {
+          "prev": "becher",
+          "ts": "2025-09-15T14:07:32.987Z",
+          "value": "Becher"
+        }
+      ]
+    },
+    "haenchen": {
+      "cursor": 3,
+      "entries": [
+        {
+          "base": true,
+          "ts": "2025-09-15T08:50:04.367Z",
+          "value": "Hänchen"
+        },
+        {
+          "prev": "Hänchen",
+          "ts": "2025-09-15T08:50:04.367Z",
+          "value": "Hähnchen"
+        },
+        {
+          "prev": "Hähnchen",
+          "ts": "2025-09-15T08:56:18.766Z",
+          "value": "Hänchen"
+        },
+        {
+          "prev": "Hänchen",
+          "ts": "2025-09-15T09:00:48.520Z",
+          "value": "Hähnchen"
+        }
+      ]
+    },
+    "ich": {
+      "cursor": 3,
+      "entries": [
+        {
+          "base": true,
+          "ts": "2025-09-16T07:14:51.812Z",
+          "value": "Ich"
+        },
+        {
+          "prev": "Ich",
+          "ts": "2025-09-16T07:14:51.812Z",
+          "value": "ich"
+        },
+        {
+          "prev": "ich",
+          "ts": "2025-09-16T07:15:10.606Z",
+          "value": "Ich"
+        },
+        {
+          "prev": "Ich",
+          "ts": "2025-09-16T07:15:30.798Z",
+          "value": "ich"
+        }
+      ]
+    },
+    "reich": {
+      "cursor": 1,
+      "entries": [
+        {
+          "base": true,
+          "ts": "2025-09-15T14:02:46.008Z",
+          "value": "Reich"
+        },
+        {
+          "prev": "Reich",
+          "ts": "2025-09-15T14:02:46.008Z",
+          "value": "reich"
+        }
+      ]
+    }
+  }
+}

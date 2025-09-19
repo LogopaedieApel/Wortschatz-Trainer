@@ -1,0 +1,318 @@
+:root {
+  /* Größe und Abstand des Detail-Titels in der Editor-Ansicht zentral steuern */
+  --next-details-title-size: 2.1em;
+  --next-details-title-margin: 0 0 8px 0;
+}
+
+/* Einheitlicher Titelstil in der Editor-Detailansicht (Einträge & Listen) */
+#next-details-title {
+  font-size: var(--next-details-title-size);
+  margin: var(--next-details-title-margin);
+  font-weight: bold;
+}
+
+/* Im Next-Layout wird das klassische Tabellen-Suchfeld ausgeblendet */
+body.layout-next #search-input { display: none !important; }
+
+/* ===== Aus editor.html verschoben: Editor-spezifische Styles & Design Tokens ===== */
+/* CSS bleibt unverändert */
+/* Design Tokens */
+:root {
+  /* Farben */
+  --color-bg: #f7f8fa;
+  --color-card: #ffffff;
+  --color-text: #1f2937;
+  --color-border: #e5e7eb;
+  --color-muted: #f3f4f6;
+  --color-muted-2: #eef2f7;
+  --color-primary: #7da6ff;
+  --color-primary-ink: #1a3d8f;
+  --color-success: #22c55e;
+  --color-danger: #cc0000;
+
+  /* Abstände & Radius */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+
+  /* Schatten & Fokus */
+  --shadow-1: 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-2: 0 2px 8px rgba(0,0,0,0.12);
+  --focus-ring: 0 0 0 3px rgba(125,166,255,0.35);
+}
+
+body { font-family: sans-serif; margin: 20px; color: var(--color-text); background: var(--color-bg); }
+h1 { margin: 0 0 8px; font-size: 24px; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 8px; text-align: left; background-color: white; }
+th { background-color: #f2f2f2; text-align: center; vertical-align: middle;}
+td input[type="text"] { width: 98%; box-sizing: border-box; }
+/* Header: zwei Zeilen, robustes Wrapping */
+.controls { margin-bottom: 8px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.controls > * { flex: 0 0 auto; }
+#top-menu-row { justify-content: flex-end; }
+#save-status { order: 0; }
+/* Hide placeholder when empty to avoid left indent before status-message */
+#save-status:empty { display: none !important; }
+#status-message { order: 1; }
+#notification-area { order: 2; }
+#layout-next-badge { order: 3; }
+/* Serverstatus-Badge generell ausblenden */
+#server-status-badge { order: 4; margin-left: auto !important; display: none !important; }
+/* Suchfeld in eigene Zeile unter Status/Benachrichtigungen */
+#search-input { flex: 1 1 360px; min-width: 220px; max-width: 640px; order: 10; margin-left: 0; }
+.tab-controls { display:flex; gap:8px; margin-bottom: 6px; position: relative; align-items: center; }
+#add-set-button { white-space: nowrap; padding: 10px 22px; min-width: 240px; }
+.tab-controls .flex-spacer { flex: 1 1 auto; }
+.tab-button { padding:10px 22px; border:1px solid #ccc; border-radius:6px; background:#eee; min-width: 140px; font-weight: 600; }
+#table-wrapper .tab-controls { border-bottom: 0; }
+
+/* Buttons vereinheitlichen */
+button {
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-muted);
+  color: inherit;
+  border-radius: var(--radius-sm);
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .1s ease;
+}
+button:not(:disabled):hover { background-color: var(--color-muted-2); }
+button:disabled { opacity: .6; cursor: not-allowed; }
+button:focus { outline: none; }
+button:focus-visible { box-shadow: var(--focus-ring); }
+
+/* Inputs/Selects angleichen */
+input[type="text"], select {
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  color: var(--color-text);
+  border-radius: var(--radius-sm);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+input[type="text"]:focus-visible, select:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+/* Tab-Buttons modernisieren */
+.tab-button {
+  padding: 10px 22px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-muted);
+  min-width: 140px;
+  font-weight: 600;
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.tab-button:hover { background: var(--color-muted-2); }
+.tab-button:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.tab-button.active { background: #e8f0ff; border-color: var(--color-primary); color: var(--color-primary-ink); }
+
+/* Add-Set Button dezent hervorheben */
+#add-set-button {
+  white-space: nowrap;
+  padding: 10px 22px;
+  min-width: 240px;
+  background: #eef4ff;
+  border-color: var(--color-primary);
+  color: var(--color-primary-ink);
+}
+#add-set-button:hover { background: #e1ecff; }
+
+/* Tools-Menü Button angleichen */
+#tools-menu-button {
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  cursor: pointer;
+  font-size: 100%;
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+#tools-menu-button:hover { background: var(--color-muted); }
+#tools-menu-button:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+/* Menüeinträge konsistent */
+#tools-menu button[role="menuitem"] {
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+#tools-menu button[role="menuitem"]:hover { background: var(--color-muted); }
+#tools-menu button[role="menuitem"]:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+#run-healthcheck-button { background-color: #e8f0ff; border-color: #7da6ff; color: #1a3d8f; }
+#run-healthcheck-button:hover { background-color: #dce8ff; }
+#new-set-controls { border-left: 2px solid #ccc; padding-left: 20px; }
+#status-message { font-weight: bold; }
+.save-name-text { margin-left: 6px; padding: 6px 10px; font-size: 0.9em; }
+
+input[readonly] {
+  background-color: #f5f5f5;
+  color: #555;
+  cursor: not-allowed;
+  border: 1px solid #ddd;
+}
+
+/* Styles for the conflict resolution modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none; /* Hidden by default */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 900px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.modal-header {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+.modal-footer {
+  margin-top: 20px;
+  border-top: 1px solid #ccc;
+  padding-top: 15px;
+  text-align: right;
+}
+.conflict-item {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 200px;
+  gap: 15px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+}
+.conflict-item-header { font-weight: bold; }
+.conflict-item:last-child { border-bottom: none; }
+.conflict-details { font-size: 0.9em; }
+.conflict-details strong { display: block; margin-bottom: 5px; font-size: 1.1em; }
+.conflict-actions button { display: block; width: 100%; margin-bottom: 5px; }
+.conflict-actions button.selected { background-color: #007bff; color: white; border-color: #0056b3; }
+
+/* Styles for the archive modal */
+#archive-modal .modal-content { width: 90%; max-width: 800px; }
+#archive-list { max-height: 60vh; overflow-y: auto; }
+.close-button { color: #aaa; float: right; font-size: 1.5em; font-weight: bold; cursor: pointer; }
+.close-button:hover, .close-button:focus { color: black; text-decoration: none; cursor: pointer; }
+
+/* Reduzierte Matrix-Ansicht: nur Name + Aktionen sichtbar */
+body.matrix-reduced #editor-table th.col-id,
+body.matrix-reduced #editor-table td.col-id,
+body.matrix-reduced #editor-table th.col-image,
+body.matrix-reduced #editor-table td.col-image,
+body.matrix-reduced #editor-table th.col-sound,
+body.matrix-reduced #editor-table td.col-sound,
+body.matrix-reduced #editor-table th.set-col,
+body.matrix-reduced #editor-table td.set-cell { display: none; }
+
+/* Variante: Nur ID, Bild, Ton ausblenden (Listen bleiben sichtbar) */
+body.matrix-hide-id-media #editor-table th.col-id,
+body.matrix-hide-id-media #editor-table td.col-id,
+body.matrix-hide-id-media #editor-table th.col-image,
+body.matrix-hide-id-media #editor-table td.col-image,
+body.matrix-hide-id-media #editor-table th.col-sound,
+body.matrix-hide-id-media #editor-table td.col-sound { display: none; }
+/* Wenn der Name selbst klickbar ist, kann die Aktionsspalte entfallen */
+body.matrix-hide-id-media #editor-table th#th-actions,
+body.matrix-hide-id-media #editor-table td.col-actions { display: none; }
+/* Sticky-Offset korrigieren, wenn die ID-Spalte ausgeblendet ist */
+body.matrix-hide-id-media .sticky-col.col-2 { left: 0 !important; }
+/* Aktionsspalte dezenter Button */
+.edit-button-subtle { padding: 6px 10px; background: #f7f7f7; border: 1px solid #ddd; color: #333; border-radius: 4px; }
+.edit-button-subtle:hover { background: #efefef; }
+/* Name-Button dezent und volle Breite */
+.name-edit-button {
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background: #f9f9f9;
+  color: #333;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.name-edit-button::before { content: '\270E'; opacity: 0.75; font-size: 0.95em; }
+.name-edit-button:hover { background: #f0f0f0; }
+.name-edit-button:focus { outline: none; border-color: #7da6ff; box-shadow: 0 0 0 2px rgba(125,166,255,0.25); }
+
+/* Tools menu styling (legacy) */
+#tools-menu-button { padding: 8px 12px; border-radius: 8px; border: 1px solid #ddd; background: #f8f8f8; cursor: pointer; font-size: 100%; }
+#tools-menu-button:hover { background: #f0f0f0; }
+#tools-menu-button[aria-expanded="true"] { border-color: #7da6ff; box-shadow: 0 0 0 2px rgba(125,166,255,0.25); }
+#tools-menu button[role="menuitem"] { text-align: left; padding: 8px 10px; border-radius: 6px; border: 1px solid #eee; background: #fafafa; }
+#tools-menu button[role="menuitem"]:hover { background:#f0f0f0; }
+
+/* Phase 2 – Header robuster machen */
+#top-menu-row { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.controls { gap: var(--space-2); }
+.tab-controls { flex-wrap: wrap; row-gap: var(--space-1); column-gap: var(--space-2); background: var(--color-card); }
+.tab-controls .tab-button { order: 0; }
+#add-set-button { order: 1; margin-left: auto; }
+.tab-controls::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--color-border); opacity: .8; }
+#search-input { margin-top: 2px; }
+
+/* Phase 3 – Feature-Flag Layout-NEXT (inaktiv per Default) */
+/* Diese Klasse wird nur gesetzt, wenn explizit aktiviert. Hier nur leichte visuelle Hinweise als Proof-of-life, ohne Logikänderungen */
+body.layout-next .tab-button.active { background: #e6ffed; border-color: #22c55e; color: #166534; }
+body.layout-next #add-set-button { background: #ecfdf5; border-color: #10b981; color: #065f46; }
+body.layout-next #table-wrapper { background: #ffffff; }
+/* Beispiel: etwas kompaktere Zellen in NEXT-Layout */
+body.layout-next th, body.layout-next td { padding: 6px; }
+
+/* Phase 4 – Sichtbarer Hinweis, wenn NEXT aktiv ist */
+#layout-next-badge { order: 98; }
+/* Layout-Next-Badge dauerhaft ausblenden */
+body.layout-next #layout-next-badge { display: none !important; }
+
+/* Phase 4 – Layout-Umschaltung Classic vs. Next */
+#next-layout { display: none; }
+body.layout-next #table-wrapper { display: none !important; }
+body.layout-next #next-layout { display: block !important; }
+
+/* Phase 4 – Next-Sidebar: aktiver Eintrag (dezent) */
+#next-sidebar a[data-item-id] { border: 1px solid transparent; transition: background-color .12s ease, border-color .12s ease, box-shadow .12s ease; }
+#next-sidebar a[data-item-id]:hover { background: var(--color-muted); }
+#next-sidebar a[data-item-id]:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+#next-sidebar li[role="option"][aria-selected="true"] a[data-item-id] { background: #e8f0ff; border-color: var(--color-primary); color: var(--color-primary-ink); }
+
+/* Phase 8 – Responsive & Dichte (nur im Next-Layout) */
+body.layout-next #next-grid { grid-template-columns: var(--next-sidebar-w) var(--next-split-w) 1fr; }
+body.layout-next.compact th, body.layout-next.compact td { padding: 4px !important; }
+body.layout-next .sticky-tabs { position: sticky; top: 0; z-index: 6; background: var(--color-card); box-shadow: 0 1px 0 var(--color-border); }
+body.layout-next #next-sidebar { position: sticky; top: 52px; max-height: calc(100vh - 64px); overflow: auto; }
+body.layout-next #next-main { position: relative; }
+body.layout-next #next-main .sticky-subheader { position: sticky; top: 52px; z-index: 5; background: var(--color-card); padding: 6px 0; box-shadow: 0 1px 0 var(--color-border); }
+/* Collapsible Sidebar on small screens */
+@media (max-width: 900px) {
+  body.layout-next #next-grid { grid-template-columns: 1fr; }
+  body.layout-next #next-splitter { display:none; }
+  /* Sidebar bleibt sichtbar; stapelt oberhalb des Inhalts */
+  body.layout-next #next-sidebar { display: block; position: static; max-height: none; }
+  body.layout-next #next-main { grid-column: 1 / -1; }
+}
+/* Density control */
+body.layout-next.compact #next-main { font-size: 14px; }
+body.layout-next.compact #next-sidebar a[data-item-id] { padding: 4px 6px !important; }

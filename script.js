@@ -97,12 +97,99 @@ document.addEventListener('DOMContentLoaded', () => {
     function showModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.add('show'); }
     function closeModal(modalId) { const modal = document.getElementById(modalId); if (modal) modal.classList.remove('show'); }
     function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[array[i], array[j]] = [array[j], array[i]]; } return array; }
-    function preloadAssets(items) { const promises = []; const loadedAssets = new Set(); items.forEach(item => { if (item.image && !loadedAssets.has(item.image)) { promises.push(new Promise((resolve) => { const img = new Image(); img.src = item.image + '?t=' + new Date().getTime(); img.onload = resolve; img.onerror = resolve; })); loadedAssets.add(item.image); } if (item.sound && !loadedAssets.has(item.sound)) { promises.push(fetch(item.sound + '?t=' + new Date().getTime()).catch(err => console.error('Preloading sound failed:', err))); loadedAssets.add(item.sound); } }); return Promise.all(promises); }
+    // Ermittelt den Basis-Pfad der App (z. B. '' lokal oder '/Wortschatz-Trainer' auf GitHub Pages)
+    function getBasePath() {
+        try {
+            const baseEl = document.querySelector('base');
+            if (baseEl && baseEl.href) {
+                const u = new URL(baseEl.href, window.location.href);
+                return u.pathname.replace(/\/$/, '');
+            }
+            const p = window.location.pathname || '/';
+            if (p.endsWith('/')) return p.replace(/\/$/, '');
+            const idx = p.lastIndexOf('/');
+            return idx >= 0 ? p.substring(0, idx) : '';
+        } catch {
+            return '';
+        }
+    }
+    const __BASE_PATH__ = getBasePath();
+    function getAssetUrl(p) { return toAbsUrl(p); }
+
+    // Liefert Pfad-Varianten für Unicode-Normalisierung: [NFC (original), NFD]
+    function buildUnicodePathVariants(p) {
+        try {
+            const original = String(p || '');
+            const nfd = original.normalize('NFD');
+            if (nfd !== original) return [original, nfd];
+            return [original];
+        } catch { return [p || '']; }
+    }
+
+    async function fetchWithUnicodeFallback(p, { query = '' } = {}) {
+        const variants = buildUnicodePathVariants(p);
+        let lastErr = null;
+        for (let i = 0; i < variants.length; i++) {
+            const url = getAssetUrl(variants[i]) + query;
+            try {
+                const res = await fetch(url);
+                if (res.ok) return res;
+                lastErr = new Error(`HTTP ${res.status}`);
+            } catch (e) {
+                lastErr = e;
+            }
+        }
+        throw lastErr || new Error('Fetch failed');
+    }
+    function toAbsUrl(p) {
+        try {
+            if (!p) return '';
+            if (/^https?:\/\//i.test(p)) return p;
+            const cleaned = String(p).replace(/^\/+/, '').replace(/\\+/g, '/');
+            return (__BASE_PATH__ ? __BASE_PATH__ : '') + '/' + cleaned;
+        } catch { return p || ''; }
+    }
+    function preloadAssets(items) { const promises = []; const loadedAssets = new Set(); items.forEach(item => {
+        if (item.image && !loadedAssets.has(item.image)) {
+            promises.push(new Promise((resolve) => {
+                const variants = buildUnicodePathVariants(item.image);
+                let idx = 0;
+                const img = new Image();
+                img.onload = resolve;
+                img.onerror = () => {
+                    idx += 1;
+                    if (idx < variants.length) {
+                        img.src = getAssetUrl(variants[idx]) + '?t=' + new Date().getTime();
+                    } else {
+                        resolve(); // Ignore failure in preload
+                    }
+                };
+                img.src = getAssetUrl(variants[idx]) + '?t=' + new Date().getTime();
+            }));
+            loadedAssets.add(item.image);
+        }
+        if (item.sound && !loadedAssets.has(item.sound)) {
+            const q = '?t=' + new Date().getTime();
+            const variants = buildUnicodePathVariants(item.sound);
+            // Try HEAD/GET to warm cache; ignore failures
+            promises.push(
+                (async () => {
+                    for (let i = 0; i < variants.length; i++) {
+                        try {
+                            const res = await fetch(getAssetUrl(variants[i]) + q, { method: 'GET' });
+                            if (res.ok) return;
+                        } catch {}
+                    }
+                })()
+            );
+            loadedAssets.add(item.sound);
+        }
+    }); return Promise.all(promises); }
     
     async function loadSetsManifest() {
         const setsFile = currentMaterialType === 'saetze' ? 'data/sets_saetze.json' : 'data/sets.json';
         try {
-            const response = await fetch(`${setsFile}?t=${new Date().getTime()}`);
+            const response = await fetchWithUnicodeFallback(setsFile, { query: `?t=${new Date().getTime()}` });
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             availableItemSets = await response.json();
             
@@ -128,13 +215,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function loadItemSet(path) { if (!path || !masterItems) return []; try { const response = await fetch(path + '?t=' + new Date().getTime()); if (!response.ok) throw new Error(`Set-Datei nicht gefunden: ${path}`); const data = await response.json(); if (data && Array.isArray(data.items)) { return data.items; } else if (Array.isArray(data)) { return data; } else { console.error("Set-Datei hat kein 'items'-Array:", path); return []; } } catch (e) { console.error(`Fehler beim Laden oder Verarbeiten des Sets ${path}:`, e); return []; } }
+    async function loadItemSet(path) { if (!path || !masterItems) return []; try { const response = await fetchWithUnicodeFallback(path, { query: '?t=' + new Date().getTime() }); if (!response.ok) throw new Error(`Set-Datei nicht gefunden: ${path}`); const data = await response.json(); if (data && Array.isArray(data.items)) { return data.items; } else if (Array.isArray(data)) { return data; } else { console.error("Set-Datei hat kein 'items'-Array:", path); return []; } } catch (e) { console.error(`Fehler beim Laden oder Verarbeiten des Sets ${path}:`, e); return []; } }
     function generateProgressDots() { progressDotsContainer.innerHTML = ''; progressDotElements = []; for (let i = 0; i < currentShuffledItems.length; i++) { if(currentShuffledItems[i].type === 'end') continue; const dot = document.createElement('div'); dot.className = 'progress-dot'; progressDotsContainer.appendChild(dot); progressDotElements.push(dot); } }
     function updateProgressDots() { progressDotElements.forEach((dot, index) => { dot.classList.toggle('active', index === currentItemIndex); }); }
-    function playItemSound(item, delay = 0) { clearTimeout(soundTimeoutId); if (!item || !item.sound) { return; } const buttonToDisable = currentMode === 'quiz' ? quizSoundButton : soundButton; soundTimeoutId = setTimeout(() => { audioPlayer.pause(); audioPlayer.currentTime = 0; if (buttonToDisable) buttonToDisable.disabled = true; const enableButton = () => { if (buttonToDisable) buttonToDisable.disabled = false; audioPlayer.removeEventListener('ended', enableButton); audioPlayer.removeEventListener('error', enableButton); }; audioPlayer.addEventListener('canplay', () => audioPlayer.play().catch(e => console.error("Sound-Abspielfehler:", e)), { once: true }); audioPlayer.addEventListener('ended', enableButton, { once: true }); audioPlayer.addEventListener('error', enableButton, { once: true }); audioPlayer.src = item.sound + '?t=' + new Date().getTime(); }, delay * 1000); }
+    function playItemSound(item, delay = 0) { clearTimeout(soundTimeoutId); if (!item || !item.sound) { return; } const buttonToDisable = currentMode === 'quiz' ? quizSoundButton : soundButton; soundTimeoutId = setTimeout(() => { audioPlayer.pause(); audioPlayer.currentTime = 0; if (buttonToDisable) buttonToDisable.disabled = true; const enableButton = () => { if (buttonToDisable) buttonToDisable.disabled = false; audioPlayer.removeEventListener('ended', enableButton); audioPlayer.removeEventListener('error', tryFallback); audioPlayer.removeEventListener('error', enableButton); }; let triedFallback = false; const tryFallback = () => {
+                if (triedFallback) { enableButton(); return; }
+                triedFallback = true;
+                try {
+                    const variants = buildUnicodePathVariants(item.sound);
+                    if (variants.length > 1) {
+                        audioPlayer.src = getAssetUrl(variants[1]) + '?t=' + new Date().getTime();
+                        audioPlayer.play().catch(() => {});
+                        return;
+                    }
+                } catch {}
+                enableButton();
+            };
+            audioPlayer.addEventListener('canplay', () => audioPlayer.play().catch(e => console.error("Sound-Abspielfehler:", e)), { once: true });
+            audioPlayer.addEventListener('ended', enableButton, { once: true });
+            audioPlayer.addEventListener('error', tryFallback);
+            audioPlayer.addEventListener('error', enableButton, { once: true });
+            audioPlayer.src = getAssetUrl(item.sound) + '?t=' + new Date().getTime(); }, delay * 1000); }
     function stopAllAutomation() { clearTimeout(soundTimeoutId); clearTimeout(autoNextTimeoutId); audioPlayer.pause(); if (currentAudioEndHandler) { audioPlayer.removeEventListener('ended', currentAudioEndHandler); audioPlayer.removeEventListener('error', currentAudioEndHandler); currentAudioEndHandler = null; } if (currentMode === 'manual' || currentMode === 'quiz') { soundButton.disabled = false; quizSoundButton.disabled = false; audioPlayer.src = ''; } }
     function exitCurrentExercise() { stopAllAutomation(); }
-    function populateSlide(slideElement, itemIndex) { const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item || item.type === 'end' || currentSettings.displayType === 'word_only') { return; } const imagePath = item.image ? item.image.trim() : ""; if (imagePath) { const img = document.createElement('img'); img.src = imagePath + '?t=' + new Date().getTime(); img.alt = item.name || ""; if (currentMode === 'manual') { img.addEventListener('click', () => moveSlider(-1)); } slideElement.appendChild(img); } }
+    function populateSlide(slideElement, itemIndex) { const item = currentShuffledItems[itemIndex]; slideElement.innerHTML = ''; if (!item || item.type === 'end' || currentSettings.displayType === 'word_only') { return; } const imagePath = item.image ? item.image.trim() : ""; if (imagePath) { const img = document.createElement('img'); const variants = buildUnicodePathVariants(imagePath); let idx = 0; img.src = getAssetUrl(variants[idx]) + '?t=' + new Date().getTime(); img.onerror = () => { idx += 1; if (idx < variants.length) { img.src = getAssetUrl(variants[idx]) + '?t=' + new Date().getTime(); } else { /* give up */ } }; img.alt = item.name || ""; if (currentMode === 'manual') { img.addEventListener('click', () => moveSlider(-1)); } slideElement.appendChild(img); } }
     function setSlidePositions(animated = true) { slides.forEach(s => s.classList.toggle('no-transition', !animated)); const prevIndex = (currentItemIndex - 1 + currentShuffledItems.length) % currentShuffledItems.length; const nextIndex = (currentItemIndex + 1) % currentShuffledItems.length; populateSlide(prevSlide, prevIndex); populateSlide(currentSlide, currentItemIndex); populateSlide(nextSlide, nextIndex); prevSlide.style.transform = `translateX(-100%)`; currentSlide.style.transform = `translateX(0)`; nextSlide.style.transform = `translateX(100%)`; if (!animated) { setTimeout(() => slides.forEach(s => s.classList.remove('no-transition')), 20); } }
     function updateExerciseUIForMode() { const isManual = currentMode === 'manual'; const isAuto = currentMode === 'auto'; const isQuiz = currentMode === 'quiz'; slidesWrapper.classList.toggle('hidden', !isManual && !isAuto); bottomControlsContainer.classList.toggle('hidden', isQuiz); wordDisplayArea.classList.toggle('hidden', isQuiz); quizArea.classList.toggle('hidden', !isQuiz); if (isManual) {
         soundButton.classList.remove('hidden');
@@ -200,24 +304,47 @@ document.addEventListener('DOMContentLoaded', () => {
     function populateDisplayDurationSelect() { if (displayDurationSelect) { displayDurationSelect.innerHTML = ''; for (let i = 1; i <= 10; i++) { const option = document.createElement('option'); option.value = i; option.textContent = i === 1 ? '1 Sekunde' : `${i} Sekunden`; displayDurationSelect.appendChild(option); } displayDurationSelect.value = currentSettings.displayDuration; } }
     function populateSoundDelaySelect() { if (soundDelaySelect) { soundDelaySelect.innerHTML = ''; for (let i = 0; i <= 5; i += 0.5) { const option = document.createElement('option'); option.value = i; option.textContent = i === 0 ? '0 Sek (sofort)' : `${i.toFixed(1)} Sek`; soundDelaySelect.appendChild(option); } } }
     function configureSettingsScreen() { const modeMap = { manual: 'Manuell', auto: 'Automatisch', quiz: 'Quiz' }; if (settingsTitle) { settingsTitle.textContent = `Einstellungen für: ${modeMap[currentMode] || ''}`; } const isAutoMode = currentMode === 'auto'; const isManualMode = currentMode === 'manual'; const isQuizMode = currentMode === 'quiz'; Object.values(settingGroups).forEach(group => group.classList.add('hidden')); if(isManualMode || isAutoMode) settingGroups.displayType.classList.remove('hidden'); if(isAutoMode) settingGroups.order.classList.remove('hidden'); if(isAutoMode) settingGroups.displayDuration.classList.remove('hidden'); if(isAutoMode) settingGroups.soundOnOff.classList.remove('hidden'); if(isAutoMode && currentSettings.soundOn) settingGroups.soundDelay.classList.remove('hidden'); if(isManualMode) settingGroups.autoplaySoundManual.classList.remove('hidden'); }
-    function setupQuizRound() { if (currentItemIndex >= currentShuffledItems.length - 1) { exitCurrentExercise(); btnReshuffle.textContent = 'Neu mischen'; document.getElementById('exercise-end-message').textContent = "Alle Items bearbeitet."; showModal('exercise-end-modal'); return; } updateProgressDots(); correctQuizItem = currentShuffledItems[currentItemIndex]; const incorrectItems = shuffleArray(quizPool.filter(item => item.id !== correctQuizItem.id)).slice(0, 3); if (incorrectItems.length < 3) { console.error("Kritischer Fehler: Nicht genügend Items für eine Quiz-Runde gefunden."); document.getElementById('exercise-end-message').textContent = "Ein interner Fehler ist aufgetreten. Nicht genügend unterschiedliche Bilder für diese Runde vorhanden."; showModal('exercise-end-modal'); return; } const options = shuffleArray([correctQuizItem, ...incorrectItems]); const optionElements = quizOptionsContainer.querySelectorAll('.quiz-option'); optionElements.forEach((div, index) => { const item = options[index]; div.innerHTML = `<img src="${item.image}?t=${new Date().getTime()}" alt="Antwortmöglichkeit">`; div.dataset.itemId = item.id; div.className = 'quiz-option'; }); quizOptionsContainer.classList.remove('disabled'); playItemSound(correctQuizItem, 0.5); }
+    function setupQuizRound() { if (currentItemIndex >= currentShuffledItems.length - 1) { exitCurrentExercise(); btnReshuffle.textContent = 'Neu mischen'; document.getElementById('exercise-end-message').textContent = "Alle Items bearbeitet."; showModal('exercise-end-modal'); return; } updateProgressDots(); correctQuizItem = currentShuffledItems[currentItemIndex]; const incorrectItems = shuffleArray(quizPool.filter(item => item.id !== correctQuizItem.id)).slice(0, 3); if (incorrectItems.length < 3) { console.error("Kritischer Fehler: Nicht genügend Items für eine Quiz-Runde gefunden."); document.getElementById('exercise-end-message').textContent = "Ein interner Fehler ist aufgetreten. Nicht genügend unterschiedliche Bilder für diese Runde vorhanden."; showModal('exercise-end-modal'); return; } const options = shuffleArray([correctQuizItem, ...incorrectItems]); const optionElements = quizOptionsContainer.querySelectorAll('.quiz-option'); optionElements.forEach((div, index) => { const item = options[index]; const variants = buildUnicodePathVariants(item.image); const url = getAssetUrl(variants[0]) + '?t=' + new Date().getTime(); const fallback = variants[1] ? getAssetUrl(variants[1]) + '?t=' + new Date().getTime() : null; div.innerHTML = `<img src="${url}" alt="Antwortmöglichkeit">`; const img = div.querySelector('img'); if (fallback) { img.onerror = () => { img.onerror = null; img.src = fallback; }; } div.dataset.itemId = item.id; div.className = 'quiz-option'; }); quizOptionsContainer.classList.remove('disabled'); playItemSound(correctQuizItem, 0.5); }
     function handleQuizAnswer(event) { const selectedOption = event.target.closest('.quiz-option'); if (!selectedOption || quizOptionsContainer.classList.contains('disabled')) return; quizOptionsContainer.classList.add('disabled'); const selectedItemId = selectedOption.dataset.itemId; const allOptions = quizOptionsContainer.querySelectorAll('.quiz-option'); allOptions.forEach(opt => { if (opt.dataset.itemId === correctQuizItem.id) { opt.classList.add('correct'); } else if (opt === selectedOption) { opt.classList.add('incorrect'); } else { opt.classList.add('faded'); } }); setTimeout(() => { currentItemIndex++; setupQuizRound(); }, 2000); }
     let availableListsForCategory = []; 
+    // Rekursive Variante: sammelt alle Blätter (Objekte mit 'path')
     function flattenLists(categoryData) {
         const lists = [];
-        for (const key in categoryData) {
-            if (key === 'displayName' || key === 'unterkategorieName') {
-                continue;
+
+        const buildLabel = (parts) => {
+            // Halte Labels kurz: nimm die letzten 2 Segmente, wenn es mehr sind
+            const maxDepth = 2;
+            const reduced = parts.length > maxDepth ? parts.slice(parts.length - maxDepth) : parts;
+            if (reduced.length === 0) return '';
+            if (reduced.length === 1) return reduced[0];
+            // Mehrere Teile: erster Teil unverändert, letzter Teil kleingeschrieben (z. B. "B initial")
+            const head = reduced.slice(0, reduced.length - 1).join(' ');
+            const tail = (reduced[reduced.length - 1] || '').toLowerCase();
+            return head ? `${head} ${tail}` : tail;
+        };
+
+        const traverse = (node, nameParts = []) => {
+            for (const key in node) {
+                if (key === 'displayName' || key === 'unterkategorieName') continue;
+                const child = node[key];
+                if (!child || typeof child !== 'object') continue;
+
+                if (child.path && child.displayName) {
+                    const parts = nameParts.length ? [...nameParts, child.displayName] : [child.displayName];
+                    const text = buildLabel(parts);
+                    lists.push({ text, value: child.path });
+                } else {
+                    // Nur kurze Ebenen (z. B. Buchstaben) in die Beschriftung aufnehmen
+                    const nextParts = (child.displayName && child.displayName.length <= 5)
+                        ? [...nameParts, child.displayName]
+                        : nameParts;
+                    traverse(child, nextParts);
+                }
             }
-            const item = categoryData[key];
-            if (item && item.path && item.displayName) {
-                lists.push({
-                    text: item.displayName,
-                    value: item.path
-                });
-            }
-        }
-        lists.sort((a, b) => a.text.localeCompare(b.text));
+        };
+
+        traverse(categoryData, []);
+        lists.sort((a, b) => a.text.localeCompare(b.text, 'de'));
         return lists; 
     }
     function populateListDropdown(selectElement) { selectElement.innerHTML = '<option value="">Liste auswählen...</option>'; availableListsForCategory.forEach(list => { const option = document.createElement('option'); option.value = list.value; option.textContent = list.text; selectElement.appendChild(option); }); }
@@ -356,8 +483,8 @@ document.addEventListener('DOMContentLoaded', () => {
         populateSoundDelaySelect();
         try {
             const [woerterResponse, saetzeResponse] = await Promise.all([
-                fetch('data/items_database.json?t=' + new Date().getTime()),
-                fetch('data/items_database_saetze.json?t=' + new Date().getTime())
+                fetchWithUnicodeFallback('data/items_database.json', { query: '?t=' + new Date().getTime() }),
+                fetchWithUnicodeFallback('data/items_database_saetze.json', { query: '?t=' + new Date().getTime() })
             ]);
             if (!woerterResponse.ok) throw new Error('Master-Item-Liste (Wörter) nicht gefunden');
             if (!saetzeResponse.ok) throw new Error('Master-Item-Liste (Sätze) nicht gefunden');
