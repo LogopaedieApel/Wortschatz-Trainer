@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
         touchStartY = 0,
         currentTranslate = 0;
     let isRestartingExercise = false;
+    let uiLocked = false; // Wird durch URL-Parameter uiLock=1 aktiviert
+    let patientName = null; // Optionaler Patientenname aus URL
 
     // Quiz-spezifische Variablen
     let correctQuizItem = null;
@@ -351,6 +353,59 @@ document.addEventListener('DOMContentLoaded', () => {
     function addListSelectionRow() { const row = document.createElement('div'); row.className = 'list-selection-row'; const select = document.createElement('select'); populateListDropdown(select); const deleteBtn = document.createElement('button'); deleteBtn.className = 'btn-delete-list'; deleteBtn.setAttribute('aria-label', 'Diese Liste entfernen'); deleteBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>`; row.appendChild(select); row.appendChild(deleteBtn); listSelectionContainer.appendChild(row); checkIfStartIsPossible(); }
     function checkIfStartIsPossible() { if (!btnStartExercise) return; const selectedLists = listSelectionContainer.querySelectorAll('select'); let atLeastOneSelected = false; selectedLists.forEach(select => { if (select.value) { atLeastOneSelected = true; } }); btnStartExercise.disabled = !atLeastOneSelected; }
     
+    // Extrahierte Start-Logik: kann vom Button und vom Autostart benutzt werden
+    async function performStartExercise(selectedListPaths) {
+        const loadingOverlay = document.getElementById('loading-overlay');
+        if (loadingOverlay) loadingOverlay.classList.remove('hidden');
+        try {
+            if (!Array.isArray(selectedListPaths) || selectedListPaths.length === 0) {
+                alert("Bitte wählen Sie mindestens eine Liste aus.");
+                return;
+            }
+
+            let allItemIds = [];
+            for (const path of selectedListPaths) {
+                const ids = await loadItemSet(path);
+                allItemIds.push(...ids);
+            }
+            const uniqueItemIds = [...new Set(allItemIds)];
+            currentItemSetData = uniqueItemIds
+                .map(id => { const itemData = masterItems[id]; if (!itemData) return null; return { id: id, ...itemData }; })
+                .filter(Boolean);
+
+            if (currentItemSetData.length === 0) {
+                alert("Die ausgewählten Listen sind leer oder konnten nicht geladen werden.");
+                return;
+            }
+
+            if (currentMode === 'quiz') {
+                quizPool = currentItemSetData.filter(item => item.image && item.sound);
+                if (quizPool.length < 4) {
+                    alert("Für den Quiz-Modus werden mindestens 4 verschiedene Items mit Bild UND Ton aus den ausgewählten Listen benötigt.");
+                    return;
+                }
+                currentShuffledItems = shuffleArray([...quizPool]);
+            } else {
+                const baseItems = [...currentItemSetData];
+                const shouldShuffle = (currentMode === 'auto' && currentSettings.order === 'chaotic') || (currentMode === 'manual');
+                currentShuffledItems = shouldShuffle ? shuffleArray(baseItems) : baseItems;
+            }
+
+            await preloadAssets(currentItemSetData);
+            if (isRestartingExercise) isRestartingExercise = false;
+            currentShuffledItems.push({ type: 'end' });
+            currentItemIndex = 0;
+            generateProgressDots();
+            setupInitialState();
+            showScreen('screen-exercise');
+        } catch (error) {
+            console.error("Fehler beim Starten der Übung:", error);
+            alert("Ein oder mehrere Bilder/Töne konnten nicht geladen werden.");
+        } finally {
+            if (loadingOverlay) loadingOverlay.classList.add('hidden');
+        }
+    }
+    
     // --- EVENT LISTENERS ---
 
     if (materialSelect) {
@@ -367,36 +422,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnStartExercise) {
         btnStartExercise.addEventListener('click', async () => {
-            const loadingOverlay = document.getElementById('loading-overlay');
-            if (loadingOverlay) loadingOverlay.classList.remove('hidden');
             const selectedListPaths = [];
             const listSelects = listSelectionContainer.querySelectorAll('select');
             listSelects.forEach(select => { if (select.value) { selectedListPaths.push(select.value); } });
-            if (selectedListPaths.length === 0) { alert("Bitte wählen Sie mindestens eine Liste aus."); if (loadingOverlay) loadingOverlay.classList.add('hidden'); return; }
-            let allItemIds = [];
-            for (const path of selectedListPaths) { const ids = await loadItemSet(path); allItemIds.push(...ids); }
-            const uniqueItemIds = [...new Set(allItemIds)];
-            currentItemSetData = uniqueItemIds.map(id => { const itemData = masterItems[id]; if (!itemData) return null; return { id: id, ...itemData }; }).filter(Boolean);
-            if (currentItemSetData.length === 0) { alert("Die ausgewählten Listen sind leer oder konnten nicht geladen werden."); if (loadingOverlay) loadingOverlay.classList.add('hidden'); return; }
-            if (currentMode === 'quiz') {
-                quizPool = currentItemSetData.filter(item => item.image && item.sound);
-                if (quizPool.length < 4) { alert("Für den Quiz-Modus werden mindestens 4 verschiedene Items mit Bild UND Ton aus den ausgewählten Listen benötigt."); if (loadingOverlay) loadingOverlay.classList.add('hidden'); return; }
-                currentShuffledItems = shuffleArray([...quizPool]);
-            } else {
-                const baseItems = [...currentItemSetData];
-                const shouldShuffle = (currentMode === 'auto' && currentSettings.order === 'chaotic') || (currentMode === 'manual');
-                currentShuffledItems = shouldShuffle ? shuffleArray(baseItems) : baseItems;
-            }
-            try {
-                await preloadAssets(currentItemSetData);
-                if (isRestartingExercise) isRestartingExercise = false;
-                currentShuffledItems.push({ type: 'end' });
-                currentItemIndex = 0;
-                generateProgressDots();
-                setupInitialState();
-                showScreen('screen-exercise');
-            } catch (error) { console.error("Fehler beim Vorladen der Assets:", error); alert("Ein oder mehrere Bilder/Töne konnten nicht geladen werden."); }
-            finally { if (loadingOverlay) loadingOverlay.classList.add('hidden'); }
+            await performStartExercise(selectedListPaths);
         });
     }
 
@@ -501,7 +530,44 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         await loadSetsManifest();
-        showScreen('screen-mode-selection');
+
+        // URL-Parameter für Autostart und UI-Lock verarbeiten
+        const params = new URLSearchParams(window.location.search || '');
+        const getBool = (v) => v === '1' || v === 'true' || v === 'yes';
+        const autostart = getBool(params.get('autostart') || '0');
+        const urlMode = (params.get('mode') || '').toLowerCase();
+        const urlMaterial = (params.get('material') || '').toLowerCase();
+        const setPath = params.get('set');
+        uiLocked = getBool(params.get('uiLock') || '0');
+        patientName = params.get('patient') || null;
+
+        if (uiLocked) {
+            if (hamburgerIcon) hamburgerIcon.style.display = 'none';
+            if (menuContent) menuContent.style.display = 'none';
+            if (btnSettingsBack) btnSettingsBack.style.display = 'none';
+        }
+
+        if (autostart && setPath) {
+            // Material wählen
+            if (urlMaterial === 'saetze') {
+                currentMaterialType = 'saetze';
+                masterItems = masterItemsSaetze;
+            } else {
+                currentMaterialType = 'woerter';
+                masterItems = masterItemsWoerter;
+            }
+
+            // Modus setzen
+            if (urlMode === 'manual' || urlMode === 'auto' || urlMode === 'quiz') {
+                currentMode = urlMode;
+            } else {
+                currentMode = 'quiz';
+            }
+            configureSettingsScreen();
+            await performStartExercise([setPath]);
+        } else {
+            showScreen('screen-mode-selection');
+        }
     }
     initializeApp();
 });

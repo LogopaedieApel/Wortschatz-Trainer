@@ -1,0 +1,752 @@
+{
+  "becher": {
+    "name": "Becher",
+    "image": "data/wörter/images/b/Becher.jpg",
+    "sound": "data/wörter/sounds/b/Becher.mp3",
+    "folder": "b"
+  },
+  "betonmischer": {
+    "name": "Betonmischer",
+    "image": "data/wörter/images/b/Betonmischer.jpg",
+    "sound": "data/wörter/sounds/b/Betonmischer.mp3",
+    "folder": "b"
+  },
+  "broetchen": {
+    "name": "Brötchen",
+    "image": "data/wörter/images/b/Brötchen.jpg",
+    "sound": "data/wörter/sounds/b/Brötchen.mp3",
+    "folder": "b"
+  },
+  "buchstaben": {
+    "name": "Buchstaben",
+    "image": "data/wörter/images/b/Buchstaben.jpg",
+    "sound": "data/wörter/sounds/b/Buchstaben.mp3",
+    "folder": "b"
+  },
+  "buecher": {
+    "name": "Bücher",
+    "image": "data/wörter/images/b/Bücher.jpg",
+    "sound": "data/wörter/sounds/b/Bücher.mp3",
+    "folder": "b"
+  },
+  "buntstifte": {
+    "name": "Buntstifte",
+    "image": "data/wörter/images/b/Buntstifte.jpg",
+    "sound": "data/wörter/sounds/b/Buntstifte.mp3",
+    "folder": "b"
+  },
+  "busch": {
+    "name": "Busch",
+    "image": "data/wörter/images/b/Busch.jpg",
+    "sound": "data/wörter/sounds/b/Busch.mp3",
+    "folder": "b"
+  },
+  "dreieck": {
+    "name": "Dreieck",
+    "image": "data/wörter/images/d/Dreieck.jpg",
+    "sound": "data/wörter/sounds/d/Dreieck.mp3",
+    "folder": "d"
+  },
+  "dusche": {
+    "name": "Dusche",
+    "image": "data/wörter/images/d/Dusche.jpg",
+    "sound": "data/wörter/sounds/d/Dusche.mp3",
+    "folder": "d"
+  },
+  "faecher": {
+    "name": "Fächer",
+    "image": "data/wörter/images/f/Fächer.jpg",
+    "sound": "data/wörter/sounds/f/Fächer.mp3",
+    "folder": "f"
+  },
+  "feuerloescher": {
+    "name": "Feuerlöscher",
+    "image": "data/wörter/images/f/Feuerlöscher.jpg",
+    "sound": "data/wörter/sounds/f/Feuerlöscher.mp3",
+    "folder": "f"
+  },
+  "fisch": {
+    "name": "Fisch",
+    "image": "data/wörter/images/f/Fisch.jpg",
+    "sound": "data/wörter/sounds/f/Fisch.mp3",
+    "folder": "f"
+  },
+  "fische": {
+    "name": "Fische",
+    "image": "data/wörter/images/f/Fische.jpg",
+    "sound": "data/wörter/sounds/f/Fische.mp3",
+    "folder": "f"
+  },
+  "flasche": {
+    "name": "Flasche",
+    "image": "data/wörter/images/f/Flasche.jpg",
+    "sound": "data/wörter/sounds/f/Flasche.mp3",
+    "folder": "f"
+  },
+  "fleisch": {
+    "name": "Fleisch",
+    "image": "data/wörter/images/f/Fleisch.jpg",
+    "sound": "data/wörter/sounds/f/Fleisch.mp3",
+    "folder": "f"
+  },
+  "froesche": {
+    "name": "Frösche",
+    "image": "data/wörter/images/f/Frösche.jpg",
+    "sound": "data/wörter/sounds/f/Frösche.mp3",
+    "folder": "f"
+  },
+  "frosch": {
+    "name": "Frosch",
+    "image": "data/wörter/images/f/Frosch.jpg",
+    "sound": "data/wörter/sounds/f/Frosch.mp3",
+    "folder": "f"
+  },
+  "fruechte": {
+    "name": "Früchte",
+    "image": "data/wörter/images/f/Früchte.jpg",
+    "sound": "data/wörter/sounds/f/Früchte.mp3",
+    "folder": "f"
+  },
+  "geschenk": {
+    "name": "Geschenk",
+    "image": "data/wörter/images/g/Geschenk.jpg",
+    "sound": "data/wörter/sounds/g/Geschenk.mp3",
+    "folder": "g"
+  },
+  "geschirr": {
+    "name": "Geschirr",
+    "image": "data/wörter/images/g/Geschirr.jpg",
+    "sound": "data/wörter/sounds/g/Geschirr.mp3",
+    "folder": "g"
+  },
+  "gummibaerchen": {
+    "name": "Gummibärchen",
+    "image": "data/wörter/images/g/Gummibärchen.jpeg",
+    "sound": "data/wörter/sounds/g/Gummibärchen.mp3",
+    "folder": "g"
+  },
+  "gummistiefel": {
+    "name": "Gummistiefel",
+    "image": "data/wörter/images/g/Gummistiefel.jpg",
+    "sound": "data/wörter/sounds/g/Gummistiefel.mp3",
+    "folder": "g"
+  },
+  "haehnchen": {
+    "name": "Hähnchen",
+    "image": "data/wörter/images/h/Hähnchen.jpg",
+    "sound": "data/wörter/sounds/h/Hähnchen.mp3",
+    "folder": "h"
+  },
+  "handschuhe": {
+    "name": "Handschuhe",
+    "image": "data/wörter/images/h/Handschuhe.jpg",
+    "sound": "data/wörter/sounds/h/Handschuhe.mp3",
+    "folder": "h"
+  },
+  "hirsch": {
+    "name": "Hirsch",
+    "image": "data/wörter/images/h/Hirsch.jpg",
+    "sound": "data/wörter/sounds/h/Hirsch.mp3",
+    "folder": "h"
+  },
+  "hoernchen": {
+    "name": "Hörnchen",
+    "image": "data/wörter/images/h/Hörnchen.jpg",
+    "sound": "data/wörter/sounds/h/Hörnchen.mp3",
+    "folder": "h"
+  },
+  "hubschrauber": {
+    "name": "Hubschrauber",
+    "image": "data/wörter/images/h/Hubschrauber.jpg",
+    "sound": "data/wörter/sounds/h/Hubschrauber.mp3",
+    "folder": "h"
+  },
+  "ich": {
+    "name": "ich",
+    "image": "data/wörter/images/i/ich.jpg",
+    "sound": "data/wörter/sounds/i/ich.mp3",
+    "folder": "i"
+  },
+  "kaninchen": {
+    "name": "Kaninchen",
+    "image": "data/wörter/images/k/Kaninchen.jpg",
+    "sound": "data/wörter/sounds/k/Kaninchen.mp3",
+    "folder": "k"
+  },
+  "ketchup": {
+    "name": "Ketchup",
+    "image": "data/wörter/images/k/Ketchup.jpg",
+    "sound": "data/wörter/sounds/k/Ketchup.mp3",
+    "folder": "k"
+  },
+  "kirche": {
+    "name": "Kirche",
+    "image": "data/wörter/images/k/Kirche.jpg",
+    "sound": "data/wörter/sounds/k/Kirche.mp3",
+    "folder": "k"
+  },
+  "kirschen": {
+    "name": "Kirschen",
+    "image": "data/wörter/images/k/Kirschen.jpg",
+    "sound": "data/wörter/sounds/k/Kirschen.mp3",
+    "folder": "k"
+  },
+  "koechin": {
+    "name": "Köchin",
+    "image": "data/wörter/images/k/Köchin.jpg",
+    "sound": "data/wörter/sounds/k/Köchin.mp3",
+    "folder": "k"
+  },
+  "kueche": {
+    "name": "Küche",
+    "image": "data/wörter/images/k/Küche.jpg",
+    "sound": "data/wörter/sounds/k/Küche.mp3",
+    "folder": "k"
+  },
+  "kuehlschrank": {
+    "name": "Kühlschrank",
+    "image": "data/wörter/images/k/Kühlschrank.jpg",
+    "sound": "data/wörter/sounds/k/Kühlschrank.mp3",
+    "folder": "k"
+  },
+  "kuscheltiere": {
+    "name": "Kuscheltiere",
+    "image": "data/wörter/images/k/Kuscheltiere.jpg",
+    "sound": "data/wörter/sounds/k/Kuscheltiere.mp3",
+    "folder": "k"
+  },
+  "leicht": {
+    "name": "leicht",
+    "image": "data/wörter/images/l/leicht.jpg",
+    "sound": "data/wörter/sounds/l/leicht.mp3",
+    "folder": "l"
+  },
+  "leuchtturm": {
+    "name": "Leuchtturm",
+    "image": "data/wörter/images/l/Leuchtturm.jpg",
+    "sound": "data/wörter/sounds/l/Leuchtturm.mp3",
+    "folder": "l"
+  },
+  "licht": {
+    "name": "Licht",
+    "image": "data/wörter/images/l/Licht.jpg",
+    "sound": "data/wörter/sounds/l/Licht.mp3",
+    "folder": "l"
+  },
+  "loecher": {
+    "name": "Löcher",
+    "image": "data/wörter/images/l/Löcher.jpg",
+    "sound": "data/wörter/sounds/l/Löcher.mp3",
+    "folder": "l"
+  },
+  "loeschen": {
+    "name": "Löschen",
+    "image": "data/wörter/images/l/Löschen.jpg",
+    "sound": "data/wörter/sounds/l/Löschen.mp3",
+    "folder": "l"
+  },
+  "lutscher": {
+    "name": "Lutscher",
+    "image": "data/wörter/images/l/Lutscher.jpg",
+    "sound": "data/wörter/sounds/l/Lutscher.mp3",
+    "folder": "l"
+  },
+  "maedchen": {
+    "name": "Mädchen",
+    "image": "data/wörter/images/m/Mädchen.jpg",
+    "sound": "data/wörter/sounds/m/Mädchen.mp3",
+    "folder": "m"
+  },
+  "matsch": {
+    "name": "Matsch",
+    "image": "data/wörter/images/m/Matsch.jpg",
+    "sound": "data/wörter/sounds/m/Matsch.mp3",
+    "folder": "m"
+  },
+  "meerschweinchen": {
+    "name": "Meerschweinchen",
+    "image": "data/wörter/images/m/Meerschweinchen.jpg",
+    "sound": "data/wörter/sounds/m/Meerschweinchen.mp3",
+    "folder": "m"
+  },
+  "mensch": {
+    "name": "Mensch",
+    "image": "data/wörter/images/m/Mensch.jpg",
+    "sound": "data/wörter/sounds/m/Mensch.mp3",
+    "folder": "m"
+  },
+  "menschen": {
+    "name": "Menschen",
+    "image": "data/wörter/images/m/Menschen.jpg",
+    "sound": "data/wörter/sounds/m/Menschen.mp3",
+    "folder": "m"
+  },
+  "milch": {
+    "name": "Milch",
+    "image": "data/wörter/images/m/Milch.jpg",
+    "sound": "data/wörter/sounds/m/Milch.mp3",
+    "folder": "m"
+  },
+  "muschel": {
+    "name": "Muschel",
+    "image": "data/wörter/images/m/Muschel.jpg",
+    "sound": "data/wörter/sounds/m/Muschel.mp3",
+    "folder": "m"
+  },
+  "orange": {
+    "name": "orange",
+    "image": "data/wörter/images/o/orange.jpg",
+    "sound": "data/wörter/sounds/o/orange.mp3",
+    "folder": "o"
+  },
+  "paeckchen": {
+    "name": "Päckchen",
+    "image": "data/wörter/images/p/Päckchen.jpg",
+    "sound": "data/wörter/sounds/p/Päckchen.mp3",
+    "folder": "p"
+  },
+  "plaetzchen": {
+    "name": "Plätzchen",
+    "image": "data/wörter/images/p/Plätzchen.jpeg",
+    "sound": "data/wörter/sounds/p/Plätzchen.mp3",
+    "folder": "p"
+  },
+  "rad": {
+    "name": "Rad",
+    "image": "data/wörter/images/r/Rad.jpg",
+    "sound": "data/wörter/sounds/r/Rad.mp3",
+    "folder": "r"
+  },
+  "raeuber": {
+    "name": "Räuber",
+    "image": "data/wörter/images/r/Räuber.jpg",
+    "sound": "data/wörter/sounds/r/Räuber.mp3",
+    "folder": "r"
+  },
+  "rakete": {
+    "name": "Rakete",
+    "image": "data/wörter/images/r/Rakete.jpg",
+    "sound": "data/wörter/sounds/r/Rakete.mp3",
+    "folder": "r"
+  },
+  "rauch": {
+    "name": "Rauch",
+    "image": "data/wörter/images/r/Rauch.jpg",
+    "sound": "data/wörter/sounds/r/Rauch.mp3",
+    "folder": "r"
+  },
+  "raupe": {
+    "name": "Raupe",
+    "image": "data/wörter/images/r/Raupe.jpg",
+    "sound": "data/wörter/sounds/r/Raupe.mp3",
+    "folder": "r"
+  },
+  "rechnen": {
+    "name": "rechnen",
+    "image": "data/wörter/images/r/rechnen.jpg",
+    "sound": "data/wörter/sounds/r/rechnen.mp3",
+    "folder": "r"
+  },
+  "rechts": {
+    "name": "rechts",
+    "image": "data/wörter/images/r/rechts.jpeg",
+    "sound": "data/wörter/sounds/r/rechts.mp3",
+    "folder": "r"
+  },
+  "regen": {
+    "name": "Regen",
+    "image": "data/wörter/images/r/Regen.jpg",
+    "sound": "data/wörter/sounds/r/Regen.mp3",
+    "folder": "r"
+  },
+  "regenschirm": {
+    "name": "Regenschirm",
+    "image": "data/wörter/images/r/Regenschirm.jpg",
+    "sound": "data/wörter/sounds/r/Regenschirm.mp3",
+    "folder": "r"
+  },
+  "reich": {
+    "name": "reich",
+    "image": "data/wörter/images/r/reich.jpg",
+    "sound": "data/wörter/sounds/r/reich.mp3",
+    "folder": "r"
+  },
+  "reifen": {
+    "name": "Reifen",
+    "image": "data/wörter/images/r/Reifen.jpg",
+    "sound": "data/wörter/sounds/r/Reifen.mp3",
+    "folder": "r"
+  },
+  "reis": {
+    "name": "Reis",
+    "image": "data/wörter/images/r/Reis.jpg",
+    "sound": "data/wörter/sounds/r/Reis.mp3",
+    "folder": "r"
+  },
+  "rennen": {
+    "name": "rennen",
+    "image": "data/wörter/images/r/rennen.jpg",
+    "sound": "data/wörter/sounds/r/rennen.mp3",
+    "folder": "r"
+  },
+  "richtig": {
+    "name": "richtig",
+    "image": "data/wörter/images/r/richtig.jpg",
+    "sound": "data/wörter/sounds/r/richtig.mp3",
+    "folder": "r"
+  },
+  "riechen": {
+    "name": "riechen",
+    "image": "data/wörter/images/r/riechen.jpg",
+    "sound": "data/wörter/sounds/r/riechen.mp3",
+    "folder": "r"
+  },
+  "rock": {
+    "name": "Rock",
+    "image": "data/wörter/images/r/Rock.jpg",
+    "sound": "data/wörter/sounds/r/Rock.mp3",
+    "folder": "r"
+  },
+  "rollschuhe": {
+    "name": "Rollschuhe",
+    "image": "data/wörter/images/r/Rollschuhe.jpg",
+    "sound": "data/wörter/sounds/r/Rollschuhe.mp3",
+    "folder": "r"
+  },
+  "rot": {
+    "name": "rot",
+    "image": "data/wörter/images/r/rot.jpg",
+    "sound": "data/wörter/sounds/r/rot.mp3",
+    "folder": "r"
+  },
+  "ruecken": {
+    "name": "Rücken",
+    "image": "data/wörter/images/r/Rücken.jpg",
+    "sound": "data/wörter/sounds/r/Rücken.mp3",
+    "folder": "r"
+  },
+  "ruessel": {
+    "name": "Rüssel",
+    "image": "data/wörter/images/r/Rüssel.jpg",
+    "sound": "data/wörter/sounds/r/Rüssel.mp3",
+    "folder": "r"
+  },
+  "rutsche": {
+    "name": "Rutsche",
+    "image": "data/wörter/images/r/Rutsche.jpg",
+    "sound": "data/wörter/sounds/r/Rutsche.mp3",
+    "folder": "r"
+  },
+  "saal": {
+    "name": "Saal",
+    "image": "data/wörter/images/s/Saal.jpg",
+    "sound": "data/wörter/sounds/s/Saal.mp3",
+    "folder": "s"
+  },
+  "sack": {
+    "name": "Sack",
+    "image": "data/wörter/images/s/Sack.png",
+    "sound": "data/wörter/sounds/s/Sack.mp3",
+    "folder": "s"
+  },
+  "saege": {
+    "name": "Säge",
+    "image": "data/wörter/images/s/Säge.jpg",
+    "sound": "data/wörter/sounds/s/Säge.mp3",
+    "folder": "s"
+  },
+  "saft": {
+    "name": "Saft",
+    "image": "data/wörter/images/s/Saft.png",
+    "sound": "data/wörter/sounds/s/Saft.mp3",
+    "folder": "s"
+  },
+  "sahne": {
+    "name": "Sahne",
+    "image": "data/wörter/images/s/Sahne.png",
+    "sound": "data/wörter/sounds/s/Sahne.mp3",
+    "folder": "s"
+  },
+  "salat": {
+    "name": "Salat",
+    "image": "data/wörter/images/s/Salat.png",
+    "sound": "data/wörter/sounds/s/Salat.mp3",
+    "folder": "s"
+  },
+  "salz": {
+    "name": "Salz",
+    "image": "data/wörter/images/s/Salz.png",
+    "sound": "data/wörter/sounds/s/Salz.mp3",
+    "folder": "s"
+  },
+  "sand": {
+    "name": "Sand",
+    "image": "data/wörter/images/s/Sand.png",
+    "sound": "data/wörter/sounds/s/Sand.mp3",
+    "folder": "s"
+  },
+  "sandwich": {
+    "name": "Sandwich",
+    "image": "data/wörter/images/s/Sandwich.png",
+    "sound": "data/wörter/sounds/s/Sandwich.mp3",
+    "folder": "s"
+  },
+  "sattel": {
+    "name": "Sattel",
+    "image": "data/wörter/images/s/Sattel.jpg",
+    "sound": "data/wörter/sounds/s/Sattel.mp3",
+    "folder": "s"
+  },
+  "satz": {
+    "name": "Satz",
+    "image": "data/wörter/images/s/Satz.jpg",
+    "sound": "data/wörter/sounds/s/Satz.mp3",
+    "folder": "s"
+  },
+  "sauer": {
+    "name": "sauer",
+    "image": "data/wörter/images/s/sauer.jpg",
+    "sound": "data/wörter/sounds/s/sauer.mp3",
+    "folder": "s"
+  },
+  "schal": {
+    "name": "Schal",
+    "image": "data/wörter/images/s/Schal.jpg",
+    "sound": "data/wörter/sounds/s/Schal.mp3",
+    "folder": "s"
+  },
+  "schatten": {
+    "name": "Schatten",
+    "image": "data/wörter/images/s/Schatten.jpg",
+    "sound": "data/wörter/sounds/s/Schatten.mp3",
+    "folder": "s"
+  },
+  "schaukel": {
+    "name": "Schaukel",
+    "image": "data/wörter/images/s/Schaukel.jpg",
+    "sound": "data/wörter/sounds/s/Schaukel.mp3",
+    "folder": "s"
+  },
+  "schere": {
+    "name": "Schere",
+    "image": "data/wörter/images/s/Schere.jpg",
+    "sound": "data/wörter/sounds/s/Schere.mp3",
+    "folder": "s"
+  },
+  "schiene": {
+    "name": "Schiene",
+    "image": "data/wörter/images/s/Schiene.jpg",
+    "sound": "data/wörter/sounds/s/Schiene.mp3",
+    "folder": "s"
+  },
+  "schiff": {
+    "name": "Schiff",
+    "image": "data/wörter/images/s/Schiff.jpg",
+    "sound": "data/wörter/sounds/s/Schiff.mp3",
+    "folder": "s"
+  },
+  "schokolade": {
+    "name": "Schokolade",
+    "image": "data/wörter/images/s/Schokolade.jpg",
+    "sound": "data/wörter/sounds/s/Schokolade.mp3",
+    "folder": "s"
+  },
+  "schuh": {
+    "name": "Schuh",
+    "image": "data/wörter/images/s/Schuh.jpg",
+    "sound": "data/wörter/sounds/s/Schuh.mp3",
+    "folder": "s"
+  },
+  "schule": {
+    "name": "Schule",
+    "image": "data/wörter/images/s/Schule.jpg",
+    "sound": "data/wörter/sounds/s/Schule.mp3",
+    "folder": "s"
+  },
+  "see": {
+    "name": "See",
+    "image": "data/wörter/images/s/See.jpg",
+    "sound": "data/wörter/sounds/s/See.mp3",
+    "folder": "s"
+  },
+  "seepferdchen": {
+    "name": "Seepferdchen",
+    "image": "data/wörter/images/s/Seepferdchen.jpg",
+    "sound": "data/wörter/sounds/s/Seepferdchen.mp3",
+    "folder": "s"
+  },
+  "segelboot": {
+    "name": "Segelboot",
+    "image": "data/wörter/images/s/Segelboot.jpg",
+    "sound": "data/wörter/sounds/s/Segelboot.mp3",
+    "folder": "s"
+  },
+  "seife": {
+    "name": "Seife",
+    "image": "data/wörter/images/s/Seife.jpg",
+    "sound": "data/wörter/sounds/s/Seife.mp3",
+    "folder": "s"
+  },
+  "seil": {
+    "name": "Seil",
+    "image": "data/wörter/images/s/Seil.jpg",
+    "sound": "data/wörter/sounds/s/Seil.mp3",
+    "folder": "s"
+  },
+  "sieben": {
+    "name": "sieben",
+    "image": "data/wörter/images/s/sieben.jpg",
+    "sound": "data/wörter/sounds/s/sieben.mp3",
+    "folder": "s"
+  },
+  "singen": {
+    "name": "singen",
+    "image": "data/wörter/images/s/singen.jpg",
+    "sound": "data/wörter/sounds/s/singen.mp3",
+    "folder": "s"
+  },
+  "sinken": {
+    "name": "sinken",
+    "image": "data/wörter/images/s/sinken.jpg",
+    "sound": "data/wörter/sounds/s/sinken.mp3",
+    "folder": "s"
+  },
+  "socken": {
+    "name": "Socken",
+    "image": "data/wörter/images/s/Socken.jpg",
+    "sound": "data/wörter/sounds/s/Socken.mp3",
+    "folder": "s"
+  },
+  "sofa": {
+    "name": "Sofa",
+    "image": "data/wörter/images/s/Sofa.jpg",
+    "sound": "data/wörter/sounds/s/Sofa.mp3",
+    "folder": "s"
+  },
+  "sommer": {
+    "name": "Sommer",
+    "image": "data/wörter/images/s/Sommer.jpg",
+    "sound": "data/wörter/sounds/s/Sommer.mp3",
+    "folder": "s"
+  },
+  "sonne": {
+    "name": "Sonne",
+    "image": "data/wörter/images/s/Sonne.jpg",
+    "sound": "data/wörter/sounds/s/Sonne.mp3",
+    "folder": "s"
+  },
+  "specht": {
+    "name": "Specht",
+    "image": "data/wörter/images/s/Specht.jpeg",
+    "sound": "data/wörter/sounds/s/Specht.mp3",
+    "folder": "s"
+  },
+  "stechen": {
+    "name": "stechen",
+    "image": "data/wörter/images/s/stechen.jpeg",
+    "sound": "data/wörter/sounds/s/stechen.mp3",
+    "folder": "s"
+  },
+  "streicheln": {
+    "name": "streicheln",
+    "image": "data/wörter/images/s/streicheln.jpeg",
+    "sound": "data/wörter/sounds/s/streicheln.mp3",
+    "folder": "s"
+  },
+  "strich": {
+    "name": "Strich",
+    "image": "data/wörter/images/s/Strich.jpeg",
+    "sound": "data/wörter/sounds/s/Strich.mp3",
+    "folder": "s"
+  },
+  "suchen": {
+    "name": "suchen",
+    "image": "data/wörter/images/s/suchen.jpg",
+    "sound": "data/wörter/sounds/s/suchen.mp3",
+    "folder": "s"
+  },
+  "suessigkeiten": {
+    "name": "Süßigkeiten",
+    "image": "data/wörter/images/s/Süßigkeiten.png",
+    "sound": "data/wörter/sounds/s/Süßigkeiten.mp3",
+    "folder": "s"
+  },
+  "supermarkt": {
+    "name": "Supermarkt",
+    "image": "data/wörter/images/s/Supermarkt.jpg",
+    "sound": "data/wörter/sounds/s/Supermarkt.mp3",
+    "folder": "s"
+  },
+  "suppe": {
+    "name": "Suppe",
+    "image": "data/wörter/images/s/Suppe.png",
+    "sound": "data/wörter/sounds/s/Suppe.mp3",
+    "folder": "s"
+  },
+  "sushi": {
+    "name": "Sushi",
+    "image": "data/wörter/images/s/Sushi.png",
+    "sound": "data/wörter/sounds/s/Sushi.mp3",
+    "folder": "s"
+  },
+  "switch": {
+    "name": "Switch",
+    "image": "data/wörter/images/s/Switch.jpg",
+    "sound": "data/wörter/sounds/s/Switch.mp3",
+    "folder": "s"
+  },
+  "tasche": {
+    "name": "Tasche",
+    "image": "data/wörter/images/t/Tasche.jpg",
+    "sound": "data/wörter/sounds/t/Tasche.mp3",
+    "folder": "t"
+  },
+  "taschenlampe": {
+    "name": "Taschenlampe",
+    "image": "data/wörter/images/t/Taschenlampe.jpg",
+    "sound": "data/wörter/sounds/t/Taschenlampe.mp3",
+    "folder": "t"
+  },
+  "teppich": {
+    "name": "Teppich",
+    "image": "data/wörter/images/t/Teppich.jpeg",
+    "sound": "data/wörter/sounds/t/Teppich.mp3",
+    "folder": "t"
+  },
+  "tisch": {
+    "name": "Tisch",
+    "image": "data/wörter/images/t/Tisch.jpg",
+    "sound": "data/wörter/sounds/t/Tisch.mp3",
+    "folder": "t"
+  },
+  "tuecher": {
+    "name": "Tücher",
+    "image": "data/wörter/images/t/Tücher.jpg",
+    "sound": "data/wörter/sounds/t/Tücher.mp3",
+    "folder": "t"
+  },
+  "vogelscheuche": {
+    "name": "Vogelscheuche",
+    "image": "data/wörter/images/v/Vogelscheuche.jpeg",
+    "sound": "data/wörter/sounds/v/Vogelscheuche.mp3",
+    "folder": "v"
+  },
+  "waesche": {
+    "name": "Wäsche",
+    "image": "data/wörter/images/w/Wäsche.jpg",
+    "sound": "data/wörter/sounds/w/Wäsche.mp3",
+    "folder": "w"
+  },
+  "waschbecken": {
+    "name": "Waschbecken",
+    "image": "data/wörter/images/w/Waschbecken.jpg",
+    "sound": "data/wörter/sounds/w/Waschbecken.mp3",
+    "folder": "w"
+  },
+  "waschmaschine": {
+    "name": "Waschmaschine",
+    "image": "data/wörter/images/w/Waschmaschine.jpg",
+    "sound": "data/wörter/sounds/w/Waschmaschine.mp3",
+    "folder": "w"
+  }
+}

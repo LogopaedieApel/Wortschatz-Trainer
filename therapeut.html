@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Therapeut:in – Übung versenden</title>
+  <link rel="stylesheet" href="therapeut_style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Übung erstellen und Link versenden</h1>
+    <section class="card">
+      <div class="form-row">
+        <label for="mode-select">Modus</label>
+        <select id="mode-select">
+          <option value="quiz">Quiz</option>
+          <option value="manual">Präsentation (manuell)</option>
+          <option value="auto">Präsentation (automatisch)</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="material-select">Material</label>
+        <select id="material-select">
+          <option value="woerter">Wörter</option>
+          <option value="saetze">Sätze</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="area-select">Bereich</label>
+        <select id="area-select" disabled>
+          <option value="">Bitte Material wählen…</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="group-select">Buchstabe/Gruppe</label>
+        <select id="group-select" disabled>
+          <option value="">Bitte Bereich wählen…</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="set-select">Liste/Set</label>
+        <select id="set-select" disabled>
+          <option value="">Bitte Material wählen…</option>
+        </select>
+      </div>
+      <div id="set-breadcrumb" class="hint" aria-live="polite"></div>
+      <div class="form-row">
+        <label for="patient-input">Patient (optional)</label>
+        <input id="patient-input" type="text" placeholder="z. B. Testpatient A" />
+      </div>
+      <div class="form-row actions">
+        <button id="btn-generate" disabled>Link generieren</button>
+        <button id="btn-copy" disabled>Link kopieren</button>
+        <button id="btn-mail" disabled>Als E‑Mail öffnen</button>
+      </div>
+      <div class="form-row">
+        <label for="link-output">Link</label>
+        <input id="link-output" type="text" readonly />
+      </div>
+      <p class="hint">Hinweis: Der Link startet die Übung direkt mit der Auswahl. Die Navigation ist gesperrt (uiLock) und kann für den Testpatienten nicht geändert werden.</p>
+    </section>
+  </main>
+  <script src="therapeut.js" defer></script>
+</body>
+</html>
