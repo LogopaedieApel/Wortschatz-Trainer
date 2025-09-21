@@ -1,14 +1,15 @@
 # Hilfe-Index
 
-Zuletzt aktualisiert: 21.9.2025, 19:05:56
+Zuletzt aktualisiert: 21.9.2025, 19:14:00
 
 Dieser Index wird automatisch beim Commit generiert und listet alle verfügbaren Hilfedateien.
 
 ## Verfügbare Hilfedateien
 
 - [Editor-Hilfe (Kurzüberblick)](editor-hilfe.md)  \n  <small>Zuletzt geändert: 21.9.2025, 18:28:13</small>
-- [CHANGELOG](CHANGELOG.md)  \n  <small>Zuletzt geändert: 21.9.2025, 19:05:56</small>
-- [Wortschatz-Trainer – Arbeitsleitfaden](CONTRIBUTING.md)  \n  <small>Zuletzt geändert: 21.9.2025, 19:05:30</small>
+- [CHANGELOG](CHANGELOG.md)  \n  <small>Zuletzt geändert: 21.9.2025, 19:14:00</small>
+- [Wortschatz-Editor online betreiben](DEPLOYMENT.md)  \n  <small>Zuletzt geändert: 21.9.2025, 19:11:39</small>
+- [Wortschatz-Trainer – Arbeitsleitfaden](CONTRIBUTING.md)  \n  <small>Zuletzt geändert: 21.9.2025, 19:06:26</small>
 
 ## Neueste Änderungen (Auszug)
 

@@ -15,6 +15,10 @@ Umstellung auf GitDesktop am 02.09.2025
 - Änderungsverlauf: `docs/CHANGELOG.md` (wird automatisiert generiert)
 - Hilfe‑Index: `docs/help-index.md` (automatisch generiert, bitte nicht manuell bearbeiten)
 
+## Deployment (Online-Betrieb)
+
+Hinweise zum Hosting des Editors im Internet (inkl. Datei-Upload, Sicherheit, Migration) stehen in `docs/DEPLOYMENT.md`.
+
 ## Tests ausführen (Jest)
 
 Automatisierte API- und E2E-Tests decken zentrale Editor-Flows und Schutzmechanismen ab.

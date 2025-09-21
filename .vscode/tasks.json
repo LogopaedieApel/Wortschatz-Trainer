@@ -91,6 +91,20 @@
 				"--runInBand"
 			],
 			"group": "test"
+		},
+		{
+			"label": "Update docs (help index)",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"docs:update"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$eslint-stylish"
+			],
+			"group": "build"
 		}
 	]
 }
