@@ -242,6 +242,17 @@ Leitlinien ohne Überschneidung:
   - `console.warn` ist lokal ebenfalls stumm; in CI bleibt `warn` sichtbar. `console.error` bleibt immer sichtbar.
   - Serverseitige Info-Logs laufen über `logInfo(...)` und sind im Testmodus (`NODE_ENV=test`) unterdrückt.
 
+### E2E/Playwright – robuste Assertions
+
+Die UI ist bewusst minimalistisch (z. B. ausgeblendete Badges/Headings). E2E-Tests prüfen daher primär funktionale Zustände statt rein visueller Marker:
+
+- Startseite: keine sichtbare H1 voraussetzen. Stattdessen ein stabiles Steuerelement prüfen (z. B. `#tools-menu-button`) oder den Seitentitel.
+- Serverstatus: Der Badge kann ausgeblendet sein (`display:none`). Der Test prüft den Textinhalt von `#server-status-text` (Formate: `RO @<port>` oder `RW @<port>`), ohne Sichtbarkeit zu erzwingen.
+- Layout-Next: Das „Layout: Next“-Badge ist deaktiviert. Bei `?layout=next` gilt: `#next-layout` sichtbar, `#table-wrapper` verborgen. Bei `?layout=classic` umgekehrt.
+- Auto-Selektion: Das Next-Layout kann beim Laden bereits einen Eintrag selektieren. Tests akzeptieren beide Zustände: Platzhalter sichtbar oder Details bereits vorhanden.
+- Test-Server: Die Smoke-Tests starten bei Bedarf selbst einen Server auf Port 3100 mit `EDITOR_READONLY=1`. Optional beendet `E2E_KILL_SERVER=1` den Testserver nach Lauf.
+- Lokal ausführen: `npm test` (Jest) und `npm run test:smoke` (Playwright, 1 Worker). CI nutzt einen vergleichbaren Ablauf (siehe `.github/workflows/ci.yml`).
+
 ## Repository-Hinweise
 - Hauptdateien: `data/items_database.json`, `data/items_database_saetze.json`, `data/sets.json`, `data/sets_saetze.json`
 - Frontend: `editor.html`, `editor_script.js`

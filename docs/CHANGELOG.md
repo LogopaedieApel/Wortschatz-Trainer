@@ -2,21 +2,6568 @@
 
 Ein menschlich lesbarer Änderungsverlauf. Quellen: _audit/editor-changes.log und _state/name-history.json.
 
+## 2025-09-21
+- 16:43:10 Datenbank gespeichert (woerter)
+- 16:43:10 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 16:43:10 Manifest gespeichert (woerter)
+- 16:43:10 Datenbank gespeichert (woerter)
+- 16:43:10 save-all-data:set-archived
+- 16:43:10 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:43:10 Manifest gespeichert (woerter)
+- 16:43:10 Datenbank gespeichert (woerter)
+- 16:43:10 save-all-data:set-archived
+- 16:43:10 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 16:43:10 Manifest gespeichert (woerter)
+- 16:43:10 Datenbank gespeichert (saetze)
+- 16:43:10 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 16:43:10 Manifest gespeichert (saetze)
+- 16:43:11 Datenbank gespeichert (woerter)
+- 16:43:11 save-all-data:set-rename
+- 16:43:11 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 16:43:11 Manifest gespeichert (woerter)
+- 16:43:11 Datenbank gespeichert (woerter)
+- 16:43:11 save-all-data:set-archived
+- 16:43:11 Manifest gespeichert (woerter)
+- 16:43:11 Name geändert (woerter) [loeschen]
+- 16:43:11 name-history:write
+- 16:43:12 ID umbenannt (woerter): lamm → schaf
+- 16:43:12 id-rename:set
+- 16:43:12 Datenbank gespeichert (woerter)
+- 16:43:12 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:43:12 Manifest gespeichert (woerter)
+- 16:43:12 sync-files:db
+- 16:43:12 delete-item:db
+- 16:43:12 delete-item:set
+- 16:43:12 delete-item:set
+- 16:43:13 sync-files:db
+- 16:43:13 Konflikt gelöst (move): ../../../AppData/Local/Temp/wst-imp-EYv1tE/data/import_Wörter/apfel.jpg -> ../../../AppData/Local/Temp/wst-imp-EYv1tE/data/wörter/images/a/apfel.jpg
+- 16:43:13 Konflikt gelöst (move): ../../../AppData/Local/Temp/wst-imp-EYv1tE/data/import_Wörter/apfel.mp3 -> ../../../AppData/Local/Temp/wst-imp-EYv1tE/data/wörter/sounds/a/apfel.mp3
+- 16:43:13 sync-files:db
+- 16:43:13 sync-files:db
+- 16:43:13 delete-item:db
+- 16:43:13 Konflikt gelöst (move): ../../../AppData/Local/Temp/wst-imp-EYv1tE/data/import_Wörter/becher.jpg -> ../../../AppData/Local/Temp/wst-imp-EYv1tE/data/wörter/images/b/becher.jpg
+- 16:43:13 Konflikt gelöst (move): ../../../AppData/Local/Temp/wst-imp-EYv1tE/data/import_Wörter/becher.mp3 -> ../../../AppData/Local/Temp/wst-imp-EYv1tE/data/wörter/sounds/b/becher.mp3
+- 16:43:13 sync-files:db
+- 16:43:13 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 16:43:13 name-history:write
+- 16:43:13 name-undo
+- 16:43:13 name-history:write
+- 16:43:13 name-redo
+- 16:43:13 name-history:write
+- 16:43:24 Datenbank gespeichert (woerter)
+- 16:43:24 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 16:43:24 Manifest gespeichert (woerter)
+- 16:43:24 Datenbank gespeichert (woerter)
+- 16:43:24 save-all-data:set-archived
+- 16:43:24 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:43:24 Manifest gespeichert (woerter)
+- 16:43:24 Datenbank gespeichert (woerter)
+- 16:43:24 save-all-data:set-archived
+- 16:43:24 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 16:43:24 Manifest gespeichert (woerter)
+- 16:43:24 Datenbank gespeichert (saetze)
+- 16:43:24 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 16:43:24 Manifest gespeichert (saetze)
+- 16:43:24 ID umbenannt (woerter): lamm → schaf
+- 16:43:24 id-rename:set
+- 16:43:25 sync-files:db
+- 16:43:25 Konflikt gelöst (move): ../../../AppData/Local/Temp/wst-imp-GcNpmg/data/import_Wörter/apfel.jpg -> ../../../AppData/Local/Temp/wst-imp-GcNpmg/data/wörter/images/a/apfel.jpg
+- 16:43:25 Konflikt gelöst (move): ../../../AppData/Local/Temp/wst-imp-GcNpmg/data/import_Wörter/apfel.mp3 -> ../../../AppData/Local/Temp/wst-imp-GcNpmg/data/wörter/sounds/a/apfel.mp3
+- 16:43:25 sync-files:db
+- 16:43:25 sync-files:db
+- 16:43:25 delete-item:db
+- 16:43:25 Konflikt gelöst (move): ../../../AppData/Local/Temp/wst-imp-GcNpmg/data/import_Wörter/becher.jpg -> ../../../AppData/Local/Temp/wst-imp-GcNpmg/data/wörter/images/b/becher.jpg
+- 16:43:25 Konflikt gelöst (move): ../../../AppData/Local/Temp/wst-imp-GcNpmg/data/import_Wörter/becher.mp3 -> ../../../AppData/Local/Temp/wst-imp-GcNpmg/data/wörter/sounds/b/becher.mp3
+- 16:43:25 sync-files:db
+- 16:43:25 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 16:43:25 name-history:write
+- 16:43:25 name-undo
+- 16:43:25 name-history:write
+- 16:43:25 name-redo
+- 16:43:25 name-history:write
+- 16:43:26 Datenbank gespeichert (woerter)
+- 16:43:26 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:43:26 Manifest gespeichert (woerter)
+- 16:43:26 sync-files:db
+- 16:43:26 delete-item:db
+- 16:43:26 delete-item:set
+- 16:43:26 delete-item:set
+- 16:43:26 Datenbank gespeichert (woerter)
+- 16:43:26 save-all-data:set-rename
+- 16:43:26 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 16:43:26 Manifest gespeichert (woerter)
+- 16:43:26 Datenbank gespeichert (woerter)
+- 16:43:26 save-all-data:set-archived
+- 16:43:26 Manifest gespeichert (woerter)
+- 16:43:27 Name geändert (woerter) [loeschen]
+- 16:43:27 name-history:write
+
 ## 2025-09-19
-- Import-Ordner-only: Unterstützung der Legacy-Ordner `images_unsortiert`/`sounds_unsortiert` entfernt. Neue Quellen: `data/import_Wörter` und `data/import_Sätze/<Listenname>`.
-- Server: `/api/analyze-unsorted-files` und `/api/check-unsorted-files` scannen nur noch die Import-Ordner. `/api/manage-archive` legt Restores in Import-Ordner ab.
-- Editor: Hinweisbanner, wenn Sätze-Dateien im Root von `import_Sätze` liegen (Unterordner erforderlich).
-- Tests: Import-Flow (Flow 2) auf Import-Ordner umgestellt; komplette Test-Suite grün.
-- Doku: CONTRIBUTING und Editor-Hilfe ergänzt/aktualisiert; Hilfe-Index neu erzeugt.
- - Healthcheck: Konflikt-Report ergänzt (Name↔Datei, Rename-Zielkonflikte, DB→Repo Doppelbelegung, Repo-Duplikate) und Flag `--strict-name` hinzugefügt. JSON-Ausgabe enthält neue Felder `summary.conflicts` und `details.files.conflicts`.
+- 06:18:19 Datenbank gespeichert (woerter)
+- 06:18:19 save-all-data:set-rename
+- 06:18:19 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 06:18:19 Manifest gespeichert (woerter)
+- 06:18:19 Datenbank gespeichert (woerter)
+- 06:18:19 save-all-data:set-archived
+- 06:18:19 Manifest gespeichert (woerter)
+- 06:18:20 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 06:18:20 name-history:write
+- 06:18:20 name-undo
+- 06:18:20 name-history:write
+- 06:18:20 name-redo
+- 06:18:20 name-history:write
+- 06:18:20 Datenbank gespeichert (woerter)
+- 06:18:20 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 06:18:20 Manifest gespeichert (woerter)
+- 06:18:20 Datenbank gespeichert (woerter)
+- 06:18:20 save-all-data:set-archived
+- 06:18:20 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:18:20 Manifest gespeichert (woerter)
+- 06:18:20 Datenbank gespeichert (woerter)
+- 06:18:20 save-all-data:set-archived
+- 06:18:20 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 06:18:20 Manifest gespeichert (woerter)
+- 06:18:20 Datenbank gespeichert (saetze)
+- 06:18:20 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 06:18:20 Manifest gespeichert (saetze)
+- 06:18:21 sync-files:db
+- 06:18:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-PZjTnQ/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-PZjTnQ/data/wörter/images/a/apfel.jpg
+- 06:18:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-PZjTnQ/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-PZjTnQ/data/wörter/sounds/a/apfel.mp3
+- 06:18:21 sync-files:db
+- 06:18:21 sync-files:db
+- 06:18:21 delete-item:db
+- 06:18:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-PZjTnQ/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-PZjTnQ/data/wörter/images/b/becher.jpg
+- 06:18:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-PZjTnQ/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-PZjTnQ/data/wörter/sounds/b/becher.mp3
+- 06:18:21 sync-files:db
+- 06:18:21 ID umbenannt (woerter): lamm → schaf
+- 06:18:21 id-rename:set
+- 06:18:22 Datenbank gespeichert (woerter)
+- 06:18:22 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:18:22 Manifest gespeichert (woerter)
+- 06:18:22 sync-files:db
+- 06:18:22 delete-item:db
+- 06:18:22 delete-item:set
+- 06:18:22 delete-item:set
+- 06:18:22 Name geändert (woerter) [loeschen]
+- 06:18:22 name-history:write
+- 06:26:22 Datenbank gespeichert (woerter)
+- 06:26:22 save-all-data:set-rename
+- 06:26:22 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 06:26:22 Manifest gespeichert (woerter)
+- 06:26:22 Datenbank gespeichert (woerter)
+- 06:26:22 save-all-data:set-archived
+- 06:26:22 Manifest gespeichert (woerter)
+- 06:26:23 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 06:26:23 name-history:write
+- 06:26:23 name-undo
+- 06:26:23 name-history:write
+- 06:26:23 name-redo
+- 06:26:23 name-history:write
+- 06:26:23 sync-files:db
+- 06:26:23 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qCvpEW/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qCvpEW/data/wörter/images/a/apfel.jpg
+- 06:26:23 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qCvpEW/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qCvpEW/data/wörter/sounds/a/apfel.mp3
+- 06:26:23 sync-files:db
+- 06:26:23 sync-files:db
+- 06:26:23 delete-item:db
+- 06:26:24 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qCvpEW/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qCvpEW/data/wörter/images/b/becher.jpg
+- 06:26:24 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qCvpEW/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qCvpEW/data/wörter/sounds/b/becher.mp3
+- 06:26:24 sync-files:db
+- 06:26:24 Datenbank gespeichert (woerter)
+- 06:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:26:24 Manifest gespeichert (woerter)
+- 06:26:24 sync-files:db
+- 06:26:24 delete-item:db
+- 06:26:24 delete-item:set
+- 06:26:24 delete-item:set
+- 06:26:24 Datenbank gespeichert (woerter)
+- 06:26:24 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 06:26:24 Manifest gespeichert (woerter)
+- 06:26:25 Datenbank gespeichert (woerter)
+- 06:26:25 save-all-data:set-archived
+- 06:26:25 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:26:25 Manifest gespeichert (woerter)
+- 06:26:25 Datenbank gespeichert (woerter)
+- 06:26:25 save-all-data:set-archived
+- 06:26:25 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 06:26:25 Manifest gespeichert (woerter)
+- 06:26:25 Datenbank gespeichert (saetze)
+- 06:26:25 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 06:26:25 Manifest gespeichert (saetze)
+- 06:26:25 ID umbenannt (woerter): lamm → schaf
+- 06:26:25 id-rename:set
+- 06:26:26 Name geändert (woerter) [loeschen]
+- 06:26:26 name-history:write
+- 08:10:02 Datenbank gespeichert (woerter)
+- 08:10:02 save-all-data:set-rename
+- 08:10:02 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 08:10:02 Manifest gespeichert (woerter)
+- 08:10:02 Datenbank gespeichert (woerter)
+- 08:10:02 save-all-data:set-archived
+- 08:10:02 Manifest gespeichert (woerter)
+- 08:10:03 Datenbank gespeichert (woerter)
+- 08:10:03 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 08:10:03 Manifest gespeichert (woerter)
+- 08:10:03 Datenbank gespeichert (woerter)
+- 08:10:03 save-all-data:set-archived
+- 08:10:03 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:10:03 Manifest gespeichert (woerter)
+- 08:10:03 Datenbank gespeichert (woerter)
+- 08:10:03 save-all-data:set-archived
+- 08:10:03 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 08:10:03 Manifest gespeichert (woerter)
+- 08:10:03 Datenbank gespeichert (saetze)
+- 08:10:03 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 08:10:03 Manifest gespeichert (saetze)
+- 08:10:03 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 08:10:03 name-history:write
+- 08:10:03 name-undo
+- 08:10:03 name-history:write
+- 08:10:03 name-redo
+- 08:10:03 name-history:write
+- 08:10:04 ID umbenannt (woerter): lamm → schaf
+- 08:10:04 id-rename:set
+- 08:10:04 sync-files:db
+- 08:10:04 sync-files:db
+- 08:10:04 delete-item:db
+- 08:10:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-vgyW8x/data/import_Wörter/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-vgyW8x/data/wörter/images/b/becher.jpg
+- 08:10:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-vgyW8x/data/import_Wörter/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-vgyW8x/data/wörter/sounds/b/becher.mp3
+- 08:10:04 sync-files:db
+- 08:10:05 Name geändert (woerter) [loeschen]
+- 08:10:05 name-history:write
+- 08:10:06 Datenbank gespeichert (woerter)
+- 08:10:06 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:10:06 Manifest gespeichert (woerter)
+- 08:10:06 sync-files:db
+- 08:10:06 delete-item:db
+- 08:10:06 delete-item:set
+- 08:10:06 delete-item:set
+- 08:10:37 sync-files:db
+- 08:10:37 sync-files:db
+- 08:10:37 delete-item:db
+- 08:10:37 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-LExQ9p/data/import_Wörter/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-LExQ9p/data/wörter/images/b/becher.jpg
+- 08:10:37 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-LExQ9p/data/import_Wörter/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-LExQ9p/data/wörter/sounds/b/becher.mp3
+- 08:10:37 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-LExQ9p/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-LExQ9p/data/wörter/images/a/apfel.jpg
+- 08:10:37 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-LExQ9p/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-LExQ9p/data/wörter/sounds/a/apfel.mp3
+- 08:10:37 sync-files:db
+- 08:10:38 Datenbank gespeichert (woerter)
+- 08:10:38 save-all-data:set-rename
+- 08:10:38 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 08:10:38 Manifest gespeichert (woerter)
+- 08:10:38 Datenbank gespeichert (woerter)
+- 08:10:38 save-all-data:set-archived
+- 08:10:38 Manifest gespeichert (woerter)
+- 08:10:38 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 08:10:38 name-history:write
+- 08:10:38 name-undo
+- 08:10:38 name-history:write
+- 08:10:38 name-redo
+- 08:10:38 name-history:write
+- 08:10:38 Datenbank gespeichert (woerter)
+- 08:10:39 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 08:10:39 Manifest gespeichert (woerter)
+- 08:10:39 Datenbank gespeichert (woerter)
+- 08:10:39 save-all-data:set-archived
+- 08:10:39 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:10:39 Manifest gespeichert (woerter)
+- 08:10:39 Datenbank gespeichert (woerter)
+- 08:10:39 save-all-data:set-archived
+- 08:10:39 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 08:10:39 Manifest gespeichert (woerter)
+- 08:10:39 Datenbank gespeichert (saetze)
+- 08:10:39 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 08:10:39 Manifest gespeichert (saetze)
+- 08:10:39 Name geändert (woerter) [loeschen]
+- 08:10:39 name-history:write
+- 08:10:39 Datenbank gespeichert (woerter)
+- 08:10:39 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:10:39 Manifest gespeichert (woerter)
+- 08:10:39 sync-files:db
+- 08:10:39 delete-item:db
+- 08:10:39 delete-item:set
+- 08:10:39 delete-item:set
+- 08:10:40 ID umbenannt (woerter): lamm → schaf
+- 08:10:40 id-rename:set
+- 08:11:04 sync-files:db
+- 08:11:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-eaoTUc/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-eaoTUc/data/wörter/images/a/apfel.jpg
+- 08:11:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-eaoTUc/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-eaoTUc/data/wörter/sounds/a/apfel.mp3
+- 08:11:04 sync-files:db
+- 08:11:04 sync-files:db
+- 08:11:04 delete-item:db
+- 08:11:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-eaoTUc/data/import_Wörter/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-eaoTUc/data/wörter/images/b/becher.jpg
+- 08:11:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-eaoTUc/data/import_Wörter/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-eaoTUc/data/wörter/sounds/b/becher.mp3
+- 08:11:04 sync-files:db
+- 08:11:04 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 08:11:04 name-history:write
+- 08:11:04 name-undo
+- 08:11:04 name-history:write
+- 08:11:04 name-redo
+- 08:11:04 name-history:write
+- 08:11:05 Datenbank gespeichert (woerter)
+- 08:11:05 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 08:11:05 Manifest gespeichert (woerter)
+- 08:11:05 Datenbank gespeichert (woerter)
+- 08:11:05 save-all-data:set-archived
+- 08:11:05 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:11:05 Manifest gespeichert (woerter)
+- 08:11:05 Datenbank gespeichert (woerter)
+- 08:11:05 save-all-data:set-archived
+- 08:11:05 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 08:11:05 Manifest gespeichert (woerter)
+- 08:11:05 Datenbank gespeichert (saetze)
+- 08:11:05 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 08:11:05 Manifest gespeichert (saetze)
+- 08:11:05 Datenbank gespeichert (woerter)
+- 08:11:05 save-all-data:set-rename
+- 08:11:05 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 08:11:05 Manifest gespeichert (woerter)
+- 08:11:05 Datenbank gespeichert (woerter)
+- 08:11:05 save-all-data:set-archived
+- 08:11:05 Manifest gespeichert (woerter)
+- 08:11:06 Name geändert (woerter) [loeschen]
+- 08:11:06 name-history:write
+- 08:11:06 Datenbank gespeichert (woerter)
+- 08:11:06 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:11:06 Manifest gespeichert (woerter)
+- 08:11:06 sync-files:db
+- 08:11:06 delete-item:db
+- 08:11:06 delete-item:set
+- 08:11:06 delete-item:set
+- 08:11:06 ID umbenannt (woerter): lamm → schaf
+- 08:11:06 id-rename:set
+- 08:18:31 sync-files:db
+- 08:18:31 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YY8EbM/data/import_Wörter/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YY8EbM/data/wörter/images/a/apfel.jpg
+- 08:18:31 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YY8EbM/data/import_Wörter/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YY8EbM/data/wörter/sounds/a/apfel.mp3
+- 08:18:31 sync-files:db
+- 08:18:31 sync-files:db
+- 08:18:31 delete-item:db
+- 08:18:31 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YY8EbM/data/import_Wörter/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YY8EbM/data/wörter/images/b/becher.jpg
+- 08:18:31 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YY8EbM/data/import_Wörter/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YY8EbM/data/wörter/sounds/b/becher.mp3
+- 08:18:31 sync-files:db
+- 08:18:32 Datenbank gespeichert (woerter)
+- 08:18:32 save-all-data:set-rename
+- 08:18:32 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 08:18:32 Manifest gespeichert (woerter)
+- 08:18:32 Datenbank gespeichert (woerter)
+- 08:18:32 save-all-data:set-archived
+- 08:18:32 Manifest gespeichert (woerter)
+- 08:18:32 Datenbank gespeichert (woerter)
+- 08:18:32 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 08:18:32 Manifest gespeichert (woerter)
+- 08:18:32 Datenbank gespeichert (woerter)
+- 08:18:32 save-all-data:set-archived
+- 08:18:32 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:18:32 Manifest gespeichert (woerter)
+- 08:18:32 Datenbank gespeichert (woerter)
+- 08:18:32 save-all-data:set-archived
+- 08:18:32 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 08:18:32 Manifest gespeichert (woerter)
+- 08:18:32 Datenbank gespeichert (saetze)
+- 08:18:32 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 08:18:32 Manifest gespeichert (saetze)
+- 08:18:32 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 08:18:32 name-history:write
+- 08:18:32 name-undo
+- 08:18:32 name-history:write
+- 08:18:32 name-redo
+- 08:18:32 name-history:write
+- 08:18:33 Datenbank gespeichert (woerter)
+- 08:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:18:33 Manifest gespeichert (woerter)
+- 08:18:33 sync-files:db
+- 08:18:33 delete-item:db
+- 08:18:33 delete-item:set
+- 08:18:33 delete-item:set
+- 08:18:33 ID umbenannt (woerter): lamm → schaf
+- 08:18:33 id-rename:set
+- 08:18:34 Name geändert (woerter) [loeschen]
+- 08:18:34 name-history:write
+- 10:03:13 sync-files:db
+- 10:03:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wyXd1M/data/import_Wörter/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wyXd1M/data/wörter/images/a/apfel.jpg
+- 10:03:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wyXd1M/data/import_Wörter/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wyXd1M/data/wörter/sounds/a/apfel.mp3
+- 10:03:13 sync-files:db
+- 10:03:13 sync-files:db
+- 10:03:13 delete-item:db
+- 10:03:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wyXd1M/data/import_Wörter/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wyXd1M/data/wörter/images/b/becher.jpg
+- 10:03:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wyXd1M/data/import_Wörter/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wyXd1M/data/wörter/sounds/b/becher.mp3
+- 10:03:13 sync-files:db
+- 10:03:13 Datenbank gespeichert (woerter)
+- 10:03:13 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:03:13 Manifest gespeichert (woerter)
+- 10:03:13 sync-files:db
+- 10:03:13 delete-item:db
+- 10:03:13 delete-item:set
+- 10:03:13 delete-item:set
+- 10:03:14 Datenbank gespeichert (woerter)
+- 10:03:14 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 10:03:14 Manifest gespeichert (woerter)
+- 10:03:14 Datenbank gespeichert (woerter)
+- 10:03:14 save-all-data:set-archived
+- 10:03:14 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:03:14 Manifest gespeichert (woerter)
+- 10:03:14 Datenbank gespeichert (woerter)
+- 10:03:14 save-all-data:set-archived
+- 10:03:14 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 10:03:14 Manifest gespeichert (woerter)
+- 10:03:14 Datenbank gespeichert (saetze)
+- 10:03:14 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 10:03:14 Manifest gespeichert (saetze)
+- 10:03:15 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 10:03:15 name-history:write
+- 10:03:15 name-undo
+- 10:03:15 name-history:write
+- 10:03:15 name-redo
+- 10:03:15 name-history:write
+- 10:03:15 Datenbank gespeichert (woerter)
+- 10:03:15 save-all-data:set-rename
+- 10:03:15 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 10:03:15 Manifest gespeichert (woerter)
+- 10:03:15 Datenbank gespeichert (woerter)
+- 10:03:15 save-all-data:set-archived
+- 10:03:15 Manifest gespeichert (woerter)
+- 10:03:16 ID umbenannt (woerter): lamm → schaf
+- 10:03:16 id-rename:set
+- 10:03:16 Name geändert (woerter) [loeschen]
+- 10:03:16 name-history:write
+- 10:47:11 sync-files:db
+- 10:47:11 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2a8KAp/data/import_Wörter/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2a8KAp/data/wörter/images/a/apfel.jpg
+- 10:47:11 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2a8KAp/data/import_Wörter/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2a8KAp/data/wörter/sounds/a/apfel.mp3
+- 10:47:11 sync-files:db
+- 10:47:11 sync-files:db
+- 10:47:11 delete-item:db
+- 10:47:11 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2a8KAp/data/import_Wörter/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2a8KAp/data/wörter/images/b/becher.jpg
+- 10:47:11 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2a8KAp/data/import_Wörter/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2a8KAp/data/wörter/sounds/b/becher.mp3
+- 10:47:11 sync-files:db
+- 10:47:11 Datenbank gespeichert (woerter)
+- 10:47:11 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 10:47:11 Manifest gespeichert (woerter)
+- 10:47:11 Datenbank gespeichert (woerter)
+- 10:47:11 save-all-data:set-archived
+- 10:47:11 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:47:11 Manifest gespeichert (woerter)
+- 10:47:11 Datenbank gespeichert (woerter)
+- 10:47:11 save-all-data:set-archived
+- 10:47:12 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 10:47:12 Manifest gespeichert (woerter)
+- 10:47:12 Datenbank gespeichert (saetze)
+- 10:47:12 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 10:47:12 Manifest gespeichert (saetze)
+- 10:47:12 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 10:47:12 name-history:write
+- 10:47:12 name-undo
+- 10:47:12 name-history:write
+- 10:47:12 name-redo
+- 10:47:12 name-history:write
+- 10:47:12 Datenbank gespeichert (woerter)
+- 10:47:12 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:47:12 Manifest gespeichert (woerter)
+- 10:47:12 sync-files:db
+- 10:47:12 delete-item:db
+- 10:47:12 delete-item:set
+- 10:47:12 delete-item:set
+- 10:47:13 Datenbank gespeichert (woerter)
+- 10:47:13 save-all-data:set-rename
+- 10:47:13 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 10:47:13 Manifest gespeichert (woerter)
+- 10:47:13 Datenbank gespeichert (woerter)
+- 10:47:13 save-all-data:set-archived
+- 10:47:13 Manifest gespeichert (woerter)
+- 10:47:13 ID umbenannt (woerter): lamm → schaf
+- 10:47:13 id-rename:set
+- 10:47:14 Name geändert (woerter) [loeschen]
+- 10:47:14 name-history:write
+- 11:01:41 sync-files:db
+- 11:01:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fwRmBV/data/import_Wörter/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fwRmBV/data/wörter/images/a/apfel.jpg
+- 11:01:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fwRmBV/data/import_Wörter/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fwRmBV/data/wörter/sounds/a/apfel.mp3
+- 11:01:41 sync-files:db
+- 11:01:41 sync-files:db
+- 11:01:41 delete-item:db
+- 11:01:42 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fwRmBV/data/import_Wörter/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fwRmBV/data/wörter/images/b/becher.jpg
+- 11:01:42 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fwRmBV/data/import_Wörter/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fwRmBV/data/wörter/sounds/b/becher.mp3
+- 11:01:42 sync-files:db
+- 11:01:42 Datenbank gespeichert (woerter)
+- 11:01:42 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 11:01:42 Manifest gespeichert (woerter)
+- 11:01:42 Datenbank gespeichert (woerter)
+- 11:01:42 save-all-data:set-archived
+- 11:01:42 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:01:42 Manifest gespeichert (woerter)
+- 11:01:42 Datenbank gespeichert (woerter)
+- 11:01:42 save-all-data:set-archived
+- 11:01:42 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 11:01:42 Manifest gespeichert (woerter)
+- 11:01:42 Datenbank gespeichert (saetze)
+- 11:01:42 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 11:01:42 Manifest gespeichert (saetze)
+- 11:01:42 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 11:01:43 name-history:write
+- 11:01:43 name-undo
+- 11:01:43 name-history:write
+- 11:01:43 name-redo
+- 11:01:43 name-history:write
+- 11:01:43 ID umbenannt (woerter): lamm → schaf
+- 11:01:43 id-rename:set
+- 11:01:43 Datenbank gespeichert (woerter)
+- 11:01:43 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:01:43 Manifest gespeichert (woerter)
+- 11:01:43 sync-files:db
+- 11:01:43 delete-item:db
+- 11:01:43 delete-item:set
+- 11:01:43 delete-item:set
+- 11:01:44 Datenbank gespeichert (woerter)
+- 11:01:44 save-all-data:set-rename
+- 11:01:44 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 11:01:44 Manifest gespeichert (woerter)
+- 11:01:44 Datenbank gespeichert (woerter)
+- 11:01:44 save-all-data:set-archived
+- 11:01:44 Manifest gespeichert (woerter)
+- 11:01:45 Name geändert (woerter) [loeschen]
+- 11:01:45 name-history:write
+- 11:03:41 sync-files:db
+- 11:03:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-jKAq3C/data/import_Wörter/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-jKAq3C/data/wörter/images/a/apfel.jpg
+- 11:03:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-jKAq3C/data/import_Wörter/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-jKAq3C/data/wörter/sounds/a/apfel.mp3
+- 11:03:41 sync-files:db
+- 11:03:41 sync-files:db
+- 11:03:41 delete-item:db
+- 11:03:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-jKAq3C/data/import_Wörter/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-jKAq3C/data/wörter/images/b/becher.jpg
+- 11:03:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-jKAq3C/data/import_Wörter/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-jKAq3C/data/wörter/sounds/b/becher.mp3
+- 11:03:41 sync-files:db
+- 11:03:41 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 11:03:41 name-history:write
+- 11:03:41 name-undo
+- 11:03:41 name-history:write
+- 11:03:41 name-redo
+- 11:03:41 name-history:write
+- 11:03:42 Datenbank gespeichert (woerter)
+- 11:03:42 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 11:03:42 Manifest gespeichert (woerter)
+- 11:03:42 Datenbank gespeichert (woerter)
+- 11:03:42 save-all-data:set-archived
+- 11:03:42 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:03:42 Manifest gespeichert (woerter)
+- 11:03:42 Datenbank gespeichert (woerter)
+- 11:03:42 save-all-data:set-archived
+- 11:03:42 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 11:03:42 Manifest gespeichert (woerter)
+- 11:03:42 Datenbank gespeichert (saetze)
+- 11:03:42 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 11:03:42 Manifest gespeichert (saetze)
+- 11:03:42 Datenbank gespeichert (woerter)
+- 11:03:42 save-all-data:set-rename
+- 11:03:42 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 11:03:42 Manifest gespeichert (woerter)
+- 11:03:42 Datenbank gespeichert (woerter)
+- 11:03:42 save-all-data:set-archived
+- 11:03:42 Manifest gespeichert (woerter)
+- 11:03:43 Datenbank gespeichert (woerter)
+- 11:03:43 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:03:43 Manifest gespeichert (woerter)
+- 11:03:43 sync-files:db
+- 11:03:43 delete-item:db
+- 11:03:43 delete-item:set
+- 11:03:43 delete-item:set
+- 11:03:44 ID umbenannt (woerter): lamm → schaf
+- 11:03:44 id-rename:set
+- 11:03:44 Name geändert (woerter) [loeschen]
+- 11:03:44 name-history:write
+- 13:34:28 Datenbank gespeichert (woerter)
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:34:28 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:34:28 Manifest gespeichert (woerter)
+- 13:34:49 Datenbank gespeichert (woerter)
+- 13:34:49 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:34:49 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:34:49 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 13:34:49 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:34:49 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:34:49 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:34:49 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:34:49 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:34:49 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:34:49 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:34:49 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:34:50 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:34:50 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:34:50 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:34:50 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:34:50 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:34:50 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:34:50 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:34:50 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:34:50 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:34:50 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:34:50 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:34:50 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:34:50 Manifest gespeichert (woerter)
+- 13:34:54 Datenbank gespeichert (woerter)
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:34:54 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:34:54 Manifest gespeichert (woerter)
+- 13:34:59 Datenbank gespeichert (woerter)
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:34:59 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:34:59 Manifest gespeichert (woerter)
+- 13:35:08 Datenbank gespeichert (woerter)
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:35:08 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:35:08 Manifest gespeichert (woerter)
+- 13:35:20 Datenbank gespeichert (woerter)
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:35:20 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:35:20 Manifest gespeichert (woerter)
+- 13:35:38 Datenbank gespeichert (woerter)
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:35:38 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:35:38 Manifest gespeichert (woerter)
+- 13:35:49 Datenbank gespeichert (woerter)
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:35:49 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:35:49 Manifest gespeichert (woerter)
+- 13:35:53 Datenbank gespeichert (woerter)
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:35:53 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:35:53 Manifest gespeichert (woerter)
+- 13:35:57 Datenbank gespeichert (woerter)
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:35:57 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:35:57 Manifest gespeichert (woerter)
+- 14:03:58 sync-files:db
+- 14:03:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cQZ9Vk/data/import_Wörter/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cQZ9Vk/data/wörter/images/a/apfel.jpg
+- 14:03:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cQZ9Vk/data/import_Wörter/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cQZ9Vk/data/wörter/sounds/a/apfel.mp3
+- 14:03:58 sync-files:db
+- 14:03:58 sync-files:db
+- 14:03:58 delete-item:db
+- 14:03:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cQZ9Vk/data/import_Wörter/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cQZ9Vk/data/wörter/images/b/becher.jpg
+- 14:03:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cQZ9Vk/data/import_Wörter/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cQZ9Vk/data/wörter/sounds/b/becher.mp3
+- 14:03:58 sync-files:db
+- 14:03:59 Datenbank gespeichert (woerter)
+- 14:03:59 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 14:03:59 Manifest gespeichert (woerter)
+- 14:03:59 Datenbank gespeichert (woerter)
+- 14:03:59 save-all-data:set-archived
+- 14:03:59 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:03:59 Manifest gespeichert (woerter)
+- 14:03:59 Datenbank gespeichert (woerter)
+- 14:03:59 save-all-data:set-archived
+- 14:03:59 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 14:03:59 Manifest gespeichert (woerter)
+- 14:03:59 Datenbank gespeichert (saetze)
+- 14:03:59 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 14:03:59 Manifest gespeichert (saetze)
+- 14:03:59 ID umbenannt (woerter): lamm → schaf
+- 14:03:59 id-rename:set
+- 14:04:00 Name geändert (woerter) [loeschen]
+- 14:04:00 name-history:write
+- 14:04:00 Datenbank gespeichert (woerter)
+- 14:04:00 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:04:00 Manifest gespeichert (woerter)
+- 14:04:00 sync-files:db
+- 14:04:00 delete-item:db
+- 14:04:00 delete-item:set
+- 14:04:00 delete-item:set
+- 14:04:01 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 14:04:01 name-history:write
+- 14:04:01 name-undo
+- 14:04:01 name-history:write
+- 14:04:01 name-redo
+- 14:04:01 name-history:write
+- 14:04:01 Datenbank gespeichert (woerter)
+- 14:04:01 save-all-data:set-rename
+- 14:04:01 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 14:04:01 Manifest gespeichert (woerter)
+- 14:04:01 Datenbank gespeichert (woerter)
+- 14:04:01 save-all-data:set-archived
+- 14:04:02 Manifest gespeichert (woerter)
+
+## 2025-09-18
+- 06:27:13 Datenbank gespeichert (woerter)
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 06:27:13 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 06:27:13 Manifest gespeichert (woerter)
+- 06:28:38 Datenbank gespeichert (woerter)
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 06:28:39 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 06:28:39 Manifest gespeichert (woerter)
+- 06:28:43 Datenbank gespeichert (woerter)
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 06:28:43 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 06:28:43 Manifest gespeichert (woerter)
+- 06:43:06 Datenbank gespeichert (woerter)
+- 06:43:06 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 06:43:06 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 06:43:06 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 06:43:06 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 06:43:06 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 06:43:06 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 06:43:06 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 06:43:06 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 06:43:06 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 06:43:06 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 06:43:07 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 06:43:07 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 06:43:07 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 06:43:07 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 06:43:07 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 06:43:07 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 06:43:07 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 06:43:07 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 06:43:07 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 06:43:07 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 06:43:07 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 06:43:07 Manifest gespeichert (woerter)
+- 06:50:46 Name geändert (woerter) [loeschen]
+- 06:50:46 name-history:write
+- 06:50:46 sync-files:db
+- 06:50:46 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FIm5bM/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FIm5bM/data/wörter/images/a/apfel.jpg
+- 06:50:46 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FIm5bM/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FIm5bM/data/wörter/sounds/a/apfel.mp3
+- 06:50:46 sync-files:db
+- 06:50:46 sync-files:db
+- 06:50:46 delete-item:db
+- 06:50:47 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FIm5bM/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FIm5bM/data/wörter/images/b/becher.jpg
+- 06:50:47 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FIm5bM/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FIm5bM/data/wörter/sounds/b/becher.mp3
+- 06:50:47 sync-files:db
+- 06:50:47 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 06:50:47 name-history:write
+- 06:50:48 name-undo
+- 06:50:48 name-history:write
+- 06:50:48 name-redo
+- 06:50:48 name-history:write
+- 06:50:49 Datenbank gespeichert (woerter)
+- 06:50:49 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 06:50:49 Manifest gespeichert (woerter)
+- 06:50:49 Datenbank gespeichert (woerter)
+- 06:50:49 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:50:49 Manifest gespeichert (woerter)
+- 06:50:49 Datenbank gespeichert (woerter)
+- 06:50:49 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 06:50:49 Manifest gespeichert (woerter)
+- 06:50:49 Datenbank gespeichert (saetze)
+- 06:50:49 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 06:50:49 Manifest gespeichert (saetze)
+- 06:50:49 Datenbank gespeichert (woerter)
+- 06:50:49 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:50:49 Manifest gespeichert (woerter)
+- 06:50:49 sync-files:manifest
+- 06:50:49 sync-files:db
+- 06:50:49 delete-item:db
+- 06:50:49 delete-item:set
+- 06:50:49 delete-item:set
+- 06:50:50 ID umbenannt (woerter): lamm → schaf
+- 06:50:50 id-rename:set
+- 06:55:24 Name geändert (woerter) [loeschen]
+- 06:55:24 name-history:write
+- 06:55:25 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 06:55:25 name-history:write
+- 06:55:25 name-undo
+- 06:55:25 name-history:write
+- 06:55:25 name-redo
+- 06:55:25 name-history:write
+- 06:55:25 Datenbank gespeichert (woerter)
+- 06:55:25 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 06:55:25 Manifest gespeichert (woerter)
+- 06:55:25 Datenbank gespeichert (woerter)
+- 06:55:25 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:55:25 Manifest gespeichert (woerter)
+- 06:55:25 Datenbank gespeichert (woerter)
+- 06:55:25 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 06:55:25 Manifest gespeichert (woerter)
+- 06:55:25 Datenbank gespeichert (saetze)
+- 06:55:25 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 06:55:25 Manifest gespeichert (saetze)
+- 06:55:26 sync-files:db
+- 06:55:26 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-GlBTsL/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-GlBTsL/data/wörter/images/a/apfel.jpg
+- 06:55:26 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-GlBTsL/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-GlBTsL/data/wörter/sounds/a/apfel.mp3
+- 06:55:26 sync-files:db
+- 06:55:26 sync-files:db
+- 06:55:26 delete-item:db
+- 06:55:26 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-GlBTsL/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-GlBTsL/data/wörter/images/b/becher.jpg
+- 06:55:26 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-GlBTsL/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-GlBTsL/data/wörter/sounds/b/becher.mp3
+- 06:55:26 sync-files:db
+- 06:55:27 Datenbank gespeichert (woerter)
+- 06:55:27 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:55:27 Manifest gespeichert (woerter)
+- 06:55:27 sync-files:manifest
+- 06:55:27 sync-files:db
+- 06:55:27 delete-item:db
+- 06:55:27 delete-item:set
+- 06:55:27 delete-item:set
+- 06:55:27 ID umbenannt (woerter): lamm → schaf
+- 06:55:27 id-rename:set
+- 07:06:34 Datenbank gespeichert (woerter)
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:06:34 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:06:34 Manifest gespeichert (woerter)
+- 07:06:40 Datenbank gespeichert (woerter)
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:06:40 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:06:40 Manifest gespeichert (woerter)
+- 07:06:49 Datenbank gespeichert (woerter)
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:06:49 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:06:49 Manifest gespeichert (woerter)
+- 07:06:52 Datenbank gespeichert (woerter)
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:06:52 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:06:52 Manifest gespeichert (woerter)
+- 07:06:58 Datenbank gespeichert (woerter)
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:06:58 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:06:58 Manifest gespeichert (woerter)
+- 07:07:03 Datenbank gespeichert (woerter)
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:07:03 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:07:03 Manifest gespeichert (woerter)
+- 07:07:09 Datenbank gespeichert (woerter)
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:07:09 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:07:09 Manifest gespeichert (woerter)
+- 07:07:19 Datenbank gespeichert (woerter)
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:07:19 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:07:19 Manifest gespeichert (woerter)
+- 07:24:49 Datenbank gespeichert (woerter)
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:24:49 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:24:49 Manifest gespeichert (woerter)
+- 07:25:06 Datenbank gespeichert (woerter)
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:25:06 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:25:06 Manifest gespeichert (woerter)
+- 07:25:08 Datenbank gespeichert (woerter)
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:25:08 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:25:08 Manifest gespeichert (woerter)
+- 07:25:14 Datenbank gespeichert (woerter)
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:25:14 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:25:14 Manifest gespeichert (woerter)
+- 07:25:27 Datenbank gespeichert (woerter)
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:25:27 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:25:28 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:25:28 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:25:28 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:25:28 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:25:28 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:25:28 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:25:28 Manifest gespeichert (woerter)
+- 07:25:30 Datenbank gespeichert (woerter)
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:25:30 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:25:30 Manifest gespeichert (woerter)
+- 07:25:33 Datenbank gespeichert (woerter)
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:25:33 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:25:33 Manifest gespeichert (woerter)
+- 07:25:35 Datenbank gespeichert (woerter)
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:25:35 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:25:35 Manifest gespeichert (woerter)
+- 07:25:37 Datenbank gespeichert (woerter)
+- 07:25:37 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:25:37 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:25:37 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:25:37 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:25:37 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:25:37 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:25:38 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:25:38 Manifest gespeichert (woerter)
+- 07:25:41 Datenbank gespeichert (woerter)
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:25:41 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:25:41 Manifest gespeichert (woerter)
+- 07:25:43 Datenbank gespeichert (woerter)
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:25:43 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:25:43 Manifest gespeichert (woerter)
+- 07:25:46 Datenbank gespeichert (woerter)
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:25:46 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:25:46 Manifest gespeichert (woerter)
+- 07:25:48 Datenbank gespeichert (woerter)
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:25:48 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:25:48 Manifest gespeichert (woerter)
+- 07:26:24 Datenbank gespeichert (woerter)
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:26:24 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:26:24 Manifest gespeichert (woerter)
+- 07:26:28 Datenbank gespeichert (woerter)
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:26:28 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:26:28 Manifest gespeichert (woerter)
+- 07:26:32 Datenbank gespeichert (woerter)
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:26:32 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:26:32 Manifest gespeichert (woerter)
+- 07:26:36 Datenbank gespeichert (woerter)
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:26:36 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:26:36 Manifest gespeichert (woerter)
+- 07:27:06 Datenbank gespeichert (woerter)
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:27:06 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:27:06 Manifest gespeichert (woerter)
+- 07:27:09 Datenbank gespeichert (woerter)
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:27:09 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:27:09 Manifest gespeichert (woerter)
+- 07:27:12 Datenbank gespeichert (woerter)
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:27:12 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:27:12 Manifest gespeichert (woerter)
+- 07:27:24 Datenbank gespeichert (woerter)
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:27:24 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:27:24 Manifest gespeichert (woerter)
+- 07:27:40 Datenbank gespeichert (woerter)
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:27:40 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:27:40 Manifest gespeichert (woerter)
+- 07:27:53 Datenbank gespeichert (woerter)
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:27:53 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:27:53 Manifest gespeichert (woerter)
+- 07:28:00 Datenbank gespeichert (woerter)
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:28:00 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:28:00 Manifest gespeichert (woerter)
+- 07:28:06 Datenbank gespeichert (woerter)
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:28:06 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:28:06 Manifest gespeichert (woerter)
+- 07:28:11 Datenbank gespeichert (woerter)
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:28:11 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:28:11 Manifest gespeichert (woerter)
+- 07:28:16 Datenbank gespeichert (woerter)
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 07:28:16 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 07:28:16 Manifest gespeichert (woerter)
+- 07:37:51 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Buntstifte.mp3 -> data/wörter/sounds/b/Buntstifte.mp3
+- 07:37:51 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Handschuhe.mp3 -> data/wörter/sounds/h/Handschuhe.mp3
+- 07:37:51 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Waschmaschine.mp3 -> data/wörter/sounds/w/Waschmaschine.mp3
+- 07:37:51 sync-files:manifest
+- 07:37:51 sync-files:manifest
+- 07:37:51 sync-files:db
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Betonmischer.mp3 -> data/wörter/sounds/b/Betonmischer.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Buchstaben.mp3 -> data/wörter/sounds/b/Buchstaben.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Dreieck .mp3 -> data/wörter/sounds/d/Dreieck .mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Feuerlöscher.mp3 -> data/wörter/sounds/f/Feuerlöscher.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Fische.mp3 -> data/wörter/sounds/f/Fische.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Frösche.mp3 -> data/wörter/sounds/f/Frösche.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Geschirr.mp3 -> data/wörter/sounds/g/Geschirr.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Gummistiefel.mp3 -> data/wörter/sounds/g/Gummistiefel.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Hubschrauber.mp3 -> data/wörter/sounds/h/Hubschrauber.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Ketchup.mp3 -> data/wörter/sounds/k/Ketchup.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Kuscheltiere.mp3 -> data/wörter/sounds/k/Kuscheltiere.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Kühlschrank.mp3 -> data/wörter/sounds/k/Kühlschrank.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Löschen.mp3 -> data/wörter/sounds/l/Löschen.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Meerschweinchen.mp3 -> data/wörter/sounds/m/Meerschweinchen.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Menschen.mp3 -> data/wörter/sounds/m/Menschen.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Regenschirm.mp3 -> data/wörter/sounds/r/Regenschirm.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Rollschuhe.mp3 -> data/wörter/sounds/r/Rollschuhe.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/rot.mp3 -> data/wörter/sounds/r/rot.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Saal.mp3 -> data/wörter/sounds/s/Saal.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Sack.mp3 -> data/wörter/sounds/s/Sack.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Sahne.mp3 -> data/wörter/sounds/s/Sahne.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Salz.mp3 -> data/wörter/sounds/s/Salz.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Sandwich.mp3 -> data/wörter/sounds/s/Sandwich.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Sattel.mp3 -> data/wörter/sounds/s/Sattel.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Satz.mp3 -> data/wörter/sounds/s/Satz.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/sauer.mp3 -> data/wörter/sounds/s/sauer.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/See.mp3 -> data/wörter/sounds/s/See.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Sieben.mp3 -> data/wörter/sounds/s/Sieben.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/sinken.mp3 -> data/wörter/sounds/s/sinken.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Strich.mp3 -> data/wörter/sounds/s/Strich.mp3
+- 09:07:47 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/suchen.mp3 -> data/wörter/sounds/s/suchen.mp3
+- 09:07:48 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Supermarkt.mp3 -> data/wörter/sounds/s/Supermarkt.mp3
+- 09:07:48 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Sushi.mp3 -> data/wörter/sounds/s/Sushi.mp3
+- 09:07:48 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Taschenlampe .mp3 -> data/wörter/sounds/t/Taschenlampe .mp3
+- 09:07:48 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Waschbecken.mp3 -> data/wörter/sounds/w/Waschbecken.mp3
+- 09:07:48 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Wäsche.mp3 -> data/wörter/sounds/w/Wäsche.mp3
+- 09:07:48 sync-files:manifest
+- 09:07:48 sync-files:manifest
+- 09:07:48 sync-files:db
+- 09:38:59 Datenbank gespeichert (woerter)
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 09:38:59 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 09:38:59 Manifest gespeichert (woerter)
+- 09:39:16 Datenbank gespeichert (woerter)
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 09:39:16 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 09:39:16 Manifest gespeichert (woerter)
+- 09:39:26 Datenbank gespeichert (woerter)
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 09:39:26 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 09:39:26 Manifest gespeichert (woerter)
+- 09:39:32 Datenbank gespeichert (woerter)
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 09:39:32 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 09:39:32 Manifest gespeichert (woerter)
+- 09:39:46 Datenbank gespeichert (woerter)
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_r_final.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 09:39:46 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 09:39:46 Manifest gespeichert (woerter)
+- 09:51:01 Name geändert (woerter) [loeschen]
+- 09:51:01 name-history:write
+- 09:51:02 Datenbank gespeichert (woerter)
+- 09:51:02 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:51:02 Manifest gespeichert (woerter)
+- 09:51:02 sync-files:manifest
+- 09:51:02 sync-files:db
+- 09:51:02 delete-item:db
+- 09:51:02 delete-item:set
+- 09:51:02 delete-item:set
+- 09:51:03 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 09:51:03 name-history:write
+- 09:51:03 name-undo
+- 09:51:03 name-history:write
+- 09:51:03 name-redo
+- 09:51:03 name-history:write
+- 09:51:03 Datenbank gespeichert (woerter)
+- 09:51:03 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 09:51:03 Manifest gespeichert (woerter)
+- 09:51:03 Datenbank gespeichert (woerter)
+- 09:51:03 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:51:03 Manifest gespeichert (woerter)
+- 09:51:03 Datenbank gespeichert (woerter)
+- 09:51:03 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 09:51:03 Manifest gespeichert (woerter)
+- 09:51:03 Datenbank gespeichert (saetze)
+- 09:51:03 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 09:51:03 Manifest gespeichert (saetze)
+- 09:51:04 sync-files:db
+- 09:51:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EQGRJm/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EQGRJm/data/wörter/images/a/apfel.jpg
+- 09:51:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EQGRJm/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EQGRJm/data/wörter/sounds/a/apfel.mp3
+- 09:51:04 sync-files:db
+- 09:51:04 sync-files:db
+- 09:51:04 delete-item:db
+- 09:51:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EQGRJm/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EQGRJm/data/wörter/images/b/becher.jpg
+- 09:51:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EQGRJm/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EQGRJm/data/wörter/sounds/b/becher.mp3
+- 09:51:04 sync-files:db
+- 09:51:04 ID umbenannt (woerter): lamm → schaf
+- 09:51:04 id-rename:set
+- 10:17:39 Name geändert (woerter) [loeschen]
+- 10:17:39 name-history:write
+- 10:17:39 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 10:17:39 name-history:write
+- 10:17:39 name-undo
+- 10:17:39 name-history:write
+- 10:17:39 name-redo
+- 10:17:39 name-history:write
+- 10:17:39 ID umbenannt (woerter): lamm → schaf
+- 10:17:39 id-rename:set
+- 10:17:40 Datenbank gespeichert (woerter)
+- 10:17:40 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:17:40 Manifest gespeichert (woerter)
+- 10:17:40 sync-files:db
+- 10:17:40 delete-item:db
+- 10:17:40 delete-item:set
+- 10:17:40 delete-item:set
+- 10:17:41 sync-files:db
+- 10:17:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-11kP7K/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-11kP7K/data/wörter/images/a/apfel.jpg
+- 10:17:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-11kP7K/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-11kP7K/data/wörter/sounds/a/apfel.mp3
+- 10:17:41 sync-files:db
+- 10:17:41 sync-files:db
+- 10:17:41 delete-item:db
+- 10:17:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-11kP7K/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-11kP7K/data/wörter/images/b/becher.jpg
+- 10:17:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-11kP7K/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-11kP7K/data/wörter/sounds/b/becher.mp3
+- 10:17:41 sync-files:db
+- 10:17:41 Datenbank gespeichert (woerter)
+- 10:17:41 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 10:17:41 Manifest gespeichert (woerter)
+- 10:17:41 Datenbank gespeichert (woerter)
+- 10:17:41 save-all-data:set-archived
+- 10:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:17:42 Manifest gespeichert (woerter)
+- 10:17:42 Datenbank gespeichert (woerter)
+- 10:17:42 save-all-data:set-archived
+- 10:17:42 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 10:17:42 Manifest gespeichert (woerter)
+- 10:17:42 Datenbank gespeichert (saetze)
+- 10:17:42 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 10:17:42 Manifest gespeichert (saetze)
+- 10:21:13 Name geändert (woerter) [loeschen]
+- 10:21:13 name-history:write
+- 10:21:13 Datenbank gespeichert (woerter)
+- 10:21:13 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 10:21:13 Manifest gespeichert (woerter)
+- 10:21:13 Datenbank gespeichert (woerter)
+- 10:21:13 save-all-data:set-archived
+- 10:21:13 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:21:13 Manifest gespeichert (woerter)
+- 10:21:13 Datenbank gespeichert (woerter)
+- 10:21:13 save-all-data:set-archived
+- 10:21:13 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 10:21:13 Manifest gespeichert (woerter)
+- 10:21:13 Datenbank gespeichert (saetze)
+- 10:21:13 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 10:21:13 Manifest gespeichert (saetze)
+- 10:21:14 sync-files:db
+- 10:21:14 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cmNpn0/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cmNpn0/data/wörter/images/a/apfel.jpg
+- 10:21:14 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cmNpn0/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cmNpn0/data/wörter/sounds/a/apfel.mp3
+- 10:21:14 sync-files:db
+- 10:21:14 sync-files:db
+- 10:21:14 delete-item:db
+- 10:21:14 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cmNpn0/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cmNpn0/data/wörter/images/b/becher.jpg
+- 10:21:14 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cmNpn0/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-cmNpn0/data/wörter/sounds/b/becher.mp3
+- 10:21:14 sync-files:db
+- 10:21:14 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 10:21:14 name-history:write
+- 10:21:14 name-undo
+- 10:21:14 name-history:write
+- 10:21:14 name-redo
+- 10:21:14 name-history:write
+- 10:21:15 Datenbank gespeichert (woerter)
+- 10:21:15 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:21:15 Manifest gespeichert (woerter)
+- 10:21:15 sync-files:db
+- 10:21:15 delete-item:db
+- 10:21:15 delete-item:set
+- 10:21:15 delete-item:set
+- 10:21:15 ID umbenannt (woerter): lamm → schaf
+- 10:21:15 id-rename:set
+- 10:22:53 Datenbank gespeichert (woerter)
+- 10:22:53 save-all-data:set-rename
+- 10:22:53 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 10:22:53 Manifest gespeichert (woerter)
+- 10:22:53 Datenbank gespeichert (woerter)
+- 10:22:53 save-all-data:set-archived
+- 10:22:53 Manifest gespeichert (woerter)
+- 10:22:54 Name geändert (woerter) [loeschen]
+- 10:22:54 name-history:write
+- 10:22:54 sync-files:db
+- 10:22:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-m1nkJy/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-m1nkJy/data/wörter/images/a/apfel.jpg
+- 10:22:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-m1nkJy/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-m1nkJy/data/wörter/sounds/a/apfel.mp3
+- 10:22:54 sync-files:db
+- 10:22:54 sync-files:db
+- 10:22:54 delete-item:db
+- 10:22:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-m1nkJy/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-m1nkJy/data/wörter/images/b/becher.jpg
+- 10:22:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-m1nkJy/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-m1nkJy/data/wörter/sounds/b/becher.mp3
+- 10:22:54 sync-files:db
+- 10:22:55 Datenbank gespeichert (woerter)
+- 10:22:55 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 10:22:55 Manifest gespeichert (woerter)
+- 10:22:55 Datenbank gespeichert (woerter)
+- 10:22:55 save-all-data:set-archived
+- 10:22:55 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:22:55 Manifest gespeichert (woerter)
+- 10:22:55 Datenbank gespeichert (woerter)
+- 10:22:55 save-all-data:set-archived
+- 10:22:55 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 10:22:55 Manifest gespeichert (woerter)
+- 10:22:55 Datenbank gespeichert (saetze)
+- 10:22:55 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 10:22:55 Manifest gespeichert (saetze)
+- 10:22:55 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 10:22:55 name-history:write
+- 10:22:55 name-undo
+- 10:22:55 name-history:write
+- 10:22:55 name-redo
+- 10:22:55 name-history:write
+- 10:22:56 Datenbank gespeichert (woerter)
+- 10:22:56 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:22:56 Manifest gespeichert (woerter)
+- 10:22:56 sync-files:db
+- 10:22:56 delete-item:db
+- 10:22:56 delete-item:set
+- 10:22:56 delete-item:set
+- 10:22:56 ID umbenannt (woerter): lamm → schaf
+- 10:22:56 id-rename:set
+- 10:23:53 Datenbank gespeichert (woerter)
+- 10:23:53 save-all-data:set-rename
+- 10:23:53 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 10:23:54 Manifest gespeichert (woerter)
+- 10:23:54 Datenbank gespeichert (woerter)
+- 10:23:54 save-all-data:set-archived
+- 10:23:54 Manifest gespeichert (woerter)
+- 10:38:53 Datenbank gespeichert (woerter)
+- 10:38:53 save-all-data:set-rename
+- 10:38:53 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 10:38:53 Manifest gespeichert (woerter)
+- 10:38:53 Datenbank gespeichert (woerter)
+- 10:38:53 save-all-data:set-archived
+- 10:38:53 Manifest gespeichert (woerter)
+- 10:38:53 sync-files:db
+- 10:38:53 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-zRWGSv/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-zRWGSv/data/wörter/images/a/apfel.jpg
+- 10:38:53 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-zRWGSv/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-zRWGSv/data/wörter/sounds/a/apfel.mp3
+- 10:38:53 sync-files:db
+- 10:38:53 sync-files:db
+- 10:38:54 delete-item:db
+- 10:38:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-zRWGSv/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-zRWGSv/data/wörter/images/b/becher.jpg
+- 10:38:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-zRWGSv/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-zRWGSv/data/wörter/sounds/b/becher.mp3
+- 10:38:54 sync-files:db
+- 10:38:54 Name geändert (woerter) [loeschen]
+- 10:38:54 name-history:write
+- 10:38:55 Datenbank gespeichert (woerter)
+- 10:38:55 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:38:55 Manifest gespeichert (woerter)
+- 10:38:55 sync-files:db
+- 10:38:55 delete-item:db
+- 10:38:55 delete-item:set
+- 10:38:55 delete-item:set
+- 10:38:55 Datenbank gespeichert (woerter)
+- 10:38:55 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 10:38:55 Manifest gespeichert (woerter)
+- 10:38:55 Datenbank gespeichert (woerter)
+- 10:38:55 save-all-data:set-archived
+- 10:38:55 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:38:55 Manifest gespeichert (woerter)
+- 10:38:55 Datenbank gespeichert (woerter)
+- 10:38:55 save-all-data:set-archived
+- 10:38:55 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 10:38:55 Manifest gespeichert (woerter)
+- 10:38:55 Datenbank gespeichert (saetze)
+- 10:38:55 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 10:38:55 Manifest gespeichert (saetze)
+- 10:38:56 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 10:38:56 name-history:write
+- 10:38:56 name-undo
+- 10:38:56 name-history:write
+- 10:38:56 name-redo
+- 10:38:56 name-history:write
+- 10:38:56 ID umbenannt (woerter): lamm → schaf
+- 10:38:56 id-rename:set
+- 10:41:42 Datenbank gespeichert (woerter)
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 10:41:42 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 10:41:42 Manifest gespeichert (woerter)
+- 10:47:03 Datenbank gespeichert (woerter)
+- 10:47:03 save-all-data:set-rename
+- 10:47:03 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 10:47:03 Manifest gespeichert (woerter)
+- 10:47:03 Datenbank gespeichert (woerter)
+- 10:47:03 save-all-data:set-archived
+- 10:47:03 Manifest gespeichert (woerter)
+- 10:47:04 sync-files:db
+- 10:47:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-z9mPTt/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-z9mPTt/data/wörter/images/a/apfel.jpg
+- 10:47:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-z9mPTt/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-z9mPTt/data/wörter/sounds/a/apfel.mp3
+- 10:47:04 sync-files:db
+- 10:47:04 sync-files:db
+- 10:47:04 delete-item:db
+- 10:47:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-z9mPTt/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-z9mPTt/data/wörter/images/b/becher.jpg
+- 10:47:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-z9mPTt/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-z9mPTt/data/wörter/sounds/b/becher.mp3
+- 10:47:04 sync-files:db
+- 10:47:04 Name geändert (woerter) [loeschen]
+- 10:47:04 name-history:write
+- 10:47:06 Datenbank gespeichert (woerter)
+- 10:47:06 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 10:47:06 Manifest gespeichert (woerter)
+- 10:47:06 Datenbank gespeichert (woerter)
+- 10:47:06 save-all-data:set-archived
+- 10:47:06 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:47:06 Manifest gespeichert (woerter)
+- 10:47:06 Datenbank gespeichert (woerter)
+- 10:47:06 save-all-data:set-archived
+- 10:47:06 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 10:47:06 Manifest gespeichert (woerter)
+- 10:47:06 Datenbank gespeichert (saetze)
+- 10:47:06 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 10:47:06 Manifest gespeichert (saetze)
+- 10:47:07 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 10:47:07 name-history:write
+- 10:47:07 name-undo
+- 10:47:07 name-history:write
+- 10:47:07 name-redo
+- 10:47:07 name-history:write
+- 10:47:08 Datenbank gespeichert (woerter)
+- 10:47:08 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:47:08 Manifest gespeichert (woerter)
+- 10:47:08 sync-files:db
+- 10:47:08 delete-item:db
+- 10:47:08 delete-item:set
+- 10:47:08 delete-item:set
+- 10:47:08 ID umbenannt (woerter): lamm → schaf
+- 10:47:08 id-rename:set
+- 10:54:37 Datenbank gespeichert (woerter)
+- 10:54:37 save-all-data:set-rename
+- 10:54:37 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 10:54:37 Manifest gespeichert (woerter)
+- 10:54:37 Datenbank gespeichert (woerter)
+- 10:54:37 save-all-data:set-archived
+- 10:54:37 Manifest gespeichert (woerter)
+- 10:54:37 Datenbank gespeichert (woerter)
+- 10:54:37 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 10:54:37 Manifest gespeichert (woerter)
+- 10:54:37 Datenbank gespeichert (woerter)
+- 10:54:37 save-all-data:set-archived
+- 10:54:37 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:54:37 Manifest gespeichert (woerter)
+- 10:54:37 Datenbank gespeichert (woerter)
+- 10:54:37 save-all-data:set-archived
+- 10:54:37 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 10:54:37 Manifest gespeichert (woerter)
+- 10:54:37 Datenbank gespeichert (saetze)
+- 10:54:37 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 10:54:37 Manifest gespeichert (saetze)
+- 10:54:38 sync-files:db
+- 10:54:38 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-X9mL2b/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-X9mL2b/data/wörter/images/a/apfel.jpg
+- 10:54:38 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-X9mL2b/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-X9mL2b/data/wörter/sounds/a/apfel.mp3
+- 10:54:38 sync-files:db
+- 10:54:38 sync-files:db
+- 10:54:38 delete-item:db
+- 10:54:38 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-X9mL2b/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-X9mL2b/data/wörter/images/b/becher.jpg
+- 10:54:38 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-X9mL2b/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-X9mL2b/data/wörter/sounds/b/becher.mp3
+- 10:54:38 sync-files:db
+- 10:54:38 Name geändert (woerter) [loeschen]
+- 10:54:38 name-history:write
+- 10:54:39 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 10:54:39 name-history:write
+- 10:54:39 name-undo
+- 10:54:39 name-history:write
+- 10:54:39 name-redo
+- 10:54:39 name-history:write
+- 10:54:39 Datenbank gespeichert (woerter)
+- 10:54:39 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:54:39 Manifest gespeichert (woerter)
+- 10:54:39 sync-files:db
+- 10:54:39 delete-item:db
+- 10:54:39 delete-item:set
+- 10:54:39 delete-item:set
+- 10:54:40 ID umbenannt (woerter): lamm → schaf
+- 10:54:40 id-rename:set
+- 10:58:59 Datenbank gespeichert (woerter)
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 10:58:59 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 10:58:59 Manifest gespeichert (woerter)
+- 11:00:25 Datenbank gespeichert (woerter)
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 11:00:25 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 11:00:25 Manifest gespeichert (woerter)
+- 11:01:16 Datenbank gespeichert (woerter)
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 11:01:16 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 11:01:16 Manifest gespeichert (woerter)
+- 11:01:30 Datenbank gespeichert (woerter)
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 11:01:30 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 11:01:30 Manifest gespeichert (woerter)
+- 11:06:20 Datenbank gespeichert (woerter)
+- 11:06:20 save-all-data:set-rename
+- 11:06:20 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 11:06:20 Manifest gespeichert (woerter)
+- 11:06:20 Datenbank gespeichert (woerter)
+- 11:06:20 save-all-data:set-archived
+- 11:06:20 Manifest gespeichert (woerter)
+- 11:06:20 Datenbank gespeichert (woerter)
+- 11:06:20 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 11:06:20 Manifest gespeichert (woerter)
+- 11:06:20 Datenbank gespeichert (woerter)
+- 11:06:20 save-all-data:set-archived
+- 11:06:20 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:06:20 Manifest gespeichert (woerter)
+- 11:06:20 Datenbank gespeichert (woerter)
+- 11:06:20 save-all-data:set-archived
+- 11:06:20 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 11:06:20 Manifest gespeichert (woerter)
+- 11:06:21 Datenbank gespeichert (saetze)
+- 11:06:21 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 11:06:21 Manifest gespeichert (saetze)
+- 11:06:21 sync-files:db
+- 11:06:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pU1dVo/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pU1dVo/data/wörter/images/a/apfel.jpg
+- 11:06:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pU1dVo/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pU1dVo/data/wörter/sounds/a/apfel.mp3
+- 11:06:21 sync-files:db
+- 11:06:21 sync-files:db
+- 11:06:21 delete-item:db
+- 11:06:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pU1dVo/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pU1dVo/data/wörter/images/b/becher.jpg
+- 11:06:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pU1dVo/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pU1dVo/data/wörter/sounds/b/becher.mp3
+- 11:06:21 sync-files:db
+- 11:06:22 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 11:06:22 name-history:write
+- 11:06:22 name-undo
+- 11:06:22 name-history:write
+- 11:06:22 name-redo
+- 11:06:22 name-history:write
+- 11:06:22 Name geändert (woerter) [loeschen]
+- 11:06:22 name-history:write
+- 11:06:23 Datenbank gespeichert (woerter)
+- 11:06:23 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:06:23 Manifest gespeichert (woerter)
+- 11:06:23 sync-files:db
+- 11:06:23 delete-item:db
+- 11:06:23 delete-item:set
+- 11:06:23 delete-item:set
+- 11:06:23 ID umbenannt (woerter): lamm → schaf
+- 11:06:23 id-rename:set
+- 11:18:38 Datenbank gespeichert (woerter)
+- 11:18:38 save-all-data:set-rename
+- 11:18:38 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 11:18:38 Manifest gespeichert (woerter)
+- 11:18:38 Datenbank gespeichert (woerter)
+- 11:18:38 save-all-data:set-archived
+- 11:18:38 Manifest gespeichert (woerter)
+- 11:18:39 Datenbank gespeichert (woerter)
+- 11:18:39 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 11:18:39 Manifest gespeichert (woerter)
+- 11:18:39 Datenbank gespeichert (woerter)
+- 11:18:39 save-all-data:set-archived
+- 11:18:39 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:18:39 Manifest gespeichert (woerter)
+- 11:18:39 Datenbank gespeichert (woerter)
+- 11:18:39 save-all-data:set-archived
+- 11:18:39 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 11:18:39 Manifest gespeichert (woerter)
+- 11:18:39 Datenbank gespeichert (saetze)
+- 11:18:39 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 11:18:39 Manifest gespeichert (saetze)
+- 11:18:39 sync-files:db
+- 11:18:39 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8xETTB/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8xETTB/data/wörter/images/a/apfel.jpg
+- 11:18:39 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8xETTB/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8xETTB/data/wörter/sounds/a/apfel.mp3
+- 11:18:39 sync-files:db
+- 11:18:39 sync-files:db
+- 11:18:39 delete-item:db
+- 11:18:39 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8xETTB/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8xETTB/data/wörter/images/b/becher.jpg
+- 11:18:39 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8xETTB/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8xETTB/data/wörter/sounds/b/becher.mp3
+- 11:18:39 sync-files:db
+- 11:18:40 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 11:18:40 name-history:write
+- 11:18:40 name-undo
+- 11:18:40 name-history:write
+- 11:18:40 name-redo
+- 11:18:40 name-history:write
+- 11:18:40 Datenbank gespeichert (woerter)
+- 11:18:40 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:18:40 Manifest gespeichert (woerter)
+- 11:18:40 sync-files:db
+- 11:18:40 delete-item:db
+- 11:18:40 delete-item:set
+- 11:18:40 delete-item:set
+- 11:18:41 Name geändert (woerter) [loeschen]
+- 11:18:41 name-history:write
+- 11:18:41 ID umbenannt (woerter): lamm → schaf
+- 11:18:41 id-rename:set
+- 11:23:32 Datenbank gespeichert (woerter)
+- 11:23:32 save-all-data:set-rename
+- 11:23:32 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 11:23:32 Manifest gespeichert (woerter)
+- 11:23:32 Datenbank gespeichert (woerter)
+- 11:23:32 save-all-data:set-archived
+- 11:23:32 Manifest gespeichert (woerter)
+- 11:23:33 sync-files:db
+- 11:23:33 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8h35L8/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8h35L8/data/wörter/images/a/apfel.jpg
+- 11:23:33 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8h35L8/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8h35L8/data/wörter/sounds/a/apfel.mp3
+- 11:23:33 sync-files:db
+- 11:23:33 sync-files:db
+- 11:23:33 delete-item:db
+- 11:23:33 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8h35L8/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8h35L8/data/wörter/images/b/becher.jpg
+- 11:23:33 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8h35L8/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-8h35L8/data/wörter/sounds/b/becher.mp3
+- 11:23:33 sync-files:db
+- 11:23:33 Datenbank gespeichert (woerter)
+- 11:23:33 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 11:23:33 Manifest gespeichert (woerter)
+- 11:23:33 Datenbank gespeichert (woerter)
+- 11:23:33 save-all-data:set-archived
+- 11:23:33 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:23:33 Manifest gespeichert (woerter)
+- 11:23:33 Datenbank gespeichert (woerter)
+- 11:23:33 save-all-data:set-archived
+- 11:23:33 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 11:23:33 Manifest gespeichert (woerter)
+- 11:23:33 Datenbank gespeichert (saetze)
+- 11:23:33 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 11:23:33 Manifest gespeichert (saetze)
+- 11:23:34 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 11:23:34 name-history:write
+- 11:23:34 name-undo
+- 11:23:34 name-history:write
+- 11:23:34 name-redo
+- 11:23:34 name-history:write
+- 11:23:34 Datenbank gespeichert (woerter)
+- 11:23:34 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:23:34 Manifest gespeichert (woerter)
+- 11:23:34 sync-files:db
+- 11:23:34 delete-item:db
+- 11:23:34 delete-item:set
+- 11:23:34 delete-item:set
+- 11:23:35 Name geändert (woerter) [loeschen]
+- 11:23:35 name-history:write
+- 11:23:35 ID umbenannt (woerter): lamm → schaf
+- 11:23:35 id-rename:set
+- 11:28:58 Datenbank gespeichert (woerter)
+- 11:28:59 save-all-data:set-rename
+- 11:28:59 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 11:28:59 Manifest gespeichert (woerter)
+- 11:28:59 Datenbank gespeichert (woerter)
+- 11:28:59 save-all-data:set-archived
+- 11:28:59 Manifest gespeichert (woerter)
+- 11:28:59 sync-files:db
+- 11:28:59 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-gETvTJ/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-gETvTJ/data/wörter/images/a/apfel.jpg
+- 11:28:59 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-gETvTJ/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-gETvTJ/data/wörter/sounds/a/apfel.mp3
+- 11:28:59 sync-files:db
+- 11:28:59 sync-files:db
+- 11:28:59 delete-item:db
+- 11:28:59 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-gETvTJ/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-gETvTJ/data/wörter/images/b/becher.jpg
+- 11:28:59 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-gETvTJ/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-gETvTJ/data/wörter/sounds/b/becher.mp3
+- 11:28:59 sync-files:db
+- 11:29:00 Datenbank gespeichert (woerter)
+- 11:29:00 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 11:29:00 Manifest gespeichert (woerter)
+- 11:29:00 Datenbank gespeichert (woerter)
+- 11:29:00 save-all-data:set-archived
+- 11:29:00 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:29:00 Manifest gespeichert (woerter)
+- 11:29:00 Datenbank gespeichert (woerter)
+- 11:29:00 save-all-data:set-archived
+- 11:29:00 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 11:29:00 Manifest gespeichert (woerter)
+- 11:29:00 Datenbank gespeichert (saetze)
+- 11:29:00 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 11:29:00 Manifest gespeichert (saetze)
+- 11:29:00 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 11:29:00 name-history:write
+- 11:29:00 name-undo
+- 11:29:00 name-history:write
+- 11:29:00 name-redo
+- 11:29:01 name-history:write
+- 11:29:01 Datenbank gespeichert (woerter)
+- 11:29:01 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:29:01 Manifest gespeichert (woerter)
+- 11:29:01 sync-files:db
+- 11:29:01 delete-item:db
+- 11:29:01 delete-item:set
+- 11:29:01 delete-item:set
+- 11:29:02 Name geändert (woerter) [loeschen]
+- 11:29:02 name-history:write
+- 11:29:02 ID umbenannt (woerter): lamm → schaf
+- 11:29:02 id-rename:set
+- 11:39:47 Datenbank gespeichert (woerter)
+- 11:39:47 save-all-data:set-rename
+- 11:39:47 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 11:39:47 Manifest gespeichert (woerter)
+- 11:39:47 Datenbank gespeichert (woerter)
+- 11:39:47 save-all-data:set-archived
+- 11:39:47 Manifest gespeichert (woerter)
+- 11:39:47 Datenbank gespeichert (woerter)
+- 11:39:47 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 11:39:47 Manifest gespeichert (woerter)
+- 11:39:47 Datenbank gespeichert (woerter)
+- 11:39:47 save-all-data:set-archived
+- 11:39:47 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:39:47 Manifest gespeichert (woerter)
+- 11:39:47 Datenbank gespeichert (woerter)
+- 11:39:47 save-all-data:set-archived
+- 11:39:47 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 11:39:47 Manifest gespeichert (woerter)
+- 11:39:47 Datenbank gespeichert (saetze)
+- 11:39:47 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 11:39:47 Manifest gespeichert (saetze)
+- 11:39:48 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 11:39:48 name-history:write
+- 11:39:48 name-undo
+- 11:39:48 name-history:write
+- 11:39:48 name-redo
+- 11:39:48 name-history:write
+- 11:39:48 Name geändert (woerter) [loeschen]
+- 11:39:48 name-history:write
+- 11:39:49 sync-files:db
+- 11:39:49 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZCA8DH/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZCA8DH/data/wörter/images/a/apfel.jpg
+- 11:39:49 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZCA8DH/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZCA8DH/data/wörter/sounds/a/apfel.mp3
+- 11:39:49 sync-files:db
+- 11:39:49 sync-files:db
+- 11:39:49 delete-item:db
+- 11:39:49 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZCA8DH/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZCA8DH/data/wörter/images/b/becher.jpg
+- 11:39:49 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZCA8DH/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZCA8DH/data/wörter/sounds/b/becher.mp3
+- 11:39:49 sync-files:db
+- 11:39:49 Datenbank gespeichert (woerter)
+- 11:39:49 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:39:49 Manifest gespeichert (woerter)
+- 11:39:49 sync-files:db
+- 11:39:49 delete-item:db
+- 11:39:49 delete-item:set
+- 11:39:49 delete-item:set
+- 11:39:50 ID umbenannt (woerter): lamm → schaf
+- 11:39:50 id-rename:set
+- 11:53:42 Datenbank gespeichert (woerter)
+- 11:53:42 save-all-data:set-rename
+- 11:53:42 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 11:53:42 Manifest gespeichert (woerter)
+- 11:53:42 Datenbank gespeichert (woerter)
+- 11:53:42 save-all-data:set-archived
+- 11:53:42 Manifest gespeichert (woerter)
+- 11:53:43 Datenbank gespeichert (woerter)
+- 11:53:43 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 11:53:43 Manifest gespeichert (woerter)
+- 11:53:43 Datenbank gespeichert (woerter)
+- 11:53:43 save-all-data:set-archived
+- 11:53:43 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:53:43 Manifest gespeichert (woerter)
+- 11:53:43 Datenbank gespeichert (woerter)
+- 11:53:43 save-all-data:set-archived
+- 11:53:43 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 11:53:43 Manifest gespeichert (woerter)
+- 11:53:43 Datenbank gespeichert (saetze)
+- 11:53:43 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 11:53:43 Manifest gespeichert (saetze)
+- 11:53:43 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 11:53:43 name-history:write
+- 11:53:43 name-undo
+- 11:53:43 name-history:write
+- 11:53:44 name-redo
+- 11:53:44 name-history:write
+- 11:53:44 sync-files:db
+- 11:53:44 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FuDDGe/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FuDDGe/data/wörter/images/a/apfel.jpg
+- 11:53:44 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FuDDGe/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FuDDGe/data/wörter/sounds/a/apfel.mp3
+- 11:53:44 sync-files:db
+- 11:53:44 sync-files:db
+- 11:53:44 delete-item:db
+- 11:53:44 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FuDDGe/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FuDDGe/data/wörter/images/b/becher.jpg
+- 11:53:44 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FuDDGe/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FuDDGe/data/wörter/sounds/b/becher.mp3
+- 11:53:44 sync-files:db
+- 11:53:44 Datenbank gespeichert (woerter)
+- 11:53:44 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 11:53:44 Manifest gespeichert (woerter)
+- 11:53:44 sync-files:db
+- 11:53:44 delete-item:db
+- 11:53:44 delete-item:set
+- 11:53:44 delete-item:set
+- 11:53:45 Name geändert (woerter) [loeschen]
+- 11:53:45 name-history:write
+- 11:53:45 ID umbenannt (woerter): lamm → schaf
+- 11:53:45 id-rename:set
+- 12:28:30 Datenbank gespeichert (woerter)
+- 12:28:30 save-all-data:set-rename
+- 12:28:30 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 12:28:30 Manifest gespeichert (woerter)
+- 12:28:30 Datenbank gespeichert (woerter)
+- 12:28:30 save-all-data:set-archived
+- 12:28:30 Manifest gespeichert (woerter)
+- 12:28:31 Datenbank gespeichert (woerter)
+- 12:28:31 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 12:28:31 Manifest gespeichert (woerter)
+- 12:28:31 Datenbank gespeichert (woerter)
+- 12:28:31 save-all-data:set-archived
+- 12:28:31 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:28:31 Manifest gespeichert (woerter)
+- 12:28:31 Datenbank gespeichert (woerter)
+- 12:28:31 save-all-data:set-archived
+- 12:28:31 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 12:28:31 Manifest gespeichert (woerter)
+- 12:28:31 Datenbank gespeichert (saetze)
+- 12:28:31 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 12:28:31 Manifest gespeichert (saetze)
+- 12:28:31 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 12:28:31 name-history:write
+- 12:28:31 name-undo
+- 12:28:31 name-history:write
+- 12:28:31 name-redo
+- 12:28:31 name-history:write
+- 12:28:32 sync-files:db
+- 12:28:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mBCvLb/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mBCvLb/data/wörter/images/a/apfel.jpg
+- 12:28:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mBCvLb/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mBCvLb/data/wörter/sounds/a/apfel.mp3
+- 12:28:32 sync-files:db
+- 12:28:32 sync-files:db
+- 12:28:32 delete-item:db
+- 12:28:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mBCvLb/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mBCvLb/data/wörter/images/b/becher.jpg
+- 12:28:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mBCvLb/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mBCvLb/data/wörter/sounds/b/becher.mp3
+- 12:28:32 sync-files:db
+- 12:28:33 Name geändert (woerter) [loeschen]
+- 12:28:33 name-history:write
+- 12:28:33 Datenbank gespeichert (woerter)
+- 12:28:33 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:28:33 Manifest gespeichert (woerter)
+- 12:28:33 sync-files:db
+- 12:28:33 delete-item:db
+- 12:28:33 delete-item:set
+- 12:28:33 delete-item:set
+- 12:28:34 ID umbenannt (woerter): lamm → schaf
+- 12:28:34 id-rename:set
+- 12:37:56 Datenbank gespeichert (woerter)
+- 12:37:56 save-all-data:set-rename
+- 12:37:56 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 12:37:56 Manifest gespeichert (woerter)
+- 12:37:56 Datenbank gespeichert (woerter)
+- 12:37:56 save-all-data:set-archived
+- 12:37:56 Manifest gespeichert (woerter)
+- 12:37:56 sync-files:db
+- 12:37:56 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JDtgYx/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JDtgYx/data/wörter/images/a/apfel.jpg
+- 12:37:56 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JDtgYx/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JDtgYx/data/wörter/sounds/a/apfel.mp3
+- 12:37:56 sync-files:db
+- 12:37:56 sync-files:db
+- 12:37:56 delete-item:db
+- 12:37:56 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JDtgYx/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JDtgYx/data/wörter/images/b/becher.jpg
+- 12:37:56 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JDtgYx/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JDtgYx/data/wörter/sounds/b/becher.mp3
+- 12:37:56 sync-files:db
+- 12:37:57 Datenbank gespeichert (woerter)
+- 12:37:57 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 12:37:57 Manifest gespeichert (woerter)
+- 12:37:57 Datenbank gespeichert (woerter)
+- 12:37:57 save-all-data:set-archived
+- 12:37:57 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:37:57 Manifest gespeichert (woerter)
+- 12:37:57 Datenbank gespeichert (woerter)
+- 12:37:57 save-all-data:set-archived
+- 12:37:57 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 12:37:57 Manifest gespeichert (woerter)
+- 12:37:57 Datenbank gespeichert (saetze)
+- 12:37:57 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 12:37:57 Manifest gespeichert (saetze)
+- 12:37:57 Datenbank gespeichert (woerter)
+- 12:37:57 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:37:57 Manifest gespeichert (woerter)
+- 12:37:57 sync-files:db
+- 12:37:57 delete-item:db
+- 12:37:57 delete-item:set
+- 12:37:57 delete-item:set
+- 12:37:57 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 12:37:58 name-history:write
+- 12:37:58 name-undo
+- 12:37:58 name-history:write
+- 12:37:58 name-redo
+- 12:37:58 name-history:write
+- 12:37:58 Name geändert (woerter) [loeschen]
+- 12:37:58 name-history:write
+- 12:37:58 ID umbenannt (woerter): lamm → schaf
+- 12:37:58 id-rename:set
+- 12:44:14 Datenbank gespeichert (woerter)
+- 12:44:14 save-all-data:set-rename
+- 12:44:14 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 12:44:14 Manifest gespeichert (woerter)
+- 12:44:14 Datenbank gespeichert (woerter)
+- 12:44:14 save-all-data:set-archived
+- 12:44:14 Manifest gespeichert (woerter)
+- 12:44:14 sync-files:db
+- 12:44:14 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-OCPo4H/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-OCPo4H/data/wörter/images/a/apfel.jpg
+- 12:44:14 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-OCPo4H/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-OCPo4H/data/wörter/sounds/a/apfel.mp3
+- 12:44:14 sync-files:db
+- 12:44:14 sync-files:db
+- 12:44:14 delete-item:db
+- 12:44:15 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-OCPo4H/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-OCPo4H/data/wörter/images/b/becher.jpg
+- 12:44:15 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-OCPo4H/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-OCPo4H/data/wörter/sounds/b/becher.mp3
+- 12:44:15 sync-files:db
+- 12:44:15 Datenbank gespeichert (woerter)
+- 12:44:15 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 12:44:15 Manifest gespeichert (woerter)
+- 12:44:15 Datenbank gespeichert (woerter)
+- 12:44:15 save-all-data:set-archived
+- 12:44:15 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:44:15 Manifest gespeichert (woerter)
+- 12:44:15 Datenbank gespeichert (woerter)
+- 12:44:15 save-all-data:set-archived
+- 12:44:15 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 12:44:15 Manifest gespeichert (woerter)
+- 12:44:15 Datenbank gespeichert (saetze)
+- 12:44:15 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 12:44:15 Manifest gespeichert (saetze)
+- 12:44:15 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 12:44:15 name-history:write
+- 12:44:15 name-undo
+- 12:44:15 name-history:write
+- 12:44:15 name-redo
+- 12:44:15 name-history:write
+- 12:44:16 Name geändert (woerter) [loeschen]
+- 12:44:16 name-history:write
+- 12:44:16 Datenbank gespeichert (woerter)
+- 12:44:16 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:44:16 Manifest gespeichert (woerter)
+- 12:44:16 sync-files:db
+- 12:44:16 delete-item:db
+- 12:44:16 delete-item:set
+- 12:44:16 delete-item:set
+- 12:44:17 ID umbenannt (woerter): lamm → schaf
+- 12:44:17 id-rename:set
+- 12:46:28 Datenbank gespeichert (woerter)
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 12:46:29 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 12:46:29 Manifest gespeichert (woerter)
+- 13:02:17 Datenbank gespeichert (woerter)
+- 13:02:17 save-all-data:set-rename
+- 13:02:17 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 13:02:17 Manifest gespeichert (woerter)
+- 13:02:18 Datenbank gespeichert (woerter)
+- 13:02:18 save-all-data:set-archived
+- 13:02:18 Manifest gespeichert (woerter)
+- 13:02:18 sync-files:db
+- 13:02:18 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-np7FZz/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-np7FZz/data/wörter/images/a/apfel.jpg
+- 13:02:18 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-np7FZz/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-np7FZz/data/wörter/sounds/a/apfel.mp3
+- 13:02:18 sync-files:db
+- 13:02:18 sync-files:db
+- 13:02:18 delete-item:db
+- 13:02:18 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-np7FZz/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-np7FZz/data/wörter/images/b/becher.jpg
+- 13:02:18 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-np7FZz/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-np7FZz/data/wörter/sounds/b/becher.mp3
+- 13:02:18 sync-files:db
+- 13:02:19 Datenbank gespeichert (woerter)
+- 13:02:19 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 13:02:19 Manifest gespeichert (woerter)
+- 13:02:19 Datenbank gespeichert (woerter)
+- 13:02:19 save-all-data:set-archived
+- 13:02:19 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:02:19 Manifest gespeichert (woerter)
+- 13:02:19 Datenbank gespeichert (woerter)
+- 13:02:19 save-all-data:set-archived
+- 13:02:19 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 13:02:19 Manifest gespeichert (woerter)
+- 13:02:19 Datenbank gespeichert (saetze)
+- 13:02:19 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 13:02:19 Manifest gespeichert (saetze)
+- 13:02:19 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 13:02:19 name-history:write
+- 13:02:19 name-undo
+- 13:02:19 name-history:write
+- 13:02:19 name-redo
+- 13:02:19 name-history:write
+- 13:02:20 Datenbank gespeichert (woerter)
+- 13:02:20 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:02:20 Manifest gespeichert (woerter)
+- 13:02:20 sync-files:db
+- 13:02:20 delete-item:db
+- 13:02:20 delete-item:set
+- 13:02:20 delete-item:set
+- 13:02:20 ID umbenannt (woerter): lamm → schaf
+- 13:02:20 id-rename:set
+- 13:02:20 Name geändert (woerter) [loeschen]
+- 13:02:20 name-history:write
+- 13:06:37 Datenbank gespeichert (woerter)
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:06:37 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:06:37 Manifest gespeichert (woerter)
+- 13:06:49 Datenbank gespeichert (woerter)
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:06:49 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:06:49 Manifest gespeichert (woerter)
+- 13:09:57 Datenbank gespeichert (woerter)
+- 13:09:57 save-all-data:set-rename
+- 13:09:57 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 13:09:57 Manifest gespeichert (woerter)
+- 13:09:57 Datenbank gespeichert (woerter)
+- 13:09:57 save-all-data:set-archived
+- 13:09:57 Manifest gespeichert (woerter)
+- 13:09:58 sync-files:db
+- 13:09:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JSwJnC/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JSwJnC/data/wörter/images/a/apfel.jpg
+- 13:09:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JSwJnC/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JSwJnC/data/wörter/sounds/a/apfel.mp3
+- 13:09:58 sync-files:db
+- 13:09:58 sync-files:db
+- 13:09:58 delete-item:db
+- 13:09:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JSwJnC/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JSwJnC/data/wörter/images/b/becher.jpg
+- 13:09:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JSwJnC/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-JSwJnC/data/wörter/sounds/b/becher.mp3
+- 13:09:58 sync-files:db
+- 13:09:58 Datenbank gespeichert (woerter)
+- 13:09:58 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 13:09:58 Manifest gespeichert (woerter)
+- 13:09:58 Datenbank gespeichert (woerter)
+- 13:09:58 save-all-data:set-archived
+- 13:09:58 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:09:58 Manifest gespeichert (woerter)
+- 13:09:58 Datenbank gespeichert (woerter)
+- 13:09:58 save-all-data:set-archived
+- 13:09:58 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 13:09:58 Manifest gespeichert (woerter)
+- 13:09:58 Datenbank gespeichert (saetze)
+- 13:09:58 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 13:09:58 Manifest gespeichert (saetze)
+- 13:09:59 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 13:09:59 name-history:write
+- 13:09:59 name-undo
+- 13:09:59 name-history:write
+- 13:09:59 name-redo
+- 13:09:59 name-history:write
+- 13:09:59 Datenbank gespeichert (woerter)
+- 13:09:59 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:09:59 Manifest gespeichert (woerter)
+- 13:09:59 sync-files:db
+- 13:09:59 delete-item:db
+- 13:09:59 delete-item:set
+- 13:09:59 delete-item:set
+- 13:10:00 ID umbenannt (woerter): lamm → schaf
+- 13:10:00 id-rename:set
+- 13:10:00 Name geändert (woerter) [loeschen]
+- 13:10:00 name-history:write
+- 13:14:30 Datenbank gespeichert (woerter)
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:14:30 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:14:30 Manifest gespeichert (woerter)
+- 13:14:41 Datenbank gespeichert (woerter)
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 13:14:41 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 13:14:41 Manifest gespeichert (woerter)
+- 13:52:53 Datenbank gespeichert (woerter)
+- 13:52:53 save-all-data:set-rename
+- 13:52:53 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 13:52:53 Manifest gespeichert (woerter)
+- 13:52:53 Datenbank gespeichert (woerter)
+- 13:52:53 save-all-data:set-archived
+- 13:52:53 Manifest gespeichert (woerter)
+- 13:52:53 sync-files:db
+- 13:52:53 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tCTVtN/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tCTVtN/data/wörter/images/a/apfel.jpg
+- 13:52:53 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tCTVtN/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tCTVtN/data/wörter/sounds/a/apfel.mp3
+- 13:52:54 sync-files:db
+- 13:52:54 sync-files:db
+- 13:52:54 delete-item:db
+- 13:52:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tCTVtN/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tCTVtN/data/wörter/images/b/becher.jpg
+- 13:52:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tCTVtN/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tCTVtN/data/wörter/sounds/b/becher.mp3
+- 13:52:54 sync-files:db
+- 13:52:54 Datenbank gespeichert (woerter)
+- 13:52:54 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 13:52:55 Manifest gespeichert (woerter)
+- 13:52:55 Datenbank gespeichert (woerter)
+- 13:52:55 save-all-data:set-archived
+- 13:52:55 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:52:55 Manifest gespeichert (woerter)
+- 13:52:55 Datenbank gespeichert (woerter)
+- 13:52:55 save-all-data:set-archived
+- 13:52:55 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 13:52:55 Manifest gespeichert (woerter)
+- 13:52:55 Datenbank gespeichert (saetze)
+- 13:52:55 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 13:52:55 Manifest gespeichert (saetze)
+- 13:52:56 Name geändert (woerter) [loeschen]
+- 13:52:56 name-history:write
+- 13:52:56 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 13:52:56 name-history:write
+- 13:52:57 name-undo
+- 13:52:57 name-history:write
+- 13:52:57 name-redo
+- 13:52:57 name-history:write
+- 13:52:57 ID umbenannt (woerter): lamm → schaf
+- 13:52:57 id-rename:set
+- 13:52:58 Datenbank gespeichert (woerter)
+- 13:52:58 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:52:58 Manifest gespeichert (woerter)
+- 13:52:58 sync-files:db
+- 13:52:58 delete-item:db
+- 13:52:58 delete-item:set
+- 13:52:58 delete-item:set
+- 14:05:40 Datenbank gespeichert (woerter)
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:05:40 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:05:40 Manifest gespeichert (woerter)
+- 14:15:20 Datenbank gespeichert (woerter)
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:15:20 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:15:20 Manifest gespeichert (woerter)
+- 14:15:27 Datenbank gespeichert (woerter)
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:15:27 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:15:27 Manifest gespeichert (woerter)
+- 14:15:37 Datenbank gespeichert (woerter)
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:15:37 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:15:37 Manifest gespeichert (woerter)
+- 14:15:41 Datenbank gespeichert (woerter)
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:15:41 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:15:41 Manifest gespeichert (woerter)
+- 14:15:44 Datenbank gespeichert (woerter)
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:15:45 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:15:45 Manifest gespeichert (woerter)
+- 14:16:18 Datenbank gespeichert (woerter)
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:16:18 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:16:18 Manifest gespeichert (woerter)
+- 14:16:22 Datenbank gespeichert (woerter)
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:16:22 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:16:22 Manifest gespeichert (woerter)
+- 14:16:42 Datenbank gespeichert (woerter)
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:16:42 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:16:42 Manifest gespeichert (woerter)
+- 14:16:46 Datenbank gespeichert (woerter)
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:16:46 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:16:46 Manifest gespeichert (woerter)
+- 14:16:53 Datenbank gespeichert (woerter)
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:16:53 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:16:53 Manifest gespeichert (woerter)
+- 14:17:11 Datenbank gespeichert (woerter)
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:17:11 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:17:12 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:17:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:17:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:17:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:17:12 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:17:12 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:17:12 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:17:12 Manifest gespeichert (woerter)
+- 14:17:26 Datenbank gespeichert (woerter)
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:17:26 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:17:26 Manifest gespeichert (woerter)
+- 14:17:42 Datenbank gespeichert (woerter)
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:17:42 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:17:42 Manifest gespeichert (woerter)
+- 14:18:10 Datenbank gespeichert (woerter)
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:18:10 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:18:10 Manifest gespeichert (woerter)
+- 14:18:33 Datenbank gespeichert (woerter)
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:18:33 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:18:33 Manifest gespeichert (woerter)
+- 14:18:50 Datenbank gespeichert (woerter)
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:18:50 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:18:50 Manifest gespeichert (woerter)
+- 14:18:57 Datenbank gespeichert (woerter)
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:18:57 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:18:57 Manifest gespeichert (woerter)
+- 14:19:14 Datenbank gespeichert (woerter)
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:19:14 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:19:15 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:19:15 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:19:15 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:19:15 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:19:15 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:19:15 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:19:15 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:19:15 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:19:15 Manifest gespeichert (woerter)
+- 14:19:49 Datenbank gespeichert (woerter)
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:19:49 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:19:49 Manifest gespeichert (woerter)
+- 14:33:52 Datenbank gespeichert (woerter)
+- 14:33:52 save-all-data:set-rename
+- 14:33:52 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 14:33:52 Manifest gespeichert (woerter)
+- 14:33:52 Datenbank gespeichert (woerter)
+- 14:33:52 save-all-data:set-archived
+- 14:33:52 Manifest gespeichert (woerter)
+- 14:33:53 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 14:33:53 name-history:write
+- 14:33:53 name-undo
+- 14:33:53 name-history:write
+- 14:33:53 name-redo
+- 14:33:53 name-history:write
+- 14:33:54 Name geändert (woerter) [loeschen]
+- 14:33:54 name-history:write
+- 14:33:54 sync-files:db
+- 14:33:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3f63lw/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3f63lw/data/wörter/images/a/apfel.jpg
+- 14:33:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3f63lw/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3f63lw/data/wörter/sounds/a/apfel.mp3
+- 14:33:54 sync-files:db
+- 14:33:54 sync-files:db
+- 14:33:54 delete-item:db
+- 14:33:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3f63lw/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3f63lw/data/wörter/images/b/becher.jpg
+- 14:33:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3f63lw/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3f63lw/data/wörter/sounds/b/becher.mp3
+- 14:33:54 sync-files:db
+- 14:33:54 Datenbank gespeichert (woerter)
+- 14:33:54 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 14:33:54 Manifest gespeichert (woerter)
+- 14:33:55 Datenbank gespeichert (woerter)
+- 14:33:55 save-all-data:set-archived
+- 14:33:55 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:33:55 Manifest gespeichert (woerter)
+- 14:33:55 Datenbank gespeichert (woerter)
+- 14:33:55 save-all-data:set-archived
+- 14:33:55 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 14:33:55 Manifest gespeichert (woerter)
+- 14:33:55 Datenbank gespeichert (saetze)
+- 14:33:55 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 14:33:55 Manifest gespeichert (saetze)
+- 14:33:55 ID umbenannt (woerter): lamm → schaf
+- 14:33:55 id-rename:set
+- 14:33:56 Datenbank gespeichert (woerter)
+- 14:33:56 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:33:56 Manifest gespeichert (woerter)
+- 14:33:56 sync-files:db
+- 14:33:56 delete-item:db
+- 14:33:56 delete-item:set
+- 14:33:56 delete-item:set
+- 14:47:19 Datenbank gespeichert (woerter)
+- 14:47:19 save-all-data:set-rename
+- 14:47:19 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 14:47:19 Manifest gespeichert (woerter)
+- 14:47:19 Datenbank gespeichert (woerter)
+- 14:47:19 save-all-data:set-archived
+- 14:47:19 Manifest gespeichert (woerter)
+- 14:47:20 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 14:47:20 name-history:write
+- 14:47:20 name-undo
+- 14:47:20 name-history:write
+- 14:47:20 name-redo
+- 14:47:20 name-history:write
+- 14:47:21 sync-files:db
+- 14:47:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ov6LeU/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ov6LeU/data/wörter/images/a/apfel.jpg
+- 14:47:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ov6LeU/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ov6LeU/data/wörter/sounds/a/apfel.mp3
+- 14:47:21 sync-files:db
+- 14:47:21 sync-files:db
+- 14:47:21 delete-item:db
+- 14:47:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ov6LeU/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ov6LeU/data/wörter/images/b/becher.jpg
+- 14:47:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ov6LeU/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ov6LeU/data/wörter/sounds/b/becher.mp3
+- 14:47:21 sync-files:db
+- 14:47:21 Datenbank gespeichert (woerter)
+- 14:47:21 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 14:47:21 Manifest gespeichert (woerter)
+- 14:47:21 Datenbank gespeichert (woerter)
+- 14:47:21 save-all-data:set-archived
+- 14:47:21 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:47:21 Manifest gespeichert (woerter)
+- 14:47:21 Datenbank gespeichert (woerter)
+- 14:47:21 save-all-data:set-archived
+- 14:47:21 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 14:47:21 Manifest gespeichert (woerter)
+- 14:47:21 Datenbank gespeichert (saetze)
+- 14:47:21 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 14:47:21 Manifest gespeichert (saetze)
+- 14:47:22 Name geändert (woerter) [loeschen]
+- 14:47:22 name-history:write
+- 14:47:22 ID umbenannt (woerter): lamm → schaf
+- 14:47:22 id-rename:set
+- 14:47:22 Datenbank gespeichert (woerter)
+- 14:47:22 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:47:23 Manifest gespeichert (woerter)
+- 14:47:23 sync-files:db
+- 14:47:23 delete-item:db
+- 14:47:23 delete-item:set
+- 14:47:23 delete-item:set
+- 14:54:38 Datenbank gespeichert (woerter)
+- 14:54:38 save-all-data:set-rename
+- 14:54:38 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 14:54:38 Manifest gespeichert (woerter)
+- 14:54:38 Datenbank gespeichert (woerter)
+- 14:54:38 save-all-data:set-archived
+- 14:54:38 Manifest gespeichert (woerter)
+- 14:54:40 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 14:54:40 name-history:write
+- 14:54:40 name-undo
+- 14:54:40 name-history:write
+- 14:54:40 name-redo
+- 14:54:40 name-history:write
+- 14:54:41 sync-files:db
+- 14:54:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TKtFtT/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TKtFtT/data/wörter/images/a/apfel.jpg
+- 14:54:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TKtFtT/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TKtFtT/data/wörter/sounds/a/apfel.mp3
+- 14:54:41 sync-files:db
+- 14:54:41 sync-files:db
+- 14:54:41 delete-item:db
+- 14:54:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TKtFtT/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TKtFtT/data/wörter/images/b/becher.jpg
+- 14:54:41 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TKtFtT/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TKtFtT/data/wörter/sounds/b/becher.mp3
+- 14:54:42 sync-files:db
+- 14:54:42 Datenbank gespeichert (woerter)
+- 14:54:42 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 14:54:42 Manifest gespeichert (woerter)
+- 14:54:43 Datenbank gespeichert (woerter)
+- 14:54:43 save-all-data:set-archived
+- 14:54:43 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:54:43 Manifest gespeichert (woerter)
+- 14:54:43 Datenbank gespeichert (woerter)
+- 14:54:43 save-all-data:set-archived
+- 14:54:43 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 14:54:43 Manifest gespeichert (woerter)
+- 14:54:43 Datenbank gespeichert (saetze)
+- 14:54:43 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 14:54:43 Manifest gespeichert (saetze)
+- 14:54:43 ID umbenannt (woerter): lamm → schaf
+- 14:54:43 id-rename:set
+- 14:54:44 Datenbank gespeichert (woerter)
+- 14:54:44 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:54:44 Manifest gespeichert (woerter)
+- 14:54:44 sync-files:db
+- 14:54:44 delete-item:db
+- 14:54:44 delete-item:set
+- 14:54:44 delete-item:set
+- 14:54:44 Name geändert (woerter) [loeschen]
+- 14:54:44 name-history:write
+- 15:16:20 Datenbank gespeichert (woerter)
+- 15:16:20 save-all-data:set-rename
+- 15:16:20 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 15:16:20 Manifest gespeichert (woerter)
+- 15:16:20 Datenbank gespeichert (woerter)
+- 15:16:20 save-all-data:set-archived
+- 15:16:20 Manifest gespeichert (woerter)
+- 15:16:20 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 15:16:20 name-history:write
+- 15:16:20 name-undo
+- 15:16:20 name-history:write
+- 15:16:20 name-redo
+- 15:16:20 name-history:write
+- 15:16:21 sync-files:db
+- 15:16:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pGFA6w/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pGFA6w/data/wörter/images/a/apfel.jpg
+- 15:16:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pGFA6w/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pGFA6w/data/wörter/sounds/a/apfel.mp3
+- 15:16:21 sync-files:db
+- 15:16:21 sync-files:db
+- 15:16:21 delete-item:db
+- 15:16:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pGFA6w/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pGFA6w/data/wörter/images/b/becher.jpg
+- 15:16:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pGFA6w/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pGFA6w/data/wörter/sounds/b/becher.mp3
+- 15:16:21 sync-files:db
+- 15:16:22 Datenbank gespeichert (woerter)
+- 15:16:22 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 15:16:22 Manifest gespeichert (woerter)
+- 15:16:22 Datenbank gespeichert (woerter)
+- 15:16:22 save-all-data:set-archived
+- 15:16:22 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 15:16:22 Manifest gespeichert (woerter)
+- 15:16:22 Datenbank gespeichert (woerter)
+- 15:16:22 save-all-data:set-archived
+- 15:16:22 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 15:16:22 Manifest gespeichert (woerter)
+- 15:16:22 Datenbank gespeichert (saetze)
+- 15:16:22 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 15:16:22 Manifest gespeichert (saetze)
+- 15:16:24 Datenbank gespeichert (woerter)
+- 15:16:24 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 15:16:24 Manifest gespeichert (woerter)
+- 15:16:24 sync-files:db
+- 15:16:24 delete-item:db
+- 15:16:24 delete-item:set
+- 15:16:24 delete-item:set
+- 15:16:26 Name geändert (woerter) [loeschen]
+- 15:16:26 name-history:write
+- 15:16:28 ID umbenannt (woerter): lamm → schaf
+- 15:16:28 id-rename:set
+- 15:23:56 delete-item:db
+- 15:23:56 delete-item:set
+- 15:54:10 Datenbank gespeichert (woerter)
+- 15:54:10 save-all-data:set-rename
+- 15:54:10 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 15:54:10 Manifest gespeichert (woerter)
+- 15:54:10 Datenbank gespeichert (woerter)
+- 15:54:10 save-all-data:set-archived
+- 15:54:10 Manifest gespeichert (woerter)
+- 15:54:11 ID umbenannt (woerter): lamm → schaf
+- 15:54:11 id-rename:set
+- 15:54:12 Datenbank gespeichert (woerter)
+- 15:54:12 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 15:54:12 Manifest gespeichert (woerter)
+- 15:54:12 sync-files:db
+- 15:54:12 delete-item:db
+- 15:54:12 delete-item:set
+- 15:54:12 delete-item:set
+- 15:54:12 Name geändert (woerter) [loeschen]
+- 15:54:12 name-history:write
+- 15:54:13 sync-files:db
+- 15:54:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pcxAQA/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pcxAQA/data/wörter/images/a/apfel.jpg
+- 15:54:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pcxAQA/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pcxAQA/data/wörter/sounds/a/apfel.mp3
+- 15:54:13 sync-files:db
+- 15:54:13 sync-files:db
+- 15:54:13 delete-item:db
+- 15:54:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pcxAQA/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pcxAQA/data/wörter/images/b/becher.jpg
+- 15:54:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pcxAQA/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-pcxAQA/data/wörter/sounds/b/becher.mp3
+- 15:54:13 sync-files:db
+- 15:54:13 Datenbank gespeichert (woerter)
+- 15:54:13 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 15:54:13 Manifest gespeichert (woerter)
+- 15:54:13 Datenbank gespeichert (woerter)
+- 15:54:13 save-all-data:set-archived
+- 15:54:13 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 15:54:13 Manifest gespeichert (woerter)
+- 15:54:13 Datenbank gespeichert (woerter)
+- 15:54:13 save-all-data:set-archived
+- 15:54:13 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 15:54:13 Manifest gespeichert (woerter)
+- 15:54:13 Datenbank gespeichert (saetze)
+- 15:54:13 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 15:54:13 Manifest gespeichert (saetze)
+- 15:54:14 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 15:54:14 name-history:write
+- 15:54:14 name-undo
+- 15:54:14 name-history:write
+- 15:54:14 name-redo
+- 15:54:14 name-history:write
+- 15:58:20 delete-item:db
+- 15:58:20 delete-item:set
+- 16:07:29 Datenbank gespeichert (woerter)
+- 16:07:30 save-all-data:set-rename
+- 16:07:30 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 16:07:30 Manifest gespeichert (woerter)
+- 16:07:30 Datenbank gespeichert (woerter)
+- 16:07:30 save-all-data:set-archived
+- 16:07:30 Manifest gespeichert (woerter)
+- 16:07:30 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 16:07:30 name-history:write
+- 16:07:30 name-undo
+- 16:07:30 name-history:write
+- 16:07:30 name-redo
+- 16:07:30 name-history:write
+- 16:07:31 ID umbenannt (woerter): lamm → schaf
+- 16:07:31 id-rename:set
+- 16:07:31 sync-files:db
+- 16:07:31 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-sClPwD/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-sClPwD/data/wörter/images/a/apfel.jpg
+- 16:07:31 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-sClPwD/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-sClPwD/data/wörter/sounds/a/apfel.mp3
+- 16:07:31 sync-files:db
+- 16:07:31 sync-files:db
+- 16:07:31 delete-item:db
+- 16:07:31 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-sClPwD/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-sClPwD/data/wörter/images/b/becher.jpg
+- 16:07:31 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-sClPwD/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-sClPwD/data/wörter/sounds/b/becher.mp3
+- 16:07:31 sync-files:db
+- 16:07:31 Datenbank gespeichert (woerter)
+- 16:07:31 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:07:31 Manifest gespeichert (woerter)
+- 16:07:31 sync-files:db
+- 16:07:31 delete-item:db
+- 16:07:31 delete-item:set
+- 16:07:31 delete-item:set
+- 16:07:32 Datenbank gespeichert (woerter)
+- 16:07:32 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 16:07:32 Manifest gespeichert (woerter)
+- 16:07:32 Datenbank gespeichert (woerter)
+- 16:07:32 save-all-data:set-archived
+- 16:07:32 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:07:32 Manifest gespeichert (woerter)
+- 16:07:32 Datenbank gespeichert (woerter)
+- 16:07:32 save-all-data:set-archived
+- 16:07:32 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 16:07:32 Manifest gespeichert (woerter)
+- 16:07:32 Datenbank gespeichert (saetze)
+- 16:07:32 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 16:07:32 Manifest gespeichert (saetze)
+- 16:07:32 Name geändert (woerter) [loeschen]
+- 16:07:32 name-history:write
+- 16:08:36 Konflikt gelöst (keep_existing): data/wörter/sounds/sounds_unsortiert/sauer.mp3 -> data/wörter/sounds/s/sauer.mp3
+- 16:08:37 sync-files:db
+- 16:09:07 Datenbank gespeichert (woerter)
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 16:09:07 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 16:09:07 Manifest gespeichert (woerter)
+- 16:17:54 Datenbank gespeichert (woerter)
+- 16:17:54 save-all-data:set-rename
+- 16:17:54 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 16:17:54 Manifest gespeichert (woerter)
+- 16:17:54 Datenbank gespeichert (woerter)
+- 16:17:54 save-all-data:set-archived
+- 16:17:54 Manifest gespeichert (woerter)
+- 16:17:55 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 16:17:55 name-history:write
+- 16:17:55 name-undo
+- 16:17:55 name-history:write
+- 16:17:55 name-redo
+- 16:17:55 name-history:write
+- 16:17:55 sync-files:db
+- 16:17:55 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-A2PkJO/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-A2PkJO/data/wörter/images/a/apfel.jpg
+- 16:17:55 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-A2PkJO/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-A2PkJO/data/wörter/sounds/a/apfel.mp3
+- 16:17:55 sync-files:db
+- 16:17:55 sync-files:db
+- 16:17:55 delete-item:db
+- 16:17:55 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-A2PkJO/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-A2PkJO/data/wörter/images/b/becher.jpg
+- 16:17:55 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-A2PkJO/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-A2PkJO/data/wörter/sounds/b/becher.mp3
+- 16:17:55 sync-files:db
+- 16:17:56 Datenbank gespeichert (woerter)
+- 16:17:56 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 16:17:56 Manifest gespeichert (woerter)
+- 16:17:56 Datenbank gespeichert (woerter)
+- 16:17:56 save-all-data:set-archived
+- 16:17:56 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:17:56 Manifest gespeichert (woerter)
+- 16:17:56 Datenbank gespeichert (woerter)
+- 16:17:56 save-all-data:set-archived
+- 16:17:56 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 16:17:56 Manifest gespeichert (woerter)
+- 16:17:56 Datenbank gespeichert (saetze)
+- 16:17:56 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 16:17:56 Manifest gespeichert (saetze)
+- 16:17:56 ID umbenannt (woerter): lamm → schaf
+- 16:17:56 id-rename:set
+- 16:17:57 Datenbank gespeichert (woerter)
+- 16:17:57 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:17:57 Manifest gespeichert (woerter)
+- 16:17:57 sync-files:db
+- 16:17:57 delete-item:db
+- 16:17:57 delete-item:set
+- 16:17:57 delete-item:set
+- 16:17:57 Name geändert (woerter) [loeschen]
+- 16:17:57 name-history:write
+- 16:24:15 Datenbank gespeichert (woerter)
+- 16:24:15 save-all-data:set-rename
+- 16:24:15 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 16:24:15 Manifest gespeichert (woerter)
+- 16:24:15 Datenbank gespeichert (woerter)
+- 16:24:15 save-all-data:set-archived
+- 16:24:15 Manifest gespeichert (woerter)
+- 16:24:16 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 16:24:16 name-history:write
+- 16:24:16 name-undo
+- 16:24:16 name-history:write
+- 16:24:16 name-redo
+- 16:24:16 name-history:write
+- 16:24:16 sync-files:db
+- 16:24:16 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-e7r9qp/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-e7r9qp/data/wörter/images/a/apfel.jpg
+- 16:24:16 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-e7r9qp/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-e7r9qp/data/wörter/sounds/a/apfel.mp3
+- 16:24:16 sync-files:db
+- 16:24:16 sync-files:db
+- 16:24:16 delete-item:db
+- 16:24:16 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-e7r9qp/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-e7r9qp/data/wörter/images/b/becher.jpg
+- 16:24:16 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-e7r9qp/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-e7r9qp/data/wörter/sounds/b/becher.mp3
+- 16:24:16 sync-files:db
+- 16:24:17 Datenbank gespeichert (woerter)
+- 16:24:17 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:24:17 Manifest gespeichert (woerter)
+- 16:24:17 sync-files:db
+- 16:24:17 delete-item:db
+- 16:24:17 delete-item:set
+- 16:24:17 delete-item:set
+- 16:24:17 Datenbank gespeichert (woerter)
+- 16:24:17 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 16:24:17 Manifest gespeichert (woerter)
+- 16:24:17 Datenbank gespeichert (woerter)
+- 16:24:17 save-all-data:set-archived
+- 16:24:17 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:24:17 Manifest gespeichert (woerter)
+- 16:24:17 Datenbank gespeichert (woerter)
+- 16:24:17 save-all-data:set-archived
+- 16:24:17 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 16:24:17 Manifest gespeichert (woerter)
+- 16:24:17 Datenbank gespeichert (saetze)
+- 16:24:17 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 16:24:17 Manifest gespeichert (saetze)
+- 16:24:18 ID umbenannt (woerter): lamm → schaf
+- 16:24:18 id-rename:set
+- 16:24:18 Name geändert (woerter) [loeschen]
+- 16:24:18 name-history:write
+- 16:24:52 Datenbank gespeichert (woerter)
+- 16:24:52 save-all-data:set-rename
+- 16:24:52 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 16:24:52 Manifest gespeichert (woerter)
+- 16:24:52 Datenbank gespeichert (woerter)
+- 16:24:52 save-all-data:set-archived
+- 16:24:52 Manifest gespeichert (woerter)
+- 16:24:52 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 16:24:52 name-history:write
+- 16:24:52 name-undo
+- 16:24:52 name-history:write
+- 16:24:52 name-redo
+- 16:24:52 name-history:write
+- 16:24:53 Datenbank gespeichert (woerter)
+- 16:24:53 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 16:24:53 Manifest gespeichert (woerter)
+- 16:24:53 Datenbank gespeichert (woerter)
+- 16:24:53 save-all-data:set-archived
+- 16:24:53 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:24:53 Manifest gespeichert (woerter)
+- 16:24:53 Datenbank gespeichert (woerter)
+- 16:24:53 save-all-data:set-archived
+- 16:24:53 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 16:24:53 Manifest gespeichert (woerter)
+- 16:24:53 Datenbank gespeichert (saetze)
+- 16:24:53 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 16:24:53 Manifest gespeichert (saetze)
+- 16:24:53 Datenbank gespeichert (woerter)
+- 16:24:53 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:24:53 Manifest gespeichert (woerter)
+- 16:24:53 sync-files:db
+- 16:24:53 delete-item:db
+- 16:24:53 delete-item:set
+- 16:24:53 delete-item:set
+- 16:24:54 sync-files:db
+- 16:24:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TCRP83/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TCRP83/data/wörter/images/a/apfel.jpg
+- 16:24:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TCRP83/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TCRP83/data/wörter/sounds/a/apfel.mp3
+- 16:24:54 sync-files:db
+- 16:24:54 sync-files:db
+- 16:24:54 delete-item:db
+- 16:24:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TCRP83/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TCRP83/data/wörter/images/b/becher.jpg
+- 16:24:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TCRP83/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TCRP83/data/wörter/sounds/b/becher.mp3
+- 16:24:54 sync-files:db
+- 16:24:54 ID umbenannt (woerter): lamm → schaf
+- 16:24:54 id-rename:set
+- 16:24:55 Name geändert (woerter) [loeschen]
+- 16:24:55 name-history:write
+- 16:28:33 Datenbank gespeichert (woerter)
+- 16:28:33 save-all-data:set-rename
+- 16:28:33 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 16:28:33 Manifest gespeichert (woerter)
+- 16:28:33 Datenbank gespeichert (woerter)
+- 16:28:33 save-all-data:set-archived
+- 16:28:33 Manifest gespeichert (woerter)
+- 16:28:33 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 16:28:33 name-history:write
+- 16:28:33 name-undo
+- 16:28:33 name-history:write
+- 16:28:33 name-redo
+- 16:28:33 name-history:write
+- 16:28:34 sync-files:db
+- 16:28:34 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-83twQ1/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-83twQ1/data/wörter/images/a/apfel.jpg
+- 16:28:34 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-83twQ1/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-83twQ1/data/wörter/sounds/a/apfel.mp3
+- 16:28:34 sync-files:db
+- 16:28:34 sync-files:db
+- 16:28:34 delete-item:db
+- 16:28:34 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-83twQ1/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-83twQ1/data/wörter/images/b/becher.jpg
+- 16:28:34 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-83twQ1/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-83twQ1/data/wörter/sounds/b/becher.mp3
+- 16:28:34 sync-files:db
+- 16:28:34 Datenbank gespeichert (woerter)
+- 16:28:34 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 16:28:34 Manifest gespeichert (woerter)
+- 16:28:34 Datenbank gespeichert (woerter)
+- 16:28:34 save-all-data:set-archived
+- 16:28:34 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:28:34 Manifest gespeichert (woerter)
+- 16:28:34 Datenbank gespeichert (woerter)
+- 16:28:34 save-all-data:set-archived
+- 16:28:34 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 16:28:34 Manifest gespeichert (woerter)
+- 16:28:34 Datenbank gespeichert (saetze)
+- 16:28:34 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 16:28:34 Manifest gespeichert (saetze)
+- 16:28:35 Datenbank gespeichert (woerter)
+- 16:28:35 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:28:35 Manifest gespeichert (woerter)
+- 16:28:35 sync-files:db
+- 16:28:35 delete-item:db
+- 16:28:35 delete-item:set
+- 16:28:35 delete-item:set
+- 16:28:35 ID umbenannt (woerter): lamm → schaf
+- 16:28:35 id-rename:set
+- 16:28:36 Name geändert (woerter) [loeschen]
+- 16:28:36 name-history:write
+- 16:32:47 Datenbank gespeichert (woerter)
+- 16:32:47 save-all-data:set-rename
+- 16:32:47 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 16:32:47 Manifest gespeichert (woerter)
+- 16:32:47 Datenbank gespeichert (woerter)
+- 16:32:47 save-all-data:set-archived
+- 16:32:47 Manifest gespeichert (woerter)
+- 16:32:48 sync-files:db
+- 16:32:48 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-p1iwdI/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-p1iwdI/data/wörter/images/a/apfel.jpg
+- 16:32:48 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-p1iwdI/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-p1iwdI/data/wörter/sounds/a/apfel.mp3
+- 16:32:48 sync-files:db
+- 16:32:48 sync-files:db
+- 16:32:48 delete-item:db
+- 16:32:48 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-p1iwdI/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-p1iwdI/data/wörter/images/b/becher.jpg
+- 16:32:48 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-p1iwdI/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-p1iwdI/data/wörter/sounds/b/becher.mp3
+- 16:32:48 sync-files:db
+- 16:32:49 Name geändert (woerter) [loeschen]
+- 16:32:49 name-history:write
+- 16:32:50 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 16:32:50 name-history:write
+- 16:32:50 name-undo
+- 16:32:50 name-history:write
+- 16:32:50 name-redo
+- 16:32:50 name-history:write
+- 16:32:51 Datenbank gespeichert (woerter)
+- 16:32:51 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 16:32:51 Manifest gespeichert (woerter)
+- 16:32:51 Datenbank gespeichert (woerter)
+- 16:32:51 save-all-data:set-archived
+- 16:32:51 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:32:51 Manifest gespeichert (woerter)
+- 16:32:51 Datenbank gespeichert (woerter)
+- 16:32:51 save-all-data:set-archived
+- 16:32:51 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 16:32:51 Manifest gespeichert (woerter)
+- 16:32:51 Datenbank gespeichert (saetze)
+- 16:32:51 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 16:32:51 Manifest gespeichert (saetze)
+- 16:32:51 ID umbenannt (woerter): lamm → schaf
+- 16:32:51 id-rename:set
+- 16:32:52 Datenbank gespeichert (woerter)
+- 16:32:52 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:32:52 Manifest gespeichert (woerter)
+- 16:32:52 sync-files:db
+- 16:32:52 delete-item:db
+- 16:32:52 delete-item:set
+- 16:32:52 delete-item:set
+- 16:39:31 Datenbank gespeichert (woerter)
+- 16:39:31 save-all-data:set-rename
+- 16:39:31 Set-Datei gespeichert (woerter): data/sets/bereich_gruppe_neu.json
+- 16:39:31 Manifest gespeichert (woerter)
+- 16:39:31 Datenbank gespeichert (woerter)
+- 16:39:31 save-all-data:set-archived
+- 16:39:31 Manifest gespeichert (woerter)
+- 16:39:32 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 16:39:32 name-history:write
+- 16:39:32 name-undo
+- 16:39:32 name-history:write
+- 16:39:32 name-redo
+- 16:39:32 name-history:write
+- 16:39:32 sync-files:db
+- 16:39:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nUpctK/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nUpctK/data/wörter/images/a/apfel.jpg
+- 16:39:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nUpctK/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nUpctK/data/wörter/sounds/a/apfel.mp3
+- 16:39:32 sync-files:db
+- 16:39:32 sync-files:db
+- 16:39:32 delete-item:db
+- 16:39:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nUpctK/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nUpctK/data/wörter/images/b/becher.jpg
+- 16:39:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nUpctK/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nUpctK/data/wörter/sounds/b/becher.mp3
+- 16:39:32 sync-files:db
+- 16:39:33 Datenbank gespeichert (woerter)
+- 16:39:33 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 16:39:33 Manifest gespeichert (woerter)
+- 16:39:33 Datenbank gespeichert (woerter)
+- 16:39:33 save-all-data:set-archived
+- 16:39:33 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:39:33 Manifest gespeichert (woerter)
+- 16:39:33 Datenbank gespeichert (woerter)
+- 16:39:33 save-all-data:set-archived
+- 16:39:33 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 16:39:33 Manifest gespeichert (woerter)
+- 16:39:33 Datenbank gespeichert (saetze)
+- 16:39:33 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 16:39:33 Manifest gespeichert (saetze)
+- 16:39:33 Name geändert (woerter) [loeschen]
+- 16:39:33 name-history:write
+- 16:39:34 ID umbenannt (woerter): lamm → schaf
+- 16:39:34 id-rename:set
+- 16:39:34 Datenbank gespeichert (woerter)
+- 16:39:34 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:39:34 Manifest gespeichert (woerter)
+- 16:39:34 sync-files:db
+- 16:39:34 delete-item:db
+- 16:39:34 delete-item:set
+- 16:39:34 delete-item:set
 
 ## 2025-09-17
-- Editor (Beta-Layout „Next“): Sidebar + Detailbereich hinter Feature-Flag; Badge „Layout: Next“ im Header.
-- A11y/Tastatur: Listbox-Navigation (Pfeile, Home/End, Enter/Space), roving Tabindex, aria-activedescendant.
-- Set-Chips im Detail: Mitgliedschaften als Chips (role=checkbox) mit Autosave; synchron mit klassischer Tabellen-Checkbox; Read-Only respektiert.
-- Responsiv: Sticky Tab-Leiste/Sidebar; Sidebar auf kleinen Screens einklappbar (☰); kompakte Dichte umschaltbar (Shift+D).
-- Performance: Debounced Suche (Classic/Next) und chunked Rendering der Sidebar (mit Cancel) für große Datenmengen.
-- Keine Backend/API-Änderungen; klassische Ansicht bleibt Standard.
+- 07:11:16 Name geändert (woerter) [loeschen]
+- 07:11:16 name-history:write
+- 07:11:16 Datenbank gespeichert (woerter)
+- 07:11:16 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 07:11:16 Manifest gespeichert (woerter)
+- 07:11:16 sync-files:manifest
+- 07:11:16 sync-files:db
+- 07:11:16 delete-item:db
+- 07:11:16 delete-item:set
+- 07:11:16 delete-item:set
+- 07:11:17 sync-files:db
+- 07:11:17 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Yc4eDU/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Yc4eDU/data/wörter/images/a/apfel.jpg
+- 07:11:17 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Yc4eDU/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Yc4eDU/data/wörter/sounds/a/apfel.mp3
+- 07:11:17 sync-files:db
+- 07:11:17 sync-files:db
+- 07:11:17 delete-item:db
+- 07:11:17 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Yc4eDU/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Yc4eDU/data/wörter/images/b/becher.jpg
+- 07:11:17 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Yc4eDU/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Yc4eDU/data/wörter/sounds/b/becher.mp3
+- 07:11:17 sync-files:db
+- 07:11:18 Datenbank gespeichert (woerter)
+- 07:11:18 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 07:11:18 Manifest gespeichert (woerter)
+- 07:11:18 Datenbank gespeichert (woerter)
+- 07:11:18 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 07:11:18 Manifest gespeichert (woerter)
+- 07:11:18 Datenbank gespeichert (woerter)
+- 07:11:18 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 07:11:18 Manifest gespeichert (woerter)
+- 07:11:18 Datenbank gespeichert (saetze)
+- 07:11:18 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 07:11:18 Manifest gespeichert (saetze)
+- 07:11:18 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 07:11:18 name-history:write
+- 07:11:18 name-undo
+- 07:11:18 name-history:write
+- 07:11:18 name-redo
+- 07:11:18 name-history:write
+- 07:11:19 ID umbenannt (woerter): lamm → schaf
+- 07:11:19 id-rename:set
+- 07:23:28 Name geändert (woerter) [loeschen]
+- 07:23:28 name-history:write
+- 07:23:29 Datenbank gespeichert (woerter)
+- 07:23:29 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 07:23:29 Manifest gespeichert (woerter)
+- 07:23:29 sync-files:manifest
+- 07:23:29 sync-files:db
+- 07:23:29 delete-item:db
+- 07:23:29 delete-item:set
+- 07:23:29 delete-item:set
+- 07:23:29 sync-files:db
+- 07:23:29 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nw28a6/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nw28a6/data/wörter/images/a/apfel.jpg
+- 07:23:29 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nw28a6/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nw28a6/data/wörter/sounds/a/apfel.mp3
+- 07:23:29 sync-files:db
+- 07:23:29 sync-files:db
+- 07:23:29 delete-item:db
+- 07:23:29 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nw28a6/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nw28a6/data/wörter/images/b/becher.jpg
+- 07:23:29 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nw28a6/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-nw28a6/data/wörter/sounds/b/becher.mp3
+- 07:23:29 sync-files:db
+- 07:23:30 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 07:23:30 name-history:write
+- 07:23:30 name-undo
+- 07:23:30 name-history:write
+- 07:23:30 name-redo
+- 07:23:30 name-history:write
+- 07:23:30 Datenbank gespeichert (woerter)
+- 07:23:30 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 07:23:30 Manifest gespeichert (woerter)
+- 07:23:30 Datenbank gespeichert (woerter)
+- 07:23:30 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 07:23:30 Manifest gespeichert (woerter)
+- 07:23:30 Datenbank gespeichert (woerter)
+- 07:23:30 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 07:23:30 Manifest gespeichert (woerter)
+- 07:23:30 Datenbank gespeichert (saetze)
+- 07:23:30 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 07:23:30 Manifest gespeichert (saetze)
+- 07:23:31 ID umbenannt (woerter): lamm → schaf
+- 07:23:31 id-rename:set
+- 07:24:52 Name geändert (woerter) [loeschen]
+- 07:24:52 name-history:write
+- 07:24:53 Datenbank gespeichert (woerter)
+- 07:24:53 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 07:24:53 Manifest gespeichert (woerter)
+- 07:24:53 sync-files:manifest
+- 07:24:53 sync-files:db
+- 07:24:53 delete-item:db
+- 07:24:53 delete-item:set
+- 07:24:53 delete-item:set
+- 07:24:53 sync-files:db
+- 07:24:53 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mHU4Ho/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mHU4Ho/data/wörter/images/a/apfel.jpg
+- 07:24:53 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mHU4Ho/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mHU4Ho/data/wörter/sounds/a/apfel.mp3
+- 07:24:53 sync-files:db
+- 07:24:53 sync-files:db
+- 07:24:53 delete-item:db
+- 07:24:53 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mHU4Ho/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mHU4Ho/data/wörter/images/b/becher.jpg
+- 07:24:53 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mHU4Ho/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-mHU4Ho/data/wörter/sounds/b/becher.mp3
+- 07:24:54 sync-files:db
+- 07:24:54 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 07:24:54 name-history:write
+- 07:24:54 name-undo
+- 07:24:54 name-history:write
+- 07:24:54 name-redo
+- 07:24:54 name-history:write
+- 07:24:54 Datenbank gespeichert (woerter)
+- 07:24:54 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 07:24:54 Manifest gespeichert (woerter)
+- 07:24:54 Datenbank gespeichert (woerter)
+- 07:24:54 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 07:24:54 Manifest gespeichert (woerter)
+- 07:24:54 Datenbank gespeichert (woerter)
+- 07:24:54 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 07:24:54 Manifest gespeichert (woerter)
+- 07:24:54 Datenbank gespeichert (saetze)
+- 07:24:54 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 07:24:54 Manifest gespeichert (saetze)
+- 07:24:55 ID umbenannt (woerter): lamm → schaf
+- 07:24:55 id-rename:set
+- 07:37:08 Name geändert (woerter) [loeschen]
+- 07:37:08 name-history:write
+- 07:37:09 sync-files:db
+- 07:37:09 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0ybjOy/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0ybjOy/data/wörter/images/a/apfel.jpg
+- 07:37:09 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0ybjOy/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0ybjOy/data/wörter/sounds/a/apfel.mp3
+- 07:37:09 sync-files:db
+- 07:37:09 sync-files:db
+- 07:37:09 delete-item:db
+- 07:37:09 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0ybjOy/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0ybjOy/data/wörter/images/b/becher.jpg
+- 07:37:09 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0ybjOy/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0ybjOy/data/wörter/sounds/b/becher.mp3
+- 07:37:09 sync-files:db
+- 07:37:09 Datenbank gespeichert (woerter)
+- 07:37:09 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 07:37:09 Manifest gespeichert (woerter)
+- 07:37:09 sync-files:manifest
+- 07:37:09 sync-files:db
+- 07:37:09 delete-item:db
+- 07:37:09 delete-item:set
+- 07:37:09 delete-item:set
+- 07:37:10 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 07:37:10 name-history:write
+- 07:37:10 name-undo
+- 07:37:10 name-history:write
+- 07:37:10 name-redo
+- 07:37:10 name-history:write
+- 07:37:10 Datenbank gespeichert (woerter)
+- 07:37:10 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 07:37:10 Manifest gespeichert (woerter)
+- 07:37:10 Datenbank gespeichert (woerter)
+- 07:37:10 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 07:37:10 Manifest gespeichert (woerter)
+- 07:37:10 Datenbank gespeichert (woerter)
+- 07:37:10 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 07:37:10 Manifest gespeichert (woerter)
+- 07:37:10 Datenbank gespeichert (saetze)
+- 07:37:10 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 07:37:10 Manifest gespeichert (saetze)
+- 07:37:11 ID umbenannt (woerter): lamm → schaf
+- 07:37:11 id-rename:set
+- 07:41:19 Name geändert (woerter) [loeschen]
+- 07:41:19 name-history:write
+- 07:41:20 sync-files:db
+- 07:41:20 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YSksdV/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YSksdV/data/wörter/images/a/apfel.jpg
+- 07:41:20 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YSksdV/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YSksdV/data/wörter/sounds/a/apfel.mp3
+- 07:41:20 sync-files:db
+- 07:41:20 sync-files:db
+- 07:41:20 delete-item:db
+- 07:41:20 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YSksdV/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YSksdV/data/wörter/images/b/becher.jpg
+- 07:41:20 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YSksdV/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YSksdV/data/wörter/sounds/b/becher.mp3
+- 07:41:20 sync-files:db
+- 07:41:20 Datenbank gespeichert (woerter)
+- 07:41:20 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 07:41:20 Manifest gespeichert (woerter)
+- 07:41:20 Datenbank gespeichert (woerter)
+- 07:41:20 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 07:41:20 Manifest gespeichert (woerter)
+- 07:41:20 Datenbank gespeichert (woerter)
+- 07:41:20 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 07:41:20 Manifest gespeichert (woerter)
+- 07:41:20 Datenbank gespeichert (saetze)
+- 07:41:20 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 07:41:20 Manifest gespeichert (saetze)
+- 07:41:21 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 07:41:21 name-history:write
+- 07:41:21 name-undo
+- 07:41:21 name-history:write
+- 07:41:21 name-redo
+- 07:41:21 name-history:write
+- 07:41:22 Datenbank gespeichert (woerter)
+- 07:41:22 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 07:41:22 Manifest gespeichert (woerter)
+- 07:41:22 sync-files:manifest
+- 07:41:22 sync-files:db
+- 07:41:22 delete-item:db
+- 07:41:22 delete-item:set
+- 07:41:22 delete-item:set
+- 07:41:23 ID umbenannt (woerter): lamm → schaf
+- 07:41:23 id-rename:set
+- 07:50:26 Name geändert (woerter) [loeschen]
+- 07:50:26 name-history:write
+- 07:50:27 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 07:50:27 name-history:write
+- 07:50:27 name-undo
+- 07:50:27 name-history:write
+- 07:50:27 name-redo
+- 07:50:27 name-history:write
+- 07:50:27 Datenbank gespeichert (woerter)
+- 07:50:27 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 07:50:27 Manifest gespeichert (woerter)
+- 07:50:27 sync-files:manifest
+- 07:50:27 sync-files:db
+- 07:50:27 delete-item:db
+- 07:50:27 delete-item:set
+- 07:50:27 delete-item:set
+- 07:50:28 Datenbank gespeichert (woerter)
+- 07:50:28 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 07:50:28 Manifest gespeichert (woerter)
+- 07:50:28 Datenbank gespeichert (woerter)
+- 07:50:28 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 07:50:28 Manifest gespeichert (woerter)
+- 07:50:28 Datenbank gespeichert (woerter)
+- 07:50:28 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 07:50:28 Manifest gespeichert (woerter)
+- 07:50:28 Datenbank gespeichert (saetze)
+- 07:50:28 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 07:50:28 Manifest gespeichert (saetze)
+- 07:50:28 sync-files:db
+- 07:50:28 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-NmzFBK/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-NmzFBK/data/wörter/images/a/apfel.jpg
+- 07:50:28 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-NmzFBK/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-NmzFBK/data/wörter/sounds/a/apfel.mp3
+- 07:50:28 sync-files:db
+- 07:50:28 sync-files:db
+- 07:50:28 delete-item:db
+- 07:50:28 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-NmzFBK/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-NmzFBK/data/wörter/images/b/becher.jpg
+- 07:50:28 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-NmzFBK/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-NmzFBK/data/wörter/sounds/b/becher.mp3
+- 07:50:28 sync-files:db
+- 07:50:29 ID umbenannt (woerter): lamm → schaf
+- 07:50:29 id-rename:set
+- 08:05:43 Name geändert (woerter) [loeschen]
+- 08:05:43 name-history:write
+- 08:05:44 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 08:05:44 name-history:write
+- 08:05:44 name-undo
+- 08:05:44 name-history:write
+- 08:05:44 name-redo
+- 08:05:44 name-history:write
+- 08:05:44 sync-files:db
+- 08:05:44 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-a3WESG/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-a3WESG/data/wörter/images/a/apfel.jpg
+- 08:05:44 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-a3WESG/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-a3WESG/data/wörter/sounds/a/apfel.mp3
+- 08:05:44 sync-files:db
+- 08:05:44 sync-files:db
+- 08:05:44 delete-item:db
+- 08:05:45 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-a3WESG/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-a3WESG/data/wörter/images/b/becher.jpg
+- 08:05:45 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-a3WESG/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-a3WESG/data/wörter/sounds/b/becher.mp3
+- 08:05:45 sync-files:db
+- 08:05:45 Datenbank gespeichert (woerter)
+- 08:05:45 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 08:05:45 Manifest gespeichert (woerter)
+- 08:05:45 Datenbank gespeichert (woerter)
+- 08:05:45 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:05:45 Manifest gespeichert (woerter)
+- 08:05:45 Datenbank gespeichert (woerter)
+- 08:05:45 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 08:05:45 Manifest gespeichert (woerter)
+- 08:05:45 Datenbank gespeichert (saetze)
+- 08:05:45 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 08:05:45 Manifest gespeichert (saetze)
+- 08:05:45 Datenbank gespeichert (woerter)
+- 08:05:45 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:05:45 Manifest gespeichert (woerter)
+- 08:05:45 sync-files:manifest
+- 08:05:45 sync-files:db
+- 08:05:45 delete-item:db
+- 08:05:45 delete-item:set
+- 08:05:45 delete-item:set
+- 08:05:46 ID umbenannt (woerter): lamm → schaf
+- 08:05:46 id-rename:set
+- 08:29:07 Name geändert (woerter) [loeschen]
+- 08:29:07 name-history:write
+- 08:29:07 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 08:29:07 name-history:write
+- 08:29:07 name-undo
+- 08:29:07 name-history:write
+- 08:29:07 name-redo
+- 08:29:07 name-history:write
+- 08:29:08 sync-files:db
+- 08:29:08 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-be6l6y/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-be6l6y/data/wörter/images/a/apfel.jpg
+- 08:29:08 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-be6l6y/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-be6l6y/data/wörter/sounds/a/apfel.mp3
+- 08:29:08 sync-files:db
+- 08:29:08 sync-files:db
+- 08:29:08 delete-item:db
+- 08:29:08 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-be6l6y/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-be6l6y/data/wörter/images/b/becher.jpg
+- 08:29:08 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-be6l6y/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-be6l6y/data/wörter/sounds/b/becher.mp3
+- 08:29:08 sync-files:db
+- 08:29:08 Datenbank gespeichert (woerter)
+- 08:29:08 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 08:29:08 Manifest gespeichert (woerter)
+- 08:29:08 Datenbank gespeichert (woerter)
+- 08:29:08 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:29:08 Manifest gespeichert (woerter)
+- 08:29:08 Datenbank gespeichert (woerter)
+- 08:29:08 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 08:29:08 Manifest gespeichert (woerter)
+- 08:29:08 Datenbank gespeichert (saetze)
+- 08:29:08 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 08:29:08 Manifest gespeichert (saetze)
+- 08:29:09 ID umbenannt (woerter): lamm → schaf
+- 08:29:09 id-rename:set
+- 08:29:09 Datenbank gespeichert (woerter)
+- 08:29:09 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:29:09 Manifest gespeichert (woerter)
+- 08:29:09 sync-files:manifest
+- 08:29:09 sync-files:db
+- 08:29:09 delete-item:db
+- 08:29:09 delete-item:set
+- 08:29:09 delete-item:set
+- 08:58:48 Name geändert (woerter) [loeschen]
+- 08:58:48 name-history:write
+- 08:58:49 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 08:58:49 name-history:write
+- 08:58:49 name-undo
+- 08:58:49 name-history:write
+- 08:58:49 name-redo
+- 08:58:49 name-history:write
+- 08:58:49 sync-files:db
+- 08:58:49 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-073fMg/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-073fMg/data/wörter/images/a/apfel.jpg
+- 08:58:49 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-073fMg/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-073fMg/data/wörter/sounds/a/apfel.mp3
+- 08:58:49 sync-files:db
+- 08:58:49 sync-files:db
+- 08:58:49 delete-item:db
+- 08:58:49 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-073fMg/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-073fMg/data/wörter/images/b/becher.jpg
+- 08:58:50 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-073fMg/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-073fMg/data/wörter/sounds/b/becher.mp3
+- 08:58:50 sync-files:db
+- 08:58:50 Datenbank gespeichert (woerter)
+- 08:58:50 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 08:58:50 Manifest gespeichert (woerter)
+- 08:58:50 Datenbank gespeichert (woerter)
+- 08:58:50 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:58:50 Manifest gespeichert (woerter)
+- 08:58:50 Datenbank gespeichert (woerter)
+- 08:58:50 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 08:58:50 Manifest gespeichert (woerter)
+- 08:58:50 Datenbank gespeichert (saetze)
+- 08:58:50 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 08:58:50 Manifest gespeichert (saetze)
+- 08:58:51 Datenbank gespeichert (woerter)
+- 08:58:51 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 08:58:51 Manifest gespeichert (woerter)
+- 08:58:51 sync-files:manifest
+- 08:58:51 sync-files:db
+- 08:58:51 delete-item:db
+- 08:58:51 delete-item:set
+- 08:58:51 delete-item:set
+- 08:58:52 ID umbenannt (woerter): lamm → schaf
+- 08:58:52 id-rename:set
+- 09:06:46 Name geändert (woerter) [loeschen]
+- 09:06:46 name-history:write
+- 09:06:46 Datenbank gespeichert (woerter)
+- 09:06:46 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:06:46 Manifest gespeichert (woerter)
+- 09:06:46 sync-files:manifest
+- 09:06:46 sync-files:db
+- 09:06:46 delete-item:db
+- 09:06:46 delete-item:set
+- 09:06:46 delete-item:set
+- 09:06:47 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 09:06:47 name-history:write
+- 09:06:47 name-undo
+- 09:06:47 name-history:write
+- 09:06:47 name-redo
+- 09:06:47 name-history:write
+- 09:06:47 sync-files:db
+- 09:06:47 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TQy6G3/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TQy6G3/data/wörter/images/a/apfel.jpg
+- 09:06:47 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TQy6G3/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TQy6G3/data/wörter/sounds/a/apfel.mp3
+- 09:06:47 sync-files:db
+- 09:06:47 sync-files:db
+- 09:06:47 delete-item:db
+- 09:06:47 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TQy6G3/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TQy6G3/data/wörter/images/b/becher.jpg
+- 09:06:47 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TQy6G3/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TQy6G3/data/wörter/sounds/b/becher.mp3
+- 09:06:47 sync-files:db
+- 09:06:48 Datenbank gespeichert (woerter)
+- 09:06:48 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 09:06:48 Manifest gespeichert (woerter)
+- 09:06:48 Datenbank gespeichert (woerter)
+- 09:06:48 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:06:48 Manifest gespeichert (woerter)
+- 09:06:48 Datenbank gespeichert (woerter)
+- 09:06:48 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 09:06:48 Manifest gespeichert (woerter)
+- 09:06:48 Datenbank gespeichert (saetze)
+- 09:06:48 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 09:06:48 Manifest gespeichert (saetze)
+- 09:06:48 ID umbenannt (woerter): lamm → schaf
+- 09:06:48 id-rename:set
+- 09:21:35 Name geändert (woerter) [loeschen]
+- 09:21:35 name-history:write
+- 09:21:36 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 09:21:36 name-history:write
+- 09:21:36 name-undo
+- 09:21:36 name-history:write
+- 09:21:36 name-redo
+- 09:21:36 name-history:write
+- 09:21:36 sync-files:db
+- 09:21:36 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9ljeOa/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9ljeOa/data/wörter/images/a/apfel.jpg
+- 09:21:36 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9ljeOa/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9ljeOa/data/wörter/sounds/a/apfel.mp3
+- 09:21:36 sync-files:db
+- 09:21:36 sync-files:db
+- 09:21:36 delete-item:db
+- 09:21:36 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9ljeOa/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9ljeOa/data/wörter/images/b/becher.jpg
+- 09:21:36 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9ljeOa/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9ljeOa/data/wörter/sounds/b/becher.mp3
+- 09:21:36 sync-files:db
+- 09:21:37 Datenbank gespeichert (woerter)
+- 09:21:37 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 09:21:37 Manifest gespeichert (woerter)
+- 09:21:37 Datenbank gespeichert (woerter)
+- 09:21:37 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:21:37 Manifest gespeichert (woerter)
+- 09:21:37 Datenbank gespeichert (woerter)
+- 09:21:37 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 09:21:37 Manifest gespeichert (woerter)
+- 09:21:37 Datenbank gespeichert (saetze)
+- 09:21:37 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 09:21:37 Manifest gespeichert (saetze)
+- 09:21:37 Datenbank gespeichert (woerter)
+- 09:21:37 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:21:37 Manifest gespeichert (woerter)
+- 09:21:37 sync-files:manifest
+- 09:21:37 sync-files:db
+- 09:21:37 delete-item:db
+- 09:21:37 delete-item:set
+- 09:21:37 delete-item:set
+- 09:21:38 ID umbenannt (woerter): lamm → schaf
+- 09:21:38 id-rename:set
+- 10:19:07 Name geändert (woerter) [loeschen]
+- 10:19:07 name-history:write
+- 10:19:08 sync-files:db
+- 10:19:08 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fHe3zG/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fHe3zG/data/wörter/images/a/apfel.jpg
+- 10:19:08 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fHe3zG/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fHe3zG/data/wörter/sounds/a/apfel.mp3
+- 10:19:08 sync-files:db
+- 10:19:08 sync-files:db
+- 10:19:08 delete-item:db
+- 10:19:08 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fHe3zG/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fHe3zG/data/wörter/images/b/becher.jpg
+- 10:19:08 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fHe3zG/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-fHe3zG/data/wörter/sounds/b/becher.mp3
+- 10:19:08 sync-files:db
+- 10:19:08 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 10:19:08 name-history:write
+- 10:19:08 name-undo
+- 10:19:08 name-history:write
+- 10:19:08 name-redo
+- 10:19:08 name-history:write
+- 10:19:09 Datenbank gespeichert (woerter)
+- 10:19:09 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:19:09 Manifest gespeichert (woerter)
+- 10:19:09 sync-files:manifest
+- 10:19:09 sync-files:db
+- 10:19:09 delete-item:db
+- 10:19:09 delete-item:set
+- 10:19:09 delete-item:set
+- 10:19:09 Datenbank gespeichert (woerter)
+- 10:19:09 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 10:19:09 Manifest gespeichert (woerter)
+- 10:19:09 Datenbank gespeichert (woerter)
+- 10:19:09 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:19:09 Manifest gespeichert (woerter)
+- 10:19:09 Datenbank gespeichert (woerter)
+- 10:19:09 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 10:19:09 Manifest gespeichert (woerter)
+- 10:19:09 Datenbank gespeichert (saetze)
+- 10:19:09 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 10:19:09 Manifest gespeichert (saetze)
+- 10:19:10 ID umbenannt (woerter): lamm → schaf
+- 10:19:10 id-rename:set
+- 10:55:58 Name geändert (woerter) [loeschen]
+- 10:55:58 name-history:write
+- 10:55:59 sync-files:db
+- 10:55:59 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TeHYXS/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TeHYXS/data/wörter/images/a/apfel.jpg
+- 10:55:59 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TeHYXS/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TeHYXS/data/wörter/sounds/a/apfel.mp3
+- 10:55:59 sync-files:db
+- 10:55:59 sync-files:db
+- 10:55:59 delete-item:db
+- 10:55:59 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TeHYXS/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TeHYXS/data/wörter/images/b/becher.jpg
+- 10:55:59 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TeHYXS/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-TeHYXS/data/wörter/sounds/b/becher.mp3
+- 10:55:59 sync-files:db
+- 10:56:00 Datenbank gespeichert (woerter)
+- 10:56:00 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 10:56:00 Manifest gespeichert (woerter)
+- 10:56:00 Datenbank gespeichert (woerter)
+- 10:56:00 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:56:00 Manifest gespeichert (woerter)
+- 10:56:00 Datenbank gespeichert (woerter)
+- 10:56:00 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 10:56:00 Manifest gespeichert (woerter)
+- 10:56:00 Datenbank gespeichert (saetze)
+- 10:56:00 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 10:56:00 Manifest gespeichert (saetze)
+- 10:56:00 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 10:56:00 name-history:write
+- 10:56:00 name-undo
+- 10:56:00 name-history:write
+- 10:56:00 name-redo
+- 10:56:00 name-history:write
+- 10:56:01 ID umbenannt (woerter): lamm → schaf
+- 10:56:01 id-rename:set
+- 10:56:01 Datenbank gespeichert (woerter)
+- 10:56:01 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 10:56:01 Manifest gespeichert (woerter)
+- 10:56:01 sync-files:manifest
+- 10:56:01 sync-files:db
+- 10:56:01 delete-item:db
+- 10:56:01 delete-item:set
+- 10:56:01 delete-item:set
+- 11:21:03 Datenbank gespeichert (woerter)
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 11:21:03 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 11:21:03 Manifest gespeichert (woerter)
+- 11:21:29 Datenbank gespeichert (woerter)
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 11:21:29 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 11:21:29 Manifest gespeichert (woerter)
+- 11:21:33 Datenbank gespeichert (woerter)
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 11:21:33 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 11:21:33 Manifest gespeichert (woerter)
+- 11:32:35 Datenbank gespeichert (woerter)
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 11:32:35 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 11:32:35 Manifest gespeichert (woerter)
+- 12:13:42 Datenbank gespeichert (woerter)
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 12:13:42 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 12:13:42 Manifest gespeichert (woerter)
+- 12:27:21 Name geändert (woerter) [loeschen]
+- 12:27:21 name-history:write
+- 12:27:21 sync-files:db
+- 12:27:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-iA8LH8/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-iA8LH8/data/wörter/images/a/apfel.jpg
+- 12:27:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-iA8LH8/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-iA8LH8/data/wörter/sounds/a/apfel.mp3
+- 12:27:21 sync-files:db
+- 12:27:21 sync-files:db
+- 12:27:21 delete-item:db
+- 12:27:22 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-iA8LH8/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-iA8LH8/data/wörter/images/b/becher.jpg
+- 12:27:22 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-iA8LH8/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-iA8LH8/data/wörter/sounds/b/becher.mp3
+- 12:27:22 sync-files:db
+- 12:27:22 Datenbank gespeichert (woerter)
+- 12:27:22 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 12:27:22 Manifest gespeichert (woerter)
+- 12:27:22 Datenbank gespeichert (woerter)
+- 12:27:22 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:27:22 Manifest gespeichert (woerter)
+- 12:27:22 Datenbank gespeichert (woerter)
+- 12:27:22 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 12:27:22 Manifest gespeichert (woerter)
+- 12:27:22 Datenbank gespeichert (saetze)
+- 12:27:22 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 12:27:22 Manifest gespeichert (saetze)
+- 12:27:22 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 12:27:22 name-history:write
+- 12:27:23 name-undo
+- 12:27:23 name-history:write
+- 12:27:23 name-redo
+- 12:27:23 name-history:write
+- 12:27:23 Datenbank gespeichert (woerter)
+- 12:27:23 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:27:23 Manifest gespeichert (woerter)
+- 12:27:23 sync-files:manifest
+- 12:27:23 sync-files:db
+- 12:27:23 delete-item:db
+- 12:27:23 delete-item:set
+- 12:27:23 delete-item:set
+- 12:27:23 ID umbenannt (woerter): lamm → schaf
+- 12:27:23 id-rename:set
+- 12:39:29 Name geändert (woerter) [loeschen]
+- 12:39:29 name-history:write
+- 12:39:29 sync-files:db
+- 12:39:29 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-b1HRuk/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-b1HRuk/data/wörter/images/a/apfel.jpg
+- 12:39:29 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-b1HRuk/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-b1HRuk/data/wörter/sounds/a/apfel.mp3
+- 12:39:29 sync-files:db
+- 12:39:29 sync-files:db
+- 12:39:29 delete-item:db
+- 12:39:29 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-b1HRuk/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-b1HRuk/data/wörter/images/b/becher.jpg
+- 12:39:29 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-b1HRuk/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-b1HRuk/data/wörter/sounds/b/becher.mp3
+- 12:39:29 sync-files:db
+- 12:39:30 Datenbank gespeichert (woerter)
+- 12:39:30 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 12:39:30 Manifest gespeichert (woerter)
+- 12:39:30 Datenbank gespeichert (woerter)
+- 12:39:30 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:39:30 Manifest gespeichert (woerter)
+- 12:39:30 Datenbank gespeichert (woerter)
+- 12:39:30 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 12:39:30 Manifest gespeichert (woerter)
+- 12:39:30 Datenbank gespeichert (saetze)
+- 12:39:30 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 12:39:30 Manifest gespeichert (saetze)
+- 12:39:30 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 12:39:30 name-history:write
+- 12:39:30 name-undo
+- 12:39:30 name-history:write
+- 12:39:30 name-redo
+- 12:39:30 name-history:write
+- 12:39:31 ID umbenannt (woerter): lamm → schaf
+- 12:39:31 id-rename:set
+- 12:39:31 Datenbank gespeichert (woerter)
+- 12:39:31 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:39:31 Manifest gespeichert (woerter)
+- 12:39:31 sync-files:manifest
+- 12:39:31 sync-files:db
+- 12:39:31 delete-item:db
+- 12:39:31 delete-item:set
+- 12:39:31 delete-item:set
+- 12:42:09 Name geändert (woerter) [loeschen]
+- 12:42:09 name-history:write
+- 12:42:10 sync-files:db
+- 12:42:10 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-7oMz04/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-7oMz04/data/wörter/images/a/apfel.jpg
+- 12:42:10 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-7oMz04/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-7oMz04/data/wörter/sounds/a/apfel.mp3
+- 12:42:10 sync-files:db
+- 12:42:10 sync-files:db
+- 12:42:10 delete-item:db
+- 12:42:10 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-7oMz04/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-7oMz04/data/wörter/images/b/becher.jpg
+- 12:42:10 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-7oMz04/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-7oMz04/data/wörter/sounds/b/becher.mp3
+- 12:42:10 sync-files:db
+- 12:42:10 Datenbank gespeichert (woerter)
+- 12:42:10 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 12:42:10 Manifest gespeichert (woerter)
+- 12:42:10 Datenbank gespeichert (woerter)
+- 12:42:11 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:42:11 Manifest gespeichert (woerter)
+- 12:42:11 Datenbank gespeichert (woerter)
+- 12:42:11 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 12:42:11 Manifest gespeichert (woerter)
+- 12:42:11 Datenbank gespeichert (saetze)
+- 12:42:11 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 12:42:11 Manifest gespeichert (saetze)
+- 12:42:11 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 12:42:11 name-history:write
+- 12:42:11 name-undo
+- 12:42:11 name-history:write
+- 12:42:11 name-redo
+- 12:42:11 name-history:write
+- 12:42:11 Datenbank gespeichert (woerter)
+- 12:42:11 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:42:11 Manifest gespeichert (woerter)
+- 12:42:11 sync-files:manifest
+- 12:42:11 sync-files:db
+- 12:42:11 delete-item:db
+- 12:42:11 delete-item:set
+- 12:42:11 delete-item:set
+- 12:42:12 ID umbenannt (woerter): lamm → schaf
+- 12:42:12 id-rename:set
+- 12:47:47 Name geändert (woerter) [loeschen]
+- 12:47:47 name-history:write
+- 12:47:47 sync-files:db
+- 12:47:47 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-IRCS6A/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-IRCS6A/data/wörter/images/a/apfel.jpg
+- 12:47:47 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-IRCS6A/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-IRCS6A/data/wörter/sounds/a/apfel.mp3
+- 12:47:47 sync-files:db
+- 12:47:47 sync-files:db
+- 12:47:47 delete-item:db
+- 12:47:47 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-IRCS6A/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-IRCS6A/data/wörter/images/b/becher.jpg
+- 12:47:47 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-IRCS6A/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-IRCS6A/data/wörter/sounds/b/becher.mp3
+- 12:47:47 sync-files:db
+- 12:47:48 Datenbank gespeichert (woerter)
+- 12:47:48 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 12:47:48 Manifest gespeichert (woerter)
+- 12:47:48 Datenbank gespeichert (woerter)
+- 12:47:48 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:47:48 Manifest gespeichert (woerter)
+- 12:47:48 Datenbank gespeichert (woerter)
+- 12:47:48 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 12:47:48 Manifest gespeichert (woerter)
+- 12:47:48 Datenbank gespeichert (saetze)
+- 12:47:48 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 12:47:48 Manifest gespeichert (saetze)
+- 12:47:48 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 12:47:48 name-history:write
+- 12:47:48 name-undo
+- 12:47:48 name-history:write
+- 12:47:48 name-redo
+- 12:47:48 name-history:write
+- 12:47:48 Datenbank gespeichert (woerter)
+- 12:47:48 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:47:48 Manifest gespeichert (woerter)
+- 12:47:49 sync-files:manifest
+- 12:47:49 sync-files:db
+- 12:47:49 delete-item:db
+- 12:47:49 delete-item:set
+- 12:47:49 delete-item:set
+- 12:47:49 ID umbenannt (woerter): lamm → schaf
+- 12:47:49 id-rename:set
+- 12:51:55 Name geändert (woerter) [loeschen]
+- 12:51:55 name-history:write
+- 12:51:55 sync-files:db
+- 12:51:55 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EFgdVP/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EFgdVP/data/wörter/images/a/apfel.jpg
+- 12:51:55 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EFgdVP/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EFgdVP/data/wörter/sounds/a/apfel.mp3
+- 12:51:55 sync-files:db
+- 12:51:55 sync-files:db
+- 12:51:55 delete-item:db
+- 12:51:55 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EFgdVP/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EFgdVP/data/wörter/images/b/becher.jpg
+- 12:51:55 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EFgdVP/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-EFgdVP/data/wörter/sounds/b/becher.mp3
+- 12:51:55 sync-files:db
+- 12:51:56 Datenbank gespeichert (woerter)
+- 12:51:56 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 12:51:56 Manifest gespeichert (woerter)
+- 12:51:56 Datenbank gespeichert (woerter)
+- 12:51:56 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:51:56 Manifest gespeichert (woerter)
+- 12:51:56 Datenbank gespeichert (woerter)
+- 12:51:56 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 12:51:56 Manifest gespeichert (woerter)
+- 12:51:56 Datenbank gespeichert (saetze)
+- 12:51:56 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 12:51:56 Manifest gespeichert (saetze)
+- 12:51:56 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 12:51:56 name-history:write
+- 12:51:56 name-undo
+- 12:51:56 name-history:write
+- 12:51:56 name-redo
+- 12:51:56 name-history:write
+- 12:51:57 Datenbank gespeichert (woerter)
+- 12:51:57 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:51:57 Manifest gespeichert (woerter)
+- 12:51:57 sync-files:manifest
+- 12:51:57 sync-files:db
+- 12:51:57 delete-item:db
+- 12:51:57 delete-item:set
+- 12:51:57 delete-item:set
+- 12:51:57 ID umbenannt (woerter): lamm → schaf
+- 12:51:57 id-rename:set
+- 14:43:19 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Rad.mp3 -> data/wörter/sounds/r/Rad.mp3
+- 14:43:19 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Rakete.mp3 -> data/wörter/sounds/r/Rakete.mp3
+- 14:43:19 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Rauch.mp3 -> data/wörter/sounds/r/Rauch.mp3
+- 14:43:19 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Raupe.mp3 -> data/wörter/sounds/r/Raupe.mp3
+- 14:43:19 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Räuber.mp3 -> data/wörter/sounds/r/Räuber.mp3
+- 14:43:19 sync-files:manifest
+- 14:43:19 sync-files:manifest
+- 14:43:19 sync-files:db
+- 14:44:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Regen.mp3 -> data/wörter/sounds/r/Regen.mp3
+- 14:44:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Reifen.mp3 -> data/wörter/sounds/r/Reifen.mp3
+- 14:44:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Reis.mp3 -> data/wörter/sounds/r/Reis.mp3
+- 14:44:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/rennen.mp3 -> data/wörter/sounds/r/rennen.mp3
+- 14:44:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Rock.mp3 -> data/wörter/sounds/r/Rock.mp3
+- 14:44:56 sync-files:manifest
+- 14:44:56 sync-files:manifest
+- 14:44:56 sync-files:db
+- 14:45:58 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Rutsche.mp3 -> data/wörter/sounds/r/Rutsche.mp3
+- 14:45:58 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Rücken.mp3 -> data/wörter/sounds/r/Rücken.mp3
+- 14:45:58 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Rüssel.mp3 -> data/wörter/sounds/r/Rüssel.mp3
+- 14:45:58 sync-files:manifest
+- 14:45:58 sync-files:manifest
+- 14:45:58 sync-files:db
+- 14:50:59 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Milch.mp3 -> data/wörter/sounds/m/Milch.mp3
+- 14:50:59 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Muschel.mp3 -> data/wörter/sounds/m/Muschel.mp3
+- 14:50:59 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Mädchen.mp3 -> data/wörter/sounds/m/Mädchen.mp3
+- 14:50:59 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Specht.mp3 -> data/wörter/sounds/s/Specht.mp3
+- 14:50:59 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/stechen.mp3 -> data/wörter/sounds/s/stechen.mp3
+- 14:50:59 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/streicheln.mp3 -> data/wörter/sounds/s/streicheln.mp3
+- 14:50:59 sync-files:manifest
+- 14:50:59 sync-files:manifest
+- 14:50:59 sync-files:db
+- 14:51:14 Datenbank gespeichert (woerter)
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:51:14 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:51:14 Manifest gespeichert (woerter)
+- 14:51:19 Datenbank gespeichert (woerter)
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:51:19 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:51:19 Manifest gespeichert (woerter)
+- 14:51:22 Datenbank gespeichert (woerter)
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:51:22 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:51:22 Manifest gespeichert (woerter)
+- 14:51:27 Datenbank gespeichert (woerter)
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:51:27 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:51:27 Manifest gespeichert (woerter)
+- 14:51:31 Datenbank gespeichert (woerter)
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:51:31 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:51:31 Manifest gespeichert (woerter)
+- 14:54:17 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Dusche.mp3 -> data/wörter/sounds/d/Dusche.mp3
+- 14:54:17 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Flasche.mp3 -> data/wörter/sounds/f/Flasche.mp3
+- 14:54:17 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Geschenk.mp3 -> data/wörter/sounds/g/Geschenk.mp3
+- 14:54:17 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Kirschen.mp3 -> data/wörter/sounds/k/Kirschen.mp3
+- 14:54:17 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Lutscher.mp3 -> data/wörter/sounds/l/Lutscher.mp3
+- 14:54:17 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Tasche.mp3 -> data/wörter/sounds/t/Tasche.mp3
+- 14:54:17 sync-files:manifest
+- 14:54:17 sync-files:manifest
+- 14:54:17 sync-files:db
+- 14:55:01 Datenbank gespeichert (woerter)
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:55:01 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:55:01 Manifest gespeichert (woerter)
+- 14:55:12 Datenbank gespeichert (woerter)
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:55:12 Manifest gespeichert (woerter)
+- 14:55:15 Datenbank gespeichert (woerter)
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:55:15 Manifest gespeichert (woerter)
+- 14:56:53 delete-item:db
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Saft.mp3 -> data/wörter/sounds/s/Saft.mp3
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Salat.mp3 -> data/wörter/sounds/s/Salat.mp3
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Sand.mp3 -> data/wörter/sounds/s/Sand.mp3
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Segelboot.mp3 -> data/wörter/sounds/s/Segelboot.mp3
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Seife.mp3 -> data/wörter/sounds/s/Seife.mp3
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Seil.mp3 -> data/wörter/sounds/s/Seil.mp3
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/singen.mp3 -> data/wörter/sounds/s/singen.mp3
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Socken.mp3 -> data/wörter/sounds/s/Socken.mp3
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Sofa.mp3 -> data/wörter/sounds/s/Sofa.mp3
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Sommer.mp3 -> data/wörter/sounds/s/Sommer.mp3
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Sonne.mp3 -> data/wörter/sounds/s/Sonne.mp3
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Superman.mp3 -> data/wörter/sounds/s/Superman.mp3
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Suppe.mp3 -> data/wörter/sounds/s/Suppe.mp3
+- 15:00:56 Konflikt gelöst (move): data/wörter/sounds/sounds_unsortiert/Säge.mp3 -> data/wörter/sounds/s/Säge.mp3
+- 15:00:56 sync-files:manifest
+- 15:00:56 sync-files:manifest
+- 15:00:56 sync-files:db
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Saal.jpg -> data/wörter/images/s/Saal.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Sack.jpg -> data/wörter/images/s/Sack.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Sack.png -> data/wörter/images/s/Sack.png
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Saft.png -> data/wörter/images/s/Saft.png
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Sahne.png -> data/wörter/images/s/Sahne.png
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Salat.png -> data/wörter/images/s/Salat.png
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Salz.png -> data/wörter/images/s/Salz.png
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Sand.png -> data/wörter/images/s/Sand.png
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Sandwich.png -> data/wörter/images/s/Sandwich.png
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Sattel.jpg -> data/wörter/images/s/Sattel.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Satz.jpg -> data/wörter/images/s/Satz.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/sauer.jpg -> data/wörter/images/s/sauer.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/See.jpg -> data/wörter/images/s/See.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Seepferdchen.jpg -> data/wörter/images/s/Seepferdchen.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Segelboot.jpg -> data/wörter/images/s/Segelboot.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Seife.jpg -> data/wörter/images/s/Seife.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Seil.jpg -> data/wörter/images/s/Seil.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/sieben.jpg -> data/wörter/images/s/sieben.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/singen.jpg -> data/wörter/images/s/singen.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/sinken.jpg -> data/wörter/images/s/sinken.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Socken.jpg -> data/wörter/images/s/Socken.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Sofa.jpg -> data/wörter/images/s/Sofa.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Sommer.jpg -> data/wörter/images/s/Sommer.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Sonne.jpg -> data/wörter/images/s/Sonne.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/suchen.jpg -> data/wörter/images/s/suchen.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Supermarkt.jpg -> data/wörter/images/s/Supermarkt.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Suppe.png -> data/wörter/images/s/Suppe.png
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Sushi.png -> data/wörter/images/s/Sushi.png
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Säge.jpg -> data/wörter/images/s/Säge.jpg
+- 15:08:33 Konflikt gelöst (move): data/wörter/images/images_unsortiert/Süßigkeiten.png -> data/wörter/images/s/Süßigkeiten.png
+- 15:08:33 sync-files:manifest
+- 15:08:33 sync-files:manifest
+- 15:08:33 sync-files:db
+- 15:09:17 Name geändert (woerter) [suessigkeiten]: "Süssigkeiten" → "Süßigkeiten"
+- 15:09:17 name-history:write
+- 15:30:16 Name geändert (woerter) [loeschen]
+- 15:30:16 name-history:write
+- 15:30:16 sync-files:db
+- 15:30:16 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YabzqQ/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YabzqQ/data/wörter/images/a/apfel.jpg
+- 15:30:16 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YabzqQ/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YabzqQ/data/wörter/sounds/a/apfel.mp3
+- 15:30:16 sync-files:db
+- 15:30:16 sync-files:db
+- 15:30:16 delete-item:db
+- 15:30:16 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YabzqQ/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YabzqQ/data/wörter/images/b/becher.jpg
+- 15:30:16 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YabzqQ/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-YabzqQ/data/wörter/sounds/b/becher.mp3
+- 15:30:16 sync-files:db
+- 15:30:17 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 15:30:17 name-history:write
+- 15:30:17 name-undo
+- 15:30:17 name-history:write
+- 15:30:17 name-redo
+- 15:30:17 name-history:write
+- 15:30:17 Datenbank gespeichert (woerter)
+- 15:30:17 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 15:30:17 Manifest gespeichert (woerter)
+- 15:30:17 Datenbank gespeichert (woerter)
+- 15:30:17 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 15:30:17 Manifest gespeichert (woerter)
+- 15:30:17 Datenbank gespeichert (woerter)
+- 15:30:17 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 15:30:18 Manifest gespeichert (woerter)
+- 15:30:18 Datenbank gespeichert (saetze)
+- 15:30:18 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 15:30:18 Manifest gespeichert (saetze)
+- 15:30:18 Datenbank gespeichert (woerter)
+- 15:30:18 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 15:30:18 Manifest gespeichert (woerter)
+- 15:30:18 sync-files:manifest
+- 15:30:18 sync-files:db
+- 15:30:18 delete-item:db
+- 15:30:18 delete-item:set
+- 15:30:18 delete-item:set
+- 15:30:18 ID umbenannt (woerter): lamm → schaf
+- 15:30:18 id-rename:set
+- 15:30:50 Datenbank gespeichert (woerter)
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 15:30:50 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 15:30:50 Manifest gespeichert (woerter)
+- 15:30:56 Datenbank gespeichert (woerter)
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 15:30:56 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 15:30:56 Manifest gespeichert (woerter)
+- 15:31:01 Datenbank gespeichert (woerter)
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 15:31:01 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 15:31:01 Manifest gespeichert (woerter)
+
+## 2025-09-16
+- 06:47:03 Name geändert (woerter) [loeschen]
+- 06:47:03 name-history:write
+- 06:47:03 sync-files:db
+- 06:47:03 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-dzhm9H/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-dzhm9H/data/wörter/images/a/apfel.jpg
+- 06:47:03 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-dzhm9H/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-dzhm9H/data/wörter/sounds/a/apfel.mp3
+- 06:47:03 sync-files:db
+- 06:47:03 sync-files:db
+- 06:47:03 delete-item:db
+- 06:47:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-dzhm9H/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-dzhm9H/data/wörter/images/b/becher.jpg
+- 06:47:04 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-dzhm9H/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-dzhm9H/data/wörter/sounds/b/becher.mp3
+- 06:47:04 sync-files:db
+- 06:47:04 Datenbank gespeichert (woerter)
+- 06:47:04 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 06:47:04 Manifest gespeichert (woerter)
+- 06:47:04 Datenbank gespeichert (woerter)
+- 06:47:04 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:47:04 Manifest gespeichert (woerter)
+- 06:47:04 Datenbank gespeichert (woerter)
+- 06:47:04 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 06:47:04 Manifest gespeichert (woerter)
+- 06:47:04 Datenbank gespeichert (saetze)
+- 06:47:04 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 06:47:04 Manifest gespeichert (saetze)
+- 06:47:04 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 06:47:04 name-history:write
+- 06:47:05 name-undo
+- 06:47:05 name-history:write
+- 06:47:05 name-redo
+- 06:47:05 name-history:write
+- 06:47:05 Datenbank gespeichert (woerter)
+- 06:47:05 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:47:05 Manifest gespeichert (woerter)
+- 06:47:05 sync-files:db
+- 06:47:05 delete-item:db
+- 06:47:05 delete-item:set
+- 06:47:05 delete-item:set
+- 06:47:05 ID umbenannt (woerter): lamm → schaf
+- 06:47:05 id-rename:set
+- 06:54:53 Name geändert (woerter) [loeschen]
+- 06:54:53 name-history:write
+- 06:54:53 sync-files:db
+- 06:54:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3dpVfL/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3dpVfL/data/wörter/images/a/apfel.jpg
+- 06:54:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3dpVfL/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3dpVfL/data/wörter/sounds/a/apfel.mp3
+- 06:54:54 sync-files:db
+- 06:54:54 sync-files:db
+- 06:54:54 delete-item:db
+- 06:54:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3dpVfL/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3dpVfL/data/wörter/images/b/becher.jpg
+- 06:54:54 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3dpVfL/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-3dpVfL/data/wörter/sounds/b/becher.mp3
+- 06:54:54 sync-files:db
+- 06:54:54 Datenbank gespeichert (woerter)
+- 06:54:54 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 06:54:54 Manifest gespeichert (woerter)
+- 06:54:54 Datenbank gespeichert (woerter)
+- 06:54:54 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:54:54 Manifest gespeichert (woerter)
+- 06:54:54 Datenbank gespeichert (woerter)
+- 06:54:54 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 06:54:54 Manifest gespeichert (woerter)
+- 06:54:54 Datenbank gespeichert (saetze)
+- 06:54:54 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 06:54:54 Manifest gespeichert (saetze)
+- 06:54:55 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 06:54:55 name-history:write
+- 06:54:55 name-undo
+- 06:54:55 name-history:write
+- 06:54:55 name-redo
+- 06:54:55 name-history:write
+- 06:54:55 Datenbank gespeichert (woerter)
+- 06:54:55 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:54:55 Manifest gespeichert (woerter)
+- 06:54:55 sync-files:db
+- 06:54:55 delete-item:db
+- 06:54:55 delete-item:set
+- 06:54:55 delete-item:set
+- 06:54:55 ID umbenannt (woerter): lamm → schaf
+- 06:54:55 id-rename:set
+- 07:14:51 Name geändert (woerter) [ich]: "Ich" → "ich"
+- 07:14:51 name-history:write
+- 07:15:10 Name geändert (woerter) [ich]: "Ich" → "ich"
+- 07:15:10 name-history:write
+- 07:15:15 Name geändert (woerter) [ich]: "Ich" → "ich"
+- 07:15:30 Name geändert (woerter) [ich]: "Ich" → "ich"
+- 07:15:30 name-history:write
+- 07:15:33 Name geändert (woerter) [ich]: "Ich" → "ich"
+- 07:33:39 resolve-name-file-conflicts
+- 07:33:41 resolve-name-file-conflicts
+- 07:33:45 resolve-name-file-conflicts
+- 07:33:52 resolve-name-file-conflicts
+- 07:33:55 resolve-name-file-conflicts
+- 07:33:57 resolve-name-file-conflicts
+- 07:33:59 resolve-name-file-conflicts
+- 07:34:01 resolve-name-file-conflicts
+- 07:34:03 resolve-name-file-conflicts
+- 08:55:39 Datenbank gespeichert (saetze)
+- 08:55:39 Set-Datei gespeichert (saetze): data/sets_saetze/phonologische-bewusstheit_reime.json
+- 08:55:39 Manifest gespeichert (saetze)
+- 08:57:30 Konflikt gelöst (move): data/sätze/images/images_unsortiert/Kröte mit Tröte.jpeg -> data/sätze/images/Kröte mit Tröte.jpeg
+- 08:57:30 sync-files:manifest
+- 08:57:30 sync-files:manifest
+- 08:57:30 sync-files:db
+- 09:03:09 Name geändert (woerter) [loeschen]
+- 09:03:09 name-history:write
+- 09:03:10 sync-files:db
+- 09:03:10 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-4mJjNe/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-4mJjNe/data/wörter/images/a/apfel.jpg
+- 09:03:10 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-4mJjNe/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-4mJjNe/data/wörter/sounds/a/apfel.mp3
+- 09:03:10 sync-files:db
+- 09:03:10 sync-files:db
+- 09:03:10 delete-item:db
+- 09:03:10 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-4mJjNe/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-4mJjNe/data/wörter/images/b/becher.jpg
+- 09:03:10 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-4mJjNe/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-4mJjNe/data/wörter/sounds/b/becher.mp3
+- 09:03:10 sync-files:db
+- 09:03:10 Datenbank gespeichert (woerter)
+- 09:03:10 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 09:03:10 Manifest gespeichert (woerter)
+- 09:03:10 Datenbank gespeichert (woerter)
+- 09:03:10 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:03:10 Manifest gespeichert (woerter)
+- 09:03:10 Datenbank gespeichert (woerter)
+- 09:03:10 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 09:03:10 Manifest gespeichert (woerter)
+- 09:03:10 Datenbank gespeichert (saetze)
+- 09:03:10 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 09:03:10 Manifest gespeichert (saetze)
+- 09:03:11 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 09:03:11 name-history:write
+- 09:03:11 name-undo
+- 09:03:11 name-history:write
+- 09:03:11 name-redo
+- 09:03:11 name-history:write
+- 09:03:11 ID umbenannt (woerter): lamm → schaf
+- 09:03:11 id-rename:set
+- 09:03:11 Datenbank gespeichert (woerter)
+- 09:03:11 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:03:11 Manifest gespeichert (woerter)
+- 09:03:11 sync-files:manifest
+- 09:03:11 sync-files:db
+- 09:03:11 delete-item:db
+- 09:03:11 delete-item:set
+- 09:03:11 delete-item:set
+- 09:04:41 Name geändert (woerter) [loeschen]
+- 09:04:41 name-history:write
+- 09:04:42 sync-files:db
+- 09:04:42 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QZTG4Z/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QZTG4Z/data/wörter/images/a/apfel.jpg
+- 09:04:42 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QZTG4Z/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QZTG4Z/data/wörter/sounds/a/apfel.mp3
+- 09:04:42 sync-files:db
+- 09:04:42 sync-files:db
+- 09:04:42 delete-item:db
+- 09:04:42 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QZTG4Z/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QZTG4Z/data/wörter/images/b/becher.jpg
+- 09:04:42 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QZTG4Z/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QZTG4Z/data/wörter/sounds/b/becher.mp3
+- 09:04:42 sync-files:db
+- 09:04:42 Datenbank gespeichert (woerter)
+- 09:04:42 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 09:04:42 Manifest gespeichert (woerter)
+- 09:04:43 Datenbank gespeichert (woerter)
+- 09:04:43 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:04:43 Manifest gespeichert (woerter)
+- 09:04:43 Datenbank gespeichert (woerter)
+- 09:04:43 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 09:04:43 Manifest gespeichert (woerter)
+- 09:04:43 Datenbank gespeichert (saetze)
+- 09:04:43 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 09:04:43 Manifest gespeichert (saetze)
+- 09:04:43 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 09:04:43 name-history:write
+- 09:04:43 name-undo
+- 09:04:43 name-history:write
+- 09:04:43 name-redo
+- 09:04:43 name-history:write
+- 09:04:44 Datenbank gespeichert (woerter)
+- 09:04:44 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:04:44 Manifest gespeichert (woerter)
+- 09:04:44 sync-files:manifest
+- 09:04:44 sync-files:db
+- 09:04:44 delete-item:db
+- 09:04:44 delete-item:set
+- 09:04:44 delete-item:set
+- 09:04:44 ID umbenannt (woerter): lamm → schaf
+- 09:04:44 id-rename:set
+- 09:08:40 Name geändert (woerter) [loeschen]
+- 09:08:40 name-history:write
+- 09:08:40 sync-files:db
+- 09:08:40 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-s4BHNA/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-s4BHNA/data/wörter/images/a/apfel.jpg
+- 09:08:40 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-s4BHNA/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-s4BHNA/data/wörter/sounds/a/apfel.mp3
+- 09:08:40 sync-files:db
+- 09:08:40 sync-files:db
+- 09:08:40 delete-item:db
+- 09:08:40 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-s4BHNA/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-s4BHNA/data/wörter/images/b/becher.jpg
+- 09:08:40 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-s4BHNA/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-s4BHNA/data/wörter/sounds/b/becher.mp3
+- 09:08:40 sync-files:db
+- 09:08:42 Datenbank gespeichert (woerter)
+- 09:08:42 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 09:08:42 Manifest gespeichert (woerter)
+- 09:08:42 Datenbank gespeichert (woerter)
+- 09:08:42 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:08:42 Manifest gespeichert (woerter)
+- 09:08:42 Datenbank gespeichert (woerter)
+- 09:08:42 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 09:08:42 Manifest gespeichert (woerter)
+- 09:08:42 Datenbank gespeichert (saetze)
+- 09:08:42 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 09:08:42 Manifest gespeichert (saetze)
+- 09:08:42 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 09:08:42 name-history:write
+- 09:08:42 name-undo
+- 09:08:42 name-history:write
+- 09:08:42 name-redo
+- 09:08:42 name-history:write
+- 09:08:43 Datenbank gespeichert (woerter)
+- 09:08:43 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:08:43 Manifest gespeichert (woerter)
+- 09:08:43 sync-files:manifest
+- 09:08:43 sync-files:db
+- 09:08:43 delete-item:db
+- 09:08:43 delete-item:set
+- 09:08:43 delete-item:set
+- 09:08:43 ID umbenannt (woerter): lamm → schaf
+- 09:08:43 id-rename:set
+- 09:10:30 Name geändert (woerter) [loeschen]
+- 09:10:31 name-history:write
+- 09:10:31 Datenbank gespeichert (woerter)
+- 09:10:31 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 09:10:31 Manifest gespeichert (woerter)
+- 09:10:31 Datenbank gespeichert (woerter)
+- 09:10:31 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:10:31 Manifest gespeichert (woerter)
+- 09:10:31 Datenbank gespeichert (woerter)
+- 09:10:31 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 09:10:31 Manifest gespeichert (woerter)
+- 09:10:31 Datenbank gespeichert (saetze)
+- 09:10:31 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 09:10:31 Manifest gespeichert (saetze)
+- 09:10:31 sync-files:db
+- 09:10:31 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-07WnES/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-07WnES/data/wörter/images/a/apfel.jpg
+- 09:10:31 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-07WnES/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-07WnES/data/wörter/sounds/a/apfel.mp3
+- 09:10:32 sync-files:db
+- 09:10:32 sync-files:db
+- 09:10:32 delete-item:db
+- 09:10:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-07WnES/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-07WnES/data/wörter/images/b/becher.jpg
+- 09:10:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-07WnES/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-07WnES/data/wörter/sounds/b/becher.mp3
+- 09:10:32 sync-files:db
+- 09:10:32 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 09:10:32 name-history:write
+- 09:10:32 name-undo
+- 09:10:32 name-history:write
+- 09:10:33 name-redo
+- 09:10:33 name-history:write
+- 09:10:33 Datenbank gespeichert (woerter)
+- 09:10:33 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:10:33 Manifest gespeichert (woerter)
+- 09:10:33 sync-files:manifest
+- 09:10:33 sync-files:db
+- 09:10:33 delete-item:db
+- 09:10:33 delete-item:set
+- 09:10:33 delete-item:set
+- 09:10:33 ID umbenannt (woerter): lamm → schaf
+- 09:10:33 id-rename:set
+- 09:15:35 Name geändert (woerter) [loeschen]
+- 09:15:35 name-history:write
+- 09:15:36 sync-files:db
+- 09:15:36 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-WrovB2/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-WrovB2/data/wörter/images/a/apfel.jpg
+- 09:15:36 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-WrovB2/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-WrovB2/data/wörter/sounds/a/apfel.mp3
+- 09:15:36 sync-files:db
+- 09:15:36 sync-files:db
+- 09:15:36 delete-item:db
+- 09:15:36 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-WrovB2/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-WrovB2/data/wörter/images/b/becher.jpg
+- 09:15:36 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-WrovB2/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-WrovB2/data/wörter/sounds/b/becher.mp3
+- 09:15:36 sync-files:db
+- 09:15:36 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 09:15:36 name-history:write
+- 09:15:36 name-undo
+- 09:15:36 name-history:write
+- 09:15:36 name-redo
+- 09:15:36 name-history:write
+- 09:15:37 Datenbank gespeichert (woerter)
+- 09:15:37 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 09:15:37 Manifest gespeichert (woerter)
+- 09:15:37 Datenbank gespeichert (woerter)
+- 09:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:15:37 Manifest gespeichert (woerter)
+- 09:15:37 Datenbank gespeichert (woerter)
+- 09:15:37 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 09:15:37 Manifest gespeichert (woerter)
+- 09:15:37 Datenbank gespeichert (saetze)
+- 09:15:37 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 09:15:37 Manifest gespeichert (saetze)
+- 09:15:37 Datenbank gespeichert (woerter)
+- 09:15:37 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:15:37 Manifest gespeichert (woerter)
+- 09:15:37 sync-files:manifest
+- 09:15:37 sync-files:db
+- 09:15:37 delete-item:db
+- 09:15:37 delete-item:set
+- 09:15:37 delete-item:set
+- 09:15:38 ID umbenannt (woerter): lamm → schaf
+- 09:15:38 id-rename:set
+- 09:30:55 Name geändert (woerter) [loeschen]
+- 09:30:55 name-history:write
+- 09:30:56 sync-files:db
+- 09:30:56 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZkI8up/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZkI8up/data/wörter/images/a/apfel.jpg
+- 09:30:56 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZkI8up/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZkI8up/data/wörter/sounds/a/apfel.mp3
+- 09:30:56 sync-files:db
+- 09:30:56 sync-files:db
+- 09:30:56 delete-item:db
+- 09:30:56 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZkI8up/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZkI8up/data/wörter/images/b/becher.jpg
+- 09:30:56 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZkI8up/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-ZkI8up/data/wörter/sounds/b/becher.mp3
+- 09:30:56 sync-files:db
+- 09:30:56 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 09:30:56 name-history:write
+- 09:30:56 name-undo
+- 09:30:56 name-history:write
+- 09:30:56 name-redo
+- 09:30:56 name-history:write
+- 09:30:57 Datenbank gespeichert (woerter)
+- 09:30:57 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 09:30:57 Manifest gespeichert (woerter)
+- 09:30:57 Datenbank gespeichert (woerter)
+- 09:30:57 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:30:57 Manifest gespeichert (woerter)
+- 09:30:57 Datenbank gespeichert (woerter)
+- 09:30:57 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 09:30:57 Manifest gespeichert (woerter)
+- 09:30:57 Datenbank gespeichert (saetze)
+- 09:30:57 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 09:30:57 Manifest gespeichert (saetze)
+- 09:30:57 Datenbank gespeichert (woerter)
+- 09:30:57 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:30:57 Manifest gespeichert (woerter)
+- 09:30:57 sync-files:manifest
+- 09:30:57 sync-files:db
+- 09:30:57 delete-item:db
+- 09:30:57 delete-item:set
+- 09:30:57 delete-item:set
+- 09:30:58 ID umbenannt (woerter): lamm → schaf
+- 09:30:58 id-rename:set
+- 09:44:45 Name geändert (woerter) [loeschen]
+- 09:44:45 name-history:write
+- 09:44:45 sync-files:db
+- 09:44:45 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9uilMC/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9uilMC/data/wörter/images/a/apfel.jpg
+- 09:44:45 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9uilMC/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9uilMC/data/wörter/sounds/a/apfel.mp3
+- 09:44:45 sync-files:db
+- 09:44:45 sync-files:db
+- 09:44:45 delete-item:db
+- 09:44:45 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9uilMC/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9uilMC/data/wörter/images/b/becher.jpg
+- 09:44:45 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9uilMC/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-9uilMC/data/wörter/sounds/b/becher.mp3
+- 09:44:45 sync-files:db
+- 09:44:46 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 09:44:46 name-history:write
+- 09:44:46 name-undo
+- 09:44:46 name-history:write
+- 09:44:46 name-redo
+- 09:44:46 name-history:write
+- 09:44:47 Datenbank gespeichert (woerter)
+- 09:44:47 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 09:44:47 Manifest gespeichert (woerter)
+- 09:44:47 Datenbank gespeichert (woerter)
+- 09:44:47 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:44:47 Manifest gespeichert (woerter)
+- 09:44:47 Datenbank gespeichert (woerter)
+- 09:44:47 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 09:44:47 Manifest gespeichert (woerter)
+- 09:44:47 Datenbank gespeichert (saetze)
+- 09:44:47 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 09:44:47 Manifest gespeichert (saetze)
+- 09:44:48 Datenbank gespeichert (woerter)
+- 09:44:48 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:44:48 Manifest gespeichert (woerter)
+- 09:44:48 sync-files:manifest
+- 09:44:48 sync-files:db
+- 09:44:48 delete-item:db
+- 09:44:48 delete-item:set
+- 09:44:48 delete-item:set
+- 09:44:48 ID umbenannt (woerter): lamm → schaf
+- 09:44:48 id-rename:set
+- 09:47:59 Name geändert (woerter) [loeschen]
+- 09:47:59 name-history:write
+- 09:48:00 Datenbank gespeichert (woerter)
+- 09:48:00 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 09:48:00 Manifest gespeichert (woerter)
+- 09:48:00 Datenbank gespeichert (woerter)
+- 09:48:00 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:48:00 Manifest gespeichert (woerter)
+- 09:48:00 Datenbank gespeichert (woerter)
+- 09:48:00 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 09:48:00 Manifest gespeichert (woerter)
+- 09:48:00 Datenbank gespeichert (saetze)
+- 09:48:00 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 09:48:00 Manifest gespeichert (saetze)
+- 09:48:00 sync-files:db
+- 09:48:00 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2drrAp/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2drrAp/data/wörter/images/a/apfel.jpg
+- 09:48:00 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2drrAp/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2drrAp/data/wörter/sounds/a/apfel.mp3
+- 09:48:00 sync-files:db
+- 09:48:00 sync-files:db
+- 09:48:00 delete-item:db
+- 09:48:00 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2drrAp/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2drrAp/data/wörter/images/b/becher.jpg
+- 09:48:00 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2drrAp/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-2drrAp/data/wörter/sounds/b/becher.mp3
+- 09:48:00 sync-files:db
+- 09:48:01 Datenbank gespeichert (woerter)
+- 09:48:01 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:48:01 Manifest gespeichert (woerter)
+- 09:48:01 sync-files:manifest
+- 09:48:01 sync-files:db
+- 09:48:01 delete-item:db
+- 09:48:01 delete-item:set
+- 09:48:01 delete-item:set
+- 09:48:01 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 09:48:01 name-history:write
+- 09:48:01 name-undo
+- 09:48:01 name-history:write
+- 09:48:01 name-redo
+- 09:48:01 name-history:write
+- 09:48:02 ID umbenannt (woerter): lamm → schaf
+- 09:48:02 id-rename:set
+- 09:48:10 Name geändert (woerter) [loeschen]
+- 09:48:10 name-history:write
+- 09:48:11 Datenbank gespeichert (woerter)
+- 09:48:11 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 09:48:11 Manifest gespeichert (woerter)
+- 09:48:11 Datenbank gespeichert (woerter)
+- 09:48:12 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:48:12 Manifest gespeichert (woerter)
+- 09:48:12 Datenbank gespeichert (woerter)
+- 09:48:12 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 09:48:12 Manifest gespeichert (woerter)
+- 09:48:12 Datenbank gespeichert (saetze)
+- 09:48:12 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 09:48:12 Manifest gespeichert (saetze)
+- 09:48:12 sync-files:db
+- 09:48:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0e6e1c/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0e6e1c/data/wörter/images/a/apfel.jpg
+- 09:48:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0e6e1c/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0e6e1c/data/wörter/sounds/a/apfel.mp3
+- 09:48:13 sync-files:db
+- 09:48:13 sync-files:db
+- 09:48:13 delete-item:db
+- 09:48:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0e6e1c/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0e6e1c/data/wörter/images/b/becher.jpg
+- 09:48:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0e6e1c/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-0e6e1c/data/wörter/sounds/b/becher.mp3
+- 09:48:13 sync-files:db
+- 09:48:13 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 09:48:13 name-history:write
+- 09:48:13 name-undo
+- 09:48:13 name-history:write
+- 09:48:13 name-redo
+- 09:48:13 name-history:write
+- 09:48:14 ID umbenannt (woerter): lamm → schaf
+- 09:48:14 id-rename:set
+- 09:48:14 Datenbank gespeichert (woerter)
+- 09:48:14 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:48:14 Manifest gespeichert (woerter)
+- 09:48:14 sync-files:manifest
+- 09:48:14 sync-files:db
+- 09:48:14 delete-item:db
+- 09:48:14 delete-item:set
+- 09:48:14 delete-item:set
+- 09:52:52 Name geändert (woerter) [loeschen]
+- 09:52:52 name-history:write
+- 09:52:53 Datenbank gespeichert (woerter)
+- 09:52:53 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 09:52:53 Manifest gespeichert (woerter)
+- 09:52:53 Datenbank gespeichert (woerter)
+- 09:52:53 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:52:53 Manifest gespeichert (woerter)
+- 09:52:53 Datenbank gespeichert (woerter)
+- 09:52:53 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 09:52:53 Manifest gespeichert (woerter)
+- 09:52:53 Datenbank gespeichert (saetze)
+- 09:52:53 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 09:52:53 Manifest gespeichert (saetze)
+- 09:52:53 sync-files:db
+- 09:52:53 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Ycifru/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Ycifru/data/wörter/images/a/apfel.jpg
+- 09:52:53 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Ycifru/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Ycifru/data/wörter/sounds/a/apfel.mp3
+- 09:52:53 sync-files:db
+- 09:52:53 sync-files:db
+- 09:52:53 delete-item:db
+- 09:52:53 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Ycifru/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Ycifru/data/wörter/images/b/becher.jpg
+- 09:52:53 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Ycifru/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-Ycifru/data/wörter/sounds/b/becher.mp3
+- 09:52:53 sync-files:db
+- 09:52:54 Datenbank gespeichert (woerter)
+- 09:52:54 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 09:52:54 Manifest gespeichert (woerter)
+- 09:52:54 sync-files:manifest
+- 09:52:54 sync-files:db
+- 09:52:54 delete-item:db
+- 09:52:54 delete-item:set
+- 09:52:54 delete-item:set
+- 09:52:54 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 09:52:54 name-history:write
+- 09:52:54 name-undo
+- 09:52:54 name-history:write
+- 09:52:54 name-redo
+- 09:52:54 name-history:write
+- 09:52:55 ID umbenannt (woerter): lamm → schaf
+- 09:52:55 id-rename:set
+- 11:45:39 Datenbank gespeichert (woerter)
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 11:45:39 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 11:45:39 Manifest gespeichert (woerter)
+- 12:14:54 Name geändert (woerter) [loeschen]
+- 12:14:54 name-history:write
+- 12:14:55 Datenbank gespeichert (woerter)
+- 12:14:55 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 12:14:55 Manifest gespeichert (woerter)
+- 12:14:55 Datenbank gespeichert (woerter)
+- 12:14:55 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:14:55 Manifest gespeichert (woerter)
+- 12:14:55 Datenbank gespeichert (woerter)
+- 12:14:55 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 12:14:55 Manifest gespeichert (woerter)
+- 12:14:55 Datenbank gespeichert (saetze)
+- 12:14:55 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 12:14:55 Manifest gespeichert (saetze)
+- 12:14:55 sync-files:db
+- 12:14:55 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-KzUfQR/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-KzUfQR/data/wörter/images/a/apfel.jpg
+- 12:14:55 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-KzUfQR/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-KzUfQR/data/wörter/sounds/a/apfel.mp3
+- 12:14:55 sync-files:db
+- 12:14:55 sync-files:db
+- 12:14:55 delete-item:db
+- 12:14:55 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-KzUfQR/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-KzUfQR/data/wörter/images/b/becher.jpg
+- 12:14:55 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-KzUfQR/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-KzUfQR/data/wörter/sounds/b/becher.mp3
+- 12:14:55 sync-files:db
+- 12:14:56 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 12:14:56 name-history:write
+- 12:14:56 name-undo
+- 12:14:56 name-history:write
+- 12:14:56 name-redo
+- 12:14:56 name-history:write
+- 12:14:56 Datenbank gespeichert (woerter)
+- 12:14:56 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:14:56 Manifest gespeichert (woerter)
+- 12:14:56 sync-files:manifest
+- 12:14:56 sync-files:db
+- 12:14:56 delete-item:db
+- 12:14:56 delete-item:set
+- 12:14:56 delete-item:set
+- 12:14:57 ID umbenannt (woerter): lamm → schaf
+- 12:14:57 id-rename:set
+- 12:26:11 Name geändert (woerter) [loeschen]
+- 12:26:11 name-history:write
+- 12:26:11 Datenbank gespeichert (woerter)
+- 12:26:11 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 12:26:11 Manifest gespeichert (woerter)
+- 12:26:11 Datenbank gespeichert (woerter)
+- 12:26:11 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:26:11 Manifest gespeichert (woerter)
+- 12:26:11 Datenbank gespeichert (woerter)
+- 12:26:11 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 12:26:11 Manifest gespeichert (woerter)
+- 12:26:11 Datenbank gespeichert (saetze)
+- 12:26:12 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 12:26:12 Manifest gespeichert (saetze)
+- 12:26:12 sync-files:db
+- 12:26:12 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-V93629/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-V93629/data/wörter/images/a/apfel.jpg
+- 12:26:12 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-V93629/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-V93629/data/wörter/sounds/a/apfel.mp3
+- 12:26:12 sync-files:db
+- 12:26:12 sync-files:db
+- 12:26:12 delete-item:db
+- 12:26:12 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-V93629/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-V93629/data/wörter/images/b/becher.jpg
+- 12:26:12 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-V93629/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-V93629/data/wörter/sounds/b/becher.mp3
+- 12:26:12 sync-files:db
+- 12:26:12 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 12:26:12 name-history:write
+- 12:26:12 name-undo
+- 12:26:12 name-history:write
+- 12:26:13 name-redo
+- 12:26:13 name-history:write
+- 12:26:13 ID umbenannt (woerter): lamm → schaf
+- 12:26:13 id-rename:set
+- 12:26:13 Datenbank gespeichert (woerter)
+- 12:26:13 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:26:13 Manifest gespeichert (woerter)
+- 12:26:13 sync-files:manifest
+- 12:26:13 sync-files:db
+- 12:26:13 delete-item:db
+- 12:26:13 delete-item:set
+- 12:26:13 delete-item:set
+- 12:31:34 Name geändert (woerter) [loeschen]
+- 12:31:34 name-history:write
+- 12:31:35 Datenbank gespeichert (woerter)
+- 12:31:35 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 12:31:35 Manifest gespeichert (woerter)
+- 12:31:35 Datenbank gespeichert (woerter)
+- 12:31:35 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:31:35 Manifest gespeichert (woerter)
+- 12:31:35 Datenbank gespeichert (woerter)
+- 12:31:35 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 12:31:35 Manifest gespeichert (woerter)
+- 12:31:35 Datenbank gespeichert (saetze)
+- 12:31:35 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 12:31:35 Manifest gespeichert (saetze)
+- 12:31:35 sync-files:db
+- 12:31:35 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-HZOpd6/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-HZOpd6/data/wörter/images/a/apfel.jpg
+- 12:31:35 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-HZOpd6/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-HZOpd6/data/wörter/sounds/a/apfel.mp3
+- 12:31:35 sync-files:db
+- 12:31:35 sync-files:db
+- 12:31:35 delete-item:db
+- 12:31:36 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-HZOpd6/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-HZOpd6/data/wörter/images/b/becher.jpg
+- 12:31:36 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-HZOpd6/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-HZOpd6/data/wörter/sounds/b/becher.mp3
+- 12:31:36 sync-files:db
+- 12:31:36 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 12:31:36 name-history:write
+- 12:31:36 name-undo
+- 12:31:36 name-history:write
+- 12:31:36 name-redo
+- 12:31:36 name-history:write
+- 12:31:36 Datenbank gespeichert (woerter)
+- 12:31:36 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 12:31:36 Manifest gespeichert (woerter)
+- 12:31:36 sync-files:manifest
+- 12:31:36 sync-files:db
+- 12:31:36 delete-item:db
+- 12:31:36 delete-item:set
+- 12:31:36 delete-item:set
+- 12:31:37 ID umbenannt (woerter): lamm → schaf
+- 12:31:37 id-rename:set
+- 13:05:57 Name geändert (woerter) [loeschen]
+- 13:05:57 name-history:write
+- 13:05:57 sync-files:db
+- 13:05:57 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-stSveN/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-stSveN/data/wörter/images/a/apfel.jpg
+- 13:05:57 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-stSveN/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-stSveN/data/wörter/sounds/a/apfel.mp3
+- 13:05:57 sync-files:db
+- 13:05:57 sync-files:db
+- 13:05:57 delete-item:db
+- 13:05:57 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-stSveN/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-stSveN/data/wörter/images/b/becher.jpg
+- 13:05:57 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-stSveN/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-stSveN/data/wörter/sounds/b/becher.mp3
+- 13:05:57 sync-files:db
+- 13:05:58 Datenbank gespeichert (woerter)
+- 13:05:58 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 13:05:58 Manifest gespeichert (woerter)
+- 13:05:58 Datenbank gespeichert (woerter)
+- 13:05:58 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:05:58 Manifest gespeichert (woerter)
+- 13:05:58 Datenbank gespeichert (woerter)
+- 13:05:58 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 13:05:58 Manifest gespeichert (woerter)
+- 13:05:58 Datenbank gespeichert (saetze)
+- 13:05:58 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 13:05:58 Manifest gespeichert (saetze)
+- 13:05:59 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 13:05:59 name-history:write
+- 13:05:59 name-undo
+- 13:05:59 name-history:write
+- 13:05:59 name-redo
+- 13:05:59 name-history:write
+- 13:05:59 Datenbank gespeichert (woerter)
+- 13:05:59 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:05:59 Manifest gespeichert (woerter)
+- 13:05:59 sync-files:manifest
+- 13:05:59 sync-files:db
+- 13:05:59 delete-item:db
+- 13:05:59 delete-item:set
+- 13:05:59 delete-item:set
+- 13:05:59 ID umbenannt (woerter): lamm → schaf
+- 13:05:59 id-rename:set
+- 13:14:14 Name geändert (woerter) [loeschen]
+- 13:14:14 name-history:write
+- 13:14:14 Datenbank gespeichert (woerter)
+- 13:14:15 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 13:14:15 Manifest gespeichert (woerter)
+- 13:14:15 Datenbank gespeichert (woerter)
+- 13:14:15 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:14:15 Manifest gespeichert (woerter)
+- 13:14:15 Datenbank gespeichert (woerter)
+- 13:14:15 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 13:14:15 Manifest gespeichert (woerter)
+- 13:14:15 Datenbank gespeichert (saetze)
+- 13:14:15 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 13:14:15 Manifest gespeichert (saetze)
+- 13:14:15 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 13:14:15 name-history:write
+- 13:14:15 name-undo
+- 13:14:15 name-history:write
+- 13:14:15 name-redo
+- 13:14:15 name-history:write
+- 13:14:16 sync-files:db
+- 13:14:16 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-6uU07H/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-6uU07H/data/wörter/images/a/apfel.jpg
+- 13:14:16 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-6uU07H/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-6uU07H/data/wörter/sounds/a/apfel.mp3
+- 13:14:16 sync-files:db
+- 13:14:16 sync-files:db
+- 13:14:16 delete-item:db
+- 13:14:16 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-6uU07H/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-6uU07H/data/wörter/images/b/becher.jpg
+- 13:14:16 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-6uU07H/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-6uU07H/data/wörter/sounds/b/becher.mp3
+- 13:14:16 sync-files:db
+- 13:14:17 Datenbank gespeichert (woerter)
+- 13:14:17 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:14:17 Manifest gespeichert (woerter)
+- 13:14:17 sync-files:manifest
+- 13:14:17 sync-files:db
+- 13:14:17 delete-item:db
+- 13:14:17 delete-item:set
+- 13:14:17 delete-item:set
+- 13:14:17 ID umbenannt (woerter): lamm → schaf
+- 13:14:17 id-rename:set
+- 13:21:21 Name geändert (woerter) [loeschen]
+- 13:21:21 name-history:write
+- 13:21:22 sync-files:db
+- 13:21:22 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T4znB8/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T4znB8/data/wörter/images/a/apfel.jpg
+- 13:21:22 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T4znB8/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T4znB8/data/wörter/sounds/a/apfel.mp3
+- 13:21:22 sync-files:db
+- 13:21:22 sync-files:db
+- 13:21:22 delete-item:db
+- 13:21:22 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T4znB8/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T4znB8/data/wörter/images/b/becher.jpg
+- 13:21:22 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T4znB8/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T4znB8/data/wörter/sounds/b/becher.mp3
+- 13:21:22 sync-files:db
+- 13:21:23 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 13:21:23 name-history:write
+- 13:21:23 name-undo
+- 13:21:23 name-history:write
+- 13:21:23 name-redo
+- 13:21:23 name-history:write
+- 13:21:23 Datenbank gespeichert (woerter)
+- 13:21:23 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 13:21:23 Manifest gespeichert (woerter)
+- 13:21:23 Datenbank gespeichert (woerter)
+- 13:21:23 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:21:23 Manifest gespeichert (woerter)
+- 13:21:23 Datenbank gespeichert (woerter)
+- 13:21:23 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 13:21:23 Manifest gespeichert (woerter)
+- 13:21:23 Datenbank gespeichert (saetze)
+- 13:21:23 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 13:21:23 Manifest gespeichert (saetze)
+- 13:21:24 Datenbank gespeichert (woerter)
+- 13:21:24 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:21:24 Manifest gespeichert (woerter)
+- 13:21:24 sync-files:manifest
+- 13:21:24 sync-files:db
+- 13:21:24 delete-item:db
+- 13:21:24 delete-item:set
+- 13:21:24 delete-item:set
+- 13:21:24 ID umbenannt (woerter): lamm → schaf
+- 13:21:24 id-rename:set
+- 13:28:05 Name geändert (woerter) [loeschen]
+- 13:28:05 name-history:write
+- 13:28:06 sync-files:db
+- 13:28:06 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-VgmJ5p/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-VgmJ5p/data/wörter/images/a/apfel.jpg
+- 13:28:06 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-VgmJ5p/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-VgmJ5p/data/wörter/sounds/a/apfel.mp3
+- 13:28:06 sync-files:db
+- 13:28:06 sync-files:db
+- 13:28:06 delete-item:db
+- 13:28:06 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-VgmJ5p/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-VgmJ5p/data/wörter/images/b/becher.jpg
+- 13:28:06 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-VgmJ5p/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-VgmJ5p/data/wörter/sounds/b/becher.mp3
+- 13:28:06 sync-files:db
+- 13:28:06 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 13:28:06 name-history:write
+- 13:28:06 name-undo
+- 13:28:06 name-history:write
+- 13:28:06 name-redo
+- 13:28:07 name-history:write
+- 13:28:07 Datenbank gespeichert (woerter)
+- 13:28:07 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:28:07 Manifest gespeichert (woerter)
+- 13:28:07 sync-files:manifest
+- 13:28:07 sync-files:db
+- 13:28:07 delete-item:db
+- 13:28:07 delete-item:set
+- 13:28:07 delete-item:set
+- 13:28:07 Datenbank gespeichert (woerter)
+- 13:28:07 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 13:28:07 Manifest gespeichert (woerter)
+- 13:28:07 Datenbank gespeichert (woerter)
+- 13:28:07 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:28:07 Manifest gespeichert (woerter)
+- 13:28:07 Datenbank gespeichert (woerter)
+- 13:28:07 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 13:28:07 Manifest gespeichert (woerter)
+- 13:28:07 Datenbank gespeichert (saetze)
+- 13:28:07 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 13:28:07 Manifest gespeichert (saetze)
+- 13:28:08 ID umbenannt (woerter): lamm → schaf
+- 13:28:08 id-rename:set
+- 13:55:01 Name geändert (woerter) [loeschen]
+- 13:55:01 name-history:write
+- 13:55:02 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 13:55:02 name-history:write
+- 13:55:02 name-undo
+- 13:55:02 name-history:write
+- 13:55:02 name-redo
+- 13:55:02 name-history:write
+- 13:55:02 sync-files:db
+- 13:55:02 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lFyO74/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lFyO74/data/wörter/images/a/apfel.jpg
+- 13:55:02 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lFyO74/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lFyO74/data/wörter/sounds/a/apfel.mp3
+- 13:55:02 sync-files:db
+- 13:55:02 sync-files:db
+- 13:55:02 delete-item:db
+- 13:55:02 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lFyO74/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lFyO74/data/wörter/images/b/becher.jpg
+- 13:55:02 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lFyO74/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lFyO74/data/wörter/sounds/b/becher.mp3
+- 13:55:02 sync-files:db
+- 13:55:03 Datenbank gespeichert (woerter)
+- 13:55:03 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 13:55:03 Manifest gespeichert (woerter)
+- 13:55:03 Datenbank gespeichert (woerter)
+- 13:55:03 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:55:03 Manifest gespeichert (woerter)
+- 13:55:03 Datenbank gespeichert (woerter)
+- 13:55:03 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 13:55:03 Manifest gespeichert (woerter)
+- 13:55:03 Datenbank gespeichert (saetze)
+- 13:55:03 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 13:55:03 Manifest gespeichert (saetze)
+- 13:55:03 ID umbenannt (woerter): lamm → schaf
+- 13:55:03 id-rename:set
+- 13:55:04 Datenbank gespeichert (woerter)
+- 13:55:04 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:55:04 Manifest gespeichert (woerter)
+- 13:55:04 sync-files:manifest
+- 13:55:04 sync-files:db
+- 13:55:04 delete-item:db
+- 13:55:04 delete-item:set
+- 13:55:04 delete-item:set
+- 13:59:57 Name geändert (woerter) [loeschen]
+- 13:59:57 name-history:write
+- 13:59:58 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 13:59:58 name-history:write
+- 13:59:58 name-undo
+- 13:59:58 name-history:write
+- 13:59:58 name-redo
+- 13:59:58 name-history:write
+- 13:59:58 sync-files:db
+- 13:59:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tEf620/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tEf620/data/wörter/images/a/apfel.jpg
+- 13:59:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tEf620/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tEf620/data/wörter/sounds/a/apfel.mp3
+- 13:59:58 sync-files:db
+- 13:59:58 sync-files:db
+- 13:59:58 delete-item:db
+- 13:59:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tEf620/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tEf620/data/wörter/images/b/becher.jpg
+- 13:59:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tEf620/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-tEf620/data/wörter/sounds/b/becher.mp3
+- 13:59:58 sync-files:db
+- 13:59:59 Datenbank gespeichert (woerter)
+- 13:59:59 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 13:59:59 Manifest gespeichert (woerter)
+- 13:59:59 Datenbank gespeichert (woerter)
+- 13:59:59 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:59:59 Manifest gespeichert (woerter)
+- 13:59:59 Datenbank gespeichert (woerter)
+- 13:59:59 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 13:59:59 Manifest gespeichert (woerter)
+- 13:59:59 Datenbank gespeichert (saetze)
+- 13:59:59 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 13:59:59 Manifest gespeichert (saetze)
+- 13:59:59 Datenbank gespeichert (woerter)
+- 13:59:59 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 13:59:59 Manifest gespeichert (woerter)
+- 13:59:59 sync-files:manifest
+- 13:59:59 sync-files:db
+- 13:59:59 delete-item:db
+- 13:59:59 delete-item:set
+- 13:59:59 delete-item:set
+- 14:00:00 ID umbenannt (woerter): lamm → schaf
+- 14:00:00 id-rename:set
+- 14:12:30 Name geändert (woerter) [loeschen]
+- 14:12:30 name-history:write
+- 14:12:31 Datenbank gespeichert (woerter)
+- 14:12:31 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 14:12:31 Manifest gespeichert (woerter)
+- 14:12:31 Datenbank gespeichert (woerter)
+- 14:12:31 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:12:31 Manifest gespeichert (woerter)
+- 14:12:31 Datenbank gespeichert (woerter)
+- 14:12:31 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 14:12:31 Manifest gespeichert (woerter)
+- 14:12:31 Datenbank gespeichert (saetze)
+- 14:12:31 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 14:12:31 Manifest gespeichert (saetze)
+- 14:12:31 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 14:12:31 name-history:write
+- 14:12:31 name-undo
+- 14:12:31 name-history:write
+- 14:12:31 name-redo
+- 14:12:31 name-history:write
+- 14:12:32 sync-files:db
+- 14:12:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-G6EXdV/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-G6EXdV/data/wörter/images/a/apfel.jpg
+- 14:12:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-G6EXdV/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-G6EXdV/data/wörter/sounds/a/apfel.mp3
+- 14:12:32 sync-files:db
+- 14:12:32 sync-files:db
+- 14:12:32 delete-item:db
+- 14:12:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-G6EXdV/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-G6EXdV/data/wörter/images/b/becher.jpg
+- 14:12:32 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-G6EXdV/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-G6EXdV/data/wörter/sounds/b/becher.mp3
+- 14:12:32 sync-files:db
+- 14:12:33 ID umbenannt (woerter): lamm → schaf
+- 14:12:33 id-rename:set
+- 14:12:33 Datenbank gespeichert (woerter)
+- 14:12:33 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:12:33 Manifest gespeichert (woerter)
+- 14:12:33 sync-files:manifest
+- 14:12:33 sync-files:db
+- 14:12:33 delete-item:db
+- 14:12:33 delete-item:set
+- 14:12:33 delete-item:set
+- 14:23:20 Name geändert (woerter) [loeschen]
+- 14:23:20 name-history:write
+- 14:23:21 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 14:23:21 name-history:write
+- 14:23:21 name-undo
+- 14:23:21 name-history:write
+- 14:23:21 name-redo
+- 14:23:21 name-history:write
+- 14:23:21 sync-files:db
+- 14:23:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wQ2iOX/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wQ2iOX/data/wörter/images/a/apfel.jpg
+- 14:23:21 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wQ2iOX/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wQ2iOX/data/wörter/sounds/a/apfel.mp3
+- 14:23:22 sync-files:db
+- 14:23:22 sync-files:db
+- 14:23:22 delete-item:db
+- 14:23:22 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wQ2iOX/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wQ2iOX/data/wörter/images/b/becher.jpg
+- 14:23:22 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wQ2iOX/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-wQ2iOX/data/wörter/sounds/b/becher.mp3
+- 14:23:22 sync-files:db
+- 14:23:22 ID umbenannt (woerter): lamm → schaf
+- 14:23:22 id-rename:set
+- 14:23:23 Datenbank gespeichert (woerter)
+- 14:23:23 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 14:23:23 Manifest gespeichert (woerter)
+- 14:23:23 Datenbank gespeichert (woerter)
+- 14:23:23 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:23:23 Manifest gespeichert (woerter)
+- 14:23:23 Datenbank gespeichert (woerter)
+- 14:23:23 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 14:23:23 Manifest gespeichert (woerter)
+- 14:23:23 Datenbank gespeichert (saetze)
+- 14:23:23 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 14:23:23 Manifest gespeichert (saetze)
+- 14:23:23 Datenbank gespeichert (woerter)
+- 14:23:23 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:23:23 Manifest gespeichert (woerter)
+- 14:23:23 sync-files:manifest
+- 14:23:23 sync-files:db
+- 14:23:23 delete-item:db
+- 14:23:23 delete-item:set
+- 14:23:23 delete-item:set
+- 14:31:12 Name geändert (woerter) [loeschen]
+- 14:31:12 name-history:write
+- 14:31:13 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 14:31:13 name-history:write
+- 14:31:13 name-undo
+- 14:31:13 name-history:write
+- 14:31:13 name-redo
+- 14:31:13 name-history:write
+- 14:31:13 sync-files:db
+- 14:31:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QMYfN9/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QMYfN9/data/wörter/images/a/apfel.jpg
+- 14:31:13 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QMYfN9/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QMYfN9/data/wörter/sounds/a/apfel.mp3
+- 14:31:13 sync-files:db
+- 14:31:14 sync-files:db
+- 14:31:14 delete-item:db
+- 14:31:14 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QMYfN9/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QMYfN9/data/wörter/images/b/becher.jpg
+- 14:31:14 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QMYfN9/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-QMYfN9/data/wörter/sounds/b/becher.mp3
+- 14:31:14 sync-files:db
+- 14:31:14 ID umbenannt (woerter): lamm → schaf
+- 14:31:14 id-rename:set
+- 14:31:15 Datenbank gespeichert (woerter)
+- 14:31:15 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 14:31:15 Manifest gespeichert (woerter)
+- 14:31:15 Datenbank gespeichert (woerter)
+- 14:31:15 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:31:15 Manifest gespeichert (woerter)
+- 14:31:15 Datenbank gespeichert (woerter)
+- 14:31:15 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 14:31:15 Manifest gespeichert (woerter)
+- 14:31:15 Datenbank gespeichert (saetze)
+- 14:31:15 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 14:31:15 Manifest gespeichert (saetze)
+- 14:31:15 Datenbank gespeichert (woerter)
+- 14:31:15 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:31:15 Manifest gespeichert (woerter)
+- 14:31:15 sync-files:manifest
+- 14:31:15 sync-files:db
+- 14:31:15 delete-item:db
+- 14:31:15 delete-item:set
+- 14:31:15 delete-item:set
+- 14:44:55 Datenbank gespeichert (woerter)
+- 14:44:55 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:44:55 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:44:55 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:44:55 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:44:55 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:44:55 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:44:55 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:44:55 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:44:55 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:44:56 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:44:56 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:44:56 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:44:56 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:44:56 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:44:56 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:44:56 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:44:56 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:44:56 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:44:56 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:44:56 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:44:56 Manifest gespeichert (woerter)
+- 14:45:00 Datenbank gespeichert (woerter)
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:45:00 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:45:00 Manifest gespeichert (woerter)
+- 14:45:05 Datenbank gespeichert (woerter)
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:45:05 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:45:05 Manifest gespeichert (woerter)
+- 14:45:08 Datenbank gespeichert (woerter)
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:45:08 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:45:08 Manifest gespeichert (woerter)
+- 14:45:12 Datenbank gespeichert (woerter)
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:45:12 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:45:12 Manifest gespeichert (woerter)
+- 14:45:15 Datenbank gespeichert (woerter)
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:45:15 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:45:15 Manifest gespeichert (woerter)
+- 14:45:17 Datenbank gespeichert (woerter)
+- 14:45:17 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:45:17 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:45:17 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:45:17 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:45:17 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:45:17 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:45:18 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:45:18 Manifest gespeichert (woerter)
+- 14:45:58 Name geändert (woerter) [loeschen]
+- 14:45:58 name-history:write
+- 14:45:58 sync-files:db
+- 14:45:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qOeUZv/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qOeUZv/data/wörter/images/a/apfel.jpg
+- 14:45:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qOeUZv/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qOeUZv/data/wörter/sounds/a/apfel.mp3
+- 14:45:58 sync-files:db
+- 14:45:58 sync-files:db
+- 14:45:58 delete-item:db
+- 14:45:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qOeUZv/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qOeUZv/data/wörter/images/b/becher.jpg
+- 14:45:58 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qOeUZv/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-qOeUZv/data/wörter/sounds/b/becher.mp3
+- 14:45:58 sync-files:db
+- 14:45:59 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 14:45:59 name-history:write
+- 14:45:59 name-undo
+- 14:45:59 name-history:write
+- 14:45:59 name-redo
+- 14:45:59 name-history:write
+- 14:45:59 Datenbank gespeichert (woerter)
+- 14:45:59 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 14:45:59 Manifest gespeichert (woerter)
+- 14:45:59 Datenbank gespeichert (woerter)
+- 14:45:59 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:45:59 Manifest gespeichert (woerter)
+- 14:45:59 Datenbank gespeichert (woerter)
+- 14:45:59 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 14:45:59 Manifest gespeichert (woerter)
+- 14:45:59 Datenbank gespeichert (saetze)
+- 14:45:59 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 14:45:59 Manifest gespeichert (saetze)
+- 14:46:00 Datenbank gespeichert (woerter)
+- 14:46:00 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 14:46:00 Manifest gespeichert (woerter)
+- 14:46:00 sync-files:manifest
+- 14:46:00 sync-files:db
+- 14:46:00 delete-item:db
+- 14:46:00 delete-item:set
+- 14:46:00 delete-item:set
+- 14:46:01 ID umbenannt (woerter): lamm → schaf
+- 14:46:01 id-rename:set
 
 ## 2025-09-15
 - 08:50:04 Name geändert (woerter) [haenchen]: "Hänchen" → "Hähnchen"
@@ -384,6 +6931,305 @@ Ein menschlich lesbarer Änderungsverlauf. Quellen: _audit/editor-changes.log un
 - 14:07:18 name-history:write
 - 14:07:32 Name geändert (woerter) [becher]: "becher" → "Becher"
 - 14:07:32 name-history:write
+- 14:55:06 Datenbank gespeichert (woerter)
+- 14:55:06 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:55:06 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:55:06 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:55:06 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:55:06 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:55:07 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:55:07 Manifest gespeichert (woerter)
+- 14:55:11 Datenbank gespeichert (woerter)
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:55:11 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:55:12 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:55:12 Manifest gespeichert (woerter)
+- 14:55:15 Datenbank gespeichert (woerter)
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:55:15 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:55:15 Manifest gespeichert (woerter)
+- 14:55:18 Datenbank gespeichert (woerter)
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:55:18 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:55:18 Manifest gespeichert (woerter)
+- 14:55:22 Datenbank gespeichert (woerter)
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:55:22 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:55:23 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:55:23 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:55:23 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:55:23 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:55:23 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:55:23 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:55:23 Manifest gespeichert (woerter)
+- 14:55:30 Datenbank gespeichert (woerter)
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:55:30 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:55:30 Manifest gespeichert (woerter)
+- 14:55:33 Datenbank gespeichert (woerter)
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:55:33 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:55:33 Manifest gespeichert (woerter)
+- 14:55:35 Datenbank gespeichert (woerter)
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:55:35 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:55:35 Manifest gespeichert (woerter)
+- 14:55:38 Datenbank gespeichert (woerter)
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:55:38 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:55:38 Manifest gespeichert (woerter)
+- 15:23:03 Name geändert (woerter) [loeschen]
+- 15:23:03 name-history:write
+- 15:23:03 sync-files:db
+- 15:23:03 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lNKtSy/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lNKtSy/data/wörter/images/a/apfel.jpg
+- 15:23:03 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lNKtSy/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lNKtSy/data/wörter/sounds/a/apfel.mp3
+- 15:23:03 sync-files:db
+- 15:23:03 sync-files:db
+- 15:23:03 delete-item:db
+- 15:23:03 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lNKtSy/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lNKtSy/data/wörter/images/b/becher.jpg
+- 15:23:03 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lNKtSy/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-lNKtSy/data/wörter/sounds/b/becher.mp3
+- 15:23:03 sync-files:db
+- 15:23:04 Datenbank gespeichert (woerter)
+- 15:23:04 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 15:23:04 Manifest gespeichert (woerter)
+- 15:23:04 Datenbank gespeichert (woerter)
+- 15:23:04 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 15:23:04 Manifest gespeichert (woerter)
+- 15:23:04 Datenbank gespeichert (woerter)
+- 15:23:04 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 15:23:04 Manifest gespeichert (woerter)
+- 15:23:04 Datenbank gespeichert (saetze)
+- 15:23:04 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 15:23:04 Manifest gespeichert (saetze)
+- 15:23:04 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 15:23:04 name-history:write
+- 15:23:04 name-undo
+- 15:23:04 name-history:write
+- 15:23:04 name-redo
+- 15:23:04 name-history:write
+- 15:23:05 ID umbenannt (woerter): lamm → schaf
+- 15:23:05 id-rename:set
+- 15:23:05 Datenbank gespeichert (woerter)
+- 15:23:05 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 15:23:05 Manifest gespeichert (woerter)
+- 15:23:05 sync-files:db
+- 15:23:05 delete-item:db
+- 15:23:05 delete-item:set
+- 15:23:05 delete-item:set
+- 15:29:59 Datenbank gespeichert (woerter)
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 15:29:59 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 15:29:59 Manifest gespeichert (woerter)
+- 15:57:03 ID umbenannt (woerter): haenchen → haehnchen
+- 15:57:03 id-rename:set
+- 15:57:03 id-rename:set
+- 16:03:19 Name geändert (woerter) [loeschen]
+- 16:03:19 name-history:write
+- 16:03:20 sync-files:db
+- 16:03:20 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T1vrLR/data/wörter/images/images_unsortiert/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T1vrLR/data/wörter/images/a/apfel.jpg
+- 16:03:20 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T1vrLR/data/wörter/sounds/sounds_unsortiert/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T1vrLR/data/wörter/sounds/a/apfel.mp3
+- 16:03:20 sync-files:db
+- 16:03:20 sync-files:db
+- 16:03:20 delete-item:db
+- 16:03:20 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T1vrLR/data/wörter/images/images_unsortiert/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T1vrLR/data/wörter/images/b/becher.jpg
+- 16:03:20 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T1vrLR/data/wörter/sounds/sounds_unsortiert/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-T1vrLR/data/wörter/sounds/b/becher.mp3
+- 16:03:20 sync-files:db
+- 16:03:20 Datenbank gespeichert (woerter)
+- 16:03:20 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 16:03:20 Manifest gespeichert (woerter)
+- 16:03:20 Datenbank gespeichert (woerter)
+- 16:03:20 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:03:20 Manifest gespeichert (woerter)
+- 16:03:20 Datenbank gespeichert (woerter)
+- 16:03:20 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 16:03:20 Manifest gespeichert (woerter)
+- 16:03:20 Datenbank gespeichert (saetze)
+- 16:03:20 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 16:03:20 Manifest gespeichert (saetze)
+- 16:03:21 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 16:03:21 name-history:write
+- 16:03:21 name-undo
+- 16:03:21 name-history:write
+- 16:03:21 name-redo
+- 16:03:21 name-history:write
+- 16:03:21 Datenbank gespeichert (woerter)
+- 16:03:21 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 16:03:21 Manifest gespeichert (woerter)
+- 16:03:21 sync-files:db
+- 16:03:21 delete-item:db
+- 16:03:21 delete-item:set
+- 16:03:21 delete-item:set
+- 16:03:22 ID umbenannt (woerter): lamm → schaf
+- 16:03:22 id-rename:set
 
 ## 2025-09-14
 - 16:29:53 Name geändert (woerter) [becher]: "becher" → "Becher"
