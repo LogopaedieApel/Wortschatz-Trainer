@@ -2,6 +2,292 @@
 
 Ein menschlich lesbarer Änderungsverlauf. Quellen: _audit/editor-changes.log und _state/name-history.json.
 
+## 2025-09-23
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Clown.png -> data/wörter/images/c/Clown.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kamel.png -> data/wörter/images/k/Kamel.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kamm.png -> data/wörter/images/k/Kamm.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Karten.png -> data/wörter/images/k/Karten.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Katze.png -> data/wörter/images/k/Katze.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Keks.png -> data/wörter/images/k/Keks.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kelle.png -> data/wörter/images/k/Kelle.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Keller.png -> data/wörter/images/k/Keller.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kirschen.png -> data/wörter/images/k/Kirschen.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kiwi.png -> data/wörter/images/k/Kiwi.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Klavier.png -> data/wörter/images/k/Klavier.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kleid.png -> data/wörter/images/k/Kleid.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Knete.png -> data/wörter/images/k/Knete.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Koffer.png -> data/wörter/images/k/Koffer.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kohl.png -> data/wörter/images/k/Kohl.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kola.png -> data/wörter/images/k/Kola.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kopf.png -> data/wörter/images/k/Kopf.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kuchen.png -> data/wörter/images/k/Kuchen.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kugel.png -> data/wörter/images/k/Kugel.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Käse.png -> data/wörter/images/k/Käse.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kätzchen.png -> data/wörter/images/k/Kätzchen.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/König.png -> data/wörter/images/k/König.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Küche.png -> data/wörter/images/k/Küche.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kücken.png -> data/wörter/images/k/Kücken.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kühlschrank.png -> data/wörter/images/k/Kühlschrank.png
+- 08:34:35 sync-files:db
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Kaninchen.png -> data/wörter/images/k/Kaninchen.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Kanne.png -> data/wörter/images/k/Kanne.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Kappe.png -> data/wörter/images/k/Kappe.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/kaputt.png -> data/wörter/images/k/kaputt.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Karotten.png -> data/wörter/images/k/Karotten.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Kerze.png -> data/wörter/images/k/Kerze.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Ketchup.png -> data/wörter/images/k/Ketchup.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Kinder.png -> data/wörter/images/k/Kinder.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Kino.png -> data/wörter/images/k/Kino.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Kirche.png -> data/wörter/images/k/Kirche.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Knoblauch.png -> data/wörter/images/k/Knoblauch.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Knopf.png -> data/wörter/images/k/Knopf.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Knoten.png -> data/wörter/images/k/Knoten.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Koch.png -> data/wörter/images/k/Koch.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Korb.png -> data/wörter/images/k/Korb.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Krebs.png -> data/wörter/images/k/Krebs.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Krokodil.png -> data/wörter/images/k/Krokodil.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Krone.png -> data/wörter/images/k/Krone.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Kräuter.png -> data/wörter/images/k/Kräuter.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Kuh.png -> data/wörter/images/k/Kuh.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Kuscheltiere.png -> data/wörter/images/k/Kuscheltiere.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Käfig.png -> data/wörter/images/k/Käfig.png
+- 08:35:14 Konflikt gelöst (move): data/import_Wörter/Köchin.png -> data/wörter/images/k/Köchin.png
+- 08:35:14 sync-files:db
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Clown.mp3 -> data/wörter/sounds/c/Clown.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kamel.mp3 -> data/wörter/sounds/k/Kamel.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kamm.mp3 -> data/wörter/sounds/k/Kamm.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kanne.mp3 -> data/wörter/sounds/k/Kanne.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kappe.mp3 -> data/wörter/sounds/k/Kappe.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/kaputt.mp3 -> data/wörter/sounds/k/kaputt.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Karotten.mp3 -> data/wörter/sounds/k/Karotten.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Karten.mp3 -> data/wörter/sounds/k/Karten.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Katze.mp3 -> data/wörter/sounds/k/Katze.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Keks.mp3 -> data/wörter/sounds/k/Keks.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kelle.mp3 -> data/wörter/sounds/k/Kelle.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Keller.mp3 -> data/wörter/sounds/k/Keller.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kerze.mp3 -> data/wörter/sounds/k/Kerze.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kinder.mp3 -> data/wörter/sounds/k/Kinder.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kino.mp3 -> data/wörter/sounds/k/Kino.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kiwi.mp3 -> data/wörter/sounds/k/Kiwi.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Klavier.mp3 -> data/wörter/sounds/k/Klavier.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kleid.mp3 -> data/wörter/sounds/k/Kleid.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Knete.mp3 -> data/wörter/sounds/k/Knete.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Knoblauch.mp3 -> data/wörter/sounds/k/Knoblauch.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Knopf.mp3 -> data/wörter/sounds/k/Knopf.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Knoten.mp3 -> data/wörter/sounds/k/Knoten.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Koch.mp3 -> data/wörter/sounds/k/Koch.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Koffer.mp3 -> data/wörter/sounds/k/Koffer.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kohl .mp3 -> data/wörter/sounds/k/Kohl .mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kola.mp3 -> data/wörter/sounds/k/Kola.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kopf.mp3 -> data/wörter/sounds/k/Kopf.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Korb.mp3 -> data/wörter/sounds/k/Korb.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Krebs.mp3 -> data/wörter/sounds/k/Krebs.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Krokodil.mp3 -> data/wörter/sounds/k/Krokodil.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Krone.mp3 -> data/wörter/sounds/k/Krone.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kräuter.mp3 -> data/wörter/sounds/k/Kräuter.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kuchen.mp3 -> data/wörter/sounds/k/Kuchen.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kugel.mp3 -> data/wörter/sounds/k/Kugel.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kuh.mp3 -> data/wörter/sounds/k/Kuh.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Käfig.mp3 -> data/wörter/sounds/k/Käfig.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Käse.mp3 -> data/wörter/sounds/k/Käse.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kätzchen.mp3 -> data/wörter/sounds/k/Kätzchen.mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/König .mp3 -> data/wörter/sounds/k/König .mp3
+- 09:18:44 Konflikt gelöst (move): data/import_Wörter/Kücken.mp3 -> data/wörter/sounds/k/Kücken.mp3
+- 09:18:44 Konflikt gelöst (replace): data/import_Wörter/Ketchup.mp3 -> data/wörter/sounds/k/Ketchup.mp3
+- 09:18:44 sync-files:db
+- 11:10:55 Name geändert (woerter) [koenig]: "König" → "König"
+- 11:10:55 name-history:write
+- 11:11:39 Name geändert (woerter) [kohl]: "Kohl" → "Kohl"
+- 11:11:39 name-history:write
+- 11:17:48 Datenbank gespeichert (woerter)
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_s_medial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 11:17:48 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 11:17:48 Manifest gespeichert (woerter)
+- 11:19:34 Name geändert (woerter) [kohl]: "Kohl" → "Kohl"
+- 11:20:51 Name geändert (woerter) [kohl]: "Kohl" → "Kohl"
+- 11:23:33 Name geändert (woerter) [kohl]: "Kohl" → "Kohl"
+- 11:23:55 Name geändert (woerter) [kohl]: "Kohl" → "Kohl"
+- 11:24:30 Datenbank gespeichert (woerter)
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_s_medial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 11:24:30 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 11:24:30 Manifest gespeichert (woerter)
+- 12:03:06 Datenbank gespeichert (woerter)
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_s_medial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 12:03:06 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 12:03:06 Manifest gespeichert (woerter)
+- 12:03:12 Datenbank gespeichert (woerter)
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_s_medial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 12:03:12 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 12:03:12 Manifest gespeichert (woerter)
+
+## 2025-09-22
+- 14:57:53 Datenbank gespeichert (woerter)
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_s_medial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:57:53 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:57:53 Manifest gespeichert (woerter)
+- 14:58:27 Datenbank gespeichert (woerter)
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_s_medial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:58:27 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:58:27 Manifest gespeichert (woerter)
+- 14:58:42 Datenbank gespeichert (woerter)
+- 14:58:42 Set-Datei gespeichert (woerter): data/sets/artikulation_b_initial.json
+- 14:58:42 Set-Datei gespeichert (woerter): data/sets/artikulation_b_medial.json
+- 14:58:42 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_final.json
+- 14:58:42 Set-Datei gespeichert (woerter): data/sets/artikulation_ch1_medial.json
+- 14:58:42 Set-Datei gespeichert (woerter): data/sets/artikulation_d_initial.json
+- 14:58:42 Set-Datei gespeichert (woerter): data/sets/artikulation_f_initial.json
+- 14:58:42 Set-Datei gespeichert (woerter): data/sets/artikulation_g_initial.json
+- 14:58:42 Set-Datei gespeichert (woerter): data/sets/artikulation_h_initial.json
+- 14:58:42 Set-Datei gespeichert (woerter): data/sets/artikulation_i_initial.json
+- 14:58:42 Set-Datei gespeichert (woerter): data/sets/artikulation_k_initial.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/artikulation_l_initial.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/artikulation_m_initial.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/artikulation_o_initial.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/artikulation_p_initial.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/artikulation_r_initial.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/artikulation_r_medial.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/artikulation_s_initial.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/artikulation_s_medial.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_final.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_initial.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/artikulation_sch_medial.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/artikulation_t_initial.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/artikulation_w_initial.json
+- 14:58:43 Set-Datei gespeichert (woerter): data/sets/wortschatz_nahrungsmittel.json
+- 14:58:43 Manifest gespeichert (woerter)
+
 ## 2025-09-21
 - 16:43:10 Datenbank gespeichert (woerter)
 - 16:43:10 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json

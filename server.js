@@ -375,13 +375,39 @@ async function renameAssetIfNeeded(oldRelPath, desiredRelPath) {
     const path = require('path');
     const oldAbs = absFromDataRel(oldRelPath);
     const desiredAbs = absFromDataRel(desiredRelPath);
+    let sourceAbs = oldAbs;
     try {
-        await fsp.access(oldAbs);
+        await fsp.access(sourceAbs);
     } catch {
-        // alte Datei existiert nicht -> nichts verschieben
-        return desiredRelPath;
+        // Alte Datei nicht exakt gefunden: Heuristik – suche im gleichen Ordner nach nahen Treffern
+        const dir = path.dirname(oldAbs);
+        const origBase = path.basename(oldAbs);
+        const stripTrail = (s) => String(s || '')
+            .replace(/[\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000-\u200B\u2028\u2029\u202F\u205F\u3000]+$/u, '');
+        const normNFC = (s) => String(s || '').normalize('NFC');
+        const ext = path.extname(origBase).toLowerCase();
+        const origStem = stripTrail(path.basename(origBase, ext));
+        try {
+            const entries = await fsp.readdir(dir, { withFileTypes: true });
+            const candidates = entries.filter(e => e.isFile && (e.isFile() ? e.isFile() : true)).map(e => e.name);
+            // Vergleich: gleiche Extension, Basenamen (ohne Extension) nach Trim (inkl. NBSP/Unicode) gleich
+            const picked = candidates.find(n => {
+                const e = path.extname(n).toLowerCase();
+                if (e !== ext) return false;
+                const stem = stripTrail(path.basename(n, e));
+                return normNFC(stem) === normNFC(origStem);
+            });
+            if (picked) {
+                sourceAbs = path.join(dir, picked);
+            } else {
+                // keine Quelle gefunden -> nichts verschieben
+                return desiredRelPath;
+            }
+        } catch {
+            return desiredRelPath;
+        }
     }
-    const oldNorm = ensureForwardSlashes(oldAbs);
+    const oldNorm = ensureForwardSlashes(sourceAbs);
     const newNorm = ensureForwardSlashes(desiredAbs);
     // Exakt gleich (inkl. Case) -> nichts tun
     if (oldNorm === newNorm) return desiredRelPath;
@@ -392,20 +418,20 @@ async function renameAssetIfNeeded(oldRelPath, desiredRelPath) {
 
     if (caseOnly) {
         // Zweistufiges Umbenennen: alt -> temp -> ziel (robust auf Windows/case-insensitive FS)
-        const dir = path.dirname(oldAbs);
-        const ext = path.extname(oldAbs);
-        const base = path.basename(oldAbs, ext);
+    const dir = path.dirname(sourceAbs);
+    const ext = path.extname(sourceAbs);
+    const base = path.basename(sourceAbs, ext);
         // Zeitstempel, um Kollisionen zu vermeiden
         const ts = Date.now();
         const tempAbs = path.join(dir, `${base}.__case__${ts}${ext}`);
         // Schritt 1: nach Temp-Namen
-        await fsp.rename(oldAbs, tempAbs);
+        await fsp.rename(sourceAbs, tempAbs);
         try {
             // Schritt 2: Temp -> gewünschter Zielname (mit neuer Groß-/Kleinschreibung)
             await fsp.rename(tempAbs, desiredAbs);
         } catch (e) {
             // Rollback versuchen, falls Schritt 2 scheitert
-            try { await fsp.rename(tempAbs, oldAbs); } catch {}
+            try { await fsp.rename(tempAbs, sourceAbs); } catch {}
             throw e;
         }
         return ensureForwardSlashes(path.relative(__dirname, desiredAbs));
@@ -420,7 +446,7 @@ async function renameAssetIfNeeded(oldRelPath, desiredRelPath) {
     } catch {
         // Ziel existiert noch nicht -> ok
     }
-    await fsp.rename(oldAbs, finalAbs);
+    await fsp.rename(sourceAbs, finalAbs);
     return ensureForwardSlashes(path.relative(__dirname, finalAbs));
 }
 
@@ -1067,11 +1093,38 @@ app.post('/api/save-all-data', guardWrite, async (req, res) => {
             }
         }
 
+        // Helper: shallow array equality for set items
+        const arraysEqual = (a, b) => {
+            if (!Array.isArray(a) || !Array.isArray(b)) return false;
+            if (a.length !== b.length) return false;
+            for (let i = 0; i < a.length; i++) {
+                if (a[i] !== b[i]) return false;
+            }
+            return true;
+        };
+
         const saveSetContent = async (node) => {
             for (const key in node) {
                 const child = node[key];
                 if (child && child.path && Array.isArray(child.items)) {
-                    await writeJsonAtomic(absFromDataRel(child.path), child.items, { stamp, backup: true, auditOp: 'save-all-data:set', context: { path: child.path, mode } });
+                    const abs = absFromDataRel(child.path);
+                    // Only write the set file if content has actually changed (reduces noise and diffs)
+                    let shouldWrite = true;
+                    try {
+                        const prevTxt = await fs.readFile(abs, 'utf8');
+                        const prevArr = JSON.parse(prevTxt);
+                        if (Array.isArray(prevArr) && arraysEqual(prevArr, child.items)) {
+                            shouldWrite = false;
+                        }
+                    } catch (e) {
+                        // ENOENT -> file does not exist yet -> write it; JSON parse error -> rewrite
+                        if (e && e.code !== 'ENOENT') {
+                            // For other errors (e.g., malformed JSON), proceed to write to heal the file
+                        }
+                    }
+                    if (shouldWrite) {
+                        await writeJsonAtomic(abs, child.items, { stamp, backup: true, auditOp: 'save-all-data:set', context: { path: child.path, mode } });
+                    }
                     delete child.items;
                 }
                 if (typeof child === 'object' && child !== null) {
@@ -1081,7 +1134,19 @@ app.post('/api/save-all-data', guardWrite, async (req, res) => {
         };
         
         await saveSetContent(manifestToSave);
-        await writeJsonAtomic(setsManifestPathMode, manifestToSave, { stamp, backup: true, auditOp: 'save-all-data:manifest', context: { mode } });
+        // Only update manifest file if there is an actual structural change
+        let manifestChanged = true;
+        try {
+            // prevManifest already loaded above; compare stable string representations
+            const prevStr = stableStringify(prevManifest, 2);
+            const newStr = stableStringify(manifestToSave, 2);
+            manifestChanged = prevStr !== newStr;
+        } catch {
+            manifestChanged = true; // on any error, default to writing manifest
+        }
+        if (manifestChanged) {
+            await writeJsonAtomic(setsManifestPathMode, manifestToSave, { stamp, backup: true, auditOp: 'save-all-data:manifest', context: { mode } });
+        }
 
     logInfo("Daten erfolgreich gespeichert!");
         res.json({ message: 'Alle Daten erfolgreich aktualisiert!' });

@@ -1,32 +1,32 @@
 # Hilfe-Index
 
-Zuletzt aktualisiert: 21.9.2025, 19:14:00
+Zuletzt aktualisiert: 23.9.2025, 14:31:18
 
 Dieser Index wird automatisch beim Commit generiert und listet alle verfügbaren Hilfedateien.
 
 ## Verfügbare Hilfedateien
 
-- [Editor-Hilfe (Kurzüberblick)](editor-hilfe.md)  \n  <small>Zuletzt geändert: 21.9.2025, 18:28:13</small>
-- [CHANGELOG](CHANGELOG.md)  \n  <small>Zuletzt geändert: 21.9.2025, 19:14:00</small>
-- [Wortschatz-Editor online betreiben](DEPLOYMENT.md)  \n  <small>Zuletzt geändert: 21.9.2025, 19:11:39</small>
-- [Wortschatz-Trainer – Arbeitsleitfaden](CONTRIBUTING.md)  \n  <small>Zuletzt geändert: 21.9.2025, 19:06:26</small>
+- [Editor-Hilfe (Kurzüberblick)](editor-hilfe.md)  \n  <small>Zuletzt geändert: 23.9.2025, 14:31:06</small>
+- [CHANGELOG](CHANGELOG.md)  \n  <small>Zuletzt geändert: 23.9.2025, 14:31:18</small>
+- [Wortschatz-Editor online betreiben](DEPLOYMENT.md)  \n  <small>Zuletzt geändert: 22.9.2025, 08:18:13</small>
+- [Wortschatz-Trainer – Arbeitsleitfaden](CONTRIBUTING.md)  \n  <small>Zuletzt geändert: 22.9.2025, 08:18:13</small>
 
 ## Neueste Änderungen (Auszug)
 
-- 16:43:10 Datenbank gespeichert (woerter)
-- 16:43:10 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
-- 16:43:10 Manifest gespeichert (woerter)
-- 16:43:10 Datenbank gespeichert (woerter)
-- 16:43:10 save-all-data:set-archived
-- 16:43:10 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
-- 16:43:10 Manifest gespeichert (woerter)
-- 16:43:10 Datenbank gespeichert (woerter)
-- 16:43:10 save-all-data:set-archived
-- 16:43:10 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
-- 16:43:10 Manifest gespeichert (woerter)
-- 16:43:10 Datenbank gespeichert (saetze)
-- 16:43:10 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
-- 16:43:10 Manifest gespeichert (saetze)
-- 16:43:11 Datenbank gespeichert (woerter)
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Clown.png -> data/wörter/images/c/Clown.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kamel.png -> data/wörter/images/k/Kamel.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kamm.png -> data/wörter/images/k/Kamm.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Karten.png -> data/wörter/images/k/Karten.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Katze.png -> data/wörter/images/k/Katze.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Keks.png -> data/wörter/images/k/Keks.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kelle.png -> data/wörter/images/k/Kelle.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Keller.png -> data/wörter/images/k/Keller.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kirschen.png -> data/wörter/images/k/Kirschen.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kiwi.png -> data/wörter/images/k/Kiwi.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Klavier.png -> data/wörter/images/k/Klavier.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kleid.png -> data/wörter/images/k/Kleid.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Knete.png -> data/wörter/images/k/Knete.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Koffer.png -> data/wörter/images/k/Koffer.png
+- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kohl.png -> data/wörter/images/k/Kohl.png
 
 Vollständiger Verlauf: [CHANGELOG](CHANGELOG.md)

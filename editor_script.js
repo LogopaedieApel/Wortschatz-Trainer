@@ -747,8 +747,18 @@ function renderTable() {
                                     <button type="button" class="name-edit-button" title="Bearbeiten">${(item.name || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</button>
                                     <input type="hidden" value="${item.name || ''}" data-field="name">
                                 </td>
-                                <td class="col-image"><input type="text" value="${getImagePathForItem(id, item)}" data-field="image"></td>
-                                <td class="col-sound"><input type="text" value="${item.sound || ''}" data-field="sound"></td>
+                                <td class="col-image">
+                                    <div style="display:flex; gap:6px; align-items:center;">
+                                        <input type="text" value="${getImagePathForItem(id, item)}" data-field="image">
+                                        <button type="button" class="clean-path-btn edit-button-subtle" data-field="image" title="Datei bereinigen (Leerzeichen trimmen & umbenennen)">Bereinigen</button>
+                                    </div>
+                                </td>
+                                <td class="col-sound">
+                                    <div style="display:flex; gap:6px; align-items:center;">
+                                        <input type="text" value="${item.sound || ''}" data-field="sound">
+                                        <button type="button" class="clean-path-btn edit-button-subtle" data-field="sound" title="Datei bereinigen (Leerzeichen trimmen & umbenennen)">Bereinigen</button>
+                                    </div>
+                                </td>
                             <td class="col-actions" style="text-align: center; white-space: nowrap;">
                                          <button class="edit-name-button edit-button-subtle" title="Bearbeiten">Bearbeiten</button>
                             </td>
@@ -2797,6 +2807,8 @@ function populateEditModalExtra(id) {
     const soundInput = document.getElementById('edit-sound-input');
     const imageStatus = document.getElementById('edit-image-status');
     const soundStatus = document.getElementById('edit-sound-status');
+    const imageClean = document.getElementById('edit-image-clean');
+    const soundClean = document.getElementById('edit-sound-clean');
     const setsContainer = document.getElementById('edit-sets-container');
     const setsSearch = document.getElementById('edit-sets-search');
     const setsSummary = document.getElementById('edit-sets-summary');
@@ -2807,6 +2819,44 @@ function populateEditModalExtra(id) {
     if (soundInput) soundInput.value = item.sound || '';
     if (imageStatus) imageStatus.textContent = '';
     if (soundStatus) soundStatus.textContent = '';
+
+    // Modal: Bereinigen Buttons (nutzen die gleiche Server-API wie die Tabellen-Schaltflächen)
+    if (imageClean) {
+        imageClean.onclick = async () => {
+            if (serverReadOnly) { statusMessage.textContent = 'Nur-Lese-Modus: Änderungen deaktiviert.'; return; }
+            try {
+                imageClean.disabled = true;
+                statusMessage.textContent = `Bereinige Bild für "${id}"…`;
+                await applyNameFileActions([{ id, strategy: 'useDisplay', fields: ['image'] }]);
+                await loadData(true);
+                const it = getItemById(id) || {};
+                if (imageInput) imageInput.value = it.image || '';
+                if (imageStatus) imageStatus.textContent = '✓ bereinigt';
+                statusMessage.textContent = '✓ Bild bereinigt.';
+            } catch (e) {
+                console.error(e);
+                statusMessage.textContent = `Fehler beim Bereinigen: ${e.message}`;
+            } finally { imageClean.disabled = false; }
+        };
+    }
+    if (soundClean) {
+        soundClean.onclick = async () => {
+            if (serverReadOnly) { statusMessage.textContent = 'Nur-Lese-Modus: Änderungen deaktiviert.'; return; }
+            try {
+                soundClean.disabled = true;
+                statusMessage.textContent = `Bereinige Ton für "${id}"…`;
+                await applyNameFileActions([{ id, strategy: 'useDisplay', fields: ['sound'] }]);
+                await loadData(true);
+                const it = getItemById(id) || {};
+                if (soundInput) soundInput.value = it.sound || '';
+                if (soundStatus) soundStatus.textContent = '✓ bereinigt';
+                statusMessage.textContent = '✓ Ton bereinigt.';
+            } catch (e) {
+                console.error(e);
+                statusMessage.textContent = `Fehler beim Bereinigen: ${e.message}`;
+            } finally { soundClean.disabled = false; }
+        };
+    }
 
     // ID umbenennen Button
     if (openRenameBtn) {
@@ -3537,7 +3587,7 @@ function renderUnifiedHealthcheck(data) {
     const mfList = document.createElement('div');
     const mfItems = (data.woerter?.files?.missing || []).concat(data.saetze?.files?.missing || []);
     mfItems.sort((a,b)=> (a.path||'').localeCompare(b.path||''));
-    mfList.innerHTML = mfItems.map(it => `<div style="display:grid; grid-template-columns: 110px 1fr; gap:8px; align-items:center;"><span>${it.id} · ${it.kind}</span><code>${it.path||''}</code></div>`).join('');
+    mfList.innerHTML = mfItems.map(it => `<div style="display:grid; grid-template-columns: 110px 1fr auto auto; gap:8px; align-items:center;"><span>${it.id} · ${it.kind}</span><code>${it.path||''}</code><button class="hc-mf-fix" data-id="${it.id}" data-kind="${it.kind}">Reparieren</button><button class="hc-mf-jump" data-id="${it.id}">Zur Zeile</button></div>`).join('');
     sections.appendChild(expandableSection('Fehlende Dateien (gesamt)', (filesW + filesS), mfList));
     // Empty paths
     const epList = document.createElement('div');
@@ -3617,6 +3667,25 @@ function renderUnifiedHealthcheck(data) {
         });
     });
     healthcheckSections.querySelectorAll('.hc-nf-jump').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = e.currentTarget.getAttribute('data-id');
+            if (healthcheckModal) healthcheckModal.style.display = 'none';
+            jumpToItemRow(id);
+        });
+    });
+    healthcheckSections.querySelectorAll('.hc-mf-fix').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            const id = e.currentTarget.getAttribute('data-id');
+            const kind = e.currentTarget.getAttribute('data-kind');
+            try {
+                await applyNameFileActions([{ id, strategy: 'useDisplay', fields: [kind] }]);
+            } finally {
+                await runUnifiedHealthcheckAndRender();
+                await loadData(true);
+            }
+        });
+    });
+    healthcheckSections.querySelectorAll('.hc-mf-jump').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const id = e.currentTarget.getAttribute('data-id');
             if (healthcheckModal) healthcheckModal.style.display = 'none';
@@ -3754,6 +3823,29 @@ function setUnsavedChanges(state) {
 // Event listener for delete buttons using event delegation
 if (tableBody) {
     tableBody.addEventListener('click', async (event) => {
+        // Inline „Bereinigen“-Aktion für Bild/Ton
+        if (event.target.classList && event.target.classList.contains('clean-path-btn')) {
+            if (serverReadOnly) { statusMessage.textContent = 'Nur-Lese-Modus: Änderungen deaktiviert.'; return; }
+            const btn = event.target;
+            const row = btn.closest('tr');
+            if (!row) return;
+            const id = row.dataset.id;
+            const field = btn.getAttribute('data-field'); // 'image' | 'sound'
+            if (!id || !field) return;
+            try {
+                btn.disabled = true;
+                statusMessage.textContent = `Bereinige ${field} für "${id}"…`;
+                await applyNameFileActions([{ id, strategy: 'useDisplay', fields: [field] }]);
+                await loadData(true);
+                statusMessage.textContent = `✓ ${field} für "${id}" bereinigt.`;
+            } catch (e) {
+                console.error('Bereinigen fehlgeschlagen:', e);
+                statusMessage.textContent = `Fehler beim Bereinigen: ${e.message}`;
+            } finally {
+                btn.disabled = false;
+            }
+            return;
+        }
         // Klick auf den Namen (Button) öffnet ebenfalls das Bearbeiten-Modal
         if (event.target.classList.contains('name-edit-button')) {
             const row = event.target.closest('tr');

@@ -71,6 +71,36 @@
         }
       ]
     },
+    "koenig": {
+      "cursor": 1,
+      "entries": [
+        {
+          "base": true,
+          "ts": "2025-09-23T11:10:55.972Z",
+          "value": "König"
+        },
+        {
+          "prev": "König",
+          "ts": "2025-09-23T11:10:55.972Z",
+          "value": "König"
+        }
+      ]
+    },
+    "kohl": {
+      "cursor": 1,
+      "entries": [
+        {
+          "base": true,
+          "ts": "2025-09-23T11:11:39.258Z",
+          "value": "Kohl"
+        },
+        {
+          "prev": "Kohl",
+          "ts": "2025-09-23T11:11:39.258Z",
+          "value": "Kohl"
+        }
+      ]
+    },
     "reich": {
       "cursor": 1,
       "entries": [

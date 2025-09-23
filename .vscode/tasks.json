@@ -105,6 +105,17 @@
 				"$eslint-stylish"
 			],
 			"group": "build"
+		},
+		{
+			"label": "Update docs (help index)",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"docs:update"
+			],
+			"isBackground": false,
+			"group": "build"
 		}
 	]
 }

@@ -7,6 +7,7 @@
     "start": "node server.js",
     "start:ro": "set EDITOR_READONLY=1&& set PORT=3001&& node server.js",
     "start:test": "set PORT=3100&& node server.js",
+    "smoke:optimize-save": "node tools/smoke-optimize-save.mjs --port 3000",
     "analyze-assets": "node tools/analyze-assets.mjs",
     "analyze-assets:json": "node tools/analyze-assets.mjs --format json",
     "apply-assets:dry": "node tools/apply-assets.mjs",

@@ -67,6 +67,19 @@ Hinweis: Details für Mitwirkende findest du zusätzlich in `docs/CONTRIBUTING.m
 - Unsortierte Dateien einsortieren: Benachrichtigung anklicken → Konflikte lösen → Sync läuft automatisch.
 - Gelöschte Dateien wiederherstellen: Dialog „Gelöschte Dateien“ öffnen und Datei(en) zurückspielen.
 
+### Dateien bereinigen (Bild/Ton)
+
+Wenn Dateipfade kleine Unsauberkeiten haben (z. B. überflüssige Leerzeichen am Ende wie „Kohl .mp3“, falsche Ordner, uneinheitliche Schreibweise), kannst du dies direkt im Editor beheben:
+
+- In der klassischen Tabelle: Neben den Feldern Bild/Ton gibt es einen Button „Bereinigen“. Er passt den physischen Dateinamen und den Pfad an den Anzeigenamen an (gemäß Ablagelogik) und aktualisiert den Eintrag in der Datenbank.
+- Im „Bearbeiten“-Dialog: Unter „Dateien“ gibt es für Bild und Ton ebenfalls „Bereinigen“. Das ist praktisch, wenn du ohnehin in der Detailansicht arbeitest.
+
+Technische Hinweise:
+- Die Aktion nutzt den vorhandenen Server‑Endpoint zur Konfliktauflösung, führt tatsächliche Datei‑Umbenennungen/‑Verschiebungen durch und setzt den JSON‑Pfad entsprechend.
+- Windows/macOS: Reine Groß-/Kleinschreibungsänderungen werden serverseitig sicher in zwei Schritten durchgeführt.
+- Unicode/Leerzeichen: Der Server erkennt Dateien, die sich nur durch nachgestellte Leerzeichen (inkl. geschütztem Leerzeichen/Unicode) unterscheiden, und bereinigt diese zuverlässig.
+- Nach Umbenennungen kann es nötig sein, die Ansicht im Datei‑Explorer/Git zu aktualisieren (F5), damit die neue Schreibweise sichtbar wird.
+
 ### Neues Layout (Beta)
 
 Der Editor enthält eine optionale, neue Ansicht („Layout: Next“) mit Sidebar + Detailbereich. Funktional bleibt alles kompatibel zur klassischen Tabelle; die Datenstruktur/Backends bleiben unverändert.
@@ -136,6 +149,7 @@ Optionaler Screenshot (Listen‑Details):
 	- „→ Anzeige übernehmen“: Dateiname wird aus dem Anzeigenamen abgeleitet und Pfad aktualisiert
 	- „→ Dateiname übernehmen“: Anzeigename wird aus dem bestehenden Dateinamen gesetzt
 	- „Zur Zeile“: springt zur Eintragszeile in der Tabelle
+ - „Reparieren“ bei „Fehlende Dateien“: Wenn ein Eintrag auf eine Datei zeigt, die im Repo nicht vorkommt (z. B. wegen Tippfehler, Leerzeichen oder falschem Ordner), versucht „Reparieren“ die passende vorhandene Datei zu finden und korrekt umzubenennen/umzuhängen. Anschließend werden Healthcheck und Tabelle aktualisiert.
  
 Hinweis: Die früheren separaten Modals „Fehlende Assets“ und „Name-Dateiname-Konflikte“ wurden entfernt; alles läuft über das Healthcheck-Modal.
 
@@ -179,6 +193,7 @@ npm test
 
 - Healthcheck im Editor: Werkzeuge → „🧺 Healthcheck“ (siehe oben). Backend-API: `/api/healthcheck` (Parität zur CLI, inkl. Konflikt-Details und Strict-Name-Option).
   - Der Editor kann vorab automatisch die Pfad-Schreibweise (Case) in `items_database*.json` an die exakten Repo-Namen anpassen (Windows: 2‑Schritt-Umbenennung wird serverseitig gehandhabt).
+	- „Reparieren“/„Bereinigen“ nutzen die Konfliktauflösungs‑Logik serverseitig. Problemfälle mit nachgestellten (auch geschützten) Leerzeichen in Dateinamen werden dabei erkannt und korrigiert.
 
 Strenge Case-Prüfung und Auto-Fix (Konsole):
 
