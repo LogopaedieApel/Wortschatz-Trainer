@@ -13,6 +13,7 @@
 
 /* Im Next-Layout wird das klassische Tabellen-Suchfeld ausgeblendet */
 body.layout-next #search-input { display: none !important; }
+body.layout-next #search-pos-group { display: none !important; }
 
 /* ===== Aus editor.html verschoben: Editor-spezifische Styles & Design Tokens ===== */
 /* CSS bleibt unverändert */
@@ -68,6 +69,10 @@ td input[type="text"] { width: 98%; box-sizing: border-box; }
 #server-status-badge { order: 4; margin-left: auto !important; display: none !important; }
 /* Suchfeld in eigene Zeile unter Status/Benachrichtigungen */
 #search-input { flex: 1 1 360px; min-width: 220px; max-width: 640px; order: 10; margin-left: 0; }
+.pos-toggle-group { display:inline-flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.pos-toggle-label { font-size:12px; color:#444; }
+.pos-toggle { padding: 6px 10px; border-radius: 999px; background: var(--color-muted); border: 1px solid var(--color-border); }
+.pos-toggle[aria-pressed="true"] { background:#e6ffed; color:#166534; border-color:#22c55e; }
 .tab-controls { display:flex; gap:8px; margin-bottom: 6px; position: relative; align-items: center; }
 #add-set-button { white-space: nowrap; padding: 10px 22px; min-width: 240px; }
 .tab-controls .flex-spacer { flex: 1 1 auto; }

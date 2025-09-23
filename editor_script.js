@@ -36,6 +36,36 @@ const newAreaAdd = document.getElementById('new-area-add');
 const newAreaName = document.getElementById('new-area-name');
 const newAreaMessage = document.getElementById('new-area-message');
 const searchInput = document.getElementById('search-input');
+// Search position toggle buttons (initial/medial/final)
+const posBtnInitial = document.getElementById('search-pos-initial');
+const posBtnMedial = document.getElementById('search-pos-medial');
+const posBtnFinal = document.getElementById('search-pos-final');
+const POS_LS_KEY = 'editor.search.posFilters';
+function getActivePosFilters() {
+    try {
+        const raw = localStorage.getItem(POS_LS_KEY);
+        if (!raw) return [];
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? arr.filter(x => x === 'initial' || x === 'medial' || x === 'final') : [];
+    } catch { return []; }
+}
+function setActivePosFilters(arr) {
+    try { localStorage.setItem(POS_LS_KEY, JSON.stringify(arr)); } catch {}
+}
+function syncPosButtonsFromState() {
+    const active = new Set(getActivePosFilters());
+    if (posBtnInitial) posBtnInitial.setAttribute('aria-pressed', active.has('initial') ? 'true' : 'false');
+    if (posBtnMedial) posBtnMedial.setAttribute('aria-pressed', active.has('medial') ? 'true' : 'false');
+    if (posBtnFinal) posBtnFinal.setAttribute('aria-pressed', active.has('final') ? 'true' : 'false');
+}
+function togglePos(btn, key) {
+    const cur = new Set(getActivePosFilters());
+    if (cur.has(key)) cur.delete(key); else cur.add(key);
+    const next = Array.from(cur);
+    setActivePosFilters(next);
+    syncPosButtonsFromState();
+    filterTable();
+}
 const tabWoerter = document.getElementById('tab-woerter');
 const tabSaetze = document.getElementById('tab-saetze');
 // Legacy Name↔Datei-Modal entfernt – Konfliktaktionen sind nun im Healthcheck-Modal integriert
@@ -55,6 +85,8 @@ const healthcheckSections = document.getElementById('healthcheck-sections');
 // (Legacy-Elemente entfernt)
 let debounceTimer; // Timer for debouncing save action
 let serverReadOnly = false; // server-side read-only flag
+// Remember last interacted checkbox (row id + set path) to restore focus after reload
+let lastFocusedSetCell = null; // { id: string, path: string }
 
 // Phase 2: Edit-Set modal elements
 const editSetModal = document.getElementById('edit-set-modal');
@@ -74,6 +106,26 @@ function debounce(fn, wait = 120) {
         clearTimeout(timer);
         timer = setTimeout(() => fn.apply(this, args), wait);
     };
+}
+
+// Scroll preservation helpers for the classic table view
+function captureTableScroll() {
+    try {
+        const wrap = document.getElementById('table-wrapper');
+        if (!wrap) return null;
+        return { left: wrap.scrollLeft || 0, top: wrap.scrollTop || 0 };
+    } catch { return null; }
+}
+function restoreTableScroll(state) {
+    try {
+        if (!state) return;
+        const wrap = document.getElementById('table-wrapper');
+        if (!wrap) return;
+        const maxLeft = Math.max(0, (wrap.scrollWidth || 0) - (wrap.clientWidth || 0));
+        const maxTop = Math.max(0, (wrap.scrollHeight || 0) - (wrap.clientHeight || 0));
+        wrap.scrollLeft = Math.max(0, Math.min(state.left || 0, maxLeft));
+        wrap.scrollTop = Math.max(0, Math.min(state.top || 0, maxTop));
+    } catch {}
 }
 
 // NEXT-Layout Elemente (read-only Skelett)
@@ -594,13 +646,29 @@ window.addEventListener('beforeunload', (event) => {
  * Filters the table rows based on the search input value.
  */
 function filterTable() {
-    const searchTerm = searchInput.value.toLowerCase();
+    const searchTerm = (searchInput?.value || '').toLowerCase();
+    const active = getActivePosFilters();
+    const useClassic = !searchTerm || active.length === 0; // Default behavior when no button is active or searchTerm empty
+    let pattern = null;
+    if (!useClassic) {
+        // Build a regex based on selected positions. Logical OR across selected positions.
+        const escaped = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const parts = [];
+        if (active.includes('initial')) parts.push(`^${escaped}`);
+        if (active.includes('medial')) parts.push(`.+${escaped}.+`);
+        if (active.includes('final')) parts.push(`${escaped}$`);
+        try { pattern = new RegExp(`(${parts.join('|')})`, 'i'); } catch { pattern = null; }
+    }
     const rows = tableBody.querySelectorAll('tr');
     rows.forEach(row => {
         const nameInput = row.querySelector('input[data-field="name"]');
         if (nameInput) {
-            const nameText = nameInput.value.toLowerCase();
-            row.style.display = nameText.includes(searchTerm) ? '' : 'none';
+            const nameText = (nameInput.value || '').toLowerCase();
+            if (useClassic) {
+                row.style.display = !searchTerm || nameText.includes(searchTerm) ? '' : 'none';
+            } else {
+                row.style.display = pattern && pattern.test(nameText) ? '' : 'none';
+            }
         }
     });
 }
@@ -2374,6 +2442,11 @@ if (searchInput) {
     const debouncedFilter = debounce(filterTable, 120);
     searchInput.addEventListener('input', debouncedFilter);
 }
+// Initialize and add handlers for position buttons
+syncPosButtonsFromState();
+if (posBtnInitial) posBtnInitial.addEventListener('click', () => togglePos(posBtnInitial, 'initial'));
+if (posBtnMedial) posBtnMedial.addEventListener('click', () => togglePos(posBtnMedial, 'medial'));
+if (posBtnFinal) posBtnFinal.addEventListener('click', () => togglePos(posBtnFinal, 'final'));
 
 // Entfernt: add-row-button und zugehöriger Click-Handler
 
@@ -2645,6 +2718,16 @@ function debouncedSaveFromNext() {
         tableBody.addEventListener(eventType, (event) => {
             // Ignore events from the search input if it's inside the table structure
             if (event.target.id === 'search-input') return;
+            // Track last interacted set checkbox to restore focus after reload
+            const t = event.target;
+            if (t && t.matches && t.matches('input[type="checkbox"][data-path]')) {
+                try {
+                    const row = t.closest('tr');
+                    const id = row && row.dataset ? row.dataset.id : '';
+                    const path = t.dataset ? t.dataset.path : '';
+                    if (id && path) lastFocusedSetCell = { id, path };
+                } catch {}
+            }
             
             setUnsavedChanges(true);
             showSaveStatus(null, 'Änderungen werden gespeichert...'); // Show pending state
@@ -2713,8 +2796,24 @@ async function saveData() {
     skipReadTableOnSave = false;
         // Reload data after saving to ensure consistency, but do it quietly
         const currentScroll = { x: window.scrollX, y: window.scrollY };
-        await loadData(true); // Pass a flag to suppress status messages
+        const tableScroll = captureTableScroll();
+        await loadData(true); // Pass a flag to suppress status messages (renderTable runs inside)
+        // Restore page scroll
         window.scrollTo(currentScroll.x, currentScroll.y);
+        // Restore table scroll (horizontal + vertical)
+        restoreTableScroll(tableScroll);
+        // Restore focus on the last interacted set checkbox (if still present)
+        if (lastFocusedSetCell && tableBody) {
+            try {
+                const selector = `tr[data-id="${lastFocusedSetCell.id}"] input[type="checkbox"][data-path="${lastFocusedSetCell.path}"]`;
+                const el = tableBody.querySelector(selector);
+                if (el && typeof el.focus === 'function') {
+                    // Prevent browser from jumping; then ensure it's visible in view
+                    el.focus({ preventScroll: true });
+                    if (el.scrollIntoView) el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+                }
+            } catch {}
+        }
 
     } catch (error) {
         showSaveStatus(false, error.message);

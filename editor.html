@@ -73,8 +73,14 @@
         Hinweis: Der Server läuft im Nur-Lese-Modus. Speichern/Ändern ist vorübergehend deaktiviert.
     </div>
     
-    <div class="controls" style="justify-content:flex-start;">
+    <div class="controls" style="justify-content:flex-start; gap:8px; align-items:center; flex-wrap: wrap;">
         <input type="text" id="search-input" placeholder="Einträge nach Namen filtern..." style="margin-left:0; order:0;">
+        <div id="search-pos-group" role="group" aria-label="Positionsfilter" class="pos-toggle-group" title="Filtert die Position des Suchbegriffs im Wort. Ohne Auswahl: alle Treffer wie gewohnt.">
+            <span class="pos-toggle-label">Position:</span>
+            <button type="button" id="search-pos-initial" class="pos-toggle" aria-pressed="false" data-pos="initial" title="Beginn (z. B. sch...)">initial</button>
+            <button type="button" id="search-pos-medial" class="pos-toggle" aria-pressed="false" data-pos="medial" title="Mitte (z. B. ...sch...)">medial</button>
+            <button type="button" id="search-pos-final" class="pos-toggle" aria-pressed="false" data-pos="final" title="Ende (z. B. ...sch)">final</button>
+        </div>
     </div>
 
     <div class="tab-controls sticky-tabs" role="tablist" aria-label="Bereiche" style="position:sticky; top:0; z-index:4; background:#fff; padding-top:6px; padding-bottom:4px; padding-left:0; margin-bottom:6px;">

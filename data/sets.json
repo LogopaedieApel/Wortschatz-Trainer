@@ -60,9 +60,17 @@
     },
     "k": {
       "displayName": "K",
+      "final": {
+        "displayName": "final",
+        "path": "data/sets/artikulation_k_final.json"
+      },
       "initial": {
         "displayName": "initial",
         "path": "data/sets/artikulation_k_initial.json"
+      },
+      "medial": {
+        "displayName": "medial",
+        "path": "data/sets/artikulation_k_medial.json"
       }
     },
     "l": {
