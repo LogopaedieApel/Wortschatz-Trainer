@@ -1286,6 +1286,20 @@ function safeNextOptionId(rawId) {
     } catch { return 'next-option-unknown'; }
 }
 
+// Session-Auswahl: letzte Auswahl je Modus (woerter/saetze) merken
+function getLastSelectedItemId(mode) {
+    try { return sessionStorage.getItem(`editor.lastItem.${mode}`) || ''; } catch { return ''; }
+}
+function setLastSelectedItemId(mode, id) {
+    try { if (id) sessionStorage.setItem(`editor.lastItem.${mode}`, String(id)); } catch {}
+}
+function getLastSelectedListPath(mode) {
+    try { return sessionStorage.getItem(`editor.lastList.${mode}`) || ''; } catch { return ''; }
+}
+function setLastSelectedListPath(mode, path) {
+    try { if (path) sessionStorage.setItem(`editor.lastList.${mode}`, String(path)); } catch {}
+}
+
 function renderNextList() {
     if (!nextLayout || !nextList) return;
     const mySeq = ++nextListRenderSeq;
@@ -1479,16 +1493,30 @@ function renderNextList() {
             fragAll.appendChild(groupLi);
         }
         ul.appendChild(fragAll);
-        // Nach dem Rendern (Listen-Modus): erste Liste öffnen (Listendetails), nicht erstes Wort
+        // Nach dem Rendern (Listen-Modus): letzte Liste dieses Modus bevorzugen, sonst erste öffnen
         try {
-            const firstLink = nextList.querySelector('a[data-list-path]');
-            if (firstLink) {
-                const path = firstLink.getAttribute('data-list-path');
-                // Displayname aus dem linken <span>
-                const dnEl = firstLink.querySelector('span');
-                const dn = dnEl ? dnEl.textContent : path;
-                if (path) openNextListDetails(path, dn);
+            let targetPath = getLastSelectedListPath(currentMode);
+            let targetName = '';
+            if (targetPath) {
+                // existiert Link für gespeicherten Pfad?
+                const sel = `a[data-list-path="${CSS.escape(targetPath)}"]`;
+                const link = nextList.querySelector(sel);
+                if (link) {
+                    const dnEl = link.querySelector('span');
+                    targetName = dnEl ? dnEl.textContent : targetPath;
+                } else {
+                    targetPath = '';
+                }
             }
+            if (!targetPath) {
+                const firstLink = nextList.querySelector('a[data-list-path]');
+                if (firstLink) {
+                    targetPath = firstLink.getAttribute('data-list-path') || '';
+                    const dnEl = firstLink.querySelector('span');
+                    targetName = dnEl ? dnEl.textContent : targetPath;
+                }
+            }
+            if (targetPath) openNextListDetails(targetPath, targetName);
         } catch {}
         return;
     }
@@ -1646,18 +1674,26 @@ function renderNextList() {
         fragAll.appendChild(liGroup);
     }
     ul.appendChild(fragAll);
-    // Nach dem Rendern (Einträge-Modus): erstes Wort der Liste im Detailbereich anzeigen
+    // Nach dem Rendern (Einträge-Modus): letztes Item dieses Modus bevorzugen, sonst erstes anzeigen
     try {
-        const firstLink = nextList.querySelector('a[data-item-id]');
-        if (firstLink) {
-            const id = firstLink.getAttribute('data-item-id');
-            if (id) openNextDetails(id);
+        let targetId = getLastSelectedItemId(currentMode);
+        if (targetId) {
+            // muss in gefilterter Liste vorhanden sein
+            const link = nextList.querySelector(`a[data-item-id="${CSS.escape(targetId)}"]`);
+            if (!link) targetId = '';
         }
+        if (!targetId) {
+            const firstLink = nextList.querySelector('a[data-item-id]');
+            targetId = firstLink ? (firstLink.getAttribute('data-item-id') || '') : '';
+        }
+        if (targetId) openNextDetails(targetId);
     } catch {}
 }
 
 function openNextListDetails(path, displayName) {
     if (!nextMain) return;
+    // Auswahl merken (pro Modus)
+    setLastSelectedListPath(currentMode, path);
     nextMain.innerHTML = '';
     const title = document.createElement('h2');
     title.id = 'next-details-title';
@@ -1796,6 +1832,8 @@ function openNextListDetails(path, displayName) {
 
 function openNextDetails(id) {
     if (!nextMain) return;
+    // Auswahl merken (pro Modus)
+    setLastSelectedItemId(currentMode, id);
     const item = (database && database[id]) || null;
     nextMain.innerHTML = '';
     // Semantische Überschrift als Titel des Detailbereichs
@@ -2164,18 +2202,35 @@ function nextModeApply(mode) {
     // Nach Moduswechsel Details aktualisieren
     try {
         if (mode === 'lists') {
-            // Öffne die erste Liste als Listendetail (nicht erstes Wort)
-            const link = nextList && nextList.querySelector('a[data-list-path]');
-            const path = link ? link.getAttribute('data-list-path') : '';
-            const dn = link ? (link.querySelector('span')?.textContent || path) : path;
+            // Bevorzuge zuletzt gewählte Liste dieses Modus
+            let path = getLastSelectedListPath(currentMode);
+            let dn = '';
             if (path) {
-                openNextListDetails(path, dn);
-            } else {
-                nextMain && (nextMain.innerHTML = '<div style="color:#666;">Keine Listen gefunden.</div>');
+                const sel = nextList && nextList.querySelector(`a[data-list-path="${CSS.escape(path)}"]`);
+                if (sel) {
+                    const dnEl = sel.querySelector('span');
+                    dn = dnEl ? dnEl.textContent : path;
+                } else {
+                    path = '';
+                }
             }
+            if (!path) {
+                const link = nextList && nextList.querySelector('a[data-list-path]');
+                path = link ? (link.getAttribute('data-list-path') || '') : '';
+                dn = link ? (link.querySelector('span')?.textContent || path) : path;
+            }
+            if (path) openNextListDetails(path, dn); else nextMain && (nextMain.innerHTML = '<div style="color:#666;">Keine Listen gefunden.</div>');
         } else {
-            const link = nextList && nextList.querySelector('a[data-item-id]');
-            const id = link ? link.getAttribute('data-item-id') : '';
+            // Bevorzuge zuletzt gewähltes Item dieses Modus
+            let id = getLastSelectedItemId(currentMode);
+            if (id) {
+                const sel = nextList && nextList.querySelector(`a[data-item-id="${CSS.escape(id)}"]`);
+                if (!sel) id = '';
+            }
+            if (!id) {
+                const link = nextList && nextList.querySelector('a[data-item-id]');
+                id = link ? (link.getAttribute('data-item-id') || '') : '';
+            }
             if (id) openNextDetails(id);
         }
     } catch {}

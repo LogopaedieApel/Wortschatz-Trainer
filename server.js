@@ -2063,6 +2063,14 @@ let serverInstance = null;
 if (require.main === module) {
     serverInstance = app.listen(PORT, () => {
         logInfo(`Server läuft und lauscht auf http://localhost:${PORT}`);
+        // Beim Serverstart: einmalig alte Backups aufräumen (FIFO, hält BACKUP_KEEP)
+        try {
+            pruneBackupRoot()
+                .then(() => { logInfo('[BACKUP] Initiales Pruning abgeschlossen.'); })
+                .catch((e) => { console.warn('[BACKUP] Initiales Pruning fehlgeschlagen:', e && e.message); });
+        } catch (e) {
+            console.warn('[BACKUP] Initiales Pruning (Sync-Wrapper) fehlgeschlagen:', e && e.message);
+        }
     });
     // Freundlicher Handler: Wenn der Port bereits belegt ist, keinen Stacktrace ausgeben
     serverInstance.on('error', (err) => {
