@@ -8527,3 +8527,13 @@
 {"ts":"2025-09-23T20:42:06.936Z","op":"id-rename:set","file":"../../../AppData/Local/Temp/wst-idrename-a8r1Ad/data/sets/testliste.json","backup":null,"mode":"woerter","set":"../../../AppData/Local/Temp/wst-idrename-a8r1Ad/data/sets/testliste.json","from":"lamm","to":"schaf"}
 {"ts":"2025-09-23T20:42:07.295Z","op":"patch-display-name","file":"../../../AppData/Local/Temp/wst-dn-PvBEdQ/data/items_database.json","backup":null,"mode":"woerter","id":"loeschen"}
 {"ts":"2025-09-23T20:42:07.300Z","op":"name-history:write","file":"../../../AppData/Local/Temp/wst-dn-PvBEdQ/state/name-history.json","backup":null}
+{"ts":"2025-09-23T20:49:17.495Z","op":"save-all-data:db","file":"data/items_database.json","backup":"_backup/2025-09-23T204917485Z/data/items_database.json","mode":"woerter"}
+{"ts":"2025-09-23T20:49:32.126Z","op":"patch-display-name","file":"data/items_database.json","backup":"_backup/2025-09-23T204932111Z/data/items_database.json","mode":"woerter","id":"kaninchen"}
+{"ts":"2025-09-23T20:49:32.149Z","op":"name-history:write","file":"_state/name-history.json","backup":"_backup/2025-09-23T204932111Z/_state/name-history.json"}
+{"ts":"2025-09-23T20:50:12.538Z","op":"resolve-name-file-conflicts","file":"data/items_database.json","backup":"_backup/2025-09-23T205012521Z/data/items_database.json","mode":"woerter","actions":1}
+{"ts":"2025-09-23T20:50:21.649Z","op":"save-all-data:db","file":"data/items_database.json","backup":"_backup/2025-09-23T205021643Z/data/items_database.json","mode":"woerter"}
+{"ts":"2025-09-23T20:55:29.918Z","op":"delete-item:db","file":"data/items_database.json","backup":"_backup/2025-09-23T205529901Z/data/items_database.json","id":"krone","mode":"woerter"}
+{"ts":"2025-09-23T20:55:29.933Z","op":"delete-item:set","file":"data/sets/artikulation_k_initial.json","backup":"_backup/2025-09-23T205529901Z/data/sets/artikulation_k_initial.json","id":"krone","mode":"woerter","set":"data/sets/artikulation_k_initial.json"}
+{"ts":"2025-09-23T20:55:47.597Z","op":"resolve-conflict","type":"move","source":"data/import_Wörter/Krone.mp3","target":"data/wörter/sounds/k/Krone.mp3"}
+{"ts":"2025-09-23T20:55:47.600Z","op":"resolve-conflict","type":"move","source":"data/import_Wörter/Krone.png","target":"data/wörter/images/k/Krone.png"}
+{"ts":"2025-09-23T20:55:47.688Z","op":"sync-files:db","file":"data/items_database.json","backup":"_backup/2025-09-23T205547679Z/data/items_database.json","mode":"woerter"}

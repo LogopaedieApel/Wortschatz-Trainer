@@ -451,7 +451,7 @@
   },
   "kuscheltiere": {
     "name": "Kuscheltiere",
-    "image": "data/wörter/images/k/Kuscheltiere.jpg",
+    "image": "data/wörter/images/k/Kuscheltiere.png",
     "sound": "data/wörter/sounds/k/Kuscheltiere.mp3",
     "folder": "k"
   },

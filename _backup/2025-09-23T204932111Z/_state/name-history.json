@@ -71,21 +71,6 @@
         }
       ]
     },
-    "kaninchen": {
-      "cursor": 1,
-      "entries": [
-        {
-          "base": true,
-          "ts": "2025-09-23T20:49:32.141Z",
-          "value": "Kaninchen"
-        },
-        {
-          "prev": "Kaninchen",
-          "ts": "2025-09-23T20:49:32.141Z",
-          "value": "Kaninchen"
-        }
-      ]
-    },
     "koenig": {
       "cursor": 1,
       "entries": [
