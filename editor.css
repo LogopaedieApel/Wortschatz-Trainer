@@ -42,6 +42,10 @@ body.layout-next #search-input { display: none !important; }
   --shadow-1: 0 1px 2px rgba(0,0,0,0.06);
   --shadow-2: 0 2px 8px rgba(0,0,0,0.12);
   --focus-ring: 0 0 0 3px rgba(125,166,255,0.35);
+
+  /* Sticky Offsets (werden dynamisch via JS überschrieben) */
+  --sticky-header-offset: 36px;  /* Höhe der ersten Headerzeile (Top-Header) */
+  --sticky-col-1-w: 140px;       /* Breite der 1. Spalte (ID) */
 }
 
 body { font-family: sans-serif; margin: 20px; color: var(--color-text); background: var(--color-bg); }
@@ -316,3 +320,42 @@ body.layout-next #next-main .sticky-subheader { position: sticky; top: 52px; z-i
 /* Density control */
 body.layout-next.compact #next-main { font-size: 14px; }
 body.layout-next.compact #next-sidebar a[data-item-id] { padding: 4px 6px !important; }
+
+/* ===== Classic-Layout: Sticky Header & Sticky linke Spalten ===== */
+#table-wrapper { position: relative; }
+
+/* Tabellenkopf (2 Zeilen) sticky halten */
+#editor-table thead th {
+  position: sticky;
+  z-index: 3; /* unter Name/ID-Headern, aber über Body-Zellen */
+}
+#editor-table thead .top-header-row th {
+  top: 0;
+  z-index: 4;
+}
+#editor-table thead .sub-header-row th {
+  top: var(--sticky-header-offset, 36px);
+  z-index: 3;
+}
+
+/* Linke Spalten (ID, Name) sticky halten – Klasse wird im Markup gesetzt */
+#editor-table .sticky-col {
+  position: sticky;
+  left: 0;
+  background: #fff;
+  z-index: 2;
+  /* dezente Trennlinie nach rechts */
+  box-shadow: 1px 0 0 var(--color-border);
+}
+/* Header-Zellen der sticky-Spalten über allen anderen */
+#editor-table thead th.sticky-col {
+  z-index: 6;
+  /* auch unten eine dünne Linie */
+  box-shadow: 1px 0 0 var(--color-border), 0 1px 0 var(--color-border);
+}
+/* Zweite linke Spalte (Name) um Breite der ID-Spalte nach rechts versetzen */
+#editor-table .sticky-col.col-2 {
+  left: var(--sticky-col-1-w, 140px);
+}
+/* Spezialfall ist bereits vorhanden:
+   body.matrix-hide-id-media .sticky-col.col-2 { left: 0 !important; } */

@@ -139,10 +139,6 @@
       "initial": {
         "displayName": "initial",
         "path": "data/sets/artikulation_t_initial.json"
-      },
-      "medial": {
-        "displayName": "medial",
-        "path": "data/sets/artikulation_t_medial.json"
       }
     },
     "w": {

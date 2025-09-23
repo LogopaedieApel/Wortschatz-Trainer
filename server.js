@@ -16,6 +16,13 @@ const DISABLE_BACKUPS = (() => {
     const v = String(process.env.DISABLE_BACKUPS || '').trim().toLowerCase();
     return v === '1' || v === 'true' || v === 'yes';
 })();
+// Maximalanzahl an Backup-Snapshots in _backup (FIFO-Pruning). 0 oder negativ => keine Begrenzung.
+const BACKUP_KEEP = (() => {
+    const raw = String(process.env.BACKUP_KEEP ?? '').trim();
+    if (raw === '') return 5; // Default nach Nutzerwunsch
+    const n = Number(raw);
+    return Number.isFinite(n) ? Math.max(0, Math.floor(n)) : 5;
+})();
 
 function guardWrite(req, res, next) {
     if (isReadOnly()) {
@@ -103,6 +110,38 @@ async function backupExisting(filePath, stamp) {
     }
 }
 
+// Ältere Backup-Snapshots (Ordner direkt unter _backup) löschen, nur die letzten BACKUP_KEEP behalten
+async function pruneBackupRoot() {
+    try {
+        if (BACKUP_KEEP <= 0) return; // unbegrenzt
+        let entries;
+        try {
+            entries = await fs.readdir(BACKUP_ROOT, { withFileTypes: true });
+        } catch (e) {
+            if (e.code === 'ENOENT') return; // _backup existiert noch nicht
+            throw e;
+        }
+        const dirs = entries
+            .filter(e => (e.isDirectory ? e.isDirectory() : false))
+            .map(e => e.name)
+            .filter(name => name && !name.startsWith('.'));
+        if (dirs.length <= BACKUP_KEEP) return;
+        // Zeitstempel-Ordner sind lexikographisch sortierbar (ISO-kompakt) => älteste zuerst
+        dirs.sort((a, b) => a.localeCompare(b));
+        const toDelete = dirs.slice(0, Math.max(0, dirs.length - BACKUP_KEEP));
+        for (const d of toDelete) {
+            const abs = path.join(BACKUP_ROOT, d);
+            try {
+                await fs.rm(abs, { recursive: true, force: true });
+            } catch (e) {
+                console.warn('[BACKUP] Konnte alten Snapshot nicht löschen:', abs, e.message);
+            }
+        }
+    } catch (e) {
+        console.warn('[BACKUP] Pruning fehlgeschlagen:', e && e.message);
+    }
+}
+
 async function writeJsonAtomic(filePath, data, { stamp, backup = true, auditOp = 'write-json', context = {} } = {}) {
     if (DISABLE_BACKUPS) backup = false;
     const dir = path.dirname(filePath);
@@ -121,6 +160,10 @@ async function writeJsonAtomic(filePath, data, { stamp, backup = true, auditOp =
         throw new Error(`Post-Write-Validierung fehlgeschlagen für ${relFromRoot(filePath)}: ${e.message}`);
     }
     await auditLog({ op: auditOp, file: relFromRoot(filePath), backup: backupPath ? relFromRoot(backupPath) : null, ...context });
+    // Nach erfolgreichem Schreiben optional alte Backups aufräumen
+    if (backup) {
+        await pruneBackupRoot().catch(() => {});
+    }
 }
 
 // === AJV Schema-Validierung ===

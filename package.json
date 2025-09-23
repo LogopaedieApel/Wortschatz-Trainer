@@ -42,7 +42,8 @@
     "fix:sch-folders": "node tools/fix-woerter-subfolders.mjs",
     "fix:sch-folders:apply": "node tools/fix-woerter-subfolders.mjs --apply",
     "fix:woerter:first-letter": "node tools/fix-woerter-first-letter.mjs",
-    "fix:woerter:first-letter:apply": "node tools/fix-woerter-first-letter.mjs --apply"
+    "fix:woerter:first-letter:apply": "node tools/fix-woerter-first-letter.mjs --apply",
+    "cleanup:backups": "node tools/cleanup-backups.mjs"
   },
   "dependencies": {
     "express": "^4.18.2",

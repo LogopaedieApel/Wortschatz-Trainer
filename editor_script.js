@@ -792,6 +792,8 @@ function renderTable() {
     filterTable();
     // Nach dem Rendern: Namensspalte dynamisch auf besten Kompromiss einstellen
     setTimeout(adjustNameColumnWidth, 0);
+    // Nach Layout-Berechnung: Sticky Offsets (Header-Höhe, ID-Spaltenbreite) setzen
+    setTimeout(computeStickyLayoutVars, 0);
 }
 
 // =====================
@@ -3140,9 +3142,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setupHelp();
     // Keep add-set aligned with table header during horizontal scroll and resizes
     if (tableWrapper) tableWrapper.addEventListener('scroll', updateAddSetOverlayPos);
-    window.addEventListener('resize', () => { updateAddSetOverlayPos(); adjustNameColumnWidth(); });
+    window.addEventListener('resize', () => { updateAddSetOverlayPos(); adjustNameColumnWidth(); computeStickyLayoutVars(); });
     // Initial position
-    setTimeout(updateAddSetOverlayPos, 0);
+    setTimeout(() => { updateAddSetOverlayPos(); computeStickyLayoutVars(); }, 0);
 });
 
 // Dynamische Breite für die Namensspalte (Kompromiss: gut lesbar, nicht zu breit)
@@ -3181,6 +3183,26 @@ function adjustNameColumnWidth() {
     } catch {}
 }
 
+// Misst Höhe der ersten Headerzeile und Breite der ID-Spalte und setzt CSS-Variablen
+function computeStickyLayoutVars() {
+    try {
+        if (!tableWrapper) return;
+        // 1) Höhe der Top-Header-Zeile (für sub-header top-Offset)
+        const trTop = tableHead ? tableHead.querySelector('tr.top-header-row') : null;
+        const row1H = trTop ? Math.ceil(trTop.getBoundingClientRect().height) : 36;
+        tableWrapper.style.setProperty('--sticky-header-offset', row1H + 'px');
+        // 2) Breite der ID-Spalte (für left von .col-2)
+        const thId = tableHead ? tableHead.querySelector('th.col-id') : null;
+        let w = 0;
+        if (thId) {
+            const cs = getComputedStyle(thId);
+            if (cs.display !== 'none' && cs.visibility !== 'hidden') {
+                w = Math.ceil(thId.getBoundingClientRect().width);
+            }
+        }
+        tableWrapper.style.setProperty('--sticky-col-1-w', w + 'px');
+    } catch {}
+}
 function setupHelp() {
     if (!openHelpButton || !helpModal) return;
     openHelpButton.addEventListener('click', async () => {
