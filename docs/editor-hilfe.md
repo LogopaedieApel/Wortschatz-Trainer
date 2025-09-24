@@ -31,8 +31,8 @@ Damit alles stabil und widerspruchsfrei bleibt, gelten für die Ordnerstruktur f
 	- Ordner: `data/wörter/images/<buchstabe>/` und `data/wörter/sounds/<buchstabe>/`.
 	- <buchstabe> ist immer der ERSTE Buchstabe der ID. Beispiel: ID „schaf“ → Ordner „s“ (nicht „sch“).
 	- Phonetische Gruppierungen (z. B. „sch“) existieren ausschließlich als Filter/Ansicht im Editor – NICHT als Ordner auf der Festplatte.
-	- Dateinamen leiten sich aus der ID ab (ASCII/umlautfrei: ä→ae, ö→oe, ü→ue, ß→ss), Dateiendungen klein geschrieben (z. B. `.jpg`, `.mp3`).
-	- Groß-/Kleinschreibung: Dateien und Pfade werden konsistent klein geführt; GitHub Pages ist case-sensitiv.
+	- Dateinamen leiten sich aus dem Anzeigenamen ab (mit echten Umlauten, Unicode NFC); Dateiendungen klein (.jpg/.jpeg/.png, .mp3).
+	- Groß-/Kleinschreibung: Der Dateiname folgt dem Anzeigenamen; nur die Endungen sind klein. GitHub Pages ist case‑sensitiv; reine Case‑Umbenennungen werden serverseitig sicher in zwei Schritten durchgeführt.
 
 - Sätze (Bilder & Sounds)
 	- Behalten ihren Mittel-Ordner (z. B. `data/sätze/images/Reime/...`), also keine Vereinheitlichung auf den ersten Buchstaben.
@@ -48,7 +48,7 @@ Hinweis zur Benennung von Set-Dateien (für die Manifest-Anzeige):
 
 Hinweis zu Namen vs. IDs/Dateien:
 - Anzeigenamen (im Editor) bleiben menschenlesbar und dürfen groß geschrieben sein („Ich“, „Orange“, …).
-- IDs und daraus abgeleitete Dateinamen/Pfade sind normiert (klein/ASCII). Dadurch bleiben Links stabil und GitHub-kompatibel.
+- IDs bleiben ASCII_klein. Dateinamen und Pfade richten sich nach dem Anzeigenamen (echte Umlaute, Unicode NFC); die Ordnerwahl basiert auf dem ersten Buchstaben der ID. Dadurch bleiben Links stabil und GitHub-kompatibel.
 
 Hinweis: Details für Mitwirkende findest du zusätzlich in `docs/CONTRIBUTING.md`.
 

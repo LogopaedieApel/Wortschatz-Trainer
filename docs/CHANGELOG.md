@@ -49,6 +49,52 @@ Ein menschlich lesbarer Änderungsverlauf. Quellen: _audit/editor-changes.log un
 - 06:30:25 id-rename:set
 - 06:30:26 Name geändert (woerter) [loeschen]
 - 06:30:26 name-history:write
+- 06:41:05 sync-files:db
+- 06:41:05 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-AU8Umk/data/import_Wörter/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-AU8Umk/data/wörter/images/a/apfel.jpg
+- 06:41:05 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-AU8Umk/data/import_Wörter/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-AU8Umk/data/wörter/sounds/a/apfel.mp3
+- 06:41:06 sync-files:db
+- 06:41:06 sync-files:db
+- 06:41:06 delete-item:db
+- 06:41:06 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-AU8Umk/data/import_Wörter/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-AU8Umk/data/wörter/images/b/becher.jpg
+- 06:41:06 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-AU8Umk/data/import_Wörter/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-AU8Umk/data/wörter/sounds/b/becher.mp3
+- 06:41:06 sync-files:db
+- 06:41:06 Name geändert (woerter) [becher]: "becher" → "Becher"
+- 06:41:06 name-history:write
+- 06:41:06 name-undo
+- 06:41:06 name-history:write
+- 06:41:06 name-redo
+- 06:41:06 name-history:write
+- 06:41:07 ID umbenannt (woerter): lamm → schaf
+- 06:41:07 id-rename:set
+- 06:41:07 Datenbank gespeichert (woerter)
+- 06:41:07 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 06:41:07 Manifest gespeichert (woerter)
+- 06:41:07 Datenbank gespeichert (woerter)
+- 06:41:07 save-all-data:set-archived
+- 06:41:07 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:41:07 Manifest gespeichert (woerter)
+- 06:41:07 Datenbank gespeichert (woerter)
+- 06:41:07 save-all-data:set-archived
+- 06:41:07 Set-Datei gespeichert (woerter): data/sets/grammatik_plural.json
+- 06:41:07 Manifest gespeichert (woerter)
+- 06:41:07 Datenbank gespeichert (saetze)
+- 06:41:07 Set-Datei gespeichert (saetze): data/sets_saetze/reime_paarreime.json
+- 06:41:07 Manifest gespeichert (saetze)
+- 06:41:07 Name geändert (woerter) [loeschen]
+- 06:41:08 name-history:write
+- 06:41:08 Datenbank gespeichert (woerter)
+- 06:41:08 save-all-data:set-rename
+- 06:41:08 Manifest gespeichert (woerter)
+- 06:41:08 Datenbank gespeichert (woerter)
+- 06:41:08 save-all-data:set-archived
+- 06:41:08 Manifest gespeichert (woerter)
+- 06:41:09 Datenbank gespeichert (woerter)
+- 06:41:09 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
+- 06:41:09 Manifest gespeichert (woerter)
+- 06:41:09 sync-files:db
+- 06:41:09 delete-item:db
+- 06:41:09 delete-item:set
+- 06:41:09 delete-item:set
 
 ## 2025-09-23
 - 08:34:35 Konflikt gelöst (move): data/import_Wörter/Clown.png -> data/wörter/images/c/Clown.png
