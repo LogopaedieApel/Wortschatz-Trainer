@@ -1,32 +1,32 @@
 # Hilfe-Index
 
-Zuletzt aktualisiert: 23.9.2025, 14:31:18
+Zuletzt aktualisiert: 24.9.2025, 08:30:47
 
 Dieser Index wird automatisch beim Commit generiert und listet alle verfügbaren Hilfedateien.
 
 ## Verfügbare Hilfedateien
 
-- [Editor-Hilfe (Kurzüberblick)](editor-hilfe.md)  \n  <small>Zuletzt geändert: 23.9.2025, 14:31:06</small>
-- [CHANGELOG](CHANGELOG.md)  \n  <small>Zuletzt geändert: 23.9.2025, 14:31:18</small>
+- [Editor-Hilfe (Kurzüberblick)](editor-hilfe.md)  \n  <small>Zuletzt geändert: 23.9.2025, 14:32:08</small>
+- [CHANGELOG](CHANGELOG.md)  \n  <small>Zuletzt geändert: 24.9.2025, 08:30:47</small>
 - [Wortschatz-Editor online betreiben](DEPLOYMENT.md)  \n  <small>Zuletzt geändert: 22.9.2025, 08:18:13</small>
 - [Wortschatz-Trainer – Arbeitsleitfaden](CONTRIBUTING.md)  \n  <small>Zuletzt geändert: 22.9.2025, 08:18:13</small>
 
 ## Neueste Änderungen (Auszug)
 
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Clown.png -> data/wörter/images/c/Clown.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kamel.png -> data/wörter/images/k/Kamel.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kamm.png -> data/wörter/images/k/Kamm.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Karten.png -> data/wörter/images/k/Karten.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Katze.png -> data/wörter/images/k/Katze.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Keks.png -> data/wörter/images/k/Keks.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kelle.png -> data/wörter/images/k/Kelle.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Keller.png -> data/wörter/images/k/Keller.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kirschen.png -> data/wörter/images/k/Kirschen.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kiwi.png -> data/wörter/images/k/Kiwi.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Klavier.png -> data/wörter/images/k/Klavier.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kleid.png -> data/wörter/images/k/Kleid.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Knete.png -> data/wörter/images/k/Knete.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Koffer.png -> data/wörter/images/k/Koffer.png
-- 08:34:35 Konflikt gelöst (move): data/import_Wörter/Kohl.png -> data/wörter/images/k/Kohl.png
+- 06:30:23 sync-files:db
+- 06:30:23 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FRpTDC/data/import_Wörter/apfel.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FRpTDC/data/wörter/images/a/apfel.jpg
+- 06:30:23 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FRpTDC/data/import_Wörter/apfel.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FRpTDC/data/wörter/sounds/a/apfel.mp3
+- 06:30:23 sync-files:db
+- 06:30:23 sync-files:db
+- 06:30:23 delete-item:db
+- 06:30:23 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FRpTDC/data/import_Wörter/becher.jpg -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FRpTDC/data/wörter/images/b/becher.jpg
+- 06:30:23 Konflikt gelöst (move): ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FRpTDC/data/import_Wörter/becher.mp3 -> ../../../../STEPHA~1/AppData/Local/Temp/wst-imp-FRpTDC/data/wörter/sounds/b/becher.mp3
+- 06:30:23 sync-files:db
+- 06:30:23 Datenbank gespeichert (woerter)
+- 06:30:23 Set-Datei gespeichert (woerter): data/sets/wortschatz_tiere.json
+- 06:30:23 Manifest gespeichert (woerter)
+- 06:30:23 Datenbank gespeichert (woerter)
+- 06:30:23 save-all-data:set-archived
+- 06:30:23 Set-Datei gespeichert (woerter): data/sets/artikulation_l_final.json
 
 Vollständiger Verlauf: [CHANGELOG](CHANGELOG.md)
