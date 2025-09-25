@@ -67,22 +67,18 @@ test.describe('Patienten‑Startseite', () => {
     const url = `http://localhost:${TEST_PORT}/patient.html?mode=quiz&material=woerter&set=artikulation_b_initial&pid=p123&aid=a456&title=Probe`;
     await page.goto(url, { waitUntil: 'domcontentloaded' });
 
-    // Metadaten sichtbar
-    await expect(page.locator('#meta-mode')).toHaveText('quiz');
-    await expect(page.locator('#meta-material')).toHaveText('Wörter');
-    await expect(page.locator('#meta-sets')).toHaveText('artikulation_b_initial');
+  // Titel sichtbar (kommt aus ?title=...)
+  await expect(page.locator('#title')).toHaveText('Probe');
 
-    // Start-Button zunächst deaktiviert
-    const startBtn = page.locator('#btn-start');
-    await expect(startBtn).toBeDisabled();
-
-    // Consent aktivieren → Start aktiv
-    await page.check('#consent');
-    await expect(startBtn).toBeEnabled();
-
-    // Start → Redirect zu index.html mit übernommenen Parametern und autostart/uiLock
-    const waitNav = page.waitForURL(u => /\/index\.html(\?|$)/.test(new URL(u).pathname), { timeout: 10000 });
-    await startBtn.click();
+  // Consent ist jetzt im Menü: Menü öffnen, Consent setzen, Menü schließen
+  await page.click('#menu-toggle');
+  await page.check('#consent');
+  await page.click('#menu-done');
+  // Übung 1 anklicken → Redirect zu index.html mit übernommenen Parametern und autostart/uiLock
+  const firstExercise = page.locator('.set-button').first();
+  await expect(firstExercise).toBeVisible();
+  const waitNav = page.waitForURL(u => /\/index\.html(\?|$)/.test(new URL(u).pathname), { timeout: 10000 });
+  await firstExercise.click();
     await waitNav;
 
     const dest = new URL(page.url());

@@ -243,8 +243,6 @@
   },
   {
     "assignmentId": "asg_2025-09-25T091251150Z_9a6f5e5d",
-    "durationMs": 1152164,
-    "endedAt": "2025-09-25T15:42:58.033Z",
     "id": "sid_2025-09-25T152345868Z_0b41046e",
     "material": "woerter",
     "mode": "manual",
@@ -283,8 +281,6 @@
   },
   {
     "assignmentId": "asg_2025-09-25T093941828Z_a788dc3a",
-    "durationMs": 54308,
-    "endedAt": "2025-09-25T15:43:14.694Z",
     "id": "sid_2025-09-25T154220385Z_62500f33",
     "material": "woerter",
     "mode": "manual",
@@ -293,18 +289,5 @@
       "data/sets/artikulation_ch1_medial.json"
     ],
     "startedAt": "2025-09-25T15:42:20.386Z"
-  },
-  {
-    "assignmentId": "asg_2025-09-25T071850197Z_84363799",
-    "durationMs": 2009,
-    "endedAt": "2025-09-25T15:43:00.112Z",
-    "id": "sid_2025-09-25T154258101Z_54c821b3",
-    "material": "woerter",
-    "mode": "quiz",
-    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
-    "sets": [
-      "data/sets/artikulation_b_initial.json"
-    ],
-    "startedAt": "2025-09-25T15:42:58.103Z"
   }
 ]

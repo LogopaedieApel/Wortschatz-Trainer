@@ -1,14 +1,19 @@
 (function(){
   const $ = (sel)=>document.querySelector(sel);
-  const modeEl = $('#meta-mode');
-  const materialEl = $('#meta-material');
-  const setsEl = $('#meta-sets');
+  // Meta-Anzeige entfernt (Mode/Material/Listen)
   const listContainer = $('#list-container');
   const consentEl = $('#consent');
-  const btnStart = $('#btn-start');
   const errEl = $('#error');
   const btnAudio = $('#btn-audio-test');
   const audio = $('#test-audio');
+  // Menu elements
+  const menuToggle = $('#menu-toggle');
+  const menuPanel = $('#menu-panel');
+  const menuClose = $('#menu-close');
+  const menuDone = $('#menu-done');
+  const consentHint = $('#consent-hint');
+  const openConsentBtn = $('#open-consent');
+  let lastFocusedBeforeMenu = null;
 
   const params = new URLSearchParams(location.search);
   const mode = (params.get('mode')||'').toLowerCase();
@@ -42,13 +47,7 @@
       const listLabel = sets.length ? (sets.length === 1 ? sets[0] : `${sets.length} Listen`) : '';
       h.textContent = listLabel ? `Übung – ${mode}/${matTxt}, ${listLabel}` : `Übung – ${mode}/${matTxt}`;
     }
-    modeEl.textContent = isValidMode(mode) ? mode : '–';
-    materialEl.textContent = isValidMaterial(material) ? (material === 'woerter' ? 'Wörter' : 'Sätze') : '–';
-    if (sets.length){
-      setsEl.textContent = sets.length === 1 ? sets[0] : `${sets.length} Listen`;
-    } else {
-      setsEl.textContent = '–';
-    }
+    // Mode/Material/Listen werden nicht mehr separat angezeigt
   }
 
   function validateParams(){
@@ -110,25 +109,33 @@
     const frag = document.createDocumentFragment();
     const ul = document.createElement('ul');
     ul.className = 'sets-list';
-    for (const { id, name } of names){
+    names.forEach(({ id, name }, idx) => {
       const li = document.createElement('li');
-      li.className = 'set-row';
-      const span = document.createElement('span');
-      span.className = 'set-name';
-      span.textContent = name;
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'small';
-      btn.textContent = 'Diese Liste starten';
-      btn.addEventListener('click', ()=>{
-        if (btnStart.disabled) return; // respektiere Consent
+      btn.className = 'set-button';
+      // Textstruktur: Primär "Übung N" + Sekundär Set-Name (falls verfügbar)
+      const title = document.createElement('span');
+      title.className = 'set-button-title';
+      title.textContent = `Übung ${idx + 1}`;
+      const sub = document.createElement('span');
+      sub.className = 'set-button-sub';
+      if (name && name !== id) {
+        sub.textContent = name;
+      } else {
+        sub.textContent = '';
+        sub.hidden = true;
+      }
+      btn.appendChild(title);
+      btn.appendChild(sub);
+      btn.addEventListener('click', () => {
+        if (!isConsentOk()) { updateConsentStateUI(); openMenu(); return; }
         const to = buildPlayerUrl(id);
         location.href = to;
       });
-      li.appendChild(span);
       li.appendChild(btn);
       ul.appendChild(li);
-    }
+    });
     frag.appendChild(ul);
     listContainer.appendChild(frag);
   }
@@ -138,19 +145,19 @@
   const vErr = validateParams();
   if (vErr){
     showError(vErr + ' Bitte fordere ggf. einen neuen Link an.');
-    btnStart.disabled = true;
   }
 
-  consentEl.addEventListener('change', ()=>{
-    btnStart.disabled = !consentEl.checked || !!vErr;
-  });
+  function isConsentOk(){ return !!consentEl?.checked && !vErr; }
+  function updateConsentStateUI(){
+    const ok = isConsentOk();
+    if (consentHint){
+      consentHint.hidden = ok;
+    }
+  }
+  consentEl?.addEventListener('change', updateConsentStateUI);
+  updateConsentStateUI();
 
-  btnStart.addEventListener('click', ()=>{
-    if (btnStart.disabled) return;
-    // Weiterleitung zum Spieler – Telemetrie startet dort
-    const to = buildPlayerUrl();
-    location.href = to;
-  });
+  // Start-Button entfällt – Start erfolgt direkt über die Übungs-Buttons
 
   btnAudio?.addEventListener('click', async ()=>{
     try{
@@ -159,4 +166,45 @@
   });
   // Nach dem Rendern der Meta: Listenbereich füllen
   renderListButtons();
+
+  // Menu behavior
+  function openMenu(){
+    if (!menuPanel) return;
+    lastFocusedBeforeMenu = document.activeElement;
+    menuPanel.hidden = false;
+    menuToggle?.setAttribute('aria-expanded','true');
+    // focus first focusable in menu
+    const first = menuPanel.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (first) first.focus();
+    document.addEventListener('keydown', onKeyDownTrap);
+  }
+  function closeMenu(){
+    if (!menuPanel) return;
+    menuPanel.hidden = true;
+    menuToggle?.setAttribute('aria-expanded','false');
+    document.removeEventListener('keydown', onKeyDownTrap);
+    if (lastFocusedBeforeMenu && typeof lastFocusedBeforeMenu.focus === 'function'){
+      lastFocusedBeforeMenu.focus();
+    } else {
+      menuToggle?.focus();
+    }
+  }
+  function onKeyDownTrap(e){
+    if (e.key === 'Escape'){ e.preventDefault(); closeMenu(); return; }
+    if (e.key === 'Tab'){
+      // simple focus trap
+      const focusables = menuPanel.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      const list = Array.from(focusables).filter(el=>!el.hasAttribute('disabled'));
+      if (list.length === 0) return;
+      const first = list[0];
+      const last = list[list.length-1];
+      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+  }
+
+  menuToggle?.addEventListener('click', openMenu);
+  menuClose?.addEventListener('click', closeMenu);
+  menuDone?.addEventListener('click', ()=>{ updateConsentStateUI(); closeMenu(); });
+  openConsentBtn?.addEventListener('click', openMenu);
 })();
