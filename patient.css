@@ -1,0 +1,29 @@
+:root{
+  --bg:#0b0f12; --card:#151b22; --text:#e7edf3; --muted:#a9b7c6; --primary:#2ea043; --primary-contrast:#06120a;
+  --accent:#3b82f6; --danger:#ef4444; --focus:#f59e0b;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif}
+.wrap{max-width:780px;margin:0 auto;padding:16px}
+.page-head{margin:8px 0 16px}
+h1{font-size:1.6rem;margin:.2rem 0}
+.subtitle{color:var(--muted);margin:.2rem 0 0}
+.card{background:var(--card);border-radius:12px;padding:16px;margin:12px 0;border:1px solid rgba(255,255,255,.06)}
+h2{font-size:1.2rem;margin:.2rem 0 12px}
+.task-meta{display:grid;grid-template-columns:1fr;gap:6px;font-size:.95rem}
+@media(min-width:560px){.task-meta{grid-template-columns:1fr 1fr}}
+.hint{color:var(--muted);font-size:.92rem}
+.task-desc{margin:.25rem 0 0}
+.checklist{margin:.25rem 0;padding-left:18px}
+.checklist li{margin:4px 0}
+.audio-test{margin-top:8px}
+.privacy{margin:.25rem 0 .5rem}
+.consent{display:flex;gap:10px;align-items:center}
+.actions{margin-top:10px}
+.primary{background:var(--primary);color:var(--primary-contrast);border:none;border-radius:10px;padding:10px 14px;font-weight:600}
+.secondary{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:8px 12px}
+button:disabled{opacity:.5}
+button:focus{outline:3px solid var(--focus);outline-offset:2px}
+.error{color:var(--danger);min-height:1.2em}
+.faq{margin:.25rem 0;padding-left:18px}
+.faq li{margin:4px 0}

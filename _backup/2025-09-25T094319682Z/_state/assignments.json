@@ -1,0 +1,224 @@
+[
+  {
+    "active": true,
+    "createdAt": "2025-09-25T07:18:50.197Z",
+    "id": "asg_2025-09-25T071850197Z_84363799",
+    "material": "woerter",
+    "mode": "quiz",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_b_initial.json"
+    ],
+    "updatedAt": "2025-09-25T07:18:50.197Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T07:19:04.186Z",
+    "id": "asg_2025-09-25T071904186Z_bf3a2776",
+    "material": "woerter",
+    "mode": "quiz",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_b_initial.json"
+    ],
+    "updatedAt": "2025-09-25T07:19:04.186Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T07:19:15.083Z",
+    "id": "asg_2025-09-25T071915083Z_135a01df",
+    "material": "woerter",
+    "mode": "quiz",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_b_initial.json"
+    ],
+    "updatedAt": "2025-09-25T07:19:15.083Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T07:42:21.905Z",
+    "id": "asg_2025-09-25T074221905Z_afbe2a28",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T074221871Z_eb97bcdb",
+    "sets": [
+      "data/sets/artikulation_sch_initial.json"
+    ],
+    "updatedAt": "2025-09-25T07:42:21.905Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T07:42:25.077Z",
+    "id": "asg_2025-09-25T074225077Z_e1d7e55f",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T074221871Z_eb97bcdb",
+    "sets": [
+      "data/sets/artikulation_sch_initial.json"
+    ],
+    "updatedAt": "2025-09-25T07:42:25.077Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T07:42:25.093Z",
+    "id": "asg_2025-09-25T074225093Z_002c9fb5",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T074221871Z_eb97bcdb",
+    "sets": [
+      "data/sets/artikulation_sch_initial.json"
+    ],
+    "updatedAt": "2025-09-25T07:42:25.093Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T07:42:42.548Z",
+    "id": "asg_2025-09-25T074242548Z_5e25fc57",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T074221871Z_eb97bcdb",
+    "sets": [
+      "data/sets/artikulation_sch_initial.json"
+    ],
+    "updatedAt": "2025-09-25T07:42:42.548Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T09:12:41.262Z",
+    "id": "asg_2025-09-25T091241262Z_b61ff453",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_r_initial.json"
+    ],
+    "updatedAt": "2025-09-25T09:12:41.262Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T09:12:51.150Z",
+    "id": "asg_2025-09-25T091251150Z_9a6f5e5d",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_r_initial.json"
+    ],
+    "updatedAt": "2025-09-25T09:12:51.150Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T09:39:33.828Z",
+    "id": "asg_2025-09-25T093933828Z_2b3bb623",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_ch1_final.json",
+      "data/sets/artikulation_ch1_medial.json"
+    ],
+    "updatedAt": "2025-09-25T09:39:33.828Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T09:39:33.893Z",
+    "id": "asg_2025-09-25T093933893Z_4c4c30fa",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_h_initial.json"
+    ],
+    "updatedAt": "2025-09-25T09:39:33.893Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T09:39:41.828Z",
+    "id": "asg_2025-09-25T093941828Z_a788dc3a",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_ch1_final.json",
+      "data/sets/artikulation_ch1_medial.json"
+    ],
+    "updatedAt": "2025-09-25T09:39:41.828Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T09:39:41.864Z",
+    "id": "asg_2025-09-25T093941864Z_2a4bd621",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_h_initial.json"
+    ],
+    "updatedAt": "2025-09-25T09:39:41.864Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T09:43:05.332Z",
+    "id": "asg_2025-09-25T094305333Z_2207423f",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_ch1_final.json"
+    ],
+    "updatedAt": "2025-09-25T09:43:05.332Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T09:43:08.267Z",
+    "id": "asg_2025-09-25T094308267Z_be17e092",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_ch1_final.json",
+      "data/sets/artikulation_ch1_medial.json"
+    ],
+    "updatedAt": "2025-09-25T09:43:08.267Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T09:43:17.069Z",
+    "id": "asg_2025-09-25T094317069Z_daff271e",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_ch1_final.json",
+      "data/sets/artikulation_ch1_medial.json"
+    ],
+    "updatedAt": "2025-09-25T09:43:17.069Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T09:43:18.182Z",
+    "id": "asg_2025-09-25T094318182Z_8d4a1fcc",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_ch1_final.json",
+      "data/sets/artikulation_ch1_medial.json"
+    ],
+    "updatedAt": "2025-09-25T09:43:18.182Z"
+  },
+  {
+    "active": true,
+    "createdAt": "2025-09-25T09:43:18.665Z",
+    "id": "asg_2025-09-25T094318665Z_438537c8",
+    "material": "woerter",
+    "mode": "manual",
+    "patientId": "pid_2025-09-25T071850150Z_1a4fc8b0",
+    "sets": [
+      "data/sets/artikulation_ch1_final.json",
+      "data/sets/artikulation_ch1_medial.json"
+    ],
+    "updatedAt": "2025-09-25T09:43:18.665Z"
+  }
+]

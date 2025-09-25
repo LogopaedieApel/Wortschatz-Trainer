@@ -1,0 +1,56 @@
+[
+  {
+    "correct": true,
+    "itemId": "dreieck",
+    "sessionId": "sid_2025-09-25T071936011Z_8ed74d3a",
+    "ts": "2025-09-25T07:19:40.723Z"
+  },
+  {
+    "correct": true,
+    "itemId": "buecher",
+    "sessionId": "sid_2025-09-25T071936011Z_8ed74d3a",
+    "ts": "2025-09-25T07:19:47.878Z"
+  },
+  {
+    "correct": true,
+    "itemId": "buchstaben",
+    "sessionId": "sid_2025-09-25T071936011Z_8ed74d3a",
+    "ts": "2025-09-25T07:19:52.527Z"
+  },
+  {
+    "correct": true,
+    "itemId": "broetchen",
+    "sessionId": "sid_2025-09-25T071936011Z_8ed74d3a",
+    "ts": "2025-09-25T07:19:57.579Z"
+  },
+  {
+    "correct": true,
+    "itemId": "buntstifte",
+    "sessionId": "sid_2025-09-25T071936011Z_8ed74d3a",
+    "ts": "2025-09-25T07:20:02.784Z"
+  },
+  {
+    "correct": true,
+    "itemId": "busch",
+    "sessionId": "sid_2025-09-25T071936011Z_8ed74d3a",
+    "ts": "2025-09-25T07:20:07.010Z"
+  },
+  {
+    "correct": false,
+    "itemId": "dusche",
+    "sessionId": "sid_2025-09-25T071936011Z_8ed74d3a",
+    "ts": "2025-09-25T07:20:11.307Z"
+  },
+  {
+    "correct": true,
+    "itemId": "becher",
+    "sessionId": "sid_2025-09-25T071936011Z_8ed74d3a",
+    "ts": "2025-09-25T07:20:15.238Z"
+  },
+  {
+    "correct": false,
+    "itemId": "betonmischer",
+    "sessionId": "sid_2025-09-25T071936011Z_8ed74d3a",
+    "ts": "2025-09-25T07:20:19.439Z"
+  }
+]

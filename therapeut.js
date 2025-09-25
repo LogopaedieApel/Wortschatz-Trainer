@@ -5,19 +5,25 @@
   const groupSelect = document.getElementById('group-select');
   const breadcrumbEl = document.getElementById('set-breadcrumb');
   const modeSelect = document.getElementById('mode-select');
-  const patientInput = document.getElementById('patient-input');
+  const patientSelect = document.getElementById('patient-select');
+  const btnPatientNew = document.getElementById('btn-patient-new');
+  const patientNewRow = document.getElementById('patient-new-row');
+  const newPatientNameInput = document.getElementById('new-patient-name');
+  const btnPatientCreate = document.getElementById('btn-patient-create');
   const btnGenerate = document.getElementById('btn-generate');
   const btnCopy = document.getElementById('btn-copy');
-  const btnMail = document.getElementById('btn-mail');
+  // removed: btnMail
   const btnGenerateAll = document.getElementById('btn-generate-all');
   const btnCopyAll = document.getElementById('btn-copy-all');
-  const btnMailAll = document.getElementById('btn-mail-all');
+  // removed: btnMailAll
   const linkOutput = document.getElementById('link-output');
   const linksListEl = document.getElementById('links-list');
   const btnAddList = document.getElementById('btn-add-list');
   const btnAddExercise = document.getElementById('btn-add-exercise');
   const activeExerciseSetsEl = document.getElementById('active-exercise-sets');
   const exercisesListEl = document.getElementById('exercises-list');
+  const progressListEl = document.getElementById('progress-list');
+  const progressSummaryEl = document.getElementById('progress-summary');
 
   let flatSetsByMode = { woerter: {}, saetze: {} };
   let manifestByMode = { woerter: null, saetze: null };
@@ -26,7 +32,9 @@
   const MAX_LISTS_PER_EX = 10;
   let exercises = []; // [{ mode, material, sets: [{path, breadcrumb}], createdAt }]
   let activeExercise = null; // gleiches Shape wie in exercises
-  let patientNameState = '';
+  let patientsCache = [];
+  let selectedPatientId = '';
+  let lastCreatedAssignments = new Map(); // cache aid -> title (if any)
 
   function resetActiveExercise(){
     activeExercise = {
@@ -270,46 +278,82 @@
     }
   }
 
-  function buildExerciseUrl(){
+  async function buildExerciseUrl(){
     // Rückwärtskompatibel: generiert den Link für die erste Übung oder aktuelle Auswahl
-    const all = buildAllExerciseUrls();
+    const all = await buildAllExerciseUrls();
     return all.length ? all[0].url : '';
   }
 
-  function buildUrlFor(mode, material, paths, patient){
+  async function ensureAssignmentFor(mode, material, paths, patientId){
+    if (!patientId) return null;
+    try{
+      const res = await fetch('/api/assignments', { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ patientId, mode, material, sets: paths }) });
+      if (!res.ok) return null;
+      const data = await res.json();
+      if (data && data.item){
+        if (data.item.id) lastCreatedAssignments.set(data.item.id, data.item);
+        return data.item.id;
+      }
+      return null;
+    }catch{ return null; }
+  }
+  function computeTitle({ mode, material, paths }){
+    const modeTxt = String(mode||'');
+    const matTxt = material === 'woerter' ? 'Wörter' : (material === 'saetze' ? 'Sätze' : String(material||''));
+    const listLabel = (paths && paths.length) ? (paths.length === 1 ? paths[0] : `${paths.length} Listen`) : '';
+    return listLabel ? `${modeTxt} / ${matTxt} – ${listLabel}` : `${modeTxt} / ${matTxt}`;
+  }
+  async function buildUrlFor(mode, material, paths, patientId){
     if (!paths || paths.length === 0) return '';
     const params = new URLSearchParams();
     params.set('mode', mode);
     params.set('material', material);
     if (paths.length === 1) params.set('set', paths[0]); else params.set('sets', paths.join(','));
-    params.set('autostart','1'); params.set('uiLock','1'); if (patient) params.set('patient', patient);
+    // patient.html: kein autostart/uiLock – diese übernimmt index.html nach Redirect
+    if (patientId) params.set('pid', patientId);
+    if (patientId) {
+      const aid = await ensureAssignmentFor(mode, material, paths, patientId);
+      if (aid) {
+        params.set('aid', aid);
+        const asg = lastCreatedAssignments.get(aid);
+        const t = (asg && asg.title) ? String(asg.title).slice(0,200) : computeTitle({ mode, material, paths });
+        if (t) params.set('title', t);
+      } else {
+        const t = computeTitle({ mode, material, paths });
+        if (t) params.set('title', t);
+      }
+    } else {
+      const t = computeTitle({ mode, material, paths });
+      if (t) params.set('title', t);
+    }
     const url = new URL(window.location.href);
-    url.pathname = url.pathname.replace(/therapeut\.html$/, 'index.html');
+    url.pathname = url.pathname.replace(/therapeut\.html$/, 'patient.html');
     url.search = '?' + params.toString(); url.hash = '';
     return url.toString();
   }
 
-  function buildAllExerciseUrls(){
-    const patient = (patientInput.value||'').trim();
+  async function buildAllExerciseUrls(){
+    const patientId = selectedPatientId || '';
     const list = [];
     // alle finalisierten Übungen
-    exercises.forEach((ex, idx) => {
+    for (let idx = 0; idx < exercises.length; idx++){
+      const ex = exercises[idx];
       const paths = ex.sets.map(s=>s.path);
-      const url = buildUrlFor(ex.mode, ex.material, paths, patient);
+      const url = await buildUrlFor(ex.mode, ex.material, paths, patientId);
       if (url) list.push({ index: idx+1, mode: ex.mode, material: ex.material, url });
-    });
+    }
     // aktive Übung (wenn Sets vorhanden, aber noch nicht finalisiert)
     if (activeExercise && activeExercise.sets && activeExercise.sets.length){
       const paths = activeExercise.sets.map(s=>s.path);
-      const url = buildUrlFor(activeExercise.mode, activeExercise.material, paths, patient);
+      const url = await buildUrlFor(activeExercise.mode, activeExercise.material, paths, patientId);
       if (url) list.push({ index: exercises.length + 1, mode: activeExercise.mode, material: activeExercise.material, url, isActive: true });
     }
     return list;
   }
 
-  function renderLinksList(){
+  async function renderLinksList(){
     if (!linksListEl) return;
-    const items = buildAllExerciseUrls();
+    const items = await buildAllExerciseUrls();
     if (items.length === 0){
       linksListEl.innerHTML = '<div class="hint">Noch keine Übungen vorhanden.</div>';
       if (btnGenerateAll) btnGenerateAll.disabled = true;
@@ -336,12 +380,10 @@
     const valid = !!setSelect.value;
     btnGenerate.disabled = !valid;
     btnCopy.disabled = !linkOutput.value;
-    btnMail.disabled = !linkOutput.value;
     // Multi-Links Buttons abhängig von vorhandenen Übungen
     const hasAny = (exercises.length>0) || (activeExercise && activeExercise.sets && activeExercise.sets.length>0);
     if (btnGenerateAll) btnGenerateAll.disabled = !hasAny;
     if (btnCopyAll) btnCopyAll.disabled = !hasAny;
-    if (btnMailAll) btnMailAll.disabled = !hasAny;
   }
 
   materialSelect.addEventListener('change', ()=>{
@@ -410,17 +452,17 @@
     breadcrumbEl.textContent = pathParts.length ? pathParts.join(' / ') : '';
   });
 
-  btnGenerate.addEventListener('click', ()=>{
-    const url = buildExerciseUrl();
+  btnGenerate.addEventListener('click', async ()=>{
+    const url = await buildExerciseUrl();
     linkOutput.value = url;
     updateButtons();
   });
 
   if (btnGenerateAll){
-    btnGenerateAll.addEventListener('click', ()=>{
-      renderLinksList();
+    btnGenerateAll.addEventListener('click', async ()=>{
+      await renderLinksList();
       // setze das Einzelfeld für Bequemlichkeit auf den ersten Link
-      const items = buildAllExerciseUrls();
+      const items = await buildAllExerciseUrls();
       linkOutput.value = items.length ? items[0].url : '';
       updateButtons();
     });
@@ -431,12 +473,7 @@
     try{ await navigator.clipboard.writeText(linkOutput.value);}catch{}
   });
 
-  btnMail.addEventListener('click', ()=>{
-    if(!linkOutput.value) return;
-    const subject = encodeURIComponent('Übung im Wortschatz‑Trainer');
-    const body = encodeURIComponent(`Hier ist deine Übung:\n\n${linkOutput.value}\n\nViel Erfolg!`);
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
-  });
+  // removed: mail single
 
   if (linksListEl){
     linksListEl.addEventListener('click', async (e)=>{
@@ -451,33 +488,19 @@
         try{ await navigator.clipboard.writeText(url);}catch{}
         return;
       }
-      if (action === 'mail-link'){
-        const subject = encodeURIComponent('Übung im Wortschatz‑Trainer');
-        const body = encodeURIComponent(`Hier ist deine Übung:\n\n${url}\n\nViel Erfolg!`);
-        window.location.href = `mailto:?subject=${subject}&body=${body}`;
-      }
     });
   }
 
   if (btnCopyAll){
     btnCopyAll.addEventListener('click', async ()=>{
-      const items = buildAllExerciseUrls();
+      const items = await buildAllExerciseUrls();
       if (!items.length) return;
       const joined = items.map(it => `• Übung ${it.index} (${it.mode}/${it.material}):\n${it.url}`).join('\n\n');
       try{ await navigator.clipboard.writeText(joined); }catch{}
     });
   }
 
-  if (btnMailAll){
-    btnMailAll.addEventListener('click', ()=>{
-      const items = buildAllExerciseUrls();
-      if (!items.length) return;
-      const subject = encodeURIComponent('Übungen im Wortschatz‑Trainer');
-      const bodyText = items.map(it => `Übung ${it.index} (${it.mode}/${it.material}):\n${it.url}`).join('\n\n');
-      const body = encodeURIComponent(`Hier sind deine Übungen:\n\n${bodyText}\n\nViel Erfolg!`);
-      window.location.href = `mailto:?subject=${subject}&body=${body}`;
-    });
-  }
+  // removed: mail all
 
   if (btnAddList){
     btnAddList.addEventListener('click', ()=>{
@@ -588,4 +611,97 @@
     renderActiveExerciseSets();
     renderLinksList();
   });
+
+  // --- Patienten-Integration ---
+  async function fetchPatients() {
+    try {
+      const res = await fetch('/api/patients');
+      if (!res.ok) throw new Error('HTTP '+res.status);
+      const data = await res.json();
+      patientsCache = Array.isArray(data.items) ? data.items : [];
+      renderPatients();
+    } catch {}
+  }
+  function renderPatients(){
+    if (!patientSelect) return;
+    const prev = selectedPatientId;
+    patientSelect.innerHTML = '<option value="">Ohne Zuordnung</option>';
+    const items = patientsCache.slice().sort((a,b)=> String(a.name).localeCompare(String(b.name), 'de'));
+    for (const p of items){
+      if (p.active === false) continue;
+      const opt = document.createElement('option');
+      opt.value = p.id; opt.textContent = p.name;
+      patientSelect.appendChild(opt);
+    }
+    // restore selection if still present
+    const hasPrev = items.some(p => p.id === prev);
+    selectedPatientId = hasPrev ? prev : '';
+    patientSelect.value = selectedPatientId;
+    renderLinksList();
+  }
+  if (patientSelect){
+    patientSelect.addEventListener('change', ()=>{
+      selectedPatientId = patientSelect.value || '';
+      renderLinksList();
+      fetchAndRenderProgress();
+    });
+  }
+  if (btnPatientNew && patientNewRow){
+    btnPatientNew.addEventListener('click', ()=>{
+      patientNewRow.style.display = (patientNewRow.style.display === 'none' ? '' : 'none');
+      if (patientNewRow.style.display !== 'none') newPatientNameInput?.focus();
+    });
+  }
+  if (btnPatientCreate){
+    btnPatientCreate.addEventListener('click', async ()=>{
+      const name = (newPatientNameInput.value||'').trim();
+      if (!name) { alert('Bitte Pseudonym eingeben.'); return; }
+      try{
+        const res = await fetch('/api/patients', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name }) });
+        if (res.status === 409){ alert('Pseudonym bereits vergeben.'); return; }
+        if (!res.ok) throw new Error('HTTP '+res.status);
+        const data = await res.json();
+        if (data && data.item){
+          patientsCache.push(data.item);
+          selectedPatientId = data.item.id;
+          newPatientNameInput.value = '';
+          patientNewRow.style.display = 'none';
+          renderPatients();
+        }
+      } catch(e) { alert('Fehler beim Anlegen.'); }
+    });
+  }
+  fetchPatients();
+  fetchAndRenderProgress();
+
+  async function fetchAndRenderProgress(){
+    try{
+      if (!progressListEl) return;
+      progressListEl.innerHTML = '';
+      if (!selectedPatientId){
+        if (progressSummaryEl) progressSummaryEl.textContent = 'Bitte Patient:in wählen, um Sitzungen zu sehen.';
+        return;
+      }
+      const res = await fetch(`/api/progress?patientId=${encodeURIComponent(selectedPatientId)}&limit=20`);
+      if (!res.ok) throw new Error('HTTP '+res.status);
+      const data = await res.json();
+      const items = Array.isArray(data.items) ? data.items : [];
+      if (items.length === 0){
+        if (progressSummaryEl) progressSummaryEl.textContent = 'Keine Sitzungen gefunden.';
+        return;
+      }
+      if (progressSummaryEl) progressSummaryEl.textContent = `Sitzungen: ${items.length}`;
+      const rows = items.map(s => {
+        const when = s.startedAt ? new Date(s.startedAt).toLocaleString('de-DE') : '';
+        const dur = typeof s.durationMs === 'number' ? Math.round(s.durationMs/1000)+'s' : '';
+        const sum = s.summary || {};
+        const sumTxt = (typeof sum.total === 'number') ? ` | Quiz: ${sum.correct||0}/${sum.total}` : '';
+        const title = `${s.mode}/${s.material}`;
+        return `<div class="progress-row"><span>${when}</span> — <strong>${title}</strong> ${dur ? '('+dur+')' : ''}${sumTxt}</div>`;
+      }).join('');
+      progressListEl.innerHTML = rows;
+    }catch{
+      if (progressSummaryEl) progressSummaryEl.textContent = 'Fortschritt derzeit nicht verfügbar.';
+    }
+  }
 })();

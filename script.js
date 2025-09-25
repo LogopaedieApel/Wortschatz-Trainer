@@ -28,7 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
         currentTranslate = 0;
     let isRestartingExercise = false;
     let uiLocked = false; // Wird durch URL-Parameter uiLock=1 aktiviert
+    let isPatientFlow = false; // Aktiv bei returnTo=patient
+    let patientReturnUrl = null; // Optionaler Rücksprung zur Startseite
     let patientName = null; // Optionaler Patientenname aus URL
+    // Telemetrie-Status (Phase 2)
+    let telemetry = { sessionId: null, pid: null, aid: null, materialParam: null, modeParam: null, setsParam: [] };
 
     // Quiz-spezifische Variablen
     let correctQuizItem = null;
@@ -302,12 +306,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function touchStart(event) { if (isNavigating || currentMode !== 'manual') return; touchStartX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; touchStartY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; slides.forEach(s => s.classList.add('is-grabbing')); slidesWrapper.addEventListener('touchmove', touchMove); slidesWrapper.addEventListener('touchend', touchEnd); }
     function touchMove(event) { if (isNavigating || currentMode !== 'manual') return; const currentX = event.type.includes('mouse') ? event.pageX : event.touches[0].clientX; const currentY = event.type.includes('mouse') ? event.pageY : event.touches[0].clientY; const deltaX = currentX - touchStartX; const deltaY = Math.abs(currentY - touchStartY); if (Math.abs(deltaX) < deltaY && !currentTranslate) return; currentTranslate = deltaX; prevSlide.style.transform = `translateX(calc(-100% + ${deltaX}px))`; currentSlide.style.transform = `translateX(${deltaX}px)`; nextSlide.style.transform = `translateX(calc(100% + ${deltaX}px))`; }
     function touchEnd() { if (currentMode !== 'manual') return; slidesWrapper.removeEventListener('touchmove', touchMove); slidesWrapper.removeEventListener('touchend', touchEnd); slides.forEach(s => s.classList.remove('is-grabbing')); const threshold = slidesWrapper.clientWidth / 4; let direction = 0; if (Math.abs(currentTranslate) > threshold) { direction = currentTranslate < 0 ? -1 : 1; } moveSlider(direction); currentTranslate = 0; }
-    function moveSlider(direction) { if (isNavigating || direction === 0) { if (direction === 0) setSlidePositions(); return; } if (currentMode === 'manual') { stopAllAutomation(); } isNavigating = true; let newIndex = currentItemIndex - direction; if (newIndex >= currentShuffledItems.length || (currentShuffledItems[newIndex] && currentShuffledItems[newIndex].type === 'end')) { exitCurrentExercise(); const isAutoOrdered = currentMode === 'auto' && currentSettings.order === 'ordered'; btnReshuffle.textContent = isAutoOrdered ? 'Neu starten' : 'Neu mischen'; document.getElementById('exercise-end-message').textContent = "Alle Items bearbeitet."; showModal('exercise-end-modal'); isNavigating = false; return; } if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; } currentItemIndex = newIndex; currentSlide.style.transform = `translateX(${direction * 100}%)`; let tempSlide; if (direction === -1) { nextSlide.style.transform = `translateX(0)`; tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide; } else { prevSlide.style.transform = `translateX(0)`; tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide; } currentSlide.addEventListener('transitionend', () => handleTransitionEnd(direction), { once: true }); updateUiForCurrentItem(); }
+    function moveSlider(direction) { if (isNavigating || direction === 0) { if (direction === 0) setSlidePositions(); return; } if (currentMode === 'manual') { stopAllAutomation(); } isNavigating = true; let newIndex = currentItemIndex - direction; if (newIndex >= currentShuffledItems.length || (currentShuffledItems[newIndex] && currentShuffledItems[newIndex].type === 'end')) { exitCurrentExercise(); const isAutoOrdered = currentMode === 'auto' && currentSettings.order === 'ordered'; btnReshuffle.textContent = isAutoOrdered ? 'Neu starten' : 'Neu mischen'; document.getElementById('exercise-end-message').textContent = "Alle Items bearbeitet."; if (isPatientFlow) { btnReshuffle.textContent = 'Wiederholen'; btnNewSelection.textContent = 'Zur Startseite'; } showModal('exercise-end-modal'); isNavigating = false; return; } if (newIndex < 0) { newIndex = currentShuffledItems.length - 1; } currentItemIndex = newIndex; currentSlide.style.transform = `translateX(${direction * 100}%)`; let tempSlide; if (direction === -1) { nextSlide.style.transform = `translateX(0)`; tempSlide = prevSlide; prevSlide = currentSlide; currentSlide = nextSlide; nextSlide = tempSlide; } else { prevSlide.style.transform = `translateX(0)`; tempSlide = nextSlide; nextSlide = currentSlide; currentSlide = prevSlide; prevSlide = tempSlide; } currentSlide.addEventListener('transitionend', () => handleTransitionEnd(direction), { once: true }); updateUiForCurrentItem(); }
     function populateDisplayDurationSelect() { if (displayDurationSelect) { displayDurationSelect.innerHTML = ''; for (let i = 1; i <= 10; i++) { const option = document.createElement('option'); option.value = i; option.textContent = i === 1 ? '1 Sekunde' : `${i} Sekunden`; displayDurationSelect.appendChild(option); } displayDurationSelect.value = currentSettings.displayDuration; } }
     function populateSoundDelaySelect() { if (soundDelaySelect) { soundDelaySelect.innerHTML = ''; for (let i = 0; i <= 5; i += 0.5) { const option = document.createElement('option'); option.value = i; option.textContent = i === 0 ? '0 Sek (sofort)' : `${i.toFixed(1)} Sek`; soundDelaySelect.appendChild(option); } } }
     function configureSettingsScreen() { const modeMap = { manual: 'Manuell', auto: 'Automatisch', quiz: 'Quiz' }; if (settingsTitle) { settingsTitle.textContent = `Einstellungen für: ${modeMap[currentMode] || ''}`; } const isAutoMode = currentMode === 'auto'; const isManualMode = currentMode === 'manual'; const isQuizMode = currentMode === 'quiz'; Object.values(settingGroups).forEach(group => group.classList.add('hidden')); if(isManualMode || isAutoMode) settingGroups.displayType.classList.remove('hidden'); if(isAutoMode) settingGroups.order.classList.remove('hidden'); if(isAutoMode) settingGroups.displayDuration.classList.remove('hidden'); if(isAutoMode) settingGroups.soundOnOff.classList.remove('hidden'); if(isAutoMode && currentSettings.soundOn) settingGroups.soundDelay.classList.remove('hidden'); if(isManualMode) settingGroups.autoplaySoundManual.classList.remove('hidden'); }
     function setupQuizRound() { if (currentItemIndex >= currentShuffledItems.length - 1) { exitCurrentExercise(); btnReshuffle.textContent = 'Neu mischen'; document.getElementById('exercise-end-message').textContent = "Alle Items bearbeitet."; showModal('exercise-end-modal'); return; } updateProgressDots(); correctQuizItem = currentShuffledItems[currentItemIndex]; const incorrectItems = shuffleArray(quizPool.filter(item => item.id !== correctQuizItem.id)).slice(0, 3); if (incorrectItems.length < 3) { console.error("Kritischer Fehler: Nicht genügend Items für eine Quiz-Runde gefunden."); document.getElementById('exercise-end-message').textContent = "Ein interner Fehler ist aufgetreten. Nicht genügend unterschiedliche Bilder für diese Runde vorhanden."; showModal('exercise-end-modal'); return; } const options = shuffleArray([correctQuizItem, ...incorrectItems]); const optionElements = quizOptionsContainer.querySelectorAll('.quiz-option'); optionElements.forEach((div, index) => { const item = options[index]; const variants = buildUnicodePathVariants(item.image); const url = getAssetUrl(variants[0]) + '?t=' + new Date().getTime(); const fallback = variants[1] ? getAssetUrl(variants[1]) + '?t=' + new Date().getTime() : null; div.innerHTML = `<img src="${url}" alt="Antwortmöglichkeit">`; const img = div.querySelector('img'); if (fallback) { img.onerror = () => { img.onerror = null; img.src = fallback; }; } div.dataset.itemId = item.id; div.className = 'quiz-option'; }); quizOptionsContainer.classList.remove('disabled'); playItemSound(correctQuizItem, 0.5); }
-    function handleQuizAnswer(event) { const selectedOption = event.target.closest('.quiz-option'); if (!selectedOption || quizOptionsContainer.classList.contains('disabled')) return; quizOptionsContainer.classList.add('disabled'); const selectedItemId = selectedOption.dataset.itemId; const allOptions = quizOptionsContainer.querySelectorAll('.quiz-option'); allOptions.forEach(opt => { if (opt.dataset.itemId === correctQuizItem.id) { opt.classList.add('correct'); } else if (opt === selectedOption) { opt.classList.add('incorrect'); } else { opt.classList.add('faded'); } }); setTimeout(() => { currentItemIndex++; setupQuizRound(); }, 2000); }
+    function handleQuizAnswer(event) { const selectedOption = event.target.closest('.quiz-option'); if (!selectedOption || quizOptionsContainer.classList.contains('disabled')) return; quizOptionsContainer.classList.add('disabled'); const selectedItemId = selectedOption.dataset.itemId; try { const wasCorrect = String(selectedItemId) === String(correctQuizItem && correctQuizItem.id); telemetryQuizEvent(correctQuizItem && correctQuizItem.id, wasCorrect, undefined); } catch {} const allOptions = quizOptionsContainer.querySelectorAll('.quiz-option'); allOptions.forEach(opt => { if (opt.dataset.itemId === correctQuizItem.id) { opt.classList.add('correct'); } else if (opt === selectedOption) { opt.classList.add('incorrect'); } else { opt.classList.add('faded'); } }); setTimeout(() => { currentItemIndex++; setupQuizRound(); }, 2000); }
     let availableListsForCategory = []; 
     // Rekursive Variante: sammelt alle Blätter (Objekte mit 'path')
     function flattenLists(categoryData) {
@@ -498,8 +502,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    if (btnReshuffle) { btnReshuffle.addEventListener('click', () => { isRestartingExercise = true; closeModal('exercise-end-modal'); if (btnStartExercise) { btnStartExercise.click(); } }); }
-    if (btnNewSelection) btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); exitCurrentExercise(); showScreen('screen-settings'); });
+    if (btnReshuffle) { btnReshuffle.addEventListener('click', async () => { isRestartingExercise = true; closeModal('exercise-end-modal'); if (isPatientFlow && Array.isArray(telemetry.setsParam) && telemetry.setsParam.length) { await performStartExercise(telemetry.setsParam); } else if (btnStartExercise) { btnStartExercise.click(); } }); }
+    if (btnNewSelection) btnNewSelection.addEventListener('click', () => { closeModal('exercise-end-modal'); if (isPatientFlow && patientReturnUrl) { try { window.location.href = patientReturnUrl; } catch { exitCurrentExercise(); showScreen('screen-settings'); } } else { exitCurrentExercise(); showScreen('screen-settings'); } });
     if (soundButton) soundButton.addEventListener('click', () => playItemSound(currentShuffledItems[currentItemIndex], 0));
     if (quizSoundButton) quizSoundButton.addEventListener('click', () => playItemSound(correctQuizItem, 0));
     if (quizOptionsContainer) quizOptionsContainer.addEventListener('click', handleQuizAnswer);
@@ -541,6 +545,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const setsParam = params.get('sets');
         uiLocked = getBool(params.get('uiLock') || '0');
         patientName = params.get('patient') || null;
+        telemetry.pid = params.get('pid') || null;
+        telemetry.aid = params.get('aid') || null;
+        // Patient:innen-Flow Kontext
+        const retTo = (params.get('returnTo') || '').toLowerCase();
+        isPatientFlow = retTo === 'patient';
+        const ru = params.get('returnUrl') || '';
+        try {
+            if (ru) {
+                const u = new URL(ru, window.location.href);
+                // Security/Same-origin Guard
+                if (u.origin === window.location.origin) {
+                    patientReturnUrl = u.toString();
+                }
+            }
+        } catch {}
 
         if (uiLocked) {
             if (hamburgerIcon) hamburgerIcon.style.display = 'none';
@@ -566,10 +585,48 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             configureSettingsScreen();
             const paths = setsParam ? setsParam.split(',').map(s=>s.trim()).filter(Boolean) : [setPath];
+            telemetry.setsParam = paths.slice();
+            telemetry.materialParam = currentMaterialType;
+            telemetry.modeParam = currentMode;
+            await telemetryStartSession();
             await performStartExercise(paths);
         } else {
             showScreen('screen-mode-selection');
         }
     }
     initializeApp();
+    
+    // --- Telemetrie-Funktionen ---
+    function sendBeaconOrFetch(url, payload) {
+        try {
+            const data = JSON.stringify(payload);
+            if (navigator.sendBeacon) {
+                const blob = new Blob([data], { type: 'application/json' });
+                const ok = navigator.sendBeacon(url, blob);
+                if (ok) return Promise.resolve(true);
+            }
+            return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: data }).then(()=>true).catch(()=>false);
+        } catch { return Promise.resolve(false); }
+    }
+    async function telemetryStartSession(){
+        try{
+            if (!telemetry.setsParam || telemetry.setsParam.length === 0) return;
+            const body = { patientId: telemetry.pid || undefined, assignmentId: telemetry.aid || undefined, mode: telemetry.modeParam || currentMode || 'quiz', material: telemetry.materialParam || currentMaterialType || 'woerter', sets: telemetry.setsParam };
+            const res = await fetch('/api/telemetry/session/start', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+            if (!res.ok) return;
+            const data = await res.json();
+            telemetry.sessionId = data && data.sessionId ? data.sessionId : null;
+        }catch{}
+    }
+    function telemetryEndSession(){
+        if (!telemetry.sessionId) return;
+        sendBeaconOrFetch('/api/telemetry/session/end', { sessionId: telemetry.sessionId });
+    }
+    function telemetryQuizEvent(itemId, correct, timeMs){
+        if (!telemetry.sessionId) return;
+        const ev = { sessionId: telemetry.sessionId, itemId: String(itemId||''), correct: !!correct, timeMs: Number.isFinite(timeMs)? Number(timeMs): undefined, ts: new Date().toISOString() };
+        sendBeaconOrFetch('/api/telemetry/quiz', ev);
+    }
+    window.addEventListener('pagehide', telemetryEndSession);
+    window.addEventListener('beforeunload', telemetryEndSession);
 });

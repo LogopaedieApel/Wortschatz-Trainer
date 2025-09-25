@@ -38,6 +38,12 @@ const AUDIT_LOG_FILE = path.join(AUDIT_LOG_DIR, 'editor-changes.log');
 const LOCK_DIR = path.join(__dirname, '_locks');
 const STATE_DIR = process.env.STATE_DIR ? path.resolve(process.env.STATE_DIR) : path.join(__dirname, '_state');
 const NAME_HISTORY_FILE = path.join(STATE_DIR, 'name-history.json');
+// Therapist state files (Phase 1)
+const PATIENTS_FILE = path.join(STATE_DIR, 'patients.json');
+const ASSIGNMENTS_FILE = path.join(STATE_DIR, 'assignments.json');
+// Telemetry state files (Phase 2)
+const SESSIONS_FILE = path.join(STATE_DIR, 'sessions.json');
+const QUIZ_EVENTS_FILE = path.join(STATE_DIR, 'quiz_events.json');
 const DATA_DIR = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : path.join(__dirname, 'data');
 const dataPath = (...segs) => path.join(DATA_DIR, ...segs);
 // Helper: Auflösung von in JSON gespeicherten Pfaden wie 'data/…' relativ zu DATA_DIR
@@ -229,6 +235,86 @@ const nameHistorySchema = {
 const validateDb = ajv.compile(dbSchema);
 const validateNameHistorySchema = ajv.compile(nameHistorySchema);
 
+// === AJV Schemas for therapist state ===
+const patientSchema = {
+    type: 'object',
+    additionalProperties: false,
+    required: ['id','name','active','createdAt','updatedAt'],
+    properties: {
+        id: { type: 'string' },
+        name: { type: 'string', minLength: 1 },
+        active: { type: 'boolean' },
+        createdAt: { type: 'string' },
+        updatedAt: { type: 'string' },
+        note: { type: 'string' }
+    }
+};
+const patientsSchema = { type: 'array', items: patientSchema };
+const assignmentSchema = {
+    type: 'object',
+    additionalProperties: false,
+    required: ['id','patientId','mode','material','sets','active','createdAt','updatedAt'],
+    properties: {
+        id: { type: 'string' },
+        patientId: { type: 'string' },
+        therapistId: { type: 'string' },
+        mode: { type: 'string', enum: ['quiz','manual','auto'] },
+        material: { type: 'string', enum: ['woerter','saetze'] },
+        sets: { type: 'array', items: { type: 'string' }, minItems: 1 },
+        active: { type: 'boolean' },
+        createdAt: { type: 'string' },
+        updatedAt: { type: 'string' },
+        title: { type: 'string' }
+    }
+};
+const assignmentsSchema = { type: 'array', items: assignmentSchema };
+const validatePatients = ajv.compile(patientsSchema);
+const validateAssignments = ajv.compile(assignmentsSchema);
+
+// === AJV Schemas for telemetry (Phase 2) ===
+const sessionSchema = {
+    type: 'object',
+    additionalProperties: false,
+    required: ['id','startedAt','mode','material','sets'],
+    properties: {
+        id: { type: 'string' }, // sid_*
+        patientId: { type: 'string' }, // optional
+        assignmentId: { type: 'string' }, // optional
+        startedAt: { type: 'string' }, // ISO
+        endedAt: { type: 'string' }, // ISO optional
+        durationMs: { type: 'number' },
+        mode: { type: 'string', enum: ['quiz','manual','auto'] },
+        material: { type: 'string', enum: ['woerter','saetze'] },
+        sets: { type: 'array', items: { type: 'string' }, minItems: 1 },
+        summary: {
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+                total: { type: 'number' },
+                correct: { type: 'number' },
+                incorrect: { type: 'number' }
+            }
+        }
+    }
+};
+const sessionsSchema = { type: 'array', items: sessionSchema };
+
+const quizEventSchema = {
+    type: 'object',
+    additionalProperties: false,
+    required: ['sessionId','ts','itemId','correct'],
+    properties: {
+        sessionId: { type: 'string' },
+        ts: { type: 'string' }, // ISO Timestamp
+        itemId: { type: 'string' },
+        correct: { type: 'boolean' },
+        timeMs: { type: 'number' }
+    }
+};
+const quizEventsSchema = { type: 'array', items: quizEventSchema };
+const validateSessions = ajv.compile(sessionsSchema);
+const validateQuizEvents = ajv.compile(quizEventsSchema);
+
 function ajvErrorsToMessage(errors) {
     if (!errors) return 'Unbekannter Validierungsfehler';
     return errors.map(e => `${e.instancePath || '(root)'} ${e.message}`).join('; ');
@@ -287,6 +373,79 @@ function getHistNode(hist, mode, id) {
     if (!Array.isArray(root[id].entries)) root[id].entries = [];
     if (typeof root[id].cursor !== 'number') root[id].cursor = root[id].entries.length - 1;
     return root[id];
+}
+
+// === Therapist state helpers ===
+async function readPatients() {
+    try {
+        const txt = await fs.readFile(PATIENTS_FILE, 'utf8');
+        const data = JSON.parse(txt);
+        if (!validatePatients(data)) throw new Error(`Schemafehler (patients): ${ajvErrorsToMessage(validatePatients.errors)}`);
+        return data;
+    } catch (e) {
+        if (e.code === 'ENOENT') return [];
+        throw e;
+    }
+}
+async function writePatients(list, { stamp } = {}) {
+    if (!validatePatients(list)) throw new Error(`Schemafehler (patients): ${ajvErrorsToMessage(validatePatients.errors)}`);
+    await ensureDir(STATE_DIR);
+    await writeJsonAtomic(PATIENTS_FILE, list, { stamp: stamp || nowIsoCompact(), backup: true, auditOp: 'patients:write' });
+}
+async function readAssignments() {
+    try {
+        const txt = await fs.readFile(ASSIGNMENTS_FILE, 'utf8');
+        const data = JSON.parse(txt);
+        if (!validateAssignments(data)) throw new Error(`Schemafehler (assignments): ${ajvErrorsToMessage(validateAssignments.errors)}`);
+        return data;
+    } catch (e) {
+        if (e.code === 'ENOENT') return [];
+        throw e;
+    }
+}
+async function writeAssignments(list, { stamp } = {}) {
+    if (!validateAssignments(list)) throw new Error(`Schemafehler (assignments): ${ajvErrorsToMessage(validateAssignments.errors)}`);
+    await ensureDir(STATE_DIR);
+    await writeJsonAtomic(ASSIGNMENTS_FILE, list, { stamp: stamp || nowIsoCompact(), backup: true, auditOp: 'assignments:write' });
+}
+
+function genId(prefix) {
+    const rand = Math.random().toString(16).slice(2, 10);
+    return `${prefix}_${nowIsoCompact()}_${rand}`;
+}
+
+// === Telemetry helpers ===
+async function readSessions() {
+    try {
+        const txt = await fs.readFile(SESSIONS_FILE, 'utf8');
+        const data = JSON.parse(txt);
+        if (!validateSessions(data)) throw new Error(`Schemafehler (sessions): ${ajvErrorsToMessage(validateSessions.errors)}`);
+        return data;
+    } catch (e) {
+        if (e.code === 'ENOENT') return [];
+        throw e;
+    }
+}
+async function writeSessions(list, { stamp } = {}) {
+    if (!validateSessions(list)) throw new Error(`Schemafehler (sessions): ${ajvErrorsToMessage(validateSessions.errors)}`);
+    await ensureDir(STATE_DIR);
+    await writeJsonAtomic(SESSIONS_FILE, list, { stamp: stamp || nowIsoCompact(), backup: true, auditOp: 'sessions:write' });
+}
+async function readQuizEvents() {
+    try {
+        const txt = await fs.readFile(QUIZ_EVENTS_FILE, 'utf8');
+        const data = JSON.parse(txt);
+        if (!validateQuizEvents(data)) throw new Error(`Schemafehler (quiz_events): ${ajvErrorsToMessage(validateQuizEvents.errors)}`);
+        return data;
+    } catch (e) {
+        if (e.code === 'ENOENT') return [];
+        throw e;
+    }
+}
+async function writeQuizEvents(list, { stamp } = {}) {
+    if (!validateQuizEvents(list)) throw new Error(`Schemafehler (quiz_events): ${ajvErrorsToMessage(validateQuizEvents.errors)}`);
+    await ensureDir(STATE_DIR);
+    await writeJsonAtomic(QUIZ_EVENTS_FILE, list, { stamp: stamp || nowIsoCompact(), backup: true, auditOp: 'quiz-events:write' });
 }
 
 // Listet alle Set-Dateien für den Modus auf
@@ -581,6 +740,46 @@ app.get('/api/help/doc', async (req, res) => {
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(__dirname));
+
+// Read-only: Resolve set paths to display names from manifest
+app.get('/api/sets/meta', async (req, res) => {
+    try {
+        const material = req.query.material === 'saetze' ? 'saetze' : 'woerter';
+        const raw = String(req.query.paths || '').trim();
+        const paths = raw ? raw.split(',').map(s => String(s || '').trim()).filter(Boolean) : [];
+        if (!paths.length) return res.json({ ok: true, items: [] });
+
+        const manifestPath = dataPath(material === 'saetze' ? 'sets_saetze.json' : 'sets.json');
+        let manifest = {};
+        try { manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8')); } catch (e) {
+            if (e.code === 'ENOENT') return res.json({ ok: true, items: paths.map(p => ({ path: p, displayName: p })) });
+            throw e;
+        }
+
+        // Collect leaf paths -> displayName (breadcrumbed) into a map
+        const map = new Map();
+        const walk = async (node, nameParts = []) => {
+            for (const key of Object.keys(node || {})) {
+                if (key === 'displayName' || key === 'unterkategorieName') continue;
+                const child = node[key];
+                if (!child || typeof child !== 'object') continue;
+                const dn = child.displayName || key;
+                if (child.path) {
+                    const label = [...nameParts, dn].join(' ');
+                    map.set(String(child.path), label);
+                }
+                await walk(child, (dn && dn.length <= 5) ? nameParts.concat(dn) : nameParts);
+            }
+        };
+        await walk(manifest, []);
+
+        const items = paths.map(p => ({ path: p, displayName: map.get(p) || p }));
+        res.json({ ok: true, items });
+    } catch (e) {
+        console.error('[SETS META] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    }
+});
 
 // Helper: Validate a given mode ('woerter' | 'saetze') by checking manifest-set files and missing IDs
 async function validateModeIntegrity(mode) {
@@ -2480,4 +2679,336 @@ app.get('/api/missing-assets', async (req, res) => {
 // Read-only status endpoint
 app.get('/api/editor/config', (req, res) => {
     res.json({ readOnly: isReadOnly(), port: PORT });
+});
+
+// === Patients API ===
+// List patients
+app.get('/api/patients', async (req, res) => {
+    try {
+        const includeInactive = req.query.includeInactive === '1' || req.query.includeInactive === 'true';
+        const list = await readPatients();
+        const items = includeInactive ? list : list.filter(p => p.active !== false);
+        res.json({ ok: true, items });
+    } catch (e) {
+        console.error('[patients:list] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    }
+});
+
+// Create patient
+app.post('/api/patients', guardWrite, async (req, res) => {
+    let lock; const stamp = nowIsoCompact();
+    try {
+        lock = await acquireLock('therapist');
+        const { name, note } = req.body || {};
+        const cleanName = String(name || '').trim();
+        if (!cleanName) return res.status(400).json({ ok: false, message: 'name erforderlich' });
+        const patients = await readPatients();
+        const exists = patients.some(p => String(p.name || '').toLowerCase() === cleanName.toLowerCase());
+        if (exists) return res.status(409).json({ ok: false, message: 'Pseudonym bereits vergeben' });
+        const item = {
+            id: genId('pid'),
+            name: cleanName,
+            active: true,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            ...(note ? { note: String(note).slice(0, 500) } : {})
+        };
+        const out = [...patients, item];
+        await writePatients(out, { stamp });
+        res.json({ ok: true, item });
+    } catch (e) {
+        console.error('[patients:create] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    } finally {
+        await releaseLock(lock);
+    }
+});
+
+// Update patient
+app.patch('/api/patients/:id', guardWrite, async (req, res) => {
+    let lock; const stamp = nowIsoCompact();
+    try {
+        lock = await acquireLock('therapist');
+        const { id } = req.params;
+        const { name, active, note } = req.body || {};
+        const patients = await readPatients();
+        const idx = patients.findIndex(p => p.id === id);
+        if (idx === -1) return res.status(404).json({ ok: false, message: 'Patient nicht gefunden' });
+        const current = { ...patients[idx] };
+        if (typeof name !== 'undefined') {
+            const cleanName = String(name || '').trim();
+            if (!cleanName) return res.status(400).json({ ok: false, message: 'name darf nicht leer sein' });
+            const exists = patients.some(p => p.id !== id && String(p.name || '').toLowerCase() === cleanName.toLowerCase());
+            if (exists) return res.status(409).json({ ok: false, message: 'Pseudonym bereits vergeben' });
+            current.name = cleanName;
+        }
+        if (typeof active !== 'undefined') current.active = !!active;
+        if (typeof note !== 'undefined') current.note = String(note || '').slice(0, 500);
+        current.updatedAt = new Date().toISOString();
+        const out = patients.slice(); out[idx] = current;
+        await writePatients(out, { stamp });
+        res.json({ ok: true, item: current });
+    } catch (e) {
+        console.error('[patients:update] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    } finally {
+        await releaseLock(lock);
+    }
+});
+
+// Soft delete patient (active=false)
+app.delete('/api/patients/:id', guardWrite, async (req, res) => {
+    let lock; const stamp = nowIsoCompact();
+    try {
+        lock = await acquireLock('therapist');
+        const { id } = req.params;
+        const patients = await readPatients();
+        const idx = patients.findIndex(p => p.id === id);
+        if (idx === -1) return res.status(404).json({ ok: false, message: 'Patient nicht gefunden' });
+        const current = { ...patients[idx], active: false, updatedAt: new Date().toISOString() };
+        const out = patients.slice(); out[idx] = current;
+        await writePatients(out, { stamp });
+        res.json({ ok: true, item: current });
+    } catch (e) {
+        console.error('[patients:delete] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    } finally {
+        await releaseLock(lock);
+    }
+});
+
+// === Assignments API ===
+// List assignments (optional filter by patientId)
+app.get('/api/assignments', async (req, res) => {
+    try {
+        const { patientId } = req.query || {};
+        const includeInactive = req.query.includeInactive === '1' || req.query.includeInactive === 'true';
+        const list = await readAssignments();
+        let items = includeInactive ? list : list.filter(a => a.active !== false);
+        if (patientId) items = items.filter(a => a.patientId === patientId);
+        res.json({ ok: true, items });
+    } catch (e) {
+        console.error('[assignments:list] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    }
+});
+
+function isValidMode(x) { return x === 'quiz' || x === 'manual' || x === 'auto'; }
+function isValidMaterial(x) { return x === 'woerter' || x === 'saetze'; }
+
+// Create assignment
+app.post('/api/assignments', guardWrite, async (req, res) => {
+    let lock; const stamp = nowIsoCompact();
+    try {
+        lock = await acquireLock('therapist');
+        const { patientId, therapistId, mode, material, sets, title } = req.body || {};
+        if (!patientId) return res.status(400).json({ ok: false, message: 'patientId erforderlich' });
+        if (!isValidMode(mode)) return res.status(400).json({ ok: false, message: 'ungültiger mode' });
+        if (!isValidMaterial(material)) return res.status(400).json({ ok: false, message: 'ungültiges material' });
+        if (!Array.isArray(sets) || sets.length === 0 || sets.some(s => typeof s !== 'string' || !s)) {
+            return res.status(400).json({ ok: false, message: 'sets muss ein nicht-leeres String-Array sein' });
+        }
+        const patients = await readPatients();
+        const pat = patients.find(p => p.id === patientId);
+        if (!pat) return res.status(404).json({ ok: false, message: 'Patient nicht gefunden' });
+        if (pat.active === false) return res.status(400).json({ ok: false, message: 'Patient ist inaktiv' });
+        const assignments = await readAssignments();
+        const now = new Date().toISOString();
+        const item = {
+            id: genId('asg'),
+            patientId,
+            ...(therapistId ? { therapistId: String(therapistId) } : {}),
+            mode, material,
+            sets: sets.map(s => String(s)),
+            active: true,
+            createdAt: now,
+            updatedAt: now,
+            ...(title ? { title: String(title).slice(0, 200) } : {})
+        };
+        const out = [...assignments, item];
+        await writeAssignments(out, { stamp });
+        res.json({ ok: true, item });
+    } catch (e) {
+        console.error('[assignments:create] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    } finally {
+        await releaseLock(lock);
+    }
+});
+
+// Update assignment
+app.patch('/api/assignments/:id', guardWrite, async (req, res) => {
+    let lock; const stamp = nowIsoCompact();
+    try {
+        lock = await acquireLock('therapist');
+        const { id } = req.params;
+        const { mode, material, sets, active, title } = req.body || {};
+        const assignments = await readAssignments();
+        const idx = assignments.findIndex(a => a.id === id);
+        if (idx === -1) return res.status(404).json({ ok: false, message: 'Assignment nicht gefunden' });
+        const current = { ...assignments[idx] };
+        if (typeof mode !== 'undefined') {
+            if (!isValidMode(mode)) return res.status(400).json({ ok: false, message: 'ungültiger mode' });
+            current.mode = mode;
+        }
+        if (typeof material !== 'undefined') {
+            if (!isValidMaterial(material)) return res.status(400).json({ ok: false, message: 'ungültiges material' });
+            current.material = material;
+        }
+        if (typeof sets !== 'undefined') {
+            if (!Array.isArray(sets) || sets.length === 0 || sets.some(s => typeof s !== 'string' || !s)) {
+                return res.status(400).json({ ok: false, message: 'sets muss ein nicht-leeres String-Array sein' });
+            }
+            current.sets = sets.map(s => String(s));
+        }
+        if (typeof active !== 'undefined') current.active = !!active;
+        if (typeof title !== 'undefined') current.title = String(title || '').slice(0, 200);
+        current.updatedAt = new Date().toISOString();
+        const out = assignments.slice(); out[idx] = current;
+        await writeAssignments(out, { stamp });
+        res.json({ ok: true, item: current });
+    } catch (e) {
+        console.error('[assignments:update] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    } finally {
+        await releaseLock(lock);
+    }
+});
+
+// === Telemetry API (Phase 2) ===
+// Start a session
+app.post('/api/telemetry/session/start', guardWrite, async (req, res) => {
+    let lock; const stamp = nowIsoCompact();
+    try {
+        lock = await acquireLock('telemetry');
+        const { patientId, assignmentId, mode, material, sets } = req.body || {};
+        if (!isValidMode(mode)) return res.status(400).json({ ok: false, message: 'ungültiger mode' });
+        if (!isValidMaterial(material)) return res.status(400).json({ ok: false, message: 'ungültiges material' });
+        if (!Array.isArray(sets) || sets.length === 0 || sets.some(s => typeof s !== 'string' || !s)) {
+            return res.status(400).json({ ok: false, message: 'sets muss ein nicht-leeres String-Array sein' });
+        }
+        // If pid provided, ensure patient exists and active
+        if (patientId) {
+            const patients = await readPatients();
+            const pat = patients.find(p => p.id === patientId);
+            if (!pat) return res.status(404).json({ ok: false, message: 'Patient nicht gefunden' });
+            if (pat.active === false) return res.status(400).json({ ok: false, message: 'Patient ist inaktiv' });
+        }
+        // If aid provided, ensure assignment exists and matches
+        if (assignmentId) {
+            const asgs = await readAssignments();
+            const a = asgs.find(x => x.id === assignmentId);
+            if (!a) return res.status(404).json({ ok: false, message: 'Assignment nicht gefunden' });
+            if (a.active === false) return res.status(400).json({ ok: false, message: 'Assignment ist inaktiv' });
+        }
+        const sid = genId('sid');
+        const sessions = await readSessions();
+        const item = { id: sid, startedAt: new Date().toISOString(), mode, material, sets: sets.map(String) };
+        if (patientId) item.patientId = String(patientId);
+        if (assignmentId) item.assignmentId = String(assignmentId);
+        await writeSessions([...sessions, item], { stamp });
+        res.json({ ok: true, sessionId: sid });
+    } catch (e) {
+        console.error('[telemetry:start] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    } finally {
+        await releaseLock(lock);
+    }
+});
+
+// End a session
+app.post('/api/telemetry/session/end', guardWrite, async (req, res) => {
+    let lock; const stamp = nowIsoCompact();
+    try {
+        lock = await acquireLock('telemetry');
+        const { sessionId } = req.body || {};
+        if (!sessionId) return res.status(400).json({ ok: false, message: 'sessionId erforderlich' });
+        const sessions = await readSessions();
+        const idx = sessions.findIndex(s => s.id === sessionId);
+        if (idx === -1) return res.status(404).json({ ok: false, message: 'Session nicht gefunden' });
+        const now = new Date();
+        const cur = { ...sessions[idx] };
+        if (!cur.startedAt) cur.startedAt = now.toISOString();
+        cur.endedAt = now.toISOString();
+        // compute duration if missing
+        try {
+            const d = new Date(cur.endedAt) - new Date(cur.startedAt);
+            if (Number.isFinite(d) && d >= 0) cur.durationMs = d;
+        } catch {}
+        sessions[idx] = cur;
+        await writeSessions(sessions, { stamp });
+        res.json({ ok: true, item: cur });
+    } catch (e) {
+        console.error('[telemetry:end] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    } finally {
+        await releaseLock(lock);
+    }
+});
+
+// Append quiz events (can be single or batch)
+app.post('/api/telemetry/quiz', guardWrite, async (req, res) => {
+    let lock; const stamp = nowIsoCompact();
+    try {
+        lock = await acquireLock('telemetry');
+        const body = req.body || {};
+        const events = Array.isArray(body) ? body : (Array.isArray(body.events) ? body.events : [body]);
+        const normalized = [];
+        for (const ev of events) {
+            if (!ev || typeof ev !== 'object') continue;
+            const { sessionId, itemId, correct, timeMs, ts } = ev;
+            if (!sessionId || !itemId || typeof correct !== 'boolean') continue;
+            normalized.push({ sessionId: String(sessionId), itemId: String(itemId), correct: !!correct, timeMs: Number.isFinite(timeMs) ? Number(timeMs) : undefined, ts: ts && typeof ts === 'string' ? ts : new Date().toISOString() });
+        }
+        if (!normalized.length) return res.status(400).json({ ok: false, message: 'keine gültigen Events' });
+        // ensure session exists
+        const sessions = await readSessions();
+        const ids = new Set(sessions.map(s => s.id));
+        for (const e of normalized) {
+            if (!ids.has(e.sessionId)) return res.status(404).json({ ok: false, message: `Session nicht gefunden: ${e.sessionId}` });
+        }
+        const existing = await readQuizEvents();
+        await writeQuizEvents(existing.concat(normalized), { stamp });
+        res.json({ ok: true, count: normalized.length });
+    } catch (e) {
+        console.error('[telemetry:quiz] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    } finally {
+        await releaseLock(lock);
+    }
+});
+
+// Progress summary by patientId and/or assignmentId
+app.get('/api/progress', async (req, res) => {
+    try {
+        const { patientId, assignmentId, limit = '50' } = req.query || {};
+        const sessions = await readSessions();
+        const quiz = await readQuizEvents();
+        let items = sessions.slice();
+        if (patientId) items = items.filter(s => s.patientId === patientId);
+        if (assignmentId) items = items.filter(s => s.assignmentId === assignmentId);
+        // join quiz summary per session
+        const bySid = new Map();
+        for (const s of items) bySid.set(s.id, { ...s });
+        const agg = new Map();
+        for (const e of quiz) {
+            if (!bySid.has(e.sessionId)) continue;
+            const a = agg.get(e.sessionId) || { total: 0, correct: 0, incorrect: 0 };
+            a.total += 1; a.correct += e.correct ? 1 : 0; a.incorrect += e.correct ? 0 : 1;
+            agg.set(e.sessionId, a);
+        }
+        const out = [];
+        for (const s of items) {
+            const sum = agg.get(s.id) || null;
+            out.push({ ...s, summary: sum || s.summary || null });
+        }
+        // sort by startedAt desc
+        out.sort((a,b)=> String(b.startedAt||'').localeCompare(String(a.startedAt||'')));
+        const n = Math.max(1, Math.min(500, Number(limit) || 50));
+        res.json({ ok: true, items: out.slice(0, n) });
+    } catch (e) {
+        console.error('[progress] Fehler:', e);
+        res.status(500).json({ ok: false, message: 'Interner Fehler' });
+    }
 });

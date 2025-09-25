@@ -59,18 +59,24 @@
     <!-- Card 3: Patient & Versand -->
     <section class="card" id="send-card">
       <div class="form-row">
-        <label for="patient-input">Patient (optional)</label>
-        <input id="patient-input" type="text" placeholder="z. B. Testpatient A" />
+        <label for="patient-select">Patient:in</label>
+        <select id="patient-select">
+          <option value="">Ohne Zuordnung</option>
+        </select>
+        <button id="btn-patient-new" class="secondary">Neu</button>
+      </div>
+      <div class="form-row" id="patient-new-row" style="display:none">
+        <label for="new-patient-name">Neues Pseudonym</label>
+        <input id="new-patient-name" type="text" maxlength="100" placeholder="z. B. Testpatient A" />
+        <button id="btn-patient-create" class="secondary">Hinzufügen</button>
       </div>
       <div class="form-row actions">
         <button id="btn-generate" disabled>Link generieren</button>
         <button id="btn-copy" disabled>Link kopieren</button>
-        <button id="btn-mail" disabled>Als E‑Mail öffnen</button>
       </div>
       <div class="form-row actions" id="multi-links-actions">
         <button id="btn-generate-all" disabled>Links generieren</button>
         <button id="btn-copy-all" disabled>Alle kopieren</button>
-        <button id="btn-mail-all" disabled>Als E‑Mail öffnen (alle)</button>
       </div>
       <div class="form-row">
         <label for="link-output">Link</label>
@@ -80,9 +86,17 @@
         <label>Übungs‑Links</label>
         <div id="links-list" class="links-list"></div>
       </div>
-      <p class="hint">Hinweis: Der Link startet die Übung direkt mit der Auswahl. Die Navigation ist gesperrt (uiLock) und kann für den Testpatienten nicht geändert werden.</p>
+      <p class="hint">Hinweis: Der Link enthält keine personenbezogenen Daten und nutzt nur eine interne Patienten‑ID. Die Übung startet direkt (autostart) und sperrt die UI‑Navigation (uiLock).</p>
     </section>
   </main>
+  <!-- Progress Card (MVP) -->
+  <section class="card" id="progress-card">
+    <h2>Fortschritt (letzte Sitzungen)</h2>
+    <div class="form-row">
+      <div id="progress-summary" class="hint">Bitte Patient:in wählen, um Sitzungen zu sehen.</div>
+    </div>
+    <div id="progress-list" class="progress-list"></div>
+  </section>
   <script src="therapeut.js" defer></script>
 </body>
 </html>

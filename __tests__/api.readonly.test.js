@@ -46,3 +46,13 @@ it('blocks delete-item in read-only mode', async () => {
   const res = await agent.post('/api/delete-item').send({ id: 'irgendwas', mode: 'woerter' });
   expect(res.status).toBe(423);
 });
+
+// Read-only must block telemetry writes
+it('blocks telemetry routes in read-only mode', async () => {
+  let res = await agent.post('/api/telemetry/session/start').send({ mode: 'quiz', material: 'woerter', sets: ['a'] });
+  expect(res.status).toBe(423);
+  res = await agent.post('/api/telemetry/session/end').send({ sessionId: 'sid_foo' });
+  expect(res.status).toBe(423);
+  res = await agent.post('/api/telemetry/quiz').send({ sessionId: 'sid_foo', itemId: 'x', correct: true });
+  expect(res.status).toBe(423);
+});

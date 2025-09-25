@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wortschatz‑Trainer – Start</title>
+  <link rel="stylesheet" href="patient.css" />
+</head>
+<body>
+  <main class="wrap" role="main">
+    <header class="page-head">
+      <h1 id="title">Wortschatz‑Trainer</h1>
+      <p class="subtitle" id="subtitle">Deine Übung ist vorbereitet.</p>
+    </header>
+
+    <section class="card" aria-labelledby="task-head">
+      <h2 id="task-head">Aufgabe</h2>
+      <div class="task-meta">
+        <div><strong>Modus:</strong> <span id="meta-mode">–</span></div>
+        <div><strong>Material:</strong> <span id="meta-material">–</span></div>
+        <div><strong>Listen:</strong> <span id="meta-sets">–</span></div>
+      </div>
+      <div id="list-container" class="list-container" aria-live="polite"></div>
+      <p id="task-desc" class="task-desc">Bitte arbeite die Übung in Ruhe durch. Wenn du fertig bist, kannst du das Fenster schließen.</p>
+      <p class="hint">Hinweis: Die Übung dauert meist nur wenige Minuten.</p>
+    </section>
+
+    <section class="card" aria-labelledby="tech-head">
+      <h2 id="tech-head">Technik prüfen</h2>
+      <ul class="checklist">
+        <li>Ton an? Kopfhörer empfohlen.</li>
+        <li>Gute Internetverbindung.</li>
+        <li>Bitte störungsfrei arbeiten.</li>
+      </ul>
+      <div class="audio-test">
+        <button id="btn-audio-test" class="secondary" type="button">Testton abspielen</button>
+        <audio id="test-audio" preload="auto">
+          <source src="data/sounds/test-tone-440hz.mp3" type="audio/mpeg" />
+        </audio>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="privacy-head">
+      <h2 id="privacy-head">Einverständnis</h2>
+      <p class="privacy">Es werden nur Sitzungsdaten ohne Klarnamen gespeichert (z. B. Dauer und Antworten). In deinem Link sind nur anonyme IDs enthalten.</p>
+      <label class="consent">
+        <input type="checkbox" id="consent" />
+        <span>Ich habe die Hinweise gelesen und stimme zu.</span>
+      </label>
+      <div class="actions">
+        <button id="btn-start" class="primary" type="button" disabled>Übung starten</button>
+      </div>
+      <p id="error" class="error" role="alert" aria-live="polite"></p>
+    </section>
+
+    <section class="card" aria-labelledby="help-head">
+      <h2 id="help-head">Hilfe</h2>
+      <ul class="faq">
+        <li><strong>Kein Ton?</strong> Lautstärke prüfen, Kopfhörer anschließen, Browser wechseln.</li>
+        <li><strong>Seite lädt nicht?</strong> Internetverbindung prüfen und neu laden.</li>
+        <li><strong>Neuen Link nötig?</strong> Bitte Praxis kontaktieren.</li>
+      </ul>
+    </section>
+  </main>
+  <script src="patient.js" defer></script>
+  <noscript>Bitte JavaScript aktivieren.</noscript>
+  </body>
+  </html>
